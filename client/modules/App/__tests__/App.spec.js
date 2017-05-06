@@ -1,12 +1,20 @@
 import React from 'react'
 import test from 'ava'
-import sinon from 'sinon'
-import { shallow, mount } from 'enzyme'
-import { App } from '../App'
-import styles from '../App.css'
-// import { intlShape } from 'react-intl'
-// import { intl } from '../../../util/react-intl-test-helper'
-import { toggleAddPost } from '../AppActions'
+// import sinon from 'sinon'
+// import { shallow, mount } from 'enzyme'
+// import { App } from '../App'
+// import styles from '../App.css'
+// import { toggleAddPost } from '../AppActions'
+
+test('placeholder', t => {
+  console.log('\n--TODO: Add testing for App.spec.js\n')
+  t.pass()
+})
+
+
+// test('placeholder', t => {
+//   console.log('Placeholder test')
+// })
 
 // const intlProp = { ...intl, enabledLanguages: ['en', 'fr'] }
 // const children = <h1>Test</h1>

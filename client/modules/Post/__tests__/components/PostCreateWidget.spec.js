@@ -1,14 +1,17 @@
 import React from 'react'
 import test from 'ava'
-import sinon from 'sinon'
-// import { FormattedMessage } from 'react-intl'
-import { PostCreateWidget } from '../../components/PostCreateWidget/PostCreateWidget'
-// import { mountWithIntl, shallowWithIntl } from '../../../../util/react-intl-test-helper'
+// import sinon from 'sinon'
+// import { PostCreateWidget } from '../../components/PostCreateWidget/PostCreateWidget'
 
-const props = {
-  addPost: () => {},
-  showAddPost: true
-}
+test('placeholder', t => {
+  console.log('\n--TODO: Add testing for PostCreateWidget.spec.js\n')
+  t.pass()
+})
+
+// const props = {
+//   addPost: () => {},
+//   showAddPost: true
+// }
 
 // test('renders properly', t => {
 //   const wrapper = shallowWithIntl(

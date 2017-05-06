@@ -1,9 +1,13 @@
 import React from 'react'
 import test from 'ava'
-import sinon from 'sinon'
-import { shallow } from 'enzyme'
-import { Header } from '../../components/Header/Header'
-// import { intl } from '../../../../util/react-intl-test-helper'
+// import sinon from 'sinon'
+// import { shallow } from 'enzyme'
+// import { Header } from '../../components/Header/Header'
+
+test('placeholder', t => {
+  console.log('\n--TODO: Add testing for Header.spec.js\n')
+  t.pass()
+})
 
 // const intlProp = { ...intl, enabledLanguages: ['en', 'fr'] }
 //
