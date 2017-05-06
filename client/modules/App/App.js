@@ -3,12 +3,24 @@ import { connect } from 'react-redux';
 
 // Import Components
 import Helmet from 'react-helmet';
-import DevTools from './components/DevTools';
+import DevTools from '../../DevTools';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 
 // Import Actions
 import { toggleAddPost } from './AppActions';
+
+const meta = [
+  { charset: 'utf-8' },
+  {
+    'http-equiv': 'X-UA-Compatible',
+    content: 'IE=edge',
+  },
+  {
+    name: 'viewport',
+    content: 'width=device-width, initial-scale=1',
+  },
+]
 
 export class App extends Component {
   constructor(props) {
@@ -32,22 +44,9 @@ export class App extends Component {
           <Helmet
             title="MERN Starter - Blog App"
             titleTemplate="%s - Blog App"
-            meta={[
-              { charset: 'utf-8' },
-              {
-                'http-equiv': 'X-UA-Compatible',
-                content: 'IE=edge',
-              },
-              {
-                name: 'viewport',
-                content: 'width=device-width, initial-scale=1',
-              },
-            ]}
+            meta={meta}
           />
-          <Header
-            // intl={this.props.intl}
-            toggleAddPost={this.toggleAddPostSection}
-          />
+          <Header toggleAddPost={this.toggleAddPostSection} />
           <div id='container'>
             {this.props.children}
           </div>

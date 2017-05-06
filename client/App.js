@@ -9,7 +9,7 @@ import { Router, browserHistory } from 'react-router'
 import routes from './routes'
 
 // Base stylesheet
-require('./styles/manifest.css')
+import 'styles/manifest.css'
 
 export default function App (props) {
   return (
