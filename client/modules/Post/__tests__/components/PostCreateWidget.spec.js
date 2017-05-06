@@ -4,7 +4,7 @@ import test from 'ava'
 // import { PostCreateWidget } from '../../components/PostCreateWidget/PostCreateWidget'
 
 test('placeholder', t => {
-  console.log('\n--TODO: Add testing for PostCreateWidget.spec.js\n')
+  console.log('--TODO: Add testing for PostCreateWidget.spec.js')
   t.pass()
 })
 

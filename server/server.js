@@ -35,6 +35,9 @@ import posts from './routes/post.routes'
 import dummyData from './dummyData'
 import serverConfig from './config'
 
+// TODO: Is this an okay practice?
+import { API_URL } from '../client/util/apiCaller'
+
 // Set native promises as mongoose promise
 mongoose.Promise = global.Promise
 
@@ -139,8 +142,13 @@ app.use((req, res, next) => {
 // start app
 app.listen(serverConfig.port, (error) => {
   if (!error) {
-    console.log(`MERN is running on port: ${serverConfig.port}! Build something amazing!`); // eslint-disable-line
-  }
+    console.log('-'.repeat(60))
+    console.log('\t== MERN APP IS LIVE ==')
+    console.log(`\tEnvironment: ${process.env.NODE_ENV}`)
+    console.log(`\tMongoDB: ${serverConfig.mongoURL}`)
+    console.log(`\tBack-End: ${API_URL}/api`)
+    console.log(`\tClient-Side: ${serverConfig.host}:${serverConfig.port}`)}
+    console.log('-'.repeat(60))
 })
 
 export default app

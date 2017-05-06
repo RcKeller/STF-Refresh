@@ -7,7 +7,7 @@ import test from 'ava'
 // import { toggleAddPost } from '../AppActions'
 
 test('placeholder', t => {
-  console.log('\n--TODO: Add testing for App.spec.js\n')
+  console.log('--TODO: Add testing for App.spec.js')
   t.pass()
 })
 

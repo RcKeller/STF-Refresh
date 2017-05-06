@@ -5,7 +5,7 @@ import test from 'ava'
 // import { Header } from '../../components/Header/Header'
 
 test('placeholder', t => {
-  console.log('\n--TODO: Add testing for Header.spec.js\n')
+  console.log('--TODO: Add testing for Header.spec.js')
   t.pass()
 })
 

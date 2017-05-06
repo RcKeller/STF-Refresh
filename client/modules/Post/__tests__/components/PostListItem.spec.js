@@ -4,7 +4,7 @@ import test from 'ava'
 // import PostListItem from '../../components/PostListItem/PostListItem'
 
 test('placeholder', t => {
-  console.log('\n--TODO: Add testing for PostListItem.spec.js\n')
+  console.log('--TODO: Add testing for PostListItem.spec.js')
   t.pass()
 })
 
