@@ -1,9 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 
-// Import Style
-import styles from './App.css';
-
 // Import Components
 import Helmet from 'react-helmet';
 import DevTools from './components/DevTools';
@@ -51,7 +48,7 @@ export class App extends Component {
             // intl={this.props.intl}
             toggleAddPost={this.toggleAddPostSection}
           />
-          <div className={styles.container}>
+          <div id='container'>
             {this.props.children}
           </div>
           <Footer />
