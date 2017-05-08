@@ -7,6 +7,8 @@ import DevTools from '../../DevTools';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 
+import styles from './App.css';
+
 // Import Actions
 import { toggleAddPost } from './AppActions';
 
@@ -47,7 +49,7 @@ export class App extends Component {
             meta={meta}
           />
           <Header toggleAddPost={this.toggleAddPostSection} />
-          <div id='container'>
+          <div className={styles.container}>
             {this.props.children}
           </div>
           <Footer />
