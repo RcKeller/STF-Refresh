@@ -1,29 +1,36 @@
-![](http://res.cloudinary.com/hashnode/image/upload/w_200/v1466495663/static_imgs/mern/v2/mernio-logo.png)
+![](https://uwstf.org/img/logo.png)
 
 # mern-starter
-![title](https://travis-ci.org/Hashnode/mern-starter.svg?branch=v2.0.0)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
-[![Discuss on Hashnode](
-https://hashnode.github.io/badges/mern.svg)](https://hashnode.com/n/mern)
+![title](https://travis-ci.org/rykeller/STF-MERN.svg?branch=v1.0.0)
+[![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 
 MERN is a scaffolding tool which makes it easy to build isomorphic apps using Mongo, Express, React and NodeJS. It minimises the setup time and gets you up to speed using proven technologies.
 
-- [Website](http://mern.io)
-- [Documentation](http://mern.io/documentation.html)
-- [Discussions](https://hashnode.com/n/mern)
+- [Website](https://uwstf.org/)
+- [Original Repo](https://github.com/BBKolton/STF)
 
-## Quickstart
+Scaffolding based off of [mern-starter and mern-cli](http://mern.io/).
+
+## Quickstart - Metal
 
 ```
-  npm install -g mern-cli
-  mern init your_new_app
-  cd your_new_app
+  # Bash script to configure your env
+  source dev.env
+  # package.json runs all necessary node builds
   npm install
   npm start
 ```
 
-**Note : Please make sure your MongoDB is running.** For MongoDB installation guide see [this](https://docs.mongodb.org/v3.0/installation/). Also `npm3` is required to install dependencies properly.
+### Docker Composition
+```
+# Dev Environment
+source docker-dev.env
+# Production
+source docker-prod.env
+```
+
+**An active MongoDB session on 27017:27017 (default) is required.** Additionally, `npm3` may be a soft dependancy, but I've upgraded the current version to run off the `-proxy` option with no issues.
 
 ## Available Commands
 
@@ -38,6 +45,32 @@ MERN is a scaffolding tool which makes it easy to build isomorphic apps using Mo
 5. `npm run cover` - generates test coverage report
 
 6. `npm run lint` - runs linter to check for lint errors
+
+## Technical stack
+
+MERN
+: MongoDB, Express, React and Node.js
+
+Application Includes
+- [x] [React](https://facebook.github.io/react/) - Universal / Isomorphic rendering
+  - Server delivers metadata, auth state and raw CSS.
+  - Client loads context-sensitive CSS and routes as necessary.
+  - STF-MERN is an SPA (Single Page Application) at heart - Resources are heavily compressed, sent to the client, and unpacked as necessary - making the entire experience seamless, snappy, and easy to manage state-wise.
+- [x] [Redux](https://github.com/reactjs/redux) - State management that abstracts out all state/behavior into single, self-contained and immutable entities.
+- [x] [Redux-auth-wrapper](https://github.com/mjrussell/redux-auth-wrapper)
+- [x] [Redux DevTools](https://github.com/gaearon/redux-devtools) - Time-travel debugging, all state and behavior logged.
+- [x] [MongoDB](https://www.mongodb.com/) for a NOSql database
+  - [x] [Mongoose](https://github.com/Automattic/mongoose) - DB object modeling
+- [x] [Passport-SAML](https://github.com/bergie/passport-saml) Authentication tool using SAML 2.0
+  - [x] [uwshib](https://github.com/drstearns/passport-uwshib) - Strategy for Shibboleth auth (UW's system)
+- [x] [Node](https://nodejs.org/en/) - The gold standard server of 2017 (besides golang)
+
+Build process includes:
+- [x] [Webpack](https://webpack.github.io) - Bundler
+- [x] [Babel](https://babeljs.io/) - Transpiling ES6/ES7 future features to ES5 compatible and browser prefixed code
+- [x] [CSS Modules](https://github.com/css-modules/css-modules) - Modular Per-component Stylesheets
+- [x] [AVA](https://webpack.github.io) - Test suite, runs pre-commit
+
 
 ## File Structure
 
@@ -170,26 +203,7 @@ docker-compose build
 docker-compose up
 ```
 
-### Make your MERN
-In this version, we enabled the `mern-cli` to clone not only this project but also the variants of `mern-starter` like one project with MaterialUI or JWT auth. To make your version of MERN, follow these steps
-
-1. Clone this project
-    ```
-    git clone https://github.com/Hashnode/mern-starter
-    ```
-
-2. Make your changes. Add a package, add authentication, modify the file structure, replace Redux with MobX or anything else.
-
-3. In this version, we also added code generators. Blueprints for those generators are located at `config/blueprints`, and config is located at `mern.json`. Make sure to edit them if necessary after your made modifications in the previous step. There is a section below which explains how to modify generators.
-
-4. Next clone `mern-cli` project
-    ```
-    git clone https://github.com/Hashnode/mern-cli
-    ```
-
-5. Add your project details to `variants.json` in the cloned project and send a pull request.
-
-### Modifying Generators
+### Modifying MERN-CLI Generators
 
 #### mern.json
 It contains a blueprints array. Each object in it is the config for a generator. A blueprint config contains the name, description, usage, and files array. An example blueprint config
@@ -251,6 +265,4 @@ In development, after all scripts get loaded, react loads the CSS as BLOBs. That
 #### Client and Server Markup Mismatch
 This warning is visible only on development and totally harmless. This occurs to hash difference in `react-router`. To solve it, react router docs asks you to use `match` function. If we use `match`, `react-hot-reloader` stops working.
 
-## License
-MERN is released under the [MIT License](http://www.opensource.org/licenses/MIT).
-# mern-stack
+[![JavaScript Style Guide](https://cdn.rawgit.com/feross/standard/master/badge.svg)](https://github.com/feross/standard)
