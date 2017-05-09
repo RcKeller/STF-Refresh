@@ -49,7 +49,11 @@ export class Template extends Component {
             meta={meta}
           />
           <Header toggleAddPost={this.toggleAddPostSection} />
+          {/* <Header /> */}
           <div className={styles.container}>
+            <a className={styles['add-post-button']} href='#' onClick={() => this.toggleAddPostSection()}>
+              Placeholder: Add a post!
+            </a>
             {this.props.children}
           </div>
           <Footer />
@@ -67,9 +71,7 @@ Template.propTypes = {
 
 // Retrieve data from store as props
 function mapStateToProps (store) {
-  return {
-    // intl: store.intl,
-  }
+  return {}
 }
 
 export default connect(mapStateToProps)(Template)
