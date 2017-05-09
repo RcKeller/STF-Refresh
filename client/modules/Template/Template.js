@@ -4,7 +4,9 @@ import { connect } from 'react-redux'
 // Import Components
 import Helmet from 'react-helmet'
 import DevTools from '../../DevTools'
-import Header from './components/Header/Header'
+
+import UWHeader from './components/UWHeader/UWHeader'
+import STFHeader from './components/STFHeader/STFHeader'
 import Footer from './components/Footer/Footer'
 
 import styles from './Template.css'
@@ -34,24 +36,21 @@ export class Template extends Component {
     this.setState({isMounted: true}); // eslint-disable-line
   }
 
-  toggleAddPostSection () {
-    this.props.dispatch(toggleAddPost())
-  }
-
   render () {
     return (
       <div>
         {this.state.isMounted && !window.devToolsExtension && process.env.NODE_ENV === 'development' && <DevTools />}
         <div>
           <Helmet
-            title='MERN Starter - Blog App'
-            titleTemplate='%s - Blog App'
+            title='UW Student Tech Fee Commitee'
+            titleTemplate='%s - Student Tech Fee'
             meta={meta}
           />
-          <Header toggleAddPost={this.toggleAddPostSection} />
-          {/* <Header /> */}
+          {/* <Header toggleAddPost={this.toggleAddPostSection} /> */}
+          <UWHeader />
+          <STFHeader />
           <div className={styles.container}>
-            <a className={styles['add-post-button']} href='#' onClick={() => this.toggleAddPostSection()}>
+            <a className={styles['add-post-button']} href='#' onClick={() => this.props.dispatch(toggleAddPost())}>
               Placeholder: Add a post!
             </a>
             {this.props.children}
@@ -66,7 +65,6 @@ export class Template extends Component {
 Template.propTypes = {
   children: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired
-  // intl: PropTypes.object.isRequired,
 }
 
 // Retrieve data from store as props
