@@ -43,7 +43,7 @@
   background: url('./uw-sprite-mini.svg') no-repeat 0 -74px transparent;
 }
 .uw-thinstrip ul.uw-thin-links {
-  /*margin: 0px;*/
+  margin: 0px;
   position: relative;
   z-index: 1;
   font-weight: 700;

@@ -1,4 +1,5 @@
 import React, { PropTypes } from 'react'
+import { Link } from 'react-router'
 
 import Nav from 'react-bootstrap/lib/Nav'
 import Navbar from 'react-bootstrap/lib/Navbar'
@@ -15,24 +16,37 @@ export function STFHeader (props, context) {
   return (
     <Navbar>
       <Navbar.Header>
-        <Navbar.Brand className={styles['navbar-brand']}>
-          <img src={STFLogo}/>
-        </Navbar.Brand>
+        <Link to='/' >
+        {/* <Navbar.Link href='/'> */}
+          <Navbar.Brand className={styles['navbar-brand']}>
+            <img src={STFLogo} />
+          </Navbar.Brand>
+        {/* </Navbar.Link> */}
+        </Link>
         <Navbar.Toggle />
       </Navbar.Header>
       <Navbar.Collapse>
-      <Nav>
-        <NavItem eventKey={1} href='#'>Link</NavItem>
-        <NavItem eventKey={2} href='#'>Link</NavItem>
-        <NavDropdown eventKey={3} title='Dropdown' id='basic-nav-dropdown'>
-          <MenuItem eventKey={3.1}>Action</MenuItem>
-          <MenuItem eventKey={3.2}>Another action</MenuItem>
-          <MenuItem eventKey={3.3}>Something else here</MenuItem>
-          <MenuItem divider />
-          <MenuItem eventKey={3.4}>Separated link</MenuItem>
-        </NavDropdown>
-      </Nav>
-    </Navbar.Collapse>
+        <Nav>
+          <NavDropdown eventKey={3} title='Proposals' id='basic-nav-dropdown'>
+            <MenuItem eventKey={3.1}>Browse All</MenuItem>
+            <MenuItem eventKey={3.2}>My Proposals</MenuItem>
+            <MenuItem divider />
+            <MenuItem eventKey={3.3}>Submit a Proposal</MenuItem>
+          </NavDropdown>
+          <NavItem eventKey={1} href='#'>Blocks</NavItem>
+          <NavItem eventKey={2} href='#'>Calendar</NavItem>
+          <NavDropdown eventKey={3} title='Documents' id='basic-nav-dropdown'>
+            <MenuItem eventKey={3.1}>Public Documents</MenuItem>
+            <MenuItem eventKey={3.2}>License Keyserver</MenuItem>
+            <MenuItem eventKey={3.3}>Request for Proposals</MenuItem>
+          </NavDropdown>
+          {/* <Link to='#'> */}
+            <MenuItem pullRight>
+              NetID
+          </MenuItem>
+          {/* </Link> */}
+        </Nav>
+      </Navbar.Collapse>
     </Navbar>
   )
 }
