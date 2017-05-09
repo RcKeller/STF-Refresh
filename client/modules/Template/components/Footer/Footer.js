@@ -5,7 +5,6 @@ import React from 'react'
 import styles from '../uw.css'
 
 // Import Images
-import bg from '../../header-bk.png'
 
 export function Footer () {
   return (
