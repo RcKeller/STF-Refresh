@@ -1,68 +1,194 @@
-.header {
-  background: #eee url('../../header-bk.png') center;
-  background-size: cover;
-  border-bottom: 1px solid #ccc;
+
+@font-face {
+  font-family: 'Encode Sans Compressed';
+  font-weight: 600;
+  font-style: normal;
 }
 
-.content {
+/* Pulled from our CSS */
+
+.uw-thinstrip {
+  height: 55px;
   width: 100%;
-  max-width: 980px;
-  margin: auto;
-  padding: 64px 16px;
-  overflow: auto;
+  background: #4b2e83;
+  padding-top: 7px;
+  position: relative;
+  z-index: 2;
+  -webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
 }
-
-.site-title {
-  font-weight: 300;
-  font-size: 42px;
-  float: left;
+.uw-thinstrip .container {
+  position: relative;
 }
-
-.site-title a {
-  text-decoration: none;
-  color: #FFF;
+.uw-thinstrip .uw-patch {
+  display: block;
+  text-indent: -9999px;
+  width: 81px;
+  height: 55px;
+  background: url('./assets/svg/uw-sprite-mini.svg') no-repeat 0 -3px transparent;
+  position: absolute;
+  top: -7px;
+  left: 0;
+  z-index: 1;
 }
-
-.add-post-button {
-  display: inline-block;
-  color: #FFF;
-  background: #03A9F4;
-  padding: 8px 16px;
-  text-decoration: none;
-  border-radius: 1000px;
+.uw-thinstrip .uw-wordmark {
+  display: block;
+  position: absolute;
+  top: 11px;
+  left: 97px;
+  text-indent: -9999px;
+  width: 260px;
+  height: 24px;
+  background: url('./assets/svg/uw-sprite-mini.svg') no-repeat 0 -74px transparent;
+}
+.uw-thinstrip ul.uw-thin-links {
+  margin-top: 4px;
+  position: relative;
+  z-index: 1;
+  font-weight: 700;
+  padding: 0;
   float: right;
-}
-
-.language-switcher {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-.language-switcher ul {
   list-style: none;
-  width: 980px;
-  margin: auto;
-  text-align: right;
 }
-
-.language-switcher li {
+.uw-thinstrip ul.uw-thin-links li {
   display: inline-block;
-  margin: 10px;
-  padding: 5px;
-  cursor: pointer;
+}
+.uw-thinstrip ul.uw-thin-links li a {
+  font-family: "Encode Sans Compressed", sans-serif;
   color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  position: relative;
+  float: right;
+  padding: 8px 25px 10px 0;
+  letter-spacing: .01em;
+}
+.uw-thinstrip ul.uw-thin-links li a:after {
+  position: absolute;
+  right: 8px;
+  height: 24px;
+  width: 12px;
+  top: 8px;
+  content: "";
+  background: url('./assets/svg/uw-sprite-mini.svg') no-repeat -696px 0;
+}
+.uw-thinstrip ul.uw-thin-links li a:hover,
+.uw-thinstrip ul.uw-thin-links li a:focus {
+  color: #b7a57a;
+}
+.uw-thinstrip ul.uw-thin-links li:last-child a:after {
+  display: none;
 }
 
-.language-switcher li:first-child {
-  color: rgba(255, 255, 255, 0.7);
-}
+/* Small Devices, Tablets */
+@media only screen and (max-width: 767px) {
 
-.selected {
-  border-bottom: 1px solid #fff;
-}
-
-@media (max-width: 767px){
-  .add-post-button{
-    float: left;
-    margin-top: 16px;
+  .uw-thinstrip {
+    padding: 0;
+    height: 45px;
   }
+  .uw-thinstrip .container {
+    position: static;
+  }
+  .uw-thinstrip .uw-patch {
+    width: 73px;
+    height: 39px;
+    top: 6px;
+    left: -3px;
+    background-size: 630px;
+  }
+  .uw-thinstrip .uw-wordmark {
+    width: 285px;
+    height: 30px;
+    background: url('./assets/svg/uw-sprite-mini.svg') no-repeat 0 -59px rgba(0, 0, 0, 0);
+    margin: 0;
+    float: none;
+    position: absolute;
+    left: 63px;
+    top: 15px;
+    background-size: 697px;
+  }
+  .uw-thinstrip ul.uw-thin-links {
+    height: 50px;
+  }
+  .uw-thinstrip ul.uw-thin-links li {
+    float: none;
+  }
+
+
+}
+@media only screen and (max-width: 767px) {
+  .uw-thinstrip ul.uw-thin-links li {
+    display: none;
+  }
+
+}
+
+/* SOURCED FROM: structure.css */
+/* Not in our normal CSS; custom */
+
+body #uw-container {
+  font-size: 17px;
+  line-height: 1.72222;
+}
+body {
+  margin: 0;
+}
+a {
+  text-decoration: none;
+}
+button {
+  line-height: 29px;
+  cursor: pointer;
+}
+
+
+/* Required bootstrap grid */
+
+
+.visible-xs {
+  display: none !important;
+}
+
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+@media (max-width: 767px) {
+  .visible-xs {
+    display: block !important;
+  }
+  .hidden-xs {
+    display: none !important;
+  }
+}
+@media (min-width: 768px) {
+  .container {
+    width: 750px;
+  }
+}
+@media (min-width: 992px) {
+  .container {
+    width: 970px;
+  }
+}
+@media (min-width: 1200px) {
+  .container {
+    width: 1170px;
+  }
+}
+.row {
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+/* Bootstrap Mixin */
+
+.center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
