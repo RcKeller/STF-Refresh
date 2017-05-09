@@ -4,15 +4,14 @@
 import React from 'react'
 import { Provider } from 'react-redux'
 import { Router, browserHistory } from 'react-router'
+
 // Import Routes
 import routes from './routes'
 
-// Normalize.css
-require('./normalize.css')
 // Base stylesheet
 require('./main.css')
 
-export default function App (props) {
+export default function RootApp (props) {
   return (
     <Provider store={props.store}>
       <Router history={browserHistory}>
@@ -22,6 +21,6 @@ export default function App (props) {
   )
 }
 
-App.propTypes = {
+RootApp.propTypes = {
   store: React.PropTypes.object.isRequired
 }
