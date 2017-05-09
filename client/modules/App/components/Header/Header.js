@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 
 // Import Style
 // import styles from './Header.css'
-import styles from './Header.css'
+import styles from '../uw.css'
 
 export function Header (props, context) {
   return (

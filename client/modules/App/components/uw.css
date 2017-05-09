@@ -43,13 +43,17 @@
   background: url('./uw-sprite-mini.svg') no-repeat 0 -74px transparent;
 }
 .uw-thinstrip ul.uw-thin-links {
-  margin-top: 4px;
+  /*margin: 0px;*/
   position: relative;
   z-index: 1;
   font-weight: 700;
   padding: 0;
   float: right;
   list-style: none;
+}
+footer ul.uw-thin-links {
+  float: none !important;
+  text-align: center !important;
 }
 .uw-thinstrip ul.uw-thin-links li {
   display: inline-block;
@@ -63,6 +67,7 @@
   float: right;
   padding: 8px 25px 10px 0;
   letter-spacing: .01em;
+  line-height: 1.75;
 }
 .uw-thinstrip ul.uw-thin-links li a:after {
   position: absolute;

@@ -9,8 +9,6 @@ import routes from './routes'
 
 // Normalize.css
 require('./normalize.css')
-// UW stylesheet
-// require('./uw.css')
 // Base stylesheet
 require('./main.css')
 
