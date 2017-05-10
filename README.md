@@ -1,6 +1,6 @@
-![STF](https://uwstf.org/img/logo.png)
+# UW Student Tech Fee Committee
+## Project MERN
 
-# mern-starter
 ![title](https://travis-ci.org/rykeller/STF-MERN.svg?branch=v1.0.0)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
