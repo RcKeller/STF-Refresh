@@ -104,7 +104,8 @@ footer ul.uw-thin-links {
     background-size: 630px;
   }
   .uw-thinstrip .uw-wordmark {
-    width: 285px;
+    /*width: 285px;*/
+    width: 200px;
     height: 30px;
     background: url('./uw-sprite-mini.svg') no-repeat 0 -59px rgba(0, 0, 0, 0);
     margin: 0;

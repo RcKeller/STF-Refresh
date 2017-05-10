@@ -2,13 +2,14 @@
  * Root Component
  */
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Provider } from 'react-redux'
 import { Router, browserHistory } from 'react-router'
 // Import Routes
 import routes from './routes'
 
 // Normalize.css
-require('./normalize.css')
+// require('normalize.css')
 // Base stylesheet
 require('./main.css')
 
@@ -23,5 +24,5 @@ export default function App (props) {
 }
 
 App.propTypes = {
-  store: React.PropTypes.object.isRequired
+  store: PropTypes.object.isRequired
 }

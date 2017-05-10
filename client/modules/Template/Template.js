@@ -1,9 +1,12 @@
-import React, { Component, PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+
+import DevTools from '../../DevTools'
 
 // Import Components
 import Helmet from 'react-helmet'
-import DevTools from '../../DevTools'
+import Headroom from 'react-headroom'
 
 import UWHeader from './components/UWHeader/UWHeader'
 import STFHeader from './components/STFHeader/STFHeader'
@@ -20,7 +23,7 @@ const meta = [
   { name: 'viewport', content: 'width=device-width, initial-scale=1' }
 ]
 
-export class Template extends Component {
+export class Template extends React.Component {
   constructor (props) {
     super(props)
     this.state = { mounted: false }
@@ -33,7 +36,9 @@ export class Template extends Component {
         <div>
           <Helmet title='UW Student Tech Fee Commitee' titleTemplate='%s - Student Tech Fee' meta={meta} />
           <UWHeader />
-          <STFHeader />
+          <Headroom pinStart={55} upTolerance={12}>
+            <STFHeader />
+          </Headroom>
           <div className='container'>
             <a className={styles['add-post-button']} href='#' onClick={() => this.props.dispatch(toggleAddPost())}>
               Placeholder: Add a post!

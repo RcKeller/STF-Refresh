@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from 'react'
-// import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
+import React from 'react'
+import PropTypes from 'prop-types'
 
 // Import Style
 import styles from './PostCreateWidget.css'
 
-export class PostCreateWidget extends Component {
+export class PostCreateWidget extends React.Component {
   constructor (props) {
     super(props)
     this.addPost = () => {
@@ -37,7 +37,6 @@ export class PostCreateWidget extends Component {
 PostCreateWidget.propTypes = {
   addPost: PropTypes.func.isRequired,
   showAddPost: PropTypes.bool.isRequired
-  // intl: intlShape.isRequired,
 }
 
 export default PostCreateWidget

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router'
 import { LinkContainer } from 'react-router-bootstrap'
 
@@ -64,7 +65,7 @@ export function STFHeader (props, context) {
   )
 }
 STFHeader.contextTypes = {
-  router: React.PropTypes.object
+  router: PropTypes.object
 }
 
 export default STFHeader

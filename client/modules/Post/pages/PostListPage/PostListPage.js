@@ -1,4 +1,5 @@
-import React, { PropTypes, Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux';
 
 // Import Components
@@ -13,7 +14,7 @@ import { toggleAddPost } from '../../../Template/TemplateActions';
 import { getShowAddPost } from '../../../Template/TemplateReducer';
 import { getPosts } from '../../PostReducer';
 
-class PostListPage extends Component {
+class PostListPage extends React.Component {
   componentDidMount() {
     this.props.dispatch(fetchPosts());
   }
@@ -61,7 +62,7 @@ PostListPage.propTypes = {
 };
 
 PostListPage.contextTypes = {
-  router: React.PropTypes.object,
+  router: PropTypes.object,
 };
 
 export default connect(mapStateToProps)(PostListPage);

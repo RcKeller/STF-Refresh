@@ -147,7 +147,7 @@ app.listen(serverConfig.port, (error) => {
     console.log('\t== MERN APP IS LIVE ==')
     console.log(`\tEnvironment: ${process.env.NODE_ENV}`)
     console.log(`\tMongoDB: ${serverConfig.mongoURL}`)
-    console.log(`\tBack-End: ${API_URL}/api`)
+    console.log(`\tBack-End: ${API_URL}`)
     console.log(`\tClient-Side: ${serverConfig.host}:${serverConfig.port}`)}
     console.log('-'.repeat(60))
 })

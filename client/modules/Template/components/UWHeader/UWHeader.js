@@ -1,4 +1,5 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types'
 
 // Import Style
 import styles from '../uw.css'
@@ -34,7 +35,7 @@ export function UWHeader () {
   )
 }
 UWHeader.contextTypes = {
-  router: React.PropTypes.object
+  router: PropTypes.object
 }
 
 export default UWHeader
