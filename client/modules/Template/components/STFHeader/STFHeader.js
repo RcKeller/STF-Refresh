@@ -18,8 +18,6 @@ export function STFHeader (props, context) {
     <Navbar>
       <Navbar.Header>
         <Link to='/'>
-          {/* <Navbar.Brand className={styles['navbar-image']}> */}
-          {/* <img src={STFLogo} /> */}
           <Navbar.Brand>
             <div className={styles['stf-logo']} />
           </Navbar.Brand>
