@@ -4,8 +4,7 @@
 ![title](https://travis-ci.org/rykeller/STF-MERN.svg?branch=v1.0.0)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-
-MERN is a scaffolding tool which makes it easy to build isomorphic apps using Mongo, Express, React and NodeJS. It minimises the setup time and gets you up to speed using proven technologies.
+MERN is an entirely new version of https://uwstf.org as an isomorphic app using Mongo, Express, React and NodeJS. Built using modern best practices, automated testing and the intent of being run as a containerized, isolated process, this is meant to put an end to the churn in developers, technologies and databases and introduce a code base built-to-last.
 
 - [Website](https://uwstf.org/)
 - [Original Repo](https://github.com/BBKolton/STF)
@@ -48,10 +47,10 @@ source docker-prod.env
 
 ## Technical stack
 
-MERN
-: MongoDB, Express, React and Node.js
+##### **MERN**
+MongoDB, Express, React and Node.js
 
-Application Includes
+#### Application Includes:
 - [x] [React](https://facebook.github.io/react/) - Universal / Isomorphic rendering
   - Server delivers metadata, auth state and raw CSS.
   - Client loads context-sensitive CSS and routes as necessary.
@@ -65,7 +64,7 @@ Application Includes
   - [x] [uwshib](https://github.com/drstearns/passport-uwshib) - Strategy for Shibboleth auth (UW's system)
 - [x] [Node](https://nodejs.org/en/) - The gold standard server of 2017 (besides golang)
 
-Build process includes:
+#### Build process includes:
 - [x] [Webpack](https://webpack.github.io) - Bundler
 - [x] [Babel](https://babeljs.io/) - Transpiling ES6/ES7 future features to ES5 compatible and browser prefixed code
 - [x] [CSS Modules](https://github.com/css-modules/css-modules) - Modular Per-component Stylesheets
