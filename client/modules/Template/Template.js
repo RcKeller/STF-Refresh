@@ -16,40 +16,25 @@ import { toggleAddPost } from './TemplateActions'
 
 const meta = [
   { charset: 'utf-8' },
-  {
-    'http-equiv': 'X-UA-Compatible',
-    content: 'IE=edge'
-  },
-  {
-    name: 'viewport',
-    content: 'width=device-width, initial-scale=1'
-  }
+  { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
+  { name: 'viewport', content: 'width=device-width, initial-scale=1' }
 ]
 
 export class Template extends Component {
   constructor (props) {
     super(props)
-    this.state = { isMounted: false }
+    this.state = { mounted: false }
   }
-
-  componentDidMount () {
-    this.setState({isMounted: true}); // eslint-disable-line
-  }
-
+  componentDidMount () { this.setState({mounted: true}) }
   render () {
     return (
       <div>
-        {this.state.isMounted && !window.devToolsExtension && process.env.NODE_ENV === 'development' && <DevTools />}
+        {this.state.mounted && !window.devToolsExtension && process.env.NODE_ENV === 'development' && <DevTools />}
         <div>
-          <Helmet
-            title='UW Student Tech Fee Commitee'
-            titleTemplate='%s - Student Tech Fee'
-            meta={meta}
-          />
-          {/* <Header toggleAddPost={this.toggleAddPostSection} /> */}
+          <Helmet title='UW Student Tech Fee Commitee' titleTemplate='%s - Student Tech Fee' meta={meta} />
           <UWHeader />
           <STFHeader />
-          <div className={styles.container}>
+          <div className='container'>
             <a className={styles['add-post-button']} href='#' onClick={() => this.props.dispatch(toggleAddPost())}>
               Placeholder: Add a post!
             </a>

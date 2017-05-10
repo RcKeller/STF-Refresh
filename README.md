@@ -1,4 +1,4 @@
-![](https://uwstf.org/img/logo.png)
+![STF](https://uwstf.org/img/logo.png)
 
 # mern-starter
 ![title](https://travis-ci.org/rykeller/STF-MERN.svg?branch=v1.0.0)
