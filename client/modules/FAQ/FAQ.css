@@ -1,0 +1,15 @@
+/* FAQ styles */
+#faq {  
+}
+/*h2 {
+  margin-bottom: 20px;
+}*/
+h4 {
+  margin-top: 24px;
+}
+p {
+  margin-bottom: 20px;
+padding-left: 10px;
+padding-right: 10px;
+text-align: justify;
+}

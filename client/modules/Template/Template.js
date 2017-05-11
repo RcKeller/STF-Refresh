@@ -40,12 +40,12 @@ export class Template extends React.Component {
             <STFHeader />
           </Headroom>
           <div className={styles['container']}>
-            <a className={styles['add-post-button']} href='#' onClick={() => this.props.dispatch(toggleAddPost())}>
-              Placeholder: Add a post!
-            </a>
             {this.props.children}
           </div>
         </div>
+        <a className={styles['add-post-button']} href='#' onClick={() => this.props.dispatch(toggleAddPost())}>
+          Debug Placeholder: Add a post!
+        </a>
         <Footer />
       </div>
     )

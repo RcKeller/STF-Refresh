@@ -1,0 +1,9 @@
+/* FrontPage styles */
+section {
+  background-color: #FAFAFA;
+}
+
+.no-style {
+  list-style-type: none;
+  padding-left: 0px;
+}

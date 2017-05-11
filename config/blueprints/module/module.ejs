@@ -1,11 +1,10 @@
-import React, { Component, PropTypes } from 'react'
+import React from 'react'
+// import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
 
 // Import Style
 import styles from './<%= helpers.capitalize(name) %>.css'
-
-class <%= helpers.capitalize(name) %> extends Component {
+class <%= helpers.capitalize(name) %> extends React.Component {
   render() {
     return (
     )
@@ -15,14 +14,11 @@ class <%= helpers.capitalize(name) %> extends Component {
 const mapStateToProps = (state) => {
   return {}
 }
-
 const mapDispatchToProps = (dispatch) => {
   return {}
 }
-
-<%= helpers.capitalize(name) %>.propTypes = {
-}
-
+// <%= helpers.capitalize(name) %>.propTypes = {
+// }
 export default connect(
   mapStateToProps,
   mapDispatchToProps
