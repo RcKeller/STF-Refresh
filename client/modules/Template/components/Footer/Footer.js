@@ -7,8 +7,7 @@ import styles from '../uw.css'
 
 export function Footer () {
   return (
-    <div id={styles['uw-container']}>
-      <div id={styles['uw-container-inner']}>
+      // <div id={styles['uw-container-inner']}>
         <footer className={styles['uw-thinstrip']}>
           <ul className={styles['uw-thin-links']}>
             <li><Link to='/about/'>About</Link></li>
@@ -17,8 +16,7 @@ export function Footer () {
             <li><a>Student Tech Fee ©</a></li>
           </ul>
         </footer>
-      </div>
-    </div>
+      // </div>
   )
 }
 

@@ -1,4 +1,8 @@
 
+footer {
+  background-color: #444444 !important;
+}
+
 @font-face {
   font-family: 'Encode Sans Compressed';
   font-weight: 600;
