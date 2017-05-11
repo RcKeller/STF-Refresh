@@ -1,5 +1,6 @@
 import React from 'react'
 // import PropTypes from 'prop-types'
+import { Link } from 'react-router'
 
 // Import Style
 import styles from '../uw.css'
@@ -10,9 +11,9 @@ export function Footer () {
       <div id={styles['uw-container-inner']}>
         <footer className={styles['uw-thinstrip']}>
           <ul className={styles['uw-thin-links']}>
-            <li> <a href='https://uwstf.org/about' title='About Us'>About Us</a></li>
-            <li><a href='https://uwstf.org/faq' title='FAQ'>FAQ</a></li>
-            <li><a href='https://uwstf.org/contact' title='Contact Us'>Contact Us</a></li>
+            <li><Link to='/about/'>About</Link></li>
+            <li><Link to='/faq/'>FAQ</Link></li>
+            <li><Link to='/contact/'>Contact</Link></li>
             <li><a>Student Tech Fee ©</a></li>
           </ul>
         </footer>

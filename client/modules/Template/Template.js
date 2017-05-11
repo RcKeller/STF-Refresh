@@ -31,22 +31,22 @@ export class Template extends React.Component {
   componentDidMount () { this.setState({mounted: true}) }
   render () {
     return (
-      <div>
+      <div className={styles['site']}>
         {this.state.mounted && !window.devToolsExtension && process.env.NODE_ENV === 'development' && <DevTools />}
-        <div>
+        <div className={styles['content']}>
           <Helmet title='UW Student Tech Fee Commitee' titleTemplate='%s - Student Tech Fee' meta={meta} />
           <UWHeader />
           <Headroom pinStart={55} upTolerance={12}>
             <STFHeader />
           </Headroom>
-          <div className='container'>
+          <div className={styles['container']}>
             <a className={styles['add-post-button']} href='#' onClick={() => this.props.dispatch(toggleAddPost())}>
               Placeholder: Add a post!
             </a>
             {this.props.children}
           </div>
-          <Footer />
         </div>
+        <Footer />
       </div>
     )
   }

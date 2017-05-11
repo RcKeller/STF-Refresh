@@ -14,6 +14,8 @@ import styles from './STFHeader.css'
 // Import Images
 // import STFLogo from './stf.png'
 
+const LoremIpsumImage = 'https://randomuser.me/api/portraits/med/men/83.jpg'
+
 export function STFHeader (props, context) {
   return (
     <Navbar>
@@ -28,37 +30,44 @@ export function STFHeader (props, context) {
       </Navbar.Header>
       <Navbar.Collapse>
         <Nav>
-          <NavDropdown eventKey={3} title='Proposals' id='basic-nav-dropdown'>
+          <NavDropdown title='Proposals' id='basic-nav-dropdown'>
             <LinkContainer to='/proposals/browse/' >
-              <MenuItem eventKey={3.1}>Browse All</MenuItem>
+              <MenuItem>Browse All</MenuItem>
             </LinkContainer>
             <LinkContainer to='/proposals/edit/' >
-              <MenuItem eventKey={3.2}>My Proposals</MenuItem>
+              <MenuItem>My Proposals</MenuItem>
             </LinkContainer>
             <MenuItem divider />
             <LinkContainer to='/proposals/new/' >
-              <MenuItem eventKey={3.3}>Submit a Proposal</MenuItem>
+              <MenuItem>Submit a Proposal</MenuItem>
             </LinkContainer>
           </NavDropdown>
-          <NavItem eventKey={1} href='#'>Blocks</NavItem>
-          <NavItem eventKey={2} href='#'>Calendar</NavItem>
-          <NavDropdown eventKey={3} title='Documents' id='basic-nav-dropdown'>
+          <LinkContainer to='/blocks/' >
+            <NavItem href='#'>Blocks</NavItem>
+          </LinkContainer>
+          <LinkContainer to='/calendar/' >
+            <NavItem href='#'>Calendar</NavItem>
+          </LinkContainer>
+          <NavDropdown title='Documents' id='basic-nav-dropdown'>
             <LinkContainer to='/documents/' >
-              <MenuItem eventKey={3.1}>Public Documents</MenuItem>
+              <MenuItem >Public Documents</MenuItem>
             </LinkContainer>
-            <MenuItem href='http://itconnect.uw.edu/wares/acquiring-software-and-hardware/keyserver-help-for-it-staff/' eventKey={3.2}>License Keyserver</MenuItem>
+            <MenuItem href='http://itconnect.uw.edu/wares/acquiring-software-and-hardware/keyserver-help-for-it-staff/' >License Keyserver</MenuItem>
             <LinkContainer to='/docs/rfp.pdf' >
-              <MenuItem eventKey={3.3}>Request for Proposals</MenuItem>
+              <MenuItem>Request for Proposals</MenuItem>
             </LinkContainer>
           </NavDropdown>
+        </Nav>
+        <Nav pullRight>
           <NavItem>
-            <Image className={styles['netid-avatar']} src='http://placehold.it/100x100' circle />
+            <Image className={styles['netid-avatar']} src={LoremIpsumImage} circle />
           </NavItem>
           <LinkContainer to='/shib/'>
-            <NavItem pullRight>
-                 NetID
-            </NavItem>
-          </LinkContainer>
+          <NavItem pullRight>
+            NetID
+          </NavItem>
+        </LinkContainer>
+
         </Nav>
       </Navbar.Collapse>
     </Navbar>

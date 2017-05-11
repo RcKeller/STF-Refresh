@@ -8,8 +8,6 @@ import { Router, browserHistory } from 'react-router'
 // Import Routes
 import routes from './routes'
 
-// Normalize.css
-// require('normalize.css')
 // Base stylesheet
 require('./main.css')
 
