@@ -2,6 +2,11 @@ import React from 'react'
 // import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
+import Row from 'react-bootstrap/lib/Row'
+import Col from 'react-bootstrap/lib/Col'
+
+const LoremIpsumImage = 'https://uwstf.org/img/bios/alec.jpg'
+
 // Import Style
 import styles from './About.css'
 class About extends React.Component {
@@ -26,6 +31,25 @@ class About extends React.Component {
         <p>
             The Student Technology Fee is entirely student operated and funded. While department heads can request money, funds must always be allocated to student uses. Any technology funded by the STF Committee is appropriated for students only.
         </p>
+        <div className={styles['members']}>
+          <Row>
+            <div className={styles['member-wrapper']}>
+              <Col xs={12} sm={12} md={12} lg={6}>
+                <Col xs={2} sm={4} md={3} lg={4}>
+                  <img src={LoremIpsumImage} />
+                </Col>
+                <Col xs={10} sm={8} md={9} lg={8}>
+                  <h2>Name</h2>
+                  <span>Subtitle</span>
+                  <p>
+                    Description
+                  </p>
+                </Col>
+
+              </Col>
+            </div>
+          </Row>
+        </div>
       </div>
     )
   }

@@ -1,3 +1,27 @@
 /* About styles */
 #about {
 }
+
+.members {
+	display: flex;
+	flex-wrap: wrap;
+}
+.members img {
+  width: 100%;
+  border-radius: 50%;
+  margin-bottom: 10px
+}
+.member-wrapper {
+	margin-bottom: 40px;
+	margin-top: 20px;
+}
+.member-wrapper h2 {
+	margin-top: 0px;
+	padding-top: 0px;
+}
+span {
+  padding-top: 0px;
+  margin-top: 4px;
+  font-style: italic;
+  color: #555555;
+}
