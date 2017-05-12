@@ -37,7 +37,7 @@ export class Template extends React.Component {
         <div className={styles['content']}>
           <Helmet title='UW Student Tech Fee Commitee' titleTemplate='%s - Student Tech Fee' meta={meta} />
           <UWHeader />
-          <Headroom pinStart={55}>
+          <Headroom pinStart={55} wrapperStyle={{height: 'inherit !important'}}>
             <STFHeader />
           </Headroom>
           {/* <div className={styles['container']}> */}
