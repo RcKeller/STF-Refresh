@@ -12,7 +12,7 @@ import styles from './About.css'
 class About extends React.Component {
   render () {
     return (
-      <div className={styles['about']}>
+      <div id={styles['about']}>
         <h1>
           <p id='simple-first'>
             What is the Student Technology Fee?
@@ -41,11 +41,8 @@ class About extends React.Component {
                 <Col xs={10} sm={8} md={9} lg={8}>
                   <h2>Name</h2>
                   <span>Subtitle</span>
-                  <p>
-                    Description
-                  </p>
+                  <p>Description</p>
                 </Col>
-
               </Col>
             </div>
           </Row>

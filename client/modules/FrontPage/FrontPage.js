@@ -2,26 +2,36 @@ import React from 'react'
 // import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
+import { LinkContainer } from 'react-router-bootstrap'
+
+import Row from 'react-bootstrap/lib/Row'
+import Col from 'react-bootstrap/lib/Col'
+
+import Button from 'react-bootstrap/lib/Button'
 
 // Import Style
 import styles from './FrontPage.css'
 class FrontPage extends React.Component {
   render () {
     return (
-      <div className='row'>
+      <Row>
         <section className='col-sm-9'>
           <h2>Hearing Spring Proposals</h2>
           <p>
             The committee is in the process of hearing Spring proposals. Please wait for an email from techfee@uw.edu detailing your proposal date.
           </p>
-          <div className='row'>
-            <div className='col-sm-6'>
-              <Link to='/docs/Summary%20of%20Changes.pdf'>Summary of Changes</Link>
-            </div>
-            <div className='col-sm-6'>
-              <Link to='/docs/Current%20Request%20for%20Proposals.pdf'>Request for Proposals</Link>
-            </div>
-          </div>
+          <Row>
+            <Col sm={6}>
+              <LinkContainer to='/docs/Summary of Changes.pdf'>
+                <Button bsStyle='primary' bsSize='small'>Summary of Changes</Button>
+              </LinkContainer>
+            </Col>
+            <Col sm={6}>
+              <LinkContainer to='/docs/Current Request for Proposals.pdf'>
+                <Button bsStyle='primary' bsSize='small'>Request for Proposals</Button>
+              </LinkContainer>
+            </Col>
+          </Row>
           <hr />
         </section>
         <section className='col-sm-9'>
@@ -49,9 +59,15 @@ class FrontPage extends React.Component {
           <p>
             The Student Technology Fee and its committee appropriate over $4 million to the students of the University of Washington. Every student enrolled at UW pays a small fee per quarter, which is aggregated and then paid out to supplement the technological requirements of the student body.
           </p>
-          <Link to='/about'>Read More</Link>
+          <Row style={{paddingBottom: 15}}>
+            <Col sm={6}>
+              <LinkContainer to='/about'>
+                <Button bsStyle='primary' bsSize='small'>Read More</Button>
+              </LinkContainer>
+            </Col>
+          </Row>
         </section>
-      </div>
+      </Row>
     )
   }
 }

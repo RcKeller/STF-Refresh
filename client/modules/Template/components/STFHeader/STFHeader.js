@@ -63,7 +63,7 @@ export function STFHeader (props, context) {
             <Image className={styles['netid-avatar']} src={LoremIpsumImage} circle />
           </NavItem>
           <LinkContainer to='/shib/'>
-          <NavItem pullRight>
+          <NavItem>
             NetID
           </NavItem>
         </LinkContainer>

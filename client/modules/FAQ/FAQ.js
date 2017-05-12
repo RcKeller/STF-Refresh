@@ -10,7 +10,7 @@ import styles from './FAQ.css'
 class FAQ extends React.Component {
   render () {
     return (
-      <div className={styles['faq']}>
+      <div id={styles['faq']}>
         <Row>
           <Col xs={12} md={9}>
             <h2>General</h2>

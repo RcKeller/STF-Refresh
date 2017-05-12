@@ -32,19 +32,19 @@ export default (
         cb(null, require('./modules/FrontPage/FrontPage').default)
       })
     }} />
-    <Route path='/faq/' getComponent={(nextState, cb) => {
+    <Route path='/faq' getComponent={(nextState, cb) => {
       require.ensure([], require => {
         cb(null, require('./modules/FAQ/FAQ').default)
       })
     }}
   />
-    <Route path='/about/' getComponent={(nextState, cb) => {
+    <Route path='/about' getComponent={(nextState, cb) => {
       require.ensure([], require => {
         cb(null, require('./modules/About/About').default)
       })
     }}
   />
-    <Route path='/posts/' getComponent={(nextState, cb) => {
+    <Route path='/posts' getComponent={(nextState, cb) => {
       require.ensure([], require => {
         cb(null, require('./modules/Post/pages/PostListPage/PostListPage').default)
       })

@@ -26,7 +26,7 @@ export function UWHeader () {
             </ul>
           </nav>
           <div className={styles['container']}>
-            <a className={styles['uw-patch']} href='http://uw.edu' tabindex='-1' title='University of Washington Home'>Home</a> <a className={styles['uw-wordmark']}
+            <a className={styles['uw-patch']} href='http://uw.edu' title='University of Washington Home'>Home</a> <a className={styles['uw-wordmark']}
               href='http://uw.edu' title='University of Washington Home'>Home</a>
           </div>
         </header>

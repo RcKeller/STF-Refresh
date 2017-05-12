@@ -7,6 +7,7 @@ import DevTools from '../../DevTools'
 // Import Components
 import Helmet from 'react-helmet'
 import Headroom from 'react-headroom'
+import Grid from 'react-bootstrap/lib/Grid'
 
 import UWHeader from './components/UWHeader/UWHeader'
 import STFHeader from './components/STFHeader/STFHeader'
@@ -36,12 +37,14 @@ export class Template extends React.Component {
         <div className={styles['content']}>
           <Helmet title='UW Student Tech Fee Commitee' titleTemplate='%s - Student Tech Fee' meta={meta} />
           <UWHeader />
-          <Headroom pinStart={55} upTolerance={12}>
+          <Headroom pinStart={55}>
             <STFHeader />
           </Headroom>
-          <div className={styles['container']}>
+          {/* <div className={styles['container']}> */}
+          <Grid>
             {this.props.children}
-          </div>
+          </Grid>
+          {/* </div> */}
         </div>
         <a className={styles['add-post-button']} href='#' onClick={() => this.props.dispatch(toggleAddPost())}>
           Debug Placeholder: Add a post!
