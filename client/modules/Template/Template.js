@@ -15,9 +15,6 @@ import Footer from './components/Footer/Footer'
 
 import styles from './Template.css'
 
-// Import Actions
-import { toggleAddPost } from './TemplateActions'
-
 const meta = [
   { charset: 'utf-8' },
   { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
@@ -34,35 +31,32 @@ export class Template extends React.Component {
     return (
       <div className={styles['site']}>
         {this.state.mounted && !window.devToolsExtension && process.env.NODE_ENV === 'development' && <DevTools />}
+        <Helmet meta={meta}
+          title='UW Student Tech Fee Commitee'
+          titleTemplate='%s - Student Tech Fee'
+         />
         <div className={styles['content']}>
-          <Helmet title='UW Student Tech Fee Commitee' titleTemplate='%s - Student Tech Fee' meta={meta} />
           <UWHeader />
           <Headroom pinStart={55} wrapperStyle={{height: 'inherit !important'}}>
             <STFHeader />
           </Headroom>
-          {/* <div className={styles['container']}> */}
-          <Grid>
-            {this.props.children}
-          </Grid>
-          {/* </div> */}
+          <Grid>{this.props.children}</Grid>
         </div>
-        <a className={styles['add-post-button']} href='#' onClick={() => this.props.dispatch(toggleAddPost())}>
-          Debug Placeholder: Add a post!
-        </a>
         <Footer />
       </div>
     )
   }
 }
+/*
+// Import Actions
+import { toggleAddPost } from './TemplateActions'
 
-Template.propTypes = {
-  children: PropTypes.object.isRequired,
-  dispatch: PropTypes.func.isRequired
-}
+<a className={styles['add-post-button']} href='#' onClick={() => this.props.dispatch(toggleAddPost())}>
+  Debug Placeholder: Add a post!
+</a>
+// dispatch: PropTypes.func.isRequired
+*/
 
-// Retrieve data from store as props
-function mapStateToProps (store) {
-  return {}
-}
-
+Template.propTypes = { children: PropTypes.object.isRequired }
+function mapStateToProps (store) { return {} }
 export default connect(mapStateToProps)(Template)

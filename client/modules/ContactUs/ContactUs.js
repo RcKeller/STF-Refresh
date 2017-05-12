@@ -57,14 +57,9 @@ class ContactUs extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {}
-}
-const mapDispatchToProps = (dispatch) => {
-  return {}
-}
-// ContactUs.propTypes = {
-// }
+const mapStateToProps = (state) => { return {} }
+const mapDispatchToProps = (dispatch) => { return {} }
+ContactUs.propTypes = {}
 export default connect(
   mapStateToProps,
   mapDispatchToProps
