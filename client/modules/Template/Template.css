@@ -10,5 +10,5 @@ https://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/*/
 }
 .headroom {
   /* Bust a bug with React-headroom scaling on desktop */
-  height: inherit !important;
+  /*height: inherit !important;*/
 }

@@ -1,5 +1,24 @@
 .jumbotron {
-  background-position: center 40%;
-  background-repeat: no-repeat;
-  background-size: cover;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  width: 100vw;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  margin-bottom: 30px;
+  padding: 30px 15px;
+  background-size: cover !important;
+  background-position: center 40% !important;
+  background-repeat: no-repeat !important;
+}
+
+.jumbotron h1 {
+  font-size: 63px;
+  color: #fff;
+}
+
+@media screen and (min-width: 768px) {
+  .jumbotron {
+    padding: 48px 0;
+  }
 }

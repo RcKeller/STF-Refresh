@@ -18,7 +18,7 @@ const LoremIpsumImage = 'https://randomuser.me/api/portraits/med/men/83.jpg'
 
 export function STFHeader (props, context) {
   return (
-    <Navbar>
+    <Navbar style={{margin: 0}}>
       <Navbar.Header>
         <Link to='/'>
           <Navbar.Brand>

@@ -1,10 +1,7 @@
 import React from 'react'
-// import PropTypes from 'prop-types'
 import { Link } from 'react-router'
 
-// Import Style
 import styles from '../uw.css'
-
 export function Footer () {
   return (
     <footer className={styles['uw-thinstrip']}>

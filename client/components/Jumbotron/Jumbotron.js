@@ -13,6 +13,11 @@ export function Jumbotron (props) {
     </div>
   )
 }
+// backgroundPosition: 'center 40%',
+// backgroundRepeat: 'no-repeat',
+// backgroundSize: 'cover',
+// background: `url(${props.image})`
+// }}>
 
 Jumbotron.propTypes = {
   image: PropTypes.string.isRequired,
