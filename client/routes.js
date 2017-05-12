@@ -19,6 +19,7 @@ if (process.env.NODE_ENV !== 'production') {
   require('./modules/FrontPage/FrontPage')
   require('./modules/FAQ/FAQ')
   require('./modules/About/About')
+  require('./modules/ContactUs/ContactUs')
   require('./modules/Post/pages/PostListPage/PostListPage')
   require('./modules/Post/pages/PostDetailPage/PostDetailPage')
 }
@@ -44,6 +45,12 @@ export default (
       })
     }}
   />
+  <Route path='/contact' getComponent={(nextState, cb) => {
+    require.ensure([], require => {
+      cb(null, require('./modules/ContactUs/ContactUs').default)
+    })
+  }}
+/>
     <Route path='/posts' getComponent={(nextState, cb) => {
       require.ensure([], require => {
         cb(null, require('./modules/Post/pages/PostListPage/PostListPage').default)
