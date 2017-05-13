@@ -1,13 +1,14 @@
 import React from 'react'
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-// Import Style
 import styles from './<%= helpers.capitalize(name) %>.css'
 class <%= helpers.capitalize(name) %> extends React.Component {
   render() {
     return (
-    <div><%= helpers.capitalize(name) %></div>
+      <div>
+        Module for <%= helpers.capitalize(name) %>
+      </div>
     )
   }
 }
@@ -15,7 +16,4 @@ class <%= helpers.capitalize(name) %> extends React.Component {
 const mapStateToProps = (state) => { return {} }
 const mapDispatchToProps = (dispatch) => { return {} }
 // <%= helpers.capitalize(name) %>.propTypes = {}
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(<%= helpers.capitalize(name) %>)
+export default connect(mapStateToProps, mapDispatchToProps)(<%= helpers.capitalize(name) %>)

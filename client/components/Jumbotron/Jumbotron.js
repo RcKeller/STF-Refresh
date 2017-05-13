@@ -1,26 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-// Import Style
 import styles from './Jumbotron.css'
-
-export function Jumbotron (props) {
-  return (
-    <div className={styles['jumbotron']} style={{background: `url(${props.image})`}}>
-      <div className='container'>
-        <h1>{props.title}</h1>
-      </div>
+const Jumbotron = ({image, title}) => (
+  <div className={styles['jumbotron']} style={{background: `url(${image})`}}>
+    <div className='container'>
+      <h1>{title}</h1>
     </div>
-  )
-}
-// backgroundPosition: 'center 40%',
-// backgroundRepeat: 'no-repeat',
-// backgroundSize: 'cover',
-// background: `url(${props.image})`
-// }}>
-
+  </div>
+)
 Jumbotron.propTypes = {
   image: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired
 }
+Jumbotron.defaultProps = {
+  image: 'https://uwstf.org/img/index.jpg',
+  title: 'Student Technology Fee'
+}
+
 export default Jumbotron

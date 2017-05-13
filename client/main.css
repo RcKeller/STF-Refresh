@@ -31,6 +31,14 @@ a {
 	text-decoration: none !important;
 }
 
+body {
+  overflow-x: hidden;
+}
+
+article {
+  margin: 32px 0;
+}
+
 /*
  * Remove text-shadow in selection highlight:
  * https://twitter.com/miketaylr/status/12228805301

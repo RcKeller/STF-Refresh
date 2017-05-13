@@ -1,14 +1,12 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-class <%= helpers.capitalize(name) %> extends React.Component {
-  render() {
-    return (
-    )
-  }
-}
+const <%= helpers.capitalize(name) %> = () => (
+  <div>
+    Dumb Component for <%= helpers.capitalize(name) %>
+  </div>
+)
 
-<%= helpers.capitalize(name) %>.propTypes = {
-}
-
+<%= helpers.capitalize(name) %>.propTypes = {}
+<%= helpers.capitalize(name) %>.defaultProps = {}
 export default <%= helpers.capitalize(name) %>

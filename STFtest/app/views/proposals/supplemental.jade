@@ -1,0 +1,316 @@
+extends ../head
+
+append css
+	link(rel='stylesheet', href='/css/supplemental.css')
+
+append js
+	script(src='/js/supplemental.js')
+
+block content
+	.container
+		.row
+			.col-md-9.col-sm-12
+				.row
+					.col-xs-8.col-sm-9
+						h2 #{supplemental.Title}
+					.col-xs-4.col-sm-3
+						a(href='/proposals/#{proposal.Year}/#{proposal.Number}')
+							button.btn.btn-primary.proposalView View Proposal
+				p.subtitle by #{supplemental.Author}
+				p #{supplemental.Abstract}
+
+			.col-md-3.col-sm-12
+				if isAdmin || isCommitteeMember || editor
+					if isAdmin || isCommitteeMember
+						h3 Voting
+						if supplemental.Status == 0
+							if vote 
+								form
+									select(name='voteDecision' disabled).form-control
+										option(value='1') Approve
+										option(value='0') Deny
+										option(value='2') Abstain
+									button(disabled)#voteButton.btn Submit
+									if vote.Value == 1
+										p You have already voted to approve this supplemental
+									if vote.Value == 0
+										p You have already voted to deny this supplemental
+									if vote.Value == 2
+										p you have already voted to abstain from this supplemental
+							else 
+								form(method='post', action='/api/v1/vote/supplemental/#{supplemental.id}')
+									select(name='voteDecision').form-control
+										option(value='1') Approve
+										option(value='0') Deny
+										option(value='2') Abstain
+									button#voteButton.btn Submit
+						if supplemental.Status == 1
+							p This supplemental has been approved.
+						if supplemental.Status == 2
+							p this supplemental has been denied.
+						p #{votesNo} x Deny
+						p #{votesYes} x Approve
+						p #{votesAb} x Abstain
+					hr
+					if isAdmin || (editor && supplemental.Status == 0)
+						h3 Editor
+						p You have edit access to this supplemental.
+						a(href='/supplemental/#{supplemental.id}/0') Edit Supplemental
+					br
+
+		.row
+			if isPartial
+				+triColumn()
+			else
+				+biColumn()
+
+
+mixin biColumn()
+	table.table
+		thead
+			tr
+				th(colspan='2')
+				th(colspan='3'): h3 Original
+				th(colspan='3'): h3 Supplemental
+					
+			tr
+				th Name
+				th
+				th Cost
+				th Qty
+				th Total
+				th Cost
+				th Qty
+				th Total
+
+		tbody
+
+			- var totalProp = 0
+			- var totalSup = 0
+			- var l = 0 //- row number for descriptions
+			- var n = 0; //- loop number
+
+			while true
+
+				- i = itemsProp[n]
+				- if (i != undefined && i != null)
+					- totalProp += i.Quantity * i.Price
+
+				- j = itemsSup[n]
+				- if (j != undefined && j != null)
+					- totalSup += j.Quantity * j.Price
+
+				if i == null && j == null 
+					- break;
+
+
+				- var last = null;
+				- var precols = 0;
+
+				//- an item row
+				tr 
+					//- does i exist?
+					if i != undefined && i != null 
+						//- i exists, print i
+						+print(null, i, precols, l, true)
+					else
+						- precols += 3
+
+				
+					//- does j exist?
+					if j != undefined && j != null
+						//- j exists, is j the same as i?
+						if (i == undefined || i == null) 
+							+print(i, j, precols, l, true)
+
+						else if (i.ItemName.trim() == j.ItemName.trim() && i.Description.trim() == j.Description.trim() && i.Justification.trim() == j.Justification.trim())
+							+print(i, j, precols, l, false)
+						
+						else
+							td(colspan='3')
+							- precols += 3
+							if i
+								+desc(l, i)
+								-l ++
+							+print(null, j, precols, l, true)
+
+						+desc(l, j)
+						-l++
+
+
+					else
+						td(colspan='3')
+						+desc(l, i)
+						-l++;
+
+
+				- n++;
+
+
+			tr
+				td: b Total 
+				td(colspan='3')
+				td: b
+					+format(totalProp)
+				td #{((totalProp > totalSup) ? '-' : '+')} 
+					+format(Math.abs(totalProp - totalSup))
+				td =
+				td: b
+					+format(totalSup)
+
+
+
+
+mixin triColumn()
+	table.table
+		thead
+			tr
+				th(colspan='2')
+				th(colspan='3'): h3 Original
+				th(colspan='3'): h3 Funded
+				th(colspan='3'): h3 Supplemental
+					
+			tr
+				th Name
+				th
+				th Cost
+				th Qty
+				th Total
+				th Cost
+				th Qty
+				th Total
+				th Cost
+				th Qty
+				th Total
+
+		tbody
+			- var totalProp = 0
+			- var totalPart = 0
+			- var totalSup = 0
+			- var l = 0 //- row number for descriptions
+			- var n = 0; //- loop number
+
+			while true
+
+				- i = itemsProp[n]
+				- if (i != undefined && i != null)
+					- totalProp += i.Quantity * i.Price
+
+				- j = itemsPart[n]
+				- if (j != undefined && j != null)
+					- totalPart += j.Quantity * j.Price
+				
+				- k = itemsSup[n]
+				- if (k != undefined && k != null)
+					- totalSup += k.Quantity * k.Price
+
+				if i == null && j == null && k == null
+					- break;
+
+
+				- var last = null;
+				- var precols = 0;
+
+				//- an item row
+				tr 
+					//- does i exist?
+					if i != undefined && i != null 
+						//- i exists, print i
+						+print(null, i, precols, l, true)
+					else
+						- precols += 3
+					- last = i
+
+		
+					//- does j exist?
+					if j != undefined && j != null
+						//- j exists, is j the same as last?
+						if (last == undefined || last == null) || (last.ItemName.trim() == j.ItemName.trim() && last.Description.trim() == j.Description.trim() && last.Justification.trim() == j.Justification.trim())
+							+print(last, j, precols, l, false)
+						else
+							td(colspan='6')
+							- precols += 3
+							if last
+								+desc(l, last)
+								-l ++
+							+print(null, j, precols, l, true)
+
+						- last = j
+					else
+						- precols += 3
+						td(colspan='3')
+
+
+
+					if k != undefined && k != null
+						if (last == undefined || last == null) || (last.ItemName.trim() == k.ItemName.trim() && last.Description.trim() == j.Description.trim() && last.Justification.trim() == j.Justification.trim())
+							+print(last, k, precols, l, false)
+							+desc(l, k)
+							-l++
+						else
+							td(colspan='3')
+							-precols += 3
+							if last
+								+desc(l, last)
+								-l++
+							+print(null, k, 6, l, true)
+							+desc(l, last)
+							-l++
+
+				- n++;
+
+			tr
+				td: b Total 
+				td(colspan='3')
+				td: b
+					+format(totalProp)
+				td #{((totalProp > totalPart) ? '-' : '+')} 
+					+format(Math.abs(totalProp - totalPart))
+				td =
+				td: b
+					+format(totalPart)
+				td #{((totalPart > totalSup) ? '-' : '+')} 
+					+format(Math.abs(totalPart - totalSup))
+				td =
+				td: b
+					+format(totalSup)
+
+
+
+mixin format(num)
+	| #{'$' + (Math.round(num * 100) / 100).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+
+
+mixin print(y, z, precols, l, named)
+
+	if named
+		td #{z.ItemName}
+
+		td 
+			button(id='buttonShow#{l}').btnShow.btn: span.glyphicon.glyphicon-menu-down
+			button(id='buttonHide#{l}').btnHide.hidden.btn.btn-danger: span.glyphicon.glyphicon-menu-up
+
+	if precols
+		td(colspan='#{precols}')
+
+	if (y != null && y.Price != z.Price) || precols != 0 && y == null
+		td: b: +format(z.Price)
+	else 
+		td: +format(z.Price)
+
+
+	if (y != null && y.Quantity != z.Quantity) || precols != 0 && y == null
+		td: b #{z.Quantity}
+	else
+		td #{z.Quantity}
+
+
+	if (y != null && y.Quantity * y.Price != z.Quantity * z.Price) || precols != 0 && y == null
+		td: b: +format(z.Quantity * z.Price)
+	else
+		td: +format(z.Quantity * z.Price)
+
+
+mixin desc(l, z)
+	tr(id='desc#{l}').hidden
+		td(colspan='11')= z.Description + z.Justification
