@@ -55,28 +55,28 @@ A significant amount of technical debt.
 - [x] Complete basic static views
 
 **Static-Site Demo**
-- [] Prep a new demo domain/AWS instance
-  - [] Get Shibboleth permissions for this domain
-- [] Test a greenfield deployment w/ a site including simple pages and possible a few CRUD ops
+- Prep a new demo domain/AWS instance
+  - Get Shibboleth permissions for this domain
+- Test a greenfield deployment w/ a site including simple pages and possible a few CRUD ops
 
 **Authentication & Documentation**
-- [] Complete authentication system with Passport-SAML 2.0 and uwshib
-- [] Complete documentation once stability is established (in case I win the lottery... just kidding. Seriously, I wouldn't do that)
-  - [] Complete full coverage test suites before proceeding to the next few CRUD-intensive milestones
+- Complete authentication system with Passport-SAML 2.0 and uwshib
+- Complete documentation once stability is established (in case I win the lottery... just kidding. Seriously, I wouldn't do that)
+  - Complete full coverage test suites before proceeding to the next few CRUD-intensive milestones
 
 **CRUD operations**
-- [] Migrate ALL legacy data to a new DB schema w/ normalization.
-- [] Create utils for getting/setting data
-- [] Create authorization middlewares for CRUD operations
+- Migrate ALL legacy data to a new DB schema w/ normalization.
+- Create utils for getting/setting data
+- Create authorization middlewares for CRUD operations
 
 **Full Incorporation**
 (Deadline: Before Au2017)
-- [] Implement proposal creation and browsing
-- [] Implement endorsements and/or proposal linking
-- [] Implement voting and/or metrics
+- Implement proposal creation and browsing
+- Implement endorsements and/or proposal linking
+- Implement voting and/or metrics
 **Future Enhancement**
-- [] Add financial admin tools / quality of life features for the committee
-- [] Create an asset-tracking webapp for in-depth tracking of funding from proposal to device
+- Add financial admin tools / quality of life features for the committee
+- Create an asset-tracking webapp for in-depth tracking of funding from proposal to device
 
 # Available Commands
 
@@ -127,7 +127,7 @@ There are links to the "State of JavaScript", a study from a few months ago on t
 - Code Splitting (Universal React)
 - Optimistic Updates (React)
 - Hot Reloading (Webpack)
-- Time Travel Debugging (Redux devtools)
+- Time Travel Debugging (Redux Devtools)
 - Dead Code Elimination (Webpack)
 
 I've got a manifest of all technologies in use (equivocal to `wtf.txt`) in STACK.md. It has the real "technical" operational notes. Your `package.json` has a less readable manifest, and `yarn.lock` is a running log of all updates and changes for finding which changes are breaking.
