@@ -10,8 +10,6 @@
    Base styles: opinionated defaults
    ========================================================================== */
 
- @import "normalize.css";
-
 * {
 	margin: 0;
 	padding: 0;

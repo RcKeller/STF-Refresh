@@ -10,6 +10,8 @@ import routes from './routes'
 
 // Base stylesheet
 require('./main.css')
+import 'normalize.css' // Note this
+import 'antd/dist/antd.css' // Note this
 
 export default function App (props) {
   return (

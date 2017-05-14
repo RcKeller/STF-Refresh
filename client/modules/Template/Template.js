@@ -13,14 +13,14 @@ import UWHeader from './components/UWHeader/UWHeader'
 import STFHeader from './components/STFHeader/STFHeader'
 import Footer from './components/Footer/Footer'
 
-import styles from './Template.css'
+import { Button } from 'antd'
 
+import styles from './Template.css'
 const meta = [
   { charset: 'utf-8' },
   { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
   { name: 'viewport', content: 'width=device-width, initial-scale=1' }
 ]
-
 export class Template extends React.Component {
   constructor (props) {
     super(props)
@@ -40,6 +40,7 @@ export class Template extends React.Component {
           <Headroom pinStart={55} wrapperStyle={{height: 'inherit !important'}}>
             <STFHeader />
           </Headroom>
+          <Button type='primary'>Primary</Button>
           <Grid>{this.props.children}</Grid>
         </div>
         <Footer />
