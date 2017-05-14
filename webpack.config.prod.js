@@ -45,6 +45,9 @@ module.exports = {
         include: /node_modules/,
         loaders: ['style-loader', 'css-loader'],
       }, {
+        test: /\.less$/,
+        loaders: ["style-loader", {loader: 'css-loader', options: {sourceMap: 1}}, "postcss-loader", "less-loader"]
+      }, {
         test: /\.jsx*$/,
         exclude: /node_modules/,
         loader: 'babel',
