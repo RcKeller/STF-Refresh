@@ -11,6 +11,7 @@ import { Layout, Menu, Icon } from 'antd'
 const { Header, Content, Footer, Sider } = Layout
 // const SubMenu = Menu.SubMenu;
 
+// import Nav from './components/Nav/Nav'
 // import UWHeader from './components/UWHeader/UWHeader'
 // import STFHeader from './components/STFHeader/STFHeader'
 // import Footer from './components/Footer/Footer'
@@ -35,9 +36,6 @@ export class Template extends React.Component {
           title='UW Student Tech Fee Commitee'
           titleTemplate='%s - Student Tech Fee'
              />
-        <Header style={{ position: 'fixed', width: '100%', padding: 0, background: '#FFF' }}>
-          Ant-UI Header
-        </Header>
         <Sider breakpoint='md' collapsedWidth='0' style={{zIndex: 999}}>
           <div className={styles['logo-spotlight']}>
             <div className={styles['logo']}/>
