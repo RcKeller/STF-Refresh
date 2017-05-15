@@ -55,7 +55,7 @@ export class Template extends React.Component {
                   <Menu.Item key='/blocks'>Funding Blocks</Menu.Item>
                 </Menu.ItemGroup>
                 <Menu.ItemGroup key='g2' title='Submit'>
-                  <Menu.Item key='/proposals/splash'>Proposal</Menu.Item>
+                  <Menu.Item key='/proposals/agreement'>Proposal</Menu.Item>
                 </Menu.ItemGroup>
               </Menu.SubMenu>
               <Menu.SubMenu key='sub2' title={<span><Icon type='file' /><span>Documents</span></span>}>

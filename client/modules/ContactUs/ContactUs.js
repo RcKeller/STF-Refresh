@@ -33,7 +33,7 @@ const ContactUs = () => (
     <br />
     <Row gutter={16}>
       <Col xs={24} sm={12} lg={8}>
-        <Card title='Physical Location'>
+        <Card title='Location'>
           <ul className={styles['no-style']}>
             <li>University of Washington</li>
             <li>Husky Union Building, RM 305B</li>
@@ -45,8 +45,10 @@ const ContactUs = () => (
       {leadership.map((p, i) => (
         <Col xs={24} sm={12} lg={8}>
           <Card title={p.position}>
-            <p>{p.name}</p>
-            <Link to={`mailto:${p.email}`}>{p.email}</Link>
+            <ul className={styles['no-style']}>
+              <li>{p.name}</li>
+              <li><Link to={`mailto:${p.email}`}>{p.email}</Link></li>
+            </ul>
           </Card>
         </Col>
       ))}

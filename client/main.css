@@ -37,8 +37,12 @@ article {
 	min-height: calc(100% - 48px);
 	border-radius: 4px;
 	margin: 4px;
-	padding: 12px 8px;
+	/*padding: 12px 8px;*/
+	padding: 8px;
 	background: #FFF;
+}
+article h1:first-child {
+	margin-top: 0;
 }
 section {
 	padding: 24px 16px;
@@ -46,7 +50,8 @@ section {
 @media (min-width: 992px) {
 	article {
 		margin: 24px 48px;
-		padding: 24px 16px;
+		/*padding: 24px 16px;*/
+		padding: 16px;
 	}
 	section {
 		padding: 16px 8px;

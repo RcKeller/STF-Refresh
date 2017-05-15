@@ -1,7 +1,6 @@
 import React from 'react'
 
 import { Collapse } from 'antd'
-const Panel = Collapse.Panel
 
 const generalContent = [
   {
@@ -52,18 +51,16 @@ const FAQ = () => (
     <h1>General Questions</h1>
     <Collapse bordered={false} >
       {generalContent.map((qa, i) => (
-        <Panel header={qa.q} key={i}>
-          <p>{qa.a}</p>
-        </Panel>
+        <Collapse.Panel header={qa.q} key={i}>
+          {qa.a}
+        </Collapse.Panel>
     ))}
     </Collapse>
     <h1>Proposal Authors</h1>
     <Collapse bordered={false} >
       {authorContent.map((qa, i) => (
-        <Panel header={qa.q} key={i}>
-          <p>{qa.a}</p>
-        </Panel>
-    ))}
+        <Collapse.Panel header={qa.q} key={i}>{qa.a}</Collapse.Panel>
+      ))}
     </Collapse>
   </article>
 )
