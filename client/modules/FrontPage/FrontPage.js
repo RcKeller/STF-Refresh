@@ -2,20 +2,7 @@ import React from 'react'
 // import { Link } from 'react-router'
 // import { LinkContainer } from 'react-router-bootstrap'
 
-import { Carousel } from 'antd'
-// import Jumbotron from '../../components/Jumbotron/Jumbotron'
-
-const settings = {
-  className: 'center',
-  centerMode: true,
-  // centerPadding: 'px',
-  dots: true,
-  arrows: true,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 1,
-  slidesToScroll: 1
-}
+import { Row, Col, Card, Alert, Timeline } from 'antd'
 
 const images = [
   'https://photos.smugmug.com/Classroom/i-h6rZ3NP/0/469a2c2c/4K/Campus_August_2016-1576-4K.jpg',
@@ -26,21 +13,42 @@ const images = [
 import styles from './FrontPage.css'
 const FrontPage = () => (
   <article>
-    <Carousel className={styles['carousel']} autoplay>
-      <div>
-        <img src={images[0]} />
-      </div>
-      <div>
-        <img src={images[1]} />
-      </div>
-      <div>
-        <img src={images[2]} />
-      </div>
-      {/* <div><h3>1</h3></div>
-      <div><h3>2</h3></div>
-      <div><h3>3</h3></div>
-      <div><h3>4</h3></div> */}
-    </Carousel>
+    <Row gutter={16}>
+      <Col className='gutter-row' span={24}>
+      About STF
+    </Col>
+    </Row>
+    <Row gutter={16}>
+      <Col className='gutter-row' span={18}>
+        <section>
+          <h1>Announcements</h1>
+        </section>
+        <Row gutter={16}>
+          <Col span={8}>
+            <Card title='Supplemental Reminder'>
+                If you plan on writing a supplemental, make sure to submit it when you are finished ('Submit Supplemental' on the Edit Supplemental page). If you are have any issues or questions, please email us.
+            </Card>
+          </Col>
+          <Col span={8}>
+            <Card title='Upcoming Workshops'>
+              Workshops are a great oppurtunity to meet STF leadership, ask questions in a low-stakes setting, and craft a proposal. We are holding workshops on March 10th, 14th, and 29th. View our calendar for details.
+            </Card>
+          </Col>
+        </Row>
+      </Col>
+      <Col className='gutter-row' span={6}>
+        <Alert type='success'
+          message='Hearing Spring Proposals'
+          description='The committee is in the process of hearing Spring proposals. Please wait for an email from techfee@uw.edu detailing your proposal date.'
+        />
+        <Timeline>
+          <Timeline.Item color='blue'>Process A</Timeline.Item>
+          <Timeline.Item color='blue'>Process B</Timeline.Item>
+          <Timeline.Item color='green'>Hearing Proposals</Timeline.Item>
+          <Timeline.Item color='blue'>Awards Disbursed</Timeline.Item>
+        </Timeline>
+      </Col>
+    </Row>
   </article>
 )
 

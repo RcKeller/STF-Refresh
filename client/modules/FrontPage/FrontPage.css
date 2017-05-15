@@ -1,22 +1,13 @@
 /* FrontPage styles */
-section {
-  background-color: #FAFAFA;
-}
-
 .no-style {
   list-style-type: none;
   padding-left: 0px;
 }
-
 .carousel {
   height: 40vh;
   max-height: 600px;
   /*overflow: hidden;*/
 }
-/*.carousel h1, h2, h3, h4, h5, h6, p {
-  color: blue;
-}*/
-
 .carousel img {
   /*max-width:100%;
   max-height:100%;*/
