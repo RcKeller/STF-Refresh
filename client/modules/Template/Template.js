@@ -13,7 +13,7 @@ const meta = [
 ]
 
 // UI Components
-import { Layout, Menu, Icon } from 'antd'
+import { Layout, Menu, Icon, Alert } from 'antd'
 const { Content, Sider } = Layout
 const SubMenu = Menu.SubMenu
 const MenuItemGroup = Menu.ItemGroup
@@ -80,6 +80,10 @@ export class Template extends React.Component {
                 <Menu.Item key='/calendar'>Schedule</Menu.Item>
                 <Menu.Item key='/posts'>Upcoming Events</Menu.Item>
               </SubMenu>
+              <Alert type='info' banner showIcon
+                message='Meetings'
+                description={<span>Every Monday<br />3:30 - 5:30PM<br />HUB 305</span>}
+              />
             </Menu>
           </Sider>
           <Content>

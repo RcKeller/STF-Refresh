@@ -34,8 +34,19 @@ body {
 }
 
 article {
-  margin: 32px 0;
+	min-height: calc(100% - 48px);
+	margin: 4px;
+	border-radius: 4px;
+	padding: 24px 0 0;
+	background: #FFF;
 }
+
+@media (min-width: 992px) {
+	article {
+		margin: 24px 48px;
+	}
+}
+
 
 /*
  * Remove text-shadow in selection highlight:
