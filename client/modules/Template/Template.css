@@ -21,5 +21,5 @@ https://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/*/
 }
 
 :global .ant-layout-sider-zero-width-trigger {
-  top: 0 !important;
+  top: 8px !important;
 }
