@@ -13,7 +13,7 @@ const meta = [
 ]
 
 // UI Components
-import { Layout, Menu, Icon, Alert } from 'antd'
+import { Layout, Menu, Icon, Alert, BackTop } from 'antd'
 const { Content, Sider } = Layout
 const SubMenu = Menu.SubMenu
 const MenuItemGroup = Menu.ItemGroup
@@ -87,6 +87,7 @@ export class Template extends React.Component {
             </Menu>
           </Sider>
           <Content>
+            <BackTop />
             {this.props.children}
           </Content>
         </Layout>
