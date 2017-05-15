@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 // Import Style
-import styles from '../uw.css'
+import styles from './uw.css'
 
 export function UWHeader () {
   return (
