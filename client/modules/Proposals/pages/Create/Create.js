@@ -1,48 +1,49 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { browserHistory } from 'react-router'
-
-import { Link } from 'react-router'
+// import { browserHistory, Link } from 'react-router'
 
 import { Steps, Icon, Button } from 'antd'
 const Step = Steps.Step
 
-// Introduction
-// -Department Info/metadata
-// -Key contacts
-// Proposal
-// -Abstract
-// -Description
-// Project Plan
-// -Current state
-// -Future State
-// -Insurance, implementation
-// Inventory
-// -
-// Signature Page
-
 const steps = [
   {
     title: 'Introduction',
-    content: 'Introduction'
+    content: 'Introduction',
+    icon: 'team'
   }, {
     title: 'Proposal',
-    content: 'Proposal'
+    content: 'Proposal',
+    icon: 'solution'
   }, {
     title: 'Project Plan',
-    content: 'Project Plan'
+    content: 'Project Plan',
+    icon: 'book'
   }, {
     title: 'Manifest',
-    content: 'Manifest'
+    content: 'Manifest',
+    icon: 'wallet'
   }, {
     title: 'Signatures',
-    content: 'Signatures'
+    content: 'Signatures',
+    icon: 'edit'
   }
 ]
 
 // import styles from './Create.css'
 class Create extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = { current: 0 }
+  }
+  next () {
+    let current = this.state.current + 1
+    this.setState({ current })
+  }
+  prev () {
+    let current = this.state.current - 1
+    this.setState({ current })
+  }
   render () {
     return (
       <article>
@@ -50,23 +51,36 @@ class Create extends React.Component {
         <p>
           The Student Technology Fee Committee was created to ensure the best return on collected student dollars. By proposing to the committee, you agree to follow all requirements, current and future, set by the STFC. Included below are particularly relevant documents, along with brief summary and their full text.
         </p>
-        <Steps>
-          <Step status='finish' icon={<Icon type='team' />}
-            title='Introduction' description='Background Info & Contacts'
-          />
-          <Step status='finish' icon={<Icon type='solution' />}
-            title='Proposal' description='Abstract & Brief Description'
-          />
-          <Step status='process' icon={<Icon type='book' />}
-            title='Project Plan' description='Current & Future State'
-          />
-          <Step status='wait' icon={<Icon type='wallet' />}
-            title='Manifest' description='Assets & Budget Request'
-          />
-          <Step status='wait' icon={<Icon type='smile-o' />}
-            title='Signatures'
-          />
+        <Steps current={this.state.current}>
+          {steps.map((s, i) => (
+            <Step key={i}
+              icon={<Icon type={s.icon} />}
+              title={s.title} description={s.description}
+            />
+          ))}
         </Steps>
+        <div className='steps-content'>
+          {steps[this.state.current].content}
+        </div>
+        <div className='steps-action'>
+          {
+          this.state.current < steps.length - 1
+          &&
+          <Button type='primary' onClick={() => this.next()}>Next</Button>
+        }
+          {
+          this.state.current === steps.length - 1
+          &&
+          <Button type='primary' onClick={() => message.success('Processing complete!')}>Done</Button>
+        }
+          {
+          this.state.current > 0
+          &&
+          <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
+            Previous
+          </Button>
+        }
+        </div>
 
       </article>
     )
