@@ -12,7 +12,8 @@ footer {
 /* Pulled from our CSS */
 
 .uw-thinstrip {
-  height: 55px;
+  /*height: 55px;*/
+  height: 58px;
   width: 100%;
   background: #4b2e83;
   padding-top: 7px;
@@ -95,7 +96,7 @@ footer ul.uw-thin-links {
 
   .uw-thinstrip {
     padding: 0;
-    height: 45px;
+    /*height: 45px;*/
   }
   .uw-thinstrip .container {
     position: static;

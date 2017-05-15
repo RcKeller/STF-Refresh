@@ -38,7 +38,7 @@ export class Template extends React.Component {
         />
         <UWHeader />
         <Layout style={{ height: 'calc(100vh - 58px)' }}>
-          <Sider breakpoint='md' collapsedWidth='0' style={{zIndex: 999, background: '#FFF'}}>
+          <Sider breakpoint='md' width={240} collapsedWidth='0' style={{zIndex: 999, background: '#FFF'}}>
             <div className={styles['logo']} />
             <Menu mode='inline'>
               <Menu.Item key='1'>

@@ -14,8 +14,12 @@ https://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/*/
 }
 
 .logo {
-  height: 48px;
+  height: 64px;
   background: url('./stf.png');
   background-size: cover !important;
   background-repeat: no-repeat !important;
+}
+
+:global .ant-layout-sider-zero-width-trigger {
+  top: 0 !important;
 }
