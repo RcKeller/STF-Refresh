@@ -11,8 +11,8 @@ import routes from './routes'
 // Base stylesheet
 require('./main.css')
 import 'normalize.css' // Note this
-// import 'antd/dist/antd.css' // Note this
-import 'antd/dist/antd.less' // Note this
+// Initialize Ant-UI Styles
+import './ant-ui-theme-uw.less'
 
 export default function App (props) {
   return (

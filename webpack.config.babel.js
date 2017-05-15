@@ -27,7 +27,12 @@ module.exports = {
         loader: 'style-loader!css-loader?localIdentName=' + cssModulesIdentName + '&modules&importLoaders=1&sourceMap!postcss-loader',
       }, {
         test: /\.less$/,
-        loaders: ["style-loader", {loader: 'css-loader', options: {sourceMap: 1}}, "postcss-loader", "less-loader"]
+        loaders: [
+          "style-loader",
+          { loader: 'css-loader', options: {sourceMap: 1} },
+          "postcss-loader",
+          'less-loader'
+        ]
       }, {
         test: /\.jpe?g$|\.gif$|\.png$|\.svg$/i,
         loader: 'url-loader?limit=10000',
