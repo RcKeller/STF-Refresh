@@ -15,14 +15,13 @@ const FrontPage = () => (
   <article>
     <Row gutter={16}>
       <Col className='gutter-row' xs={24}>
-      About STF
+      <h1>About the STF Committee</h1>
+      <p>The STF committee...</p>
     </Col>
     </Row>
     <Row gutter={16}>
       <Col className='gutter-row' xs={24} md={18}>
-        <section>
           <h1>Announcements</h1>
-        </section>
         <Row gutter={16}>
           <Col xs={24} sm={12} xl={8}>
             <Card title='Supplemental Reminder'>

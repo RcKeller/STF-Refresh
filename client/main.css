@@ -18,12 +18,12 @@
 	box-sizing: border-box;
 	/*line-height: normal;*/
 }
-
+/*
 html {
     color: #222;
     font-size: 1em;
     line-height: 1.4;
-}
+}*/
 
 a {
 	text-decoration: none !important;
@@ -51,6 +51,13 @@ section {
 	section {
 		padding: 16px 8px;
 	}
+}
+
+/*h1, h2, h3, h4, h5, h6 {
+  line-height: 1.45;
+}*/
+h1, h2 {
+	margin: 24px 0 16px 0;
 }
 
 /*
