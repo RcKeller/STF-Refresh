@@ -12,7 +12,7 @@ const { Header, Content, Footer, Sider } = Layout
 // const SubMenu = Menu.SubMenu;
 
 // import Nav from './components/Nav/Nav'
-// import UWHeader from './components/UWHeader/UWHeader'
+import UWHeader from './components/UWHeader/UWHeader'
 // import STFHeader from './components/STFHeader/STFHeader'
 // import Footer from './components/Footer/Footer'
 
@@ -35,37 +35,30 @@ export class Template extends React.Component {
         <Helmet meta={meta}
           title='UW Student Tech Fee Commitee'
           titleTemplate='%s - Student Tech Fee'
-             />
-        <Sider breakpoint='md' collapsedWidth='0' style={{zIndex: 999}}>
-          <div className={styles['logo-spotlight']}>
-            <div className={styles['logo']}/>
-          </div>
-          <Menu theme='dark' mode='inline'>
-            <Menu.Item key='1'>
-              <Icon type='solution' />
-              <span className='nav-text'>Proposals</span>
-            </Menu.Item>
-            <Menu.Item key='2'>
-              <Icon type='file' />
-              <span className='nav-text'>Documents</span>
-            </Menu.Item>
-            <Menu.Item key='4'>
-              <Icon type='calendar' />
-              <span className='nav-text'>Calendar</span>
-            </Menu.Item>
-            <Menu.Item key='3'>
-              <Icon type='team' />
-              <span className='nav-text'>About</span>
-            </Menu.Item>
-          </Menu>
-        </Sider>
-        <Layout>
-          <Content style={{marginTop: 64}}>
-            <div>{this.props.children}</div>
+        />
+        <UWHeader />
+        <Layout style={{ height: 'calc(100vh - 58px)' }}>
+          <Sider breakpoint='md' collapsedWidth='0' style={{zIndex: 999, background: '#FFF'}}>
+            <div className={styles['logo']} />
+            <Menu mode='inline'>
+              <Menu.Item key='1'>
+                <Icon type='solution' /><span className='nav-text'>Proposals</span>
+              </Menu.Item>
+              <Menu.Item key='2'>
+                <Icon type='file' /><span className='nav-text'>Documents</span>
+              </Menu.Item>
+              <Menu.Item key='3'>
+                <Icon type='team' /><span className='nav-text'>About</span>
+              </Menu.Item>
+              <Menu.Item key='4'>
+                <Icon type='calendar' /><span className='nav-text'>Calendar</span>
+              </Menu.Item>
+            </Menu>
+          </Sider>
+          <Content>
+            {this.props.children}
+            {/* <Footer style={{ textAlign: 'center' }}>Ant Design ©2016 Created by Ant UED</Footer> */}
           </Content>
-          <Footer style={{ textAlign: 'center' }}>
-            Ant Design ©2016 Created by Ant UED
-          </Footer>
         </Layout>
       </Layout>
     )
