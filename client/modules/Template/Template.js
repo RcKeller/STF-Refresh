@@ -6,14 +6,16 @@ import DevTools from '../../DevTools'
 
 // Import Components
 import Helmet from 'react-helmet'
-import { Layout, Menu, Icon } from 'antd';
-const { Header, Content, Footer, Sider } = Layout;
+
+import { Layout, Menu, Icon } from 'antd'
+const { Header, Content, Footer, Sider } = Layout
+// const SubMenu = Menu.SubMenu;
 
 // import UWHeader from './components/UWHeader/UWHeader'
 // import STFHeader from './components/STFHeader/STFHeader'
 // import Footer from './components/Footer/Footer'
 
-// import styles from './Template.css'
+import styles from './Template.css'
 const meta = [
   { charset: 'utf-8' },
   { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
@@ -33,36 +35,39 @@ export class Template extends React.Component {
           title='UW Student Tech Fee Commitee'
           titleTemplate='%s - Student Tech Fee'
              />
-             <Header theme='light' style={{ position: 'fixed', width: '100%', padding: 0 }}>
-               <div className="logo" />
-             </Header>
-        <Sider breakpoint='md' collapsedWidth='0'>
-          <Menu theme='dark' mode='inline' defaultSelectedKeys={['4']}>
+        <Header style={{ position: 'fixed', width: '100%', padding: 0, background: '#FFF' }}>
+          Ant-UI Header
+        </Header>
+        <Sider breakpoint='md' collapsedWidth='0' style={{zIndex: 999}}>
+          <div className={styles['logo-spotlight']}>
+            <div className={styles['logo']}/>
+          </div>
+          <Menu theme='dark' mode='inline'>
             <Menu.Item key='1'>
-              <Icon type='user' />
-              <span className='nav-text'>nav 1</span>
+              <Icon type='solution' />
+              <span className='nav-text'>Proposals</span>
             </Menu.Item>
             <Menu.Item key='2'>
-              <Icon type='video-camera' />
-              <span className='nav-text'>nav 2</span>
-            </Menu.Item>
-            <Menu.Item key='3'>
-              <Icon type='upload' />
-              <span className='nav-text'>nav 3</span>
+              <Icon type='file' />
+              <span className='nav-text'>Documents</span>
             </Menu.Item>
             <Menu.Item key='4'>
-              <Icon type='user' />
-              <span className='nav-text'>nav 4</span>
+              <Icon type='calendar' />
+              <span className='nav-text'>Calendar</span>
+            </Menu.Item>
+            <Menu.Item key='3'>
+              <Icon type='team' />
+              <span className='nav-text'>About</span>
             </Menu.Item>
           </Menu>
         </Sider>
         <Layout>
-          <Content style={{ margin: '24px 16px 0' }}>
+          <Content style={{marginTop: 64}}>
             <div>{this.props.children}</div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>
-      Ant Design ©2016 Created by Ant UED
-    </Footer>
+            Ant Design ©2016 Created by Ant UED
+          </Footer>
         </Layout>
       </Layout>
     )

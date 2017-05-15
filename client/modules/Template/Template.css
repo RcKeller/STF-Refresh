@@ -12,3 +12,18 @@ https://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/*/
   /* Bust a bug with React-headroom scaling on desktop */
   /*height: inherit !important;*/
 }
+
+.logo-spotlight {
+  height: 48px;
+  background-color: #d9d9d9;
+  border-radius: 6px;
+  margin: 8px;
+}
+
+.logo {
+  height: 100%;
+  background: url('./stf.png');
+  background-size: cover !important;
+  /*background-position: center 40% !important;*/
+  background-repeat: no-repeat !important;
+}
