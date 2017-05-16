@@ -57,7 +57,7 @@ class Agreement extends React.Component {
           The Student Technology Fee Committee was created to ensure the best return on collected student dollars. By proposing to the committee, you agree to follow all requirements, current and future, set by the STFC. Included below are particularly relevant documents, along with brief summary and their full text.
         </p>
         {importantAgreements.map((policy, i) => (
-          <Alert type='error' message={
+          <Alert key={i} type='error' message={
             <a href={policy.link} target='_blank'>
               {policy.title}
             </a>
@@ -66,7 +66,7 @@ class Agreement extends React.Component {
         ))}
         <Row gutter={16}>
           {standardAgreements.map((policy, i) => (
-            <Col className='gutter-row' xs={24} sm={12} md={8} lg={6} xl={4}>
+            <Col key={i} className='gutter-row' xs={24} sm={12} md={8} lg={6} xl={4}>
               <Alert type='warning' message={
                 <a href={policy.link} target='_blank'>
                   {policy.title}
@@ -75,8 +75,10 @@ class Agreement extends React.Component {
             </Col>
           ))}
         </Row>
-        <Button type='primary' onClick={() => browserHistory.push('/proposals/create')}>
-            I Agree<Icon type='right' />
+        <Button size="large" type='primary'
+          onClick={() => browserHistory.push('/proposals/create')}
+        >
+          I Agree<Icon type='right' />
         </Button>
       </article>
     )

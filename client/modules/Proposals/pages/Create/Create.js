@@ -6,26 +6,33 @@ import { connect } from 'react-redux'
 import { Steps, Icon, Button } from 'antd'
 const Step = Steps.Step
 
+import Introduction from './components/Introduction/Introduction'
+import Proposal from './components/Proposal/Proposal'
+import ProjectPlan from './components/ProjectPlan/ProjectPlan'
+import Manifest from './components/Manifest/Manifest'
+import Signatures from './components/Signatures/Signatures'
+
+
 const steps = [
   {
     title: 'Introduction',
-    content: 'Introduction',
+    content: <Introduction />,
     icon: 'team'
   }, {
     title: 'Proposal',
-    content: 'Proposal',
+    content: <Proposal />,
     icon: 'solution'
   }, {
     title: 'Project Plan',
-    content: 'Project Plan',
+    content: <ProjectPlan />,
     icon: 'book'
   }, {
     title: 'Manifest',
-    content: 'Manifest',
+    content: <Manifest />,
     icon: 'wallet'
   }, {
     title: 'Signatures',
-    content: 'Signatures',
+    content: <Signatures />,
     icon: 'edit'
   }
 ]
@@ -61,13 +68,13 @@ class Create extends React.Component {
         </div>
         <div className='steps-action'>
           {this.state.current < steps.length - 1 &&
-            <Button type='primary' onClick={() => this.next()}>Next</Button>
+            <Button size="large" type='primary' onClick={() => this.next()}>Next</Button>
           }
           {this.state.current === steps.length - 1 &&
-            <Button type='primary' onClick={() => console.log('Processing complete!')}>Done</Button>
+            <Button size="large" type='primary' onClick={() => console.log('Processing complete!')}>Done</Button>
           }
           {this.state.current > 0 &&
-            <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>Previous</Button>
+            <Button size="large" style={{ marginLeft: 8 }} onClick={() => this.prev()}>Previous</Button>
           }
         </div>
       </article>
