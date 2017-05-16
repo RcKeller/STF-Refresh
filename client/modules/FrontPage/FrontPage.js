@@ -40,12 +40,14 @@ const FrontPage = () => (
           message='Hearing Spring Proposals'
           description='The committee is in the process of hearing Spring proposals. Please wait for an email from techfee@uw.edu detailing your proposal date.'
         />
-        <Timeline>
-          <Timeline.Item color='blue'>Process A</Timeline.Item>
-          <Timeline.Item color='blue'>Process B</Timeline.Item>
-          <Timeline.Item color='green'>Hearing Proposals</Timeline.Item>
-          <Timeline.Item color='blue'>Awards Disbursed</Timeline.Item>
-        </Timeline>
+        <section>
+          <Timeline>
+            <Timeline.Item color='blue'>Process A</Timeline.Item>
+            <Timeline.Item color='blue'>Process B</Timeline.Item>
+            <Timeline.Item color='green'>Hearing Proposals</Timeline.Item>
+            <Timeline.Item color='blue'>Awards Disbursed</Timeline.Item>
+          </Timeline>
+        </section>
       </Col>
     </Row>
   </article>

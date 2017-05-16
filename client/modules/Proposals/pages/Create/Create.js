@@ -37,12 +37,10 @@ class Create extends React.Component {
     this.state = { current: 0 }
   }
   next () {
-    let current = this.state.current + 1
-    this.setState({ current })
+    this.setState({ current: ++this.state.current })
   }
   prev () {
-    let current = this.state.current - 1
-    this.setState({ current })
+    this.setState({ current: --this.state.current })
   }
   render () {
     return (
@@ -53,9 +51,8 @@ class Create extends React.Component {
         </p>
         <Steps current={this.state.current}>
           {steps.map((s, i) => (
-            <Step key={i}
+            <Step key={i} title={s.title}
               icon={<Icon type={s.icon} />}
-              title={s.title} description={s.description}
             />
           ))}
         </Steps>
@@ -63,25 +60,16 @@ class Create extends React.Component {
           {steps[this.state.current].content}
         </div>
         <div className='steps-action'>
-          {
-          this.state.current < steps.length - 1
-          &&
-          <Button type='primary' onClick={() => this.next()}>Next</Button>
-        }
-          {
-          this.state.current === steps.length - 1
-          &&
-          <Button type='primary' onClick={() => message.success('Processing complete!')}>Done</Button>
-        }
-          {
-          this.state.current > 0
-          &&
-          <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>
-            Previous
-          </Button>
-        }
+          {this.state.current < steps.length - 1 &&
+            <Button type='primary' onClick={() => this.next()}>Next</Button>
+          }
+          {this.state.current === steps.length - 1 &&
+            <Button type='primary' onClick={() => console.log('Processing complete!')}>Done</Button>
+          }
+          {this.state.current > 0 &&
+            <Button style={{ marginLeft: 8 }} onClick={() => this.prev()}>Previous</Button>
+          }
         </div>
-
       </article>
     )
   }
