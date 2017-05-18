@@ -6,10 +6,9 @@ const FormItem = Form.Item
 const Option = Select.Option
 const AutoCompleteOption = AutoComplete.Option
 
-export const Input = ({input, label}) => (
-  <AntInput
-    placeholder={label}
-    value={input.value}
-    onChange={input.onChange}
+export const Input = ({input, label, ...custom}) => (
+  <AntInput size="large" placeholder={label}
+    value={input.value} onChange={input.onChange}
+    {...custom}
   />
 )

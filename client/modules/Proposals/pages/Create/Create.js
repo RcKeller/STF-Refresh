@@ -7,7 +7,7 @@ import { Steps, Icon, Button } from 'antd'
 const Step = Steps.Step
 
 import Introduction from './components/Introduction/Introduction'
-import Proposal from './components/Proposal/Proposal'
+import Overview from './components/Overview/Overview'
 import ProjectPlan from './components/ProjectPlan/ProjectPlan'
 import Manifest from './components/Manifest/Manifest'
 import Signatures from './components/Signatures/Signatures'
@@ -19,8 +19,8 @@ const steps = [
     content: <Introduction />,
     icon: 'team'
   }, {
-    title: 'Proposal',
-    content: <Proposal />,
+    title: 'Overview',
+    content: <Overview />,
     icon: 'solution'
   }, {
     title: 'Project Plan',
