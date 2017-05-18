@@ -52,10 +52,7 @@ class Create extends React.Component {
   render () {
     return (
       <article>
-        <h1>Proposal Create</h1>
-        <p>
-          The Student Technology Fee Committee was created to ensure the best return on collected student dollars. By proposing to the committee, you agree to follow all requirements, current and future, set by the STFC. Included below are particularly relevant documents, along with brief summary and their full text.
-        </p>
+        <h1>Creating Proposal</h1>
         <Steps current={this.state.current}>
           {steps.map((s, i) => (
             <Step key={i} title={s.title}
