@@ -3,28 +3,49 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import {Field, reduxForm} from 'redux-form'
 
-// import { Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete } from 'antd'
-// const FormItem = Form.Item
-// const Option = Select.Option
-// const AutoCompleteOption = AutoComplete.Option
-//
-// const renderInput = ({input, label}) => (
-//   <Input
-//     placeholder={label}
-//     value={input.value}
-//     onChange={input.onChange}
-//   />
-// )
-
 import { Input } from '../../../../../../components/Form/Form'
+// Working on respolving those with webpack aliases, no dice so far.
 
+import { Row, Col } from 'antd'
+
+const contactTypes = [
+  {
+    title: 'Primary Contact',
+    subtitle: 'The primary lead and point-of-contact for this project.',
+    prefix: 'primary'
+  }, {
+    title: 'Student Lead',
+    subtitle: 'We recommend that there be at least one student representing a project, as STF funds are intended for student use.',
+    prefix: 'student'
+  }, {
+    title: 'Organizational Head',
+    subtitle: 'A departmental head or organization president to officiate this proposal.',
+    prefix: 'organization'
+  }, {
+    title: 'Budget Director',
+    subtitle: 'Contact for budgetary concerns and handling transfers of funds.',
+    prefix: 'budget'
+  }
+]
+
+import styles from './Introduction.css'
 const Introduction = props => {
   const {handleSubmit, pristine, reset, submitting} = props
   return (
     <form onSubmit={handleSubmit}>
-      <Field name='name' label='Name'
-        component={Input}
-        />
+      <Row gutter={16}>
+        {contactTypes.map((c, i) => (
+          <Col className='gutter-row' xs={24} sm={12} md={6}>
+            <h2>{c.title}</h2>
+            <p className={styles['role-description']}>{c.subtitle}</p>
+            <Field name={`${c.prefix}Name`} label='Name' component={Input} />
+            <Field name={`${c.prefix}Netid`} label='NetID' component={Input} />
+            <Field name={`${c.prefix}Title`} label='Title' component={Input} />
+            <Field name={`${c.prefix}Phone`} label='Phone' component={Input} />
+            <Field name={`${c.prefix}Mail`} label='Mailbox' component={Input} />
+          </Col>
+        ))}
+      </Row>
     </form>
   )
 }
