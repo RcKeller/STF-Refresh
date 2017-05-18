@@ -1,74 +1,37 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import {Field, reduxForm} from 'redux-form'
 
-import { Form, Icon, Input, Button } from 'antd';
-const FormItem = Form.Item;
+import { Form, Input, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete } from 'antd'
+const FormItem = Form.Item
+const Option = Select.Option
+const AutoCompleteOption = AutoComplete.Option
 
-function hasErrors(fieldsError) {
-  return Object.keys(fieldsError).some(field => fieldsError[field]);
+const renderInput = ({input, label}) => (
+  <Input
+    placeholder={label}
+    value={input.value}
+    onChange={input.onChange}
+  />
+)
+
+const Introduction = props => {
+  const {handleSubmit, pristine, reset, submitting} = props
+  return (
+    <form onSubmit={handleSubmit}>
+      <Field name='name' label='Name'
+        component={renderInput}
+        />
+    </form>
+  )
 }
 
-class IntroductionForm extends React.Component {
-componentDidMount() {
-    // To disabled submit button at the beginning.
-    this.props.form.validateFields();
-  }
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
-      }
-    });
-  }
-  render() {
-    const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
-
-    // Only show error after a field is touched.
-    const userNameError = isFieldTouched('userName') && getFieldError('userName');
-    const passwordError = isFieldTouched('password') && getFieldError('password');
-    return (
-      <Form layout="inline" onSubmit={this.handleSubmit}>
-        <FormItem
-          validateStatus={userNameError ? 'error' : ''}
-          help={userNameError || ''}
-        >
-          {getFieldDecorator('userName', {
-            rules: [{ required: true, message: 'Please input your username!' }],
-          })(
-            <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />} placeholder="Username" />
-          )}
-        </FormItem>
-        <FormItem
-          validateStatus={passwordError ? 'error' : ''}
-          help={passwordError || ''}
-        >
-          {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'Please input your Password!' }],
-          })(
-            <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} type="password" placeholder="Password" />
-          )}
-        </FormItem>
-        <FormItem>
-          <Button
-            type="primary"
-            htmlType="submit"
-            disabled={hasErrors(getFieldsError())}
-          >
-            Log in
-          </Button>
-        </FormItem>
-      </Form>
-    )
-  }
+const validate = values => {
+  const errors = {}
+  return errors
 }
-
-const Introduction = Form.create()(IntroductionForm);
-export default Introduction
-
-
-// const mapStateToProps = (state) => { return {} }
-// const mapDispatchToProps = (dispatch) => { return {} }
-// // Introduction.propTypes = {}
-// export default connect(mapStateToProps, mapDispatchToProps)(Introduction)
+export default reduxForm({
+  form: 'ProposalsCreateIntroduction',
+  validate
+})(Introduction)
