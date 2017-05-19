@@ -55,7 +55,7 @@ const outreach = [
   }
 ]
 
-// import styles from './ProjectPlan.css'
+import styles from './ProjectPlan.css'
 const ProjectPlan = props => {
   const {handleSubmit, pristine, reset, submitting} = props
   return (
@@ -67,8 +67,8 @@ const ProjectPlan = props => {
         </em></p>
         {state.map((e, i) => (
           <Col key={i} className='gutter-row' xs={24} md={12}>
-            <h2>{e.title}</h2>
-            <p><em>
+            <h2 className={styles['subheader']}>{e.title}</h2>
+            <p className={styles['prompt']}><em>
               {e.subtitle}
             </em></p>
             <Field name={`${e.prefix}`} component={Input} type='textarea' rows={6} autosize />
@@ -82,8 +82,8 @@ const ProjectPlan = props => {
         </em></p>
         {availability.map((e, i) => (
           <Col key={i} className='gutter-row' xs={24} md={12}>
-            <h2>{e.title}</h2>
-            <p><em>
+            <h2 className={styles['subheader']}>{e.title}</h2>
+            <p className={styles['prompt']}><em>
               {e.subtitle}
             </em></p>
             <Field name={`${e.prefix}`} component={Input} type='textarea' rows={6} autosize />
@@ -92,12 +92,12 @@ const ProjectPlan = props => {
       </Row>
       <Row gutter={64}>
         <h2>Project Strategy</h2>
-        <p><em>
+        <p className={styles['prompt']}><em>
           How can your organization back this project? What's the overall strategy?
         </em></p>
         {plan.map((e, i) => (
           <Col key={i} className='gutter-row' xs={24} md={12}>
-            <h2>{e.title}</h2>
+            <h2 className={styles['subheader']}>{e.title}</h2>
             <p><em>
               {e.subtitle}
             </em></p>
@@ -112,8 +112,8 @@ const ProjectPlan = props => {
         </em></p>
         {outreach.map((e, i) => (
           <Col key={i} className='gutter-row' xs={24} md={12}>
-            <h2>{e.title}</h2>
-            <p><em>
+            <h2 className={styles['subheader']}>{e.title}</h2>
+            <p className={styles['prompt']}><em>
               {e.subtitle}
             </em></p>
             <Field name={`${e.prefix}`} component={Input} type='textarea' rows={6} autosize />
