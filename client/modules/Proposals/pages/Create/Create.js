@@ -68,7 +68,7 @@ class Create extends React.Component {
             <Button size="large" type='primary' onClick={() => this.next()}>Next</Button>
           }
           {this.state.current === steps.length - 1 &&
-            <Button size="large" type='primary' onClick={() => console.log('Processing complete!')}>Done</Button>
+            <Button size="large" type='primary' onClick={() => console.log('Processing complete!')}>Submit Proposal!</Button>
           }
           {this.state.current > 0 &&
             <Button size="large" style={{ marginLeft: 8 }} onClick={() => this.prev()}>Previous</Button>
