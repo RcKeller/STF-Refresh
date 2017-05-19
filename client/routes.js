@@ -31,51 +31,28 @@ if (process.env.NODE_ENV !== 'production') {
 export default (
   <Route path='/' component={Template}>
     <IndexRoute getComponent={(nextState, cb) => {
-      require.ensure([], require => {
-        cb(null, require('./modules/FrontPage/FrontPage').default)
-      })
+      require.ensure([], require => { cb(null, require('./modules/FrontPage/FrontPage').default) })
     }} />
     <Route path='/faq' getComponent={(nextState, cb) => {
-      require.ensure([], require => {
-        cb(null, require('./modules/FAQ/FAQ').default)
-      })
-    }}
-  />
+      require.ensure([], require => { cb(null, require('./modules/FAQ/FAQ').default) })
+    }} />
     <Route path='/about' getComponent={(nextState, cb) => {
-      require.ensure([], require => {
-        cb(null, require('./modules/About/About').default)
-      })
-    }}
-  />
+      require.ensure([], require => { cb(null, require('./modules/About/About').default) })
+    }} />
     <Route path='/contact' getComponent={(nextState, cb) => {
-      require.ensure([], require => {
-        cb(null, require('./modules/ContactUs/ContactUs').default)
-      })
-    }}
-  />
+      require.ensure([], require => { cb(null, require('./modules/ContactUs/ContactUs').default) })
+    }} />
     <Route path='/proposals/agreement' getComponent={(nextState, cb) => {
-      require.ensure([], require => {
-        cb(null, require('./modules/Proposals/pages/Agreement/Agreement').default)
-      })
-    }}
-/>
+      require.ensure([], require => { cb(null, require('./modules/Proposals/pages/Agreement/Agreement').default) })
+    }} />
     <Route path='/proposals/create' getComponent={(nextState, cb) => {
-      require.ensure([], require => {
-        cb(null, require('./modules/Proposals/pages/Create/Create').default)
-      })
-    }}
-/>
+      require.ensure([], require => { cb(null, require('./modules/Proposals/pages/Create/Create').default) })
+    }} />
     <Route path='/posts' getComponent={(nextState, cb) => {
-      require.ensure([], require => {
-        cb(null, require('./modules/Post/pages/PostListPage/PostListPage').default)
-      })
-    }}
-    />
+      require.ensure([], require => { cb(null, require('./modules/Post/pages/PostListPage/PostListPage').default) })
+    }} />
     <Route path='/posts/:slug-:cuid' getComponent={(nextState, cb) => {
-      require.ensure([], require => {
-        cb(null, require('./modules/Post/pages/PostDetailPage/PostDetailPage').default)
-      })
-    }}
-    />
+      require.ensure([], require => { cb(null, require('./modules/Post/pages/PostDetailPage/PostDetailPage').default) })
+    }} />
   </Route>
 )
