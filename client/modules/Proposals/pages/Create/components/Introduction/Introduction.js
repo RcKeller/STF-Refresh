@@ -37,15 +37,15 @@ const Introduction = props => {
         <Col className='gutter-row' xs={24} sm={12}>
           <h2>Proposal Title</h2>
           <Field name='title' label='Proposal Title'
-            component={Input} prefix={<Icon type="user" />} />
+            component={Input} prefix={<Icon type="edit" />} />
           </Col>
           <Col className='gutter-row' xs={24} sm={12}>
           <h4>Category</h4>
           <Field name='category' label='Category'
-            component={Input} prefix={<Icon type="user" />} />
+            component={Input} prefix={<Icon type="folder" />} />
           <h4>Organization</h4>
           <Field name='organization' label='Organization'
-            component={Input} prefix={<Icon type="user" />} />
+            component={Input} prefix={<Icon type="team" />} />
         </Col>
       </Row>
       <Row gutter={64}>
