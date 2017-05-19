@@ -1,10 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
-// Import Style
 import styles from './uw.css'
-
-export function UWHeader () {
+const UWHeader = () => {
   return (
     <div id={styles['uw-container']}>
       <div id={styles['uw-container-inner']}>
@@ -34,8 +31,4 @@ export function UWHeader () {
     </div>
   )
 }
-UWHeader.contextTypes = {
-  router: PropTypes.object
-}
-
 export default UWHeader

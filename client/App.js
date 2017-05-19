@@ -10,9 +10,9 @@ import routes from './routes'
 
 // Base stylesheet
 require('./main.css')
-import 'normalize.css' // Note this
+import 'normalize.css'
 // Initialize Ant-UI Styles
-import './ant-ui-theme-uw.less'
+import './antd-theme.less'
 
 export default function App (props) {
   return (

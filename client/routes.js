@@ -1,7 +1,7 @@
 /* eslint-disable global-require */
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
-import Template from './modules/Template/Template'
+import Template from 'modules/Template/Template'
 
 // require.ensure polyfill for node
 if (typeof require.ensure !== 'function') {
@@ -16,14 +16,14 @@ if (typeof require.ensure !== 'function') {
  */
 if (process.env.NODE_ENV !== 'production') {
   // Require async routes only in development for react-hot-reloader to work.
-  require('./modules/FrontPage/FrontPage')
-  require('./modules/FAQ/FAQ')
-  require('./modules/About/About')
-  require('./modules/ContactUs/ContactUs')
-  require('./modules/Proposals/pages/Agreement/Agreement')
-  require('./modules/Proposals/pages/Create/Create')
-  require('./modules/Post/pages/PostListPage/PostListPage')
-  require('./modules/Post/pages/PostDetailPage/PostDetailPage')
+  require('modules/FrontPage/FrontPage')
+  require('modules/FAQ/FAQ')
+  require('modules/About/About')
+  require('modules/ContactUs/ContactUs')
+  require('modules/Proposals/pages/Agreement/Agreement')
+  require('modules/Proposals/pages/Create/Create')
+  require('modules/Post/pages/PostListPage/PostListPage')
+  require('modules/Post/pages/PostDetailPage/PostDetailPage')
 }
 
 // react-router setup with code-splitting
@@ -32,48 +32,48 @@ export default (
   <Route path='/' component={Template}>
     <IndexRoute getComponent={(nextState, cb) => {
       require.ensure([], require => {
-        cb(null, require('./modules/FrontPage/FrontPage').default)
+        cb(null, require('modules/FrontPage/FrontPage').default)
       })
     }} />
     <Route path='/faq' getComponent={(nextState, cb) => {
       require.ensure([], require => {
-        cb(null, require('./modules/FAQ/FAQ').default)
+        cb(null, require('modules/FAQ/FAQ').default)
       })
     }}
   />
     <Route path='/about' getComponent={(nextState, cb) => {
       require.ensure([], require => {
-        cb(null, require('./modules/About/About').default)
+        cb(null, require('modules/About/About').default)
       })
     }}
   />
     <Route path='/contact' getComponent={(nextState, cb) => {
       require.ensure([], require => {
-        cb(null, require('./modules/ContactUs/ContactUs').default)
+        cb(null, require('modules/ContactUs/ContactUs').default)
       })
     }}
   />
     <Route path='/proposals/agreement' getComponent={(nextState, cb) => {
       require.ensure([], require => {
-        cb(null, require('./modules/Proposals/pages/Agreement/Agreement').default)
+        cb(null, require('modules/Proposals/pages/Agreement/Agreement').default)
       })
     }}
 />
     <Route path='/proposals/create' getComponent={(nextState, cb) => {
       require.ensure([], require => {
-        cb(null, require('./modules/Proposals/pages/Create/Create').default)
+        cb(null, require('modules/Proposals/pages/Create/Create').default)
       })
     }}
 />
     <Route path='/posts' getComponent={(nextState, cb) => {
       require.ensure([], require => {
-        cb(null, require('./modules/Post/pages/PostListPage/PostListPage').default)
+        cb(null, require('modules/Post/pages/PostListPage/PostListPage').default)
       })
     }}
     />
     <Route path='/posts/:slug-:cuid' getComponent={(nextState, cb) => {
       require.ensure([], require => {
-        cb(null, require('./modules/Post/pages/PostDetailPage/PostDetailPage').default)
+        cb(null, require('modules/Post/pages/PostDetailPage/PostDetailPage').default)
       })
     }}
     />

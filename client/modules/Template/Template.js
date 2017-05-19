@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
 
 // Import Meta Components
-import DevTools from '../../DevTools'
+import DevTools from 'util/DevTools'
 import Helmet from 'react-helmet'
 const meta = [
   { charset: 'utf-8' },
