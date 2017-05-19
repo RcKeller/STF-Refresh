@@ -63,7 +63,7 @@ class Create extends React.Component {
         <div className='steps-content'>
           {steps[this.state.current].content}
         </div>
-        <div className='steps-action'>
+        <section className='steps-action'>
           {this.state.current < steps.length - 1 &&
             <Button size="large" type='primary' onClick={() => this.next()}>Next</Button>
           }
@@ -73,7 +73,7 @@ class Create extends React.Component {
           {this.state.current > 0 &&
             <Button size="large" style={{ marginLeft: 8 }} onClick={() => this.prev()}>Previous</Button>
           }
-        </div>
+        </section>
       </article>
     )
   }

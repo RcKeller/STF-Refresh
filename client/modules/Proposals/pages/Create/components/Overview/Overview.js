@@ -54,7 +54,7 @@ const Overview = props => {
           <Field name='justification' component={Input} type='textarea' rows={4} autosize />
         </Col>
       </Row>
-      <Row gutter={64}>
+      <Row gutter={32}>
         <Col xs={24}>
           <h2>Student Impact</h2>
           <p><em>
