@@ -33,9 +33,24 @@ const Introduction = props => {
   const {handleSubmit, pristine, reset, submitting} = props
   return (
     <form onSubmit={handleSubmit}>
+      <Row gutter={64} type="flex" justify="center" align="top">
+        <Col className='gutter-row' xs={24} sm={12}>
+          <h2>Proposal Title</h2>
+          <Field name='title' label='Proposal Title'
+            component={Input} prefix={<Icon type="user" />} />
+          </Col>
+          <Col className='gutter-row' xs={24} sm={12}>
+          <h4>Category</h4>
+          <Field name='category' label='Category'
+            component={Input} prefix={<Icon type="user" />} />
+          <h4>Organization</h4>
+          <Field name='organization' label='Organization'
+            component={Input} prefix={<Icon type="user" />} />
+        </Col>
+      </Row>
       <Row gutter={64}>
         {contactTypes.map((c, i) => (
-          <Col className='gutter-row' xs={24} sm={12} md={6}>
+          <Col key={i} className='gutter-row' xs={24} sm={12} md={6}>
             <h2>{c.title}</h2>
             <p className={styles['role-description']}>{c.subtitle}</p>
             <Field name={`${c.prefix}Name`} label='Name'

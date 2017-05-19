@@ -60,7 +60,7 @@ class Create extends React.Component {
             />
           ))}
         </Steps>
-        <div className='steps-content'>
+        <div>
           {steps[this.state.current].content}
         </div>
         <section className='steps-action'>

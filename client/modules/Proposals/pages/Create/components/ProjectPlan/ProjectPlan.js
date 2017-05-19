@@ -92,7 +92,7 @@ const ProjectPlan = props => {
       </Row>
       <Row gutter={64}>
         <h2>Project Strategy</h2>
-        <p className={styles['prompt']}><em>
+        <p><em>
           How can your organization back this project? What's the overall strategy?
         </em></p>
         {plan.map((e, i) => (
