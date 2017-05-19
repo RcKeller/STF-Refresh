@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import {Field, reduxForm} from 'redux-form'
 
-import { Row, Col, Button } from 'antd'
+import { Row, Col, Button, Icon } from 'antd'
 
 import { Input } from '../../../../../../components/Form/Form'
 
@@ -12,10 +12,15 @@ class Manifest extends React.Component {
     super(props)
     this.state = { items: [{}] }
     this.add = this.add.bind(this)
+    this.remove = this.remove.bind(this)
   }
   add () {
-    let items = this.state.items.push({})
-    this.setState({ items })
+    let items = this.state.items
+    items.push({}) && this.setState({ items })
+  }
+  remove (i) {
+    let items = this.state.items
+    items.splice(i, 1) && this.setState({ items })
   }
   render () {
     const {handleSubmit, pristine, reset, submitting} = this.props
@@ -42,11 +47,22 @@ class Manifest extends React.Component {
                 <h4>Justification</h4>
                 <Field name={`justification-${i}`} component={Input} type='textarea' size='small' autosize />
               </Col>
-              <hr/>
+              <Col className='gutter-row' xs={24}>
+                <Button size="small" type="dashed" style={{ color: 'crimson' }} onClick={() => this.remove(i)}>
+                  <Icon type="minus" /> Delete
+                </Button>
+              </Col>
             </Row>
             <hr />
           </div>
           ))}
+          <Row>
+            <Col span={24}>
+              <Button type="dashed" onClick={this.add}>
+                <Icon type="plus" /> Add field
+              </Button>
+            </Col>
+          </Row>
       </form>
     )
   }
