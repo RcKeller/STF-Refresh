@@ -1,23 +1,28 @@
 version: '3'
 services:
+
   web:
-    image: rykeller/mern
-    links:
-     - db
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
     ports:
-     - "80:8000"
+      - "8000:8000"
     volumes:
-     - .:/usr/src/app/
+      - .:/usr/src/app/
     environment:
-     NODE_ENV: production
-     MONGO_URL: mongodb://db:27017/mern-starter
+      NODE_ENV: production
+      MONGO_URL: mongodb://db:27017/mern-starter
+    command: npm run bs
+
   db:
     image: mongo:latest
     ports:
-     - "27017:27017"
-    volumes_from:
-      - data
-  data:
-    image: tianon/true
+      - "27017:27017"
     volumes:
-      - /data/db
+     - data:/database
+
+volumes:
+  data:
+    driver: local
