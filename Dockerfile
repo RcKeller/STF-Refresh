@@ -9,3 +9,4 @@ RUN npm install --quiet
 COPY . /usr/src/app
 
 EXPOSE 8000
+EXPOSE 443
