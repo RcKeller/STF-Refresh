@@ -21,9 +21,13 @@ const Item = Menu.Item
 
 import UWHeader from './components/UWHeader/UWHeader'
 
+// ANT UI Theme
+// import '../../theme.less'
+// Global (->main.css) and Template Styles
+import styles from './Template.css'
+// STF Logo
 import STFLogo from './stf.png'
 
-import styles from './Template.css'
 export class Template extends React.Component {
   constructor (props) {
     super(props)
@@ -45,7 +49,7 @@ export class Template extends React.Component {
           titleTemplate='%s - Student Tech Fee'
         />
         <UWHeader />
-        <Layout style={{ height: 'calc(100vh - 58px)' }}>
+        <Layout style={{ minHeight: 'calc(100vh - 58px)' }}>
           <Sider breakpoint='md' width={240} collapsedWidth='0' style={{zIndex: 999, background: '#FFF'}}>
             <div className={styles['logo']} style={{background: `url(${STFLogo})`}} onClick={() => browserHistory.push('/')} />
             <Menu mode='inline'
