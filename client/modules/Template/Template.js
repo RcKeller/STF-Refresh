@@ -18,6 +18,8 @@ const { Content, Sider } = Layout
 
 import UWHeader from './components/UWHeader/UWHeader'
 
+import STFLogo from './stf.png'
+
 import styles from './Template.css'
 export class Template extends React.Component {
   constructor (props) {
@@ -42,7 +44,7 @@ export class Template extends React.Component {
         <UWHeader />
         <Layout style={{ height: 'calc(100vh - 58px)' }}>
           <Sider breakpoint='md' width={240} collapsedWidth='0' style={{zIndex: 999, background: '#FFF'}}>
-            <div className={styles['logo']} onClick={() => browserHistory.push('/')} />
+            <div className={styles['logo']} style={{background: `url(${STFLogo})`}} onClick={() => browserHistory.push('/')} />
             <Menu mode='inline'
               defaultSelectedKeys={['1']}
               selectedKeys={[this.state.selected]}
