@@ -3,6 +3,7 @@ import React from 'react'
 // import { LinkContainer } from 'react-router-bootstrap'
 
 import { Row, Col, Card, Alert, Timeline } from 'antd'
+const Item = Timeline.Item
 
 const images = [
   'https://photos.smugmug.com/Classroom/i-h6rZ3NP/0/469a2c2c/4K/Campus_August_2016-1576-4K.jpg',
@@ -15,13 +16,13 @@ const FrontPage = () => (
   <article>
     <Row gutter={16}>
       <Col className='gutter-row' xs={24}>
-      <h1>About the STF Committee</h1>
-      <p>The STF committee...</p>
-    </Col>
+        <h1>About the STF Committee</h1>
+        <p>The STF committee...</p>
+      </Col>
     </Row>
     <Row gutter={16}>
       <Col className='gutter-row' xs={24} md={18}>
-          <h1>Announcements</h1>
+        <h1>Announcements</h1>
         <Row gutter={16}>
           <Col xs={24} sm={12} xl={8}>
             <Card title='Supplemental Reminder'>
@@ -42,10 +43,10 @@ const FrontPage = () => (
         />
         <section>
           <Timeline>
-            <Timeline.Item color='blue'>Process A</Timeline.Item>
-            <Timeline.Item color='blue'>Process B</Timeline.Item>
-            <Timeline.Item color='green'>Hearing Proposals</Timeline.Item>
-            <Timeline.Item color='blue'>Awards Disbursed</Timeline.Item>
+            <Item color='blue'>Process A</Item>
+            <Item color='blue'>Process B</Item>
+            <Item color='green'>Hearing Proposals</Item>
+            <Item color='blue'>Awards Disbursed</Item>
           </Timeline>
         </section>
       </Col>
