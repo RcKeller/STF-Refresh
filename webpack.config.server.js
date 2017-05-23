@@ -1,3 +1,4 @@
+// Webpack for: Bundling server in production
 var fs = require('fs');
 var path = require('path');
 var ExternalsPlugin = require('webpack-externals-plugin');

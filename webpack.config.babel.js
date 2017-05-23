@@ -1,3 +1,4 @@
+// Webpack for: Server Rendering of Assets through Webpack (babel-plugin-webpack-loaders)
 var cssnext = require('postcss-cssnext');
 var postcssFocus = require('postcss-focus');
 var postcssReporter = require('postcss-reporter');
