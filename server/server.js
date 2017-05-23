@@ -142,7 +142,7 @@ app.use((req, res, next) => {
 app.listen(serverConfig.port, (error) => {
   if (!error) {
     console.log('-'.repeat(60))
-    console.log('\t== MERN APP IS LIVE ==')
+    console.log('\t== UW STF APP IS LIVE ==')
     console.log(`\tEnvironment: ${process.env.NODE_ENV}`)
     console.log(`\tMongoDB: ${serverConfig.mongoURL}`)
     console.log(`\tBack-End: ${API_URL}`)

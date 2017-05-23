@@ -1,20 +1,22 @@
 {
-  "name": "mern-stack",
+  "name": "UW-STF",
   "version": "0.0.2",
-  "description": "Boilerplate project for building Isomorphic apps using React and Redux",
+  "description": "UW STF Website, refreshed with Mongo, Express, React and Nodejs",
   "scripts": {
-    "test": "cross-env NODE_ENV=test PORT=8080 MONGO_URL=mongodb://192.168.99.100:27017/mern-test node_modules/.bin/nyc node_modules/.bin/nyc node_modules/.bin/ava --serial",
+    "start": "cross-env BABEL_DISABLE_CACHE=1 NODE_ENV=development nodemon index.js",
+    "start:prod": "cross-env NODE_ENV=production node index.js",
+    "dockerize-dev": "docker-compose -f docker-compose-development.yml build && docker-compose -f docker-compose-development.yml up",
+    "dockerize-prod": "docker-compose build && docker-compose up",
+    "lint": "eslint client server",
+    "test": "cross-env NODE_ENV=test PORT=8080 MONGO_URL=mongodb://192.168.99.100:27017/uw-test node_modules/.bin/nyc node_modules/.bin/nyc node_modules/.bin/ava --serial",
     "watch:test": "npm run test -- --watch",
     "cover": "nyc npm run test",
     "check-coverage": "nyc check-coverage --statements 100 --branches 100 --functions 100 --lines 100",
-    "start": "cross-env BABEL_DISABLE_CACHE=1 NODE_ENV=development nodemon index.js",
-    "start:prod": "cross-env NODE_ENV=production node index.js",
     "bs": "npm run clean && npm run build && npm run build:server && npm run start:prod",
     "build": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
     "build:server": "cross-env NODE_ENV=production webpack --config webpack.config.server.js",
     "clean": "rimraf dist",
-    "slate": "rimraf node_modules && npm install",
-    "lint": "eslint client server"
+    "slate": "rimraf node_modules && npm install"
   },
   "pre-commit": [
     "test"
