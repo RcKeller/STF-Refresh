@@ -42,6 +42,7 @@ article {
 	/*padding: 12px 8px;*/
 	padding: 8px;
 	background: #FFF;
+	overflow-x: hidden;
 }
 article h1:first-child {
 	margin-top: 0;

@@ -63,8 +63,6 @@ app.use('/api', posts)
 const renderFullPage = (html, initialState) => {
   const head = Helmet.rewind()
 
-  // CDN resource tags.
-  const NormalizeCSS = '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" />'
   // Import Manifests
   const assetsManifest = process.env.webpackAssets && JSON.parse(process.env.webpackAssets)
   const chunkManifest = process.env.webpackChunkAssets && JSON.parse(process.env.webpackChunkAssets)
@@ -76,12 +74,11 @@ const renderFullPage = (html, initialState) => {
         ${head.base.toString()}
         ${head.title.toString()}
         ${head.meta.toString()}
-        ${head.link.toString()}
         ${head.script.toString()}
-
-        ${NormalizeCSS}
+        ${head.link.toString()}
         ${process.env.NODE_ENV === 'production' ? `<link rel='stylesheet' href='${assetsManifest['/app.css']}' />` : ''}
         ${process.env.NODE_ENV === 'production' ? `<link rel='shortcut icon' href='${assetsManifest['/favicon.ico']}' type="image/png" />` : '<link rel="shortcut icon" href="http://res.cloudinary.com/hashnode/image/upload/v1455629445/static_imgs/mern/mern-favicon-circle-fill.png" type="image/png" />'}
+
       </head>
       <body>
         <div id="root">${html}</div>
