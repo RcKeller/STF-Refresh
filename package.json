@@ -34,7 +34,6 @@
     "isomorphic-fetch": "^2.2.1",
     "limax": "^1.3.0",
     "mongoose": "^4.4.20",
-    "normalize.css": "^7.0.0",
     "prop-types": "^15.5.9",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",

@@ -74,8 +74,8 @@ const renderFullPage = (html, initialState) => {
         ${head.base.toString()}
         ${head.title.toString()}
         ${head.meta.toString()}
-        ${head.script.toString()}
         ${head.link.toString()}
+        ${head.script.toString()}
         ${process.env.NODE_ENV === 'production' ? `<link rel='stylesheet' href='${assetsManifest['/app.css']}' />` : ''}
         ${process.env.NODE_ENV === 'production' ? `<link rel='shortcut icon' href='${assetsManifest['/favicon.ico']}' type="image/png" />` : '<link rel="shortcut icon" href="http://res.cloudinary.com/hashnode/image/upload/v1455629445/static_imgs/mern/mern-favicon-circle-fill.png" type="image/png" />'}
 
