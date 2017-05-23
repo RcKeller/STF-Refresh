@@ -4,9 +4,9 @@ import PropTypes from 'prop-types'
 import { Provider } from 'react-redux'
 import { Router, browserHistory } from 'react-router'
 
-require('./normalize.css')
+require('../global-styles/normalize.css')
 // Base stylesheet
-require('./main.css')
+require('../global-styles/main.css')
 // Initialize Ant-UI Styles
 import './theme.less'
 
