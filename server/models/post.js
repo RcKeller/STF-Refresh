@@ -23,7 +23,7 @@ import slug from 'limax'
 import sanitizeHtml from 'sanitize-html'
 
  /* *** Get all posts *** */
-export function getPosts (req, res) {
+const getPosts = (req, res) => {
   Post.find().sort('-dateAdded').exec((err, posts) => {
     if (err) { res.status(500).send(err) }
     res.json({ posts })
@@ -32,7 +32,7 @@ export function getPosts (req, res) {
 
 
  /* *** Get a single post *** */
-export function getPost (req, res) {
+const getPost = (req, res) => {
   Post.findOne({ cuid: req.params.cuid }).exec((err, post) => {
     if (err) { res.status(500).send(err) }
     res.json({ post })
@@ -40,7 +40,7 @@ export function getPost (req, res) {
 }
 
 /* *** Save a post *** */
-export function addPost (req, res) {
+const addPost = (req, res) =>  {
   if (!req.body.post.name || !req.body.post.title || !req.body.post.content) {
     res.status(403).end()
   }
@@ -60,7 +60,7 @@ export function addPost (req, res) {
 }
 
  /* *** Delete a post *** */
-export function deletePost (req, res) {
+const deletePost = (req, res) => {
   Post.findOne({ cuid: req.params.cuid }).exec((err, post) => {
     if (err) { res.status(500).send(err) }
     post.remove(() => {
