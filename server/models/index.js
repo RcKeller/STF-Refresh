@@ -1,0 +1,1 @@
+import { PostRouter } from './post'
