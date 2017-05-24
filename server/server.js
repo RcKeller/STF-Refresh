@@ -13,8 +13,11 @@ import webpackHotMiddleware from 'webpack-hot-middleware'
 // Initialize the Express App
 const app = new Express()
 
+// Check env configuration
+import serverConfig from './config'
+
 // Run Webpack dev server in development mode
-if (process.env.NODE_ENV === 'development') {
+if (serverConfig.env === 'development') {
   const compiler = webpack(config)
   app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }))
   app.use(webpackHotMiddleware(compiler))
@@ -33,10 +36,6 @@ import routes from '../client/routes'
 import { fetchComponentData } from './util/fetchData'
 import posts from './routes/post.routes'
 import dummyData from './dummyData'
-import serverConfig from './config'
-
-// TODO: Is this an okay practice?
-import { API_URL } from '../client/util/apiCaller'
 
 // Set native promises as mongoose promise
 mongoose.Promise = global.Promise
@@ -76,21 +75,21 @@ const renderFullPage = (html, initialState) => {
         ${head.meta.toString()}
         ${head.link.toString()}
         ${head.script.toString()}
-        ${process.env.NODE_ENV === 'production' ? `<link rel='stylesheet' href='${assetsManifest['/app.css']}' />` : ''}
-        ${process.env.NODE_ENV === 'production' ? `<link rel='shortcut icon' href='${assetsManifest['/favicon.ico']}' type="image/png" />` : '<link rel="shortcut icon" href="http://res.cloudinary.com/hashnode/image/upload/v1455629445/static_imgs/mern/mern-favicon-circle-fill.png" type="image/png" />'}
+        ${serverConfig.env === 'production' ? `<link rel='stylesheet' href='${assetsManifest['/app.css']}' />` : ''}
+        ${serverConfig.env === 'production' ? `<link rel='shortcut icon' href='${assetsManifest['/favicon.ico']}' type="image/png" />` : '<link rel="shortcut icon" href="http://res.cloudinary.com/hashnode/image/upload/v1455629445/static_imgs/mern/mern-favicon-circle-fill.png" type="image/png" />'}
 
       </head>
       <body>
         <div id="root">${html}</div>
         <script>
           window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};
-          ${process.env.NODE_ENV === 'production'
+          ${serverConfig.env === 'production'
           ? `//<![CDATA[
           window.webpackManifest = ${JSON.stringify(chunkManifest)};
           //]]>` : ''}
         </script>
-        <script src='${process.env.NODE_ENV === 'production' ? assetsManifest['/vendor.js'] : '/vendor.js'}'></script>
-        <script src='${process.env.NODE_ENV === 'production' ? assetsManifest['/app.js'] : '/app.js'}'></script>
+        <script src='${serverConfig.env === 'production' ? assetsManifest['/vendor.js'] : '/vendor.js'}'></script>
+        <script src='${serverConfig.env === 'production' ? assetsManifest['/app.js'] : '/app.js'}'></script>
       </body>
     </html>
   `
@@ -98,7 +97,7 @@ const renderFullPage = (html, initialState) => {
 
 const renderError = err => {
   const softTab = '&#32;&#32;&#32;&#32;'
-  const errTrace = process.env.NODE_ENV !== 'production'
+  const errTrace = serverConfig.env !== 'production'
   ? `:<br><br><pre style="color:red">${softTab}${err.stack.replace(/\n/g, `<br>${softTab}`)}</pre>` : ''
   return renderFullPage(`Server Error${errTrace}`, {})
 }
@@ -124,7 +123,7 @@ app.use((req, res, next) => {
       .then(() => {
         const initialView = renderToString(
           <Provider store={store}>
-              <RouterContext {...renderProps} />
+            <RouterContext {...renderProps} />
           </Provider>
         )
         const finalState = store.getState()
@@ -143,11 +142,12 @@ app.listen(serverConfig.port, (error) => {
   if (!error) {
     console.log('-'.repeat(60))
     console.log('\t== UW STF APP IS LIVE ==')
-    console.log(`\tEnvironment: ${process.env.NODE_ENV}`)
+    console.log(`\tEnvironment: ${serverConfig.env}`)
     console.log(`\tMongoDB: ${serverConfig.mongoURL}`)
-    console.log(`\tBack-End: ${API_URL}`)
-    console.log(`\tClient-Side: ${serverConfig.host}:${serverConfig.port}`)}
+    console.log(`\tBack-End (API): ${serverConfig.api}`)
+    console.log(`\tClient exposed on port ${serverConfig.port}`)
     console.log('-'.repeat(60))
+  }
 })
 
 export default app
