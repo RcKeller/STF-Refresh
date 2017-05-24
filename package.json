@@ -1,6 +1,6 @@
 {
   "name": "UW-STF",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "UW STF Website, refreshed with Mongo, Express, React and Nodejs",
   "scripts": {
     "start": "cross-env BABEL_DISABLE_CACHE=1 NODE_ENV=development nodemon index.js",

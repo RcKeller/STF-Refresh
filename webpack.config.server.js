@@ -2,7 +2,6 @@
 var fs = require('fs');
 var path = require('path');
 var ExternalsPlugin = require('webpack-externals-plugin');
-// var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
 

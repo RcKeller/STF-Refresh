@@ -1,10 +1,3 @@
-/*.Template {
-  :global {
-    @import "../../normalize.css";
-    @import "../../main.css";
-  }
-}*/
-
 /*This sticky footer brought to you by... Flexbox!
 https://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/*/
 .site {
