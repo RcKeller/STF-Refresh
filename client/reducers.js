@@ -2,13 +2,10 @@
 import { combineReducers } from 'redux'
 import { reducer as form } from 'redux-form';
 
-// Import Reducers
-import template from './modules/Template/TemplateReducer'
-import posts from './modules/Post/PostReducer'
+// import posts from './modules/Post/PostReducer'
 
-// Combine all reducers into one root reducer
+//  Create the rooot reducer.
 export default combineReducers({
-  form,
-  template,
-  posts
+  form, // Redux-Form requirement.
+  // posts
 })

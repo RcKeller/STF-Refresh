@@ -1,10 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
 
 // Import Meta Components
-import DevTools from '../../DevTools'
+import DevTools from '../../util/DevTools'
 import Helmet from 'react-helmet'
 const meta = [
   { charset: 'utf-8' },
@@ -100,5 +99,4 @@ export class Template extends React.Component {
 
 Template.propTypes = { children: PropTypes.object.isRequired }
 Template.contextTypes = { router: React.PropTypes.object }
-function mapStateToProps (store) { return {} }
-export default connect(mapStateToProps)(Template)
+export default Template

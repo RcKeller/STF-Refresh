@@ -39,11 +39,11 @@ module.exports = {
     loaders: [
       {
         test: /\.css$/,
-        exclude: [/node_modules/, /global-styles/],
+        exclude: [/node_modules/, /config/],
         loader: ExtractTextPlugin.extract('style-loader', 'css-loader?localIdentName=[hash:base64]&modules&importLoaders=1!postcss-loader'),
       }, {
         test: /\.css$/,
-        include: [/node_modules/, /global-styles/],
+        include: [/node_modules/, /config/],
         loaders: ['style-loader', 'css-loader'],
       }, {
         test: /\.less$/,

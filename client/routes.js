@@ -22,8 +22,6 @@ if (process.env.NODE_ENV !== 'production') {
   require('./modules/ContactUs/ContactUs')
   require('./modules/Proposals/pages/Agreement/Agreement')
   require('./modules/Proposals/pages/Create/Create')
-  require('./modules/Post/pages/PostListPage/PostListPage')
-  require('./modules/Post/pages/PostDetailPage/PostDetailPage')
 }
 
 // react-router setup with code-splitting
@@ -47,12 +45,6 @@ export default (
     }} />
     <Route path='/proposals/create' getComponent={(nextState, cb) => {
       require.ensure([], require => { cb(null, require('./modules/Proposals/pages/Create/Create').default) })
-    }} />
-    <Route path='/posts' getComponent={(nextState, cb) => {
-      require.ensure([], require => { cb(null, require('./modules/Post/pages/PostListPage/PostListPage').default) })
-    }} />
-    <Route path='/posts/:slug-:cuid' getComponent={(nextState, cb) => {
-      require.ensure([], require => { cb(null, require('./modules/Post/pages/PostDetailPage/PostDetailPage').default) })
     }} />
   </Route>
 )
