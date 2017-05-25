@@ -7,7 +7,7 @@ import { Provider } from 'react-redux'
 import { Router, browserHistory } from 'react-router'
 
 // Import Routes
-import routes from '../routes'
+import routes from '../views/'
 export default function ReduxApp (props) {
   return (
     <Provider store={props.store}>

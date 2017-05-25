@@ -51,7 +51,7 @@ if (serverConfig.env === 'development') {
 CORE ROUTES
 Supplies public assets and parsing middlewares
 ***** */
-import routes from '../client/routes' // Note this! Not the same as API routes.
+import routes from '../client/views/' // Note this! Not the same as API routes.
 console.log('Applying public assets and parsing scheme')
 app.use(compression())
 app.use(bodyParser.json({ limit: '20mb' }))

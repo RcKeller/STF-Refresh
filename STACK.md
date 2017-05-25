@@ -28,7 +28,9 @@
 
 MERN uses Webpack for bundling modules. There are four types of Webpack configs provided `webpack.config.dev.js` (for development), `webpack.config.prod.js` (for production), `webpack.config.server.js` (for bundling server in production) and `webpack.config.babel.js` (for [babel-plugin-webpack-loaders](https://github.com/istarkov/babel-plugin-webpack-loaders) for server rendering of assets included through webpack).
 
-The Webpack configuration is minimal and beginner-friendly. You can customise and add more features to it for production build.
+This version of webpack has issues resolving root folders outside of core/node_modules as either modules or aliases, making it impossible to import components like `'client/component/Form'`. However, upgrading will break the CSS module integration which is battle-tested and stable, given the choice between steady builds or a bit of import spaghetti I chose the former.
+
+I have, however, edited webpack so that the `config/` directory is excluded from CSS module processing. Translation: Git' your global variables there. LESS is unaffected. 
 
 ### Server
 
