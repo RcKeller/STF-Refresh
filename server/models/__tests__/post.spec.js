@@ -1,7 +1,7 @@
 import test from 'ava'
 import request from 'supertest'
 import app from '../../server'
-import Post from '../post'
+import Post from '../Post'
 import { connectDB, dropDB } from '../../util/test-helpers'
 
 // Initial posts added into test db
