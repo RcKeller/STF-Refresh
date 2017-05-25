@@ -22,7 +22,7 @@ if (serverConfig.env === 'development') {
 }
 
 // React And Redux Setup
-import { configureStore } from '../client/store'
+import { configureStore } from '../client/flux/store'
 import { Provider } from 'react-redux'
 import React from 'react'
 import { renderToString } from 'react-dom/server'

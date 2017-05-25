@@ -1,7 +1,9 @@
+/* *****
+CLIENT-SIDE ROUTES
+***** */
 /* eslint-disable global-require */
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
-import Template from './views/Template/Template'
 
 // require.ensure polyfill for node
 if (typeof require.ensure !== 'function') {
@@ -26,6 +28,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 // react-router setup with code-splitting
 // More info: http://blog.mxstbr.com/2016/01/react-apps-with-pages/
+import Template from './views/Template/Template'
 export default (
   <Route path='/' component={Template}>
     <IndexRoute getComponent={(nextState, cb) => {

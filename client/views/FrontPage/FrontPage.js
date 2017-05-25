@@ -1,6 +1,5 @@
 import React from 'react'
 // import { Link } from 'react-router'
-// import { LinkContainer } from 'react-router-bootstrap'
 
 import { Row, Col, Card, Alert, Timeline } from 'antd'
 const Item = Timeline.Item

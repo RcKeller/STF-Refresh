@@ -1,7 +1,7 @@
 /* Main store function */
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
-import DevTools from './util/DevTools'
+import DevTools from '../util/DevTools'
 import rootReducer from './reducers'
 
 export function configureStore (initialState = {}) {
@@ -11,8 +11,8 @@ export function configureStore (initialState = {}) {
   if (process.env.CLIENT && process.env.NODE_ENV === 'development') {
     enhancers.push(window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument())
   }
+  
   const store = createStore(rootReducer, initialState, compose(...enhancers))
-
   // Enable Webpack hot module replacement for reducers
   if (module.hot) {
     module.hot.accept('./reducers', () => {
