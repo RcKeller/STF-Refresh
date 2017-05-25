@@ -4,7 +4,6 @@ var cssnext = require('postcss-cssnext');
 var postcssFocus = require('postcss-focus');
 var postcssReporter = require('postcss-reporter');
 
-
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
 
@@ -31,8 +30,8 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.jsx'],
     modules: [
-      'node_modules',
-      __dirname,
+      'client',
+      'node_modules'
     ],
   },
 

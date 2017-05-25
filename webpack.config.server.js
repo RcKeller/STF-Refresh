@@ -22,8 +22,8 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.jsx'],
     modules: [
-      'node_modules',
-      __dirname,
+      'client',
+      'node_modules'
     ],
   },
 
