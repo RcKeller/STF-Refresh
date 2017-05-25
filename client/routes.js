@@ -1,7 +1,7 @@
 /* eslint-disable global-require */
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
-import Template from 'client/views/Template/Template'
+import Template from './views/Template/Template'
 
 // require.ensure polyfill for node
 if (typeof require.ensure !== 'function') {
@@ -16,12 +16,12 @@ if (typeof require.ensure !== 'function') {
  */
 if (process.env.NODE_ENV !== 'production') {
   // Require async routes only in development for react-hot-reloader to work.
-  require('client/views/FrontPage/FrontPage')
-  require('client/views/FAQ/FAQ')
-  require('client/views/About/About')
-  require('client/views/ContactUs/ContactUs')
-  require('client/views/Proposals/pages/Agreement/Agreement')
-  require('client/views/Proposals/pages/Create/Create')
+  require('./views/FrontPage/FrontPage')
+  require('./views/FAQ/FAQ')
+  require('./views/About/About')
+  require('./views/ContactUs/ContactUs')
+  require('./views/Proposals/pages/Agreement/Agreement')
+  require('./views/Proposals/pages/Create/Create')
 }
 
 // react-router setup with code-splitting
@@ -29,22 +29,22 @@ if (process.env.NODE_ENV !== 'production') {
 export default (
   <Route path='/' component={Template}>
     <IndexRoute getComponent={(nextState, cb) => {
-      require.ensure([], require => { cb(null, require('client/views/FrontPage/FrontPage').default) })
+      require.ensure([], require => { cb(null, require('./views/FrontPage/FrontPage').default) })
     }} />
     <Route path='/faq' getComponent={(nextState, cb) => {
-      require.ensure([], require => { cb(null, require('client/views/FAQ/FAQ').default) })
+      require.ensure([], require => { cb(null, require('./views/FAQ/FAQ').default) })
     }} />
     <Route path='/about' getComponent={(nextState, cb) => {
-      require.ensure([], require => { cb(null, require('client/views/About/About').default) })
+      require.ensure([], require => { cb(null, require('./views/About/About').default) })
     }} />
     <Route path='/contact' getComponent={(nextState, cb) => {
-      require.ensure([], require => { cb(null, require('client/views/ContactUs/ContactUs').default) })
+      require.ensure([], require => { cb(null, require('./views/ContactUs/ContactUs').default) })
     }} />
     <Route path='/proposals/agreement' getComponent={(nextState, cb) => {
-      require.ensure([], require => { cb(null, require('client/views/Proposals/pages/Agreement/Agreement').default) })
+      require.ensure([], require => { cb(null, require('./views/Proposals/pages/Agreement/Agreement').default) })
     }} />
     <Route path='/proposals/create' getComponent={(nextState, cb) => {
-      require.ensure([], require => { cb(null, require('client/views/Proposals/pages/Create/Create').default) })
+      require.ensure([], require => { cb(null, require('./views/Proposals/pages/Create/Create').default) })
     }} />
   </Route>
 )
