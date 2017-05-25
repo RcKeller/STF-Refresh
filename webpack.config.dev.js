@@ -3,7 +3,6 @@ var webpack = require('webpack');
 var cssnext = require('postcss-cssnext');
 var postcssFocus = require('postcss-focus');
 var postcssReporter = require('postcss-reporter');
-var path = require('path');
 
 
 module.exports = {
@@ -32,8 +31,8 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.jsx'],
     modules: [
-      __dirname,
       'node_modules',
+      __dirname,
     ],
   },
 
