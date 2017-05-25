@@ -31,7 +31,7 @@ footer {
   text-indent: -9999px;
   width: 81px;
   height: 55px;
-  background: url('uw-sprite-mini.svg') no-repeat 0 -3px transparent;
+  background: url('client/uw-sprite-mini.svg') no-repeat 0 -3px transparent;
   position: absolute;
   top: -7px;
   left: 0;
@@ -45,7 +45,7 @@ footer {
   text-indent: -9999px;
   width: 260px;
   height: 24px;
-  background: url('uw-sprite-mini.svg') no-repeat 0 -74px transparent;
+  background: url('client/uw-sprite-mini.svg') no-repeat 0 -74px transparent;
 }
 .uw-thinstrip ul.uw-thin-links {
   margin: 0px;
@@ -81,7 +81,7 @@ footer ul.uw-thin-links {
   width: 12px;
   top: 8px;
   content: "";
-  background: url('uw-sprite-mini.svg') no-repeat -696px 0;
+  background: url('client/uw-sprite-mini.svg') no-repeat -696px 0;
 }
 .uw-thinstrip ul.uw-thin-links li a:hover,
 .uw-thinstrip ul.uw-thin-links li a:focus {
@@ -112,7 +112,7 @@ footer ul.uw-thin-links {
     /*width: 285px;*/
     width: 200px;
     height: 30px;
-    background: url('uw-sprite-mini.svg') no-repeat 0 -59px rgba(0, 0, 0, 0);
+    background: url('client/uw-sprite-mini.svg') no-repeat 0 -59px rgba(0, 0, 0, 0);
     margin: 0;
     float: none;
     position: absolute;

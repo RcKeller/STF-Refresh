@@ -4,10 +4,11 @@ import PropTypes from 'prop-types'
 import { Provider } from 'react-redux'
 import { Router, browserHistory } from 'react-router'
 
-require('config/normalize.css')
-require('config/main.css')
-import 'client/theme.less'
-
+// Import global styles, using require() to circumvent CSS module hashing.
+// Note, this only works for the config/* directory.
+require('config/style/normalize.css')
+require('config/style/main.css')
+import 'config/style/ant-theme.less'
 // Import Routes
 import routes from 'client/routes'
 export default function App (props) {
@@ -19,7 +20,4 @@ export default function App (props) {
     </Provider>
   )
 }
-
-App.propTypes = {
-  store: PropTypes.object.isRequired
-}
+App.propTypes = { store: PropTypes.object.isRequired }
