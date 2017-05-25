@@ -35,9 +35,15 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
     modules: [
-      __dirname,
       'node_modules'
     ],
+    alias: {
+      config: path.resolve(__dirname, 'config/'),
+      client: path.resolve(__dirname, 'client/'),
+      "client-util": path.resolve(__dirname, 'client/util'),
+      server: path.resolve(__dirname, 'server/'),
+      "server-util": path.resolve(__dirname, 'server/util'),
+    }
   },
 
   module: {
