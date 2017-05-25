@@ -4,12 +4,12 @@ import PropTypes from 'prop-types'
 import { Provider } from 'react-redux'
 import { Router, browserHistory } from 'react-router'
 
-require('../config/normalize.css')
-require('../config/main.css')
-import './theme.less'
+require('config/normalize.css')
+require('config/main.css')
+import 'client/theme.less'
 
 // Import Routes
-import routes from './routes'
+import routes from 'client/routes'
 export default function App (props) {
   return (
     <Provider store={props.store}>

@@ -3,8 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import {Field, reduxForm} from 'redux-form'
 
-import { Input } from '../../../../../../components/Form/Form'
-// Working on respolving those with webpack aliases, no dice so far.
+import { Input } from 'client/components/Form/Form'
 
 import { Row, Col, Alert, Button, Icon } from 'antd'
 

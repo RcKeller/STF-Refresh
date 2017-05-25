@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { browserHistory } from 'react-router'
 
 // Import Meta Components
-import DevTools from '../../util/DevTools'
+import DevTools from 'client/util/DevTools'
 import Helmet from 'react-helmet'
 const meta = [
   { charset: 'utf-8' },
