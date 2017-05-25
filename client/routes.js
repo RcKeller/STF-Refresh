@@ -20,8 +20,8 @@ if (process.env.NODE_ENV !== 'production') {
   require('./views/FAQ/FAQ')
   require('./views/About/About')
   require('./views/ContactUs/ContactUs')
-  require('./views/Proposals/pages/Agreement/Agreement')
-  require('./views/Proposals/pages/Create/Create')
+  require('./views/Proposals/Agreement/Agreement')
+  require('./views/Proposals/Create/Create')
 }
 
 // react-router setup with code-splitting
@@ -41,10 +41,10 @@ export default (
       require.ensure([], require => { cb(null, require('./views/ContactUs/ContactUs').default) })
     }} />
     <Route path='/proposals/agreement' getComponent={(nextState, cb) => {
-      require.ensure([], require => { cb(null, require('./views/Proposals/pages/Agreement/Agreement').default) })
+      require.ensure([], require => { cb(null, require('./views/Proposals/Agreement/Agreement').default) })
     }} />
     <Route path='/proposals/create' getComponent={(nextState, cb) => {
-      require.ensure([], require => { cb(null, require('./views/Proposals/pages/Create/Create').default) })
+      require.ensure([], require => { cb(null, require('./views/Proposals/Create/Create').default) })
     }} />
   </Route>
 )

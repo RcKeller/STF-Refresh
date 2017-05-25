@@ -8,11 +8,6 @@ var postcssFocus = require('postcss-focus');
 var postcssReporter = require('postcss-reporter');
 var cssnano = require('cssnano');
 
-var path = require('path');
-// function root(__path = '.') {
-//   return path.join(__dirname, '.');
-// }
-
 module.exports = {
   devtool: 'hidden-source-map',
 
@@ -35,15 +30,9 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
     modules: [
+      'client',
       'node_modules'
     ],
-    alias: {
-      config: path.resolve(__dirname, 'config/'),
-      client: path.resolve(__dirname, 'client/'),
-      "client-util": path.resolve(__dirname, 'client/util'),
-      server: path.resolve(__dirname, 'server/'),
-      "server-util": path.resolve(__dirname, 'server/util'),
-    }
   },
 
   module: {

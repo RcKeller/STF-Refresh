@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import {Field, reduxForm} from 'redux-form'
 
-import { Input } from 'client/components/Form/Form'
+import { Input } from '../../../../../components/Form/Form'
 
 import { Row, Col } from 'antd'
 

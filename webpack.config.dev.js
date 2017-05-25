@@ -3,7 +3,6 @@ var webpack = require('webpack');
 var cssnext = require('postcss-cssnext');
 var postcssFocus = require('postcss-focus');
 var postcssReporter = require('postcss-reporter');
-var path = require('path');
 
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
@@ -31,15 +30,9 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
     modules: [
+      'client',
       'node_modules'
     ],
-    alias: {
-      config: path.resolve(__dirname, 'config/'),
-      client: path.resolve(__dirname, 'client/'),
-      "client-util": path.resolve(__dirname, 'client/util'),
-      server: path.resolve(__dirname, 'server/'),
-      "server-util": path.resolve(__dirname, 'server/util'),
-    }
   },
 
   module: {

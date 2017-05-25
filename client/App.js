@@ -6,11 +6,11 @@ import { Router, browserHistory } from 'react-router'
 
 // Import global styles, using require() to circumvent CSS module hashing.
 // Note, this only works for the config/* directory.
-require('config/style/normalize.css')
-require('config/style/main.css')
-import 'config/style/ant-theme.less'
+require('../config/style/normalize.css')
+require('../config/style/main.css')
+import '../config/style/ant-theme.less'
 // Import Routes
-import routes from 'client/routes'
+import routes from './routes'
 export default function App (props) {
   return (
     <Provider store={props.store}>

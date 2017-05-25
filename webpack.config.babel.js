@@ -2,7 +2,6 @@
 var cssnext = require('postcss-cssnext');
 var postcssFocus = require('postcss-focus');
 var postcssReporter = require('postcss-reporter');
-var path = require('path');
 
 var cssModulesIdentName = '[name]__[local]__[hash:base64:5]';
 if (process.env.NODE_ENV === 'production') {
@@ -14,19 +13,15 @@ module.exports = {
     publicPath: '/',
     libraryTarget: 'commonjs2',
   },
+
   resolve: {
     extensions: ['.js', '.jsx'],
     modules: [
+      'client',
       'node_modules'
     ],
-    alias: {
-      config: path.resolve(__dirname, 'config/'),
-      client: path.resolve(__dirname, 'client/'),
-      "client-util": path.resolve(__dirname, 'client/util'),
-      server: path.resolve(__dirname, 'server/'),
-      "server-util": path.resolve(__dirname, 'server/util'),
-    }
   },
+
   module: {
     loaders: [
       {
