@@ -50,9 +50,38 @@ A significant amount of technical debt.
   - [x] Test stability
 - [x] Develop test suites, build tools and generators
   - [x] Inject Devtools for development environments
+  - Inherited most from MERN-starter
 - [x] Enable routing with code splitting (load what you need)
+  - [-] Add Tree Shaking - failed (Webpack issues, too unstable)
 - [x] Scaffold the initial view, state management and data flow
+- [x] Incorporate UI Kit
+  - Chose Ant Design due to company backing / maintenance, typescript codebase for intellisense, and compatibility with branding.
 - [x] Complete basic static views
+
+**Architecture**
+- [x] Incorporate idiomatic React (component-container structure)
+  - Reject poor modern practices that have negligible benefits, increase code complexity, etc (e.g. JSS, styled-components, redux-saga).
+    - Really, the above are senseless and just increase spaghetti in the code base. I'm not an Italian chef. 2 years from now, I have to hand off this project to someone that actually knows the web, not a developer obsessed with decoupling everything and a case of `dispatch(crazy)`.
+- [x] Factor out configuration information and environment variables
+  - [x] Add sensible defaults.
+- [x] Refactor MVC into MVVM
+  - Technically fake MVVM (model controls are a necessity w/ MERN systems) but logic is coupled.
+- [x] Refactor & abstract out Flux Architecture / Redux implementation
+  - Too complex to be coupled with server/render logic, and is set-and-forget.
+  - Server has been entirely refactored too.
+- [x] Internal docs on code splitting and isomorphism
+
+**Orchestration / Continuous Integration**
+- [x] Include Automated Testing
+  - Not enough time to add all tests right now, need to get MVP up faster, it's moreso for the next dev.
+- [x] Containerize Node App (Docker)
+  - [x] Optimize container build time
+- [x] Containerize standalone datastore
+  - Is a docker volume, not sure what prod usage will look like going forward though.
+- [x] Create linked, networked containers with Docker-Compose
+  - [x] Use V3 syntax (future proofing)
+- [-] Incorporate with a cloud provider
+  - AWS if possible (because public institution budgets).
 
 **Static-Site Demo**
 - Prep a new demo domain/AWS instance
@@ -78,33 +107,22 @@ A significant amount of technical debt.
 - Add financial admin tools / quality of life features for the committee
 - Create an asset-tracking webapp for in-depth tracking of funding from proposal to device
 
-# Available Commands
+# Quickstart
+There are many environments you may use, depending on if you want to containerize or not. I recommend running local, dev, than production. Local is an included option due to webpack's build complexity and how it takes forever to bundle this.
 
-**Quickstart**
-```
-  # Bash script to configure your env
-  source dev.env
-  # package.json runs all necessary node builds
-  npm install
-  npm start
-```
-
-**Docker Composition**
-```
-# Dev Environment
-source docker-dev.env
-# Production
-source docker-prod.env
-```
-
-1. `npm run start` - starts the development server with hot reloading enabled
-2. `npm run bs` - bundles the code and starts the production server
-3. `npm run test` - start the test runner
-4. `npm run watch:test` - start the test runner with watch mode
-5. `npm run cover` - generates test coverage report
-6. `npm run lint` - runs linter to check for lint errors
+1. `source local.env` - Local node instance, mongo container (preferred dev environment, fast and light)
+2. `npm run start` - starts the development server with hot reloading enabled, no containers
+3. `npm run bs` - bundles the code and starts the production server
+4. `npm run dockerize-dev` - Dockerizes the app in development mode.
+5. `npm run dockerize-prod` - Dockerizes the app for production.
+6. `npm run test` - start the test runner
+7. `npm run watch:test` - start the test runner with watch mode
+8. `npm run cover` - generates test coverage report
+9. `npm run lint` - runs linter to check for lint errors
 
 **An active MongoDB session on 27017:27017 (default) is required.** Additionally, `npm3` may be a soft dependency, but I've upgraded the current version to run off the `-proxy` option with no issues.
+
+If using docker machine, please be advised it uses its own assigned IP and intranet, not your localhost:. You can get that ip with `docker-machine ip`.
 
 # Technical Stack
 
@@ -128,7 +146,6 @@ There are links to the "State of JavaScript", a study from a few months ago on t
 - Optimistic Updates (React)
 - Hot Reloading (Webpack)
 - Time Travel Debugging (Redux Devtools)
-- Dead Code Elimination (Webpack)
 
 I've got a manifest of all technologies in use (equivocal to `wtf.txt`) in STACK.md. It has the real "technical" operational notes. Your `package.json` has a less readable manifest, and `yarn.lock` is a running log of all updates and changes for finding which changes are breaking.
 

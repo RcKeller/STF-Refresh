@@ -1,15 +1,18 @@
 
-#### Application Includes:
+#### Stack Includes:
 - [React](https://facebook.github.io/react/) - Universal / Isomorphic rendering
   - Server delivers metadata, auth state and raw CSS.
   - Client loads context-sensitive CSS and routes as necessary.
   - This is an SPA (Single Page Application) at heart - Resources are heavily compressed, sent to the client, and unpacked as necessary - making the entire experience seamless, snappy, and easy to manage state-wise. Unlike most SPA's though, data is lazy loaded so it's not all frontloaded.
+    - See `views/index.js` for details - we use `require(callback)` to make code split.
 - [Redux](https://github.com/reactjs/redux) - State management that abstracts out all state/behavior into single, self-contained and immutable entities.
-- [Redux-auth](https://github.com/lynndylanhurley/redux-auth) - Track auth state
+  - [Redux-Thunk](https://github.com/gaearon/redux-thunk) for async actions. It's lightweight and no-nonsense, just use functions like normal. This is for continuity in the position (and sagas are opinionated and dispatch heavy)
 - [Redux DevTools](https://github.com/gaearon/redux-devtools) - Time-travel debugging, all state and behavior logged.
 - [MongoDB](https://www.mongodb.com/) for a NOSql database
   - [Mongoose](https://github.com/Automattic/mongoose) - DB object modeling
   - I personally don't care about the DB too much, but stylistically prefer NOSql types. This may be switched out.
+- [Redux-auth](https://github.com/lynndylanhurley/redux-auth) - Track auth state
+  - Not added yet.
 - [Passport-SAML](https://github.com/bergie/passport-saml) Authentication tool using SAML 2.0
   - [uwshib](https://github.com/drstearns/passport-uwshib) - Strategy for Shibboleth auth (UW's system)
   - These are both essentially required for auth and the only [documented solutions](https://github.com/drstearns/passport-uwshib/blob/master/example/server.js) for UW.
@@ -22,7 +25,39 @@
 - [AVA](https://webpack.github.io) - Test suite, runs pre-commit
 
 
-## File Structure
+## Project Structure
+
+```
+| - config
+  | - blueprints
+  | - styles  // Global styles and themes for UI kits and semantic tags e.g. <article />.
+| - client
+  | - index.js // Entry point. Loads store, styles, enables reloading.
+  | - flux  // Contains Redux and Isomorphic logic
+  | - components  // Top level, shared components
+  | - views
+    | - Page
+      | - components  //  Unique sub-components, usually to map over.
+        | - PageItem.js
+      | - Page.js
+      | - PageActions.js
+      | - PageReducer.js
+      | - Page.css  // CSS module scoped to this component.
+      | - __tests__ // all the tests for this module goes here
+          | - components // Sub components of this module
+              | - PageItem.spec.js
+          | - Page.spec.js
+          | - PageReducer.spec.js
+          | - PageActions.spec.js
+| - server
+  | - server.js
+  | - flux
+    | - isomorphicRender.js // Provies initial state and blundle <link/>s.
+  | - models
+    | - Model.js  // Contains DB model, methods, and their respective API routes.
+
+```
+
 
 ### Webpack Configs
 
@@ -30,7 +65,7 @@ MERN uses Webpack for bundling modules. There are four types of Webpack configs 
 
 This version of webpack has issues resolving root folders outside of core/node_modules as either modules or aliases, making it impossible to import components like `'client/component/Form'`. However, upgrading will break the CSS module integration which is battle-tested and stable, given the choice between steady builds or a bit of import spaghetti I chose the former.
 
-I have, however, edited webpack so that the `config/` directory is excluded from CSS module processing. Translation: Git' your global variables there. LESS is unaffected. 
+I have, however, edited webpack so that the `config/` directory is excluded from CSS module processing. Translation: Git' your global variables there. LESS is unaffected.
 
 ### Server
 
@@ -42,49 +77,7 @@ If NODE_ENV is development, we apply Webpack middlewares for bundling and Hot Mo
 
 We use React Router's match function for handling all page requests so that browser history works.
 
-All the routes are defined in `client/routes.js`. React Router renders components according to route requested.
-
-```js
-// Server Side Rendering based on routes matched by React-router.
-app.use((req, res) => {
-    match({
-        routes,
-        location: req.url
-    }, (err, redirectLocation, renderProps) => {
-        if (err) {
-            return res.status(500).end('Internal server error');
-        }
-
-        if (!renderProps) {
-            return res.status(404).end('Not found!');
-        }
-
-        const initialState = {
-            posts: [],
-            post: {}
-        };
-
-        const store = configureStore(initialState);
-
-        fetchComponentData(store.dispatch, renderProps.components, renderProps.params).then(() => {
-            const initialView = renderToString(
-                <Provider store = {store} >
-                  <RouterContext {...renderProps}/>
-                </Provider>
-            );
-
-            const finalState = store.getState();
-
-            res.status(200).end(renderFullPage(initialView, finalState));
-        }).catch(() => {
-            res.end(renderFullPage('Error', {}));
-        });
-    });
-});
-```
-
-`match` takes two parameters, first is an object that contains routes, location and history and second is a callback function which is called when routes have been matched to a location.
-
+All the routes are defined in `client/routes.js`. React Router renders components according to route requested. `match` takes two parameters, first is an object that contains routes, location and history and second is a callback function which is called when routes have been matched to a location.
 If there's an error in matching we return 500 status code, if no matches are found we return 404 status code. If a match is found then, we need to create a new Redux Store instance.
 
 **Note:** A new Redux Store has populated afresh on every request.
@@ -136,24 +129,6 @@ Modules are the way of organising different domain-specific modules in the proje
 
 ### Importing Assets
 Assets can be kept where you want and can be imported into your js files or css files. Those fill be served by webpack in development mode and copied to the dist folder during production.
-
-### ES6 support
-We use babel to transpile code in both server and client with `stage-0` plugin. So, you can use both ES6 and experimental ES7 features.
-
-### Docker
-There are docker configurations for both development and production.
-
-To run docker for development,
-```
-docker-compose -f docker-compose-development.yml build
-docker-compose -f docker-compose-development.yml up
-```
-
-To run docker for production,
-```
-docker-compose build
-docker-compose up
-```
 
 ### Modifying MERN-CLI Generators
 
