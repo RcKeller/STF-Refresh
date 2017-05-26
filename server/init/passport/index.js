@@ -3,7 +3,6 @@ import passport from 'passport';
 import local from './local';
 import google from './google';
 import { passport as dbPassport } from '../../db';
-import unsupportedMessage from '../../db/unsupportedMessage';
 
 export default () => {
   // Configure Passport authenticated session persistence.
@@ -21,7 +20,7 @@ export default () => {
 
     passport.deserializeUser(dbPassport.deserializeUser);
   } else {
-    console.warn(unsupportedMessage('(de)serialize User'));
+    console.warn('Error: MongoDB failed to (de)serialize User');
   }
 
   // use the following strategies

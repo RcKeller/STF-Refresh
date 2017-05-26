@@ -5,7 +5,7 @@ import { passport as dbPassport } from '../../db';
 
 export default (passport) => {
   if (!dbPassport || !dbPassport.google || !typeof dbPassport.google === 'function') {
-    console.warn(unsupportedMessage('passport-google-oauth'));
+    console.warn('Error: MongoDB unable to initialize passport-google-oauth');
     return;
   }
 

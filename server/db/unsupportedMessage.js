@@ -1,4 +1,2 @@
-import { DB_TYPE } from '../../config/env';
-
 export default featureName =>
-  `Attempted to use '${featureName}' but DB type '${DB_TYPE}' doesn't support it`;
+  `Attempted to use '${featureName}' but MongoDB doesn't support it`;

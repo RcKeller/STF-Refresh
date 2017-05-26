@@ -2,7 +2,6 @@
  * Routes for express app
  */
 import passport from 'passport';
-import unsupportedMessage from '../db/unsupportedMessage';
 import { controllers, passport as passportConfig } from '../db';
 
 const usersController = controllers && controllers.users;
@@ -15,7 +14,7 @@ export default (app) => {
     app.post('/users', usersController.signUp);
     app.delete('/sessions', usersController.logout);
   } else {
-    console.warn(unsupportedMessage('users routes'));
+    console.warn('Error: DB unable to handle user routes.');
   }
 
   if (passportConfig && passportConfig.google) {
@@ -50,6 +49,6 @@ export default (app) => {
     app.put('/topic/:id', topicsController.update);
     app.delete('/topic/:id', topicsController.remove);
   } else {
-    console.warn(unsupportedMessage('topics routes'));
+    console.warn('Error: DB unable to handle topics routes');
   }
 };
