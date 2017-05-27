@@ -8,7 +8,7 @@ import methodOverride from 'method-override';
 import gzip from 'compression';
 import helmet from 'helmet';
 import config from 'config';
-import { session as dbSession } from '../db';
+import db from '../db';
 
 export default (app) => {
   app.set('port', (config.get('port')));
@@ -53,10 +53,10 @@ export default (app) => {
   //                  However, it requires an https-enabled website, i.e., HTTPS is necessary for secure cookies.
   //                  If secure is set, and you access your site over HTTP, the cookie will not be set.
   let sessionStore = null;
-  if (!dbSession) {
+  if (!db.session) {
     console.warn('Error: MongoDB failed to handle session storage');
   } else {
-    sessionStore = dbSession();
+    sessionStore = db.session();
   }
 
   const sess = {

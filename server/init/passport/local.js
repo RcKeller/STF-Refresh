@@ -4,10 +4,10 @@
  */
 
 import { Strategy as LocalStrategy } from 'passport-local';
-import { passport as dbPassport } from '../../db';
+import db from '../../db';
 
 export default (passport) => {
-  if (!dbPassport || !dbPassport.local || !typeof dbPassport.local === 'function') {
+  if (!db.passport || !db.passport.local || !typeof db.passport.local === 'function') {
     console.warn('Error: Mongo failed to initialize passport-local strategy');
     return;
   }
@@ -19,5 +19,5 @@ export default (passport) => {
   */
   passport.use(new LocalStrategy({
     usernameField: 'email'
-  }, dbPassport.local));
+  }, db.passport.local));
 };

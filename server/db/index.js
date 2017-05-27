@@ -1,6 +1,11 @@
-let dbConfig = require('./mongo').default;
+import connect from './connect';
+import controllers from './controllers';
+import passport from './passport';
+import session from './session';
 
-export const connect = dbConfig.connect;
-export const controllers = dbConfig.controllers;
-export const passport = dbConfig.passport;
-export const session = dbConfig.session;
+export default {
+  connect,
+  controllers,
+  passport,
+  session
+};

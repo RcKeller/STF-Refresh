@@ -11,7 +11,7 @@ const env = {
   env: process.env.NODE_ENV,
   dev: process.env.NODE_ENV === 'development',
   prod: process.env.NODE_ENV === 'production',
-  api: (process.env.NODE_ENV === 'dev'
+  api: (process.env.NODE_ENV === 'development'
     ? 'http://localhost:3000'
     : 'https://demo-reactgo.herokuapp.com'
   )

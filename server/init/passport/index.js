@@ -2,7 +2,7 @@
 import passport from 'passport';
 import local from './local';
 import google from './google';
-import { passport as dbPassport } from '../../db';
+import db from '../../db';
 
 export default () => {
   // Configure Passport authenticated session persistence.
@@ -13,12 +13,12 @@ export default () => {
   // serializing, and querying the user record by ID from the database when
   // deserializing.
 
-  if (dbPassport && dbPassport.deserializeUser) {
+  if (db.passport && db.passport.deserializeUser) {
     passport.serializeUser((user, done) => {
       done(null, user.id);
     });
 
-    passport.deserializeUser(dbPassport.deserializeUser);
+    passport.deserializeUser(db.passport.deserializeUser);
   } else {
     console.warn('Error: MongoDB failed to (de)serialize User');
   }

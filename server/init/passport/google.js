@@ -1,9 +1,9 @@
 import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
-import { passport as dbPassport } from '../../db';
+import db from '../../db';
 import config from 'config';
 
 export default (passport) => {
-  if (!dbPassport || !dbPassport.google || !typeof dbPassport.google === 'function') {
+  if (!db.passport || !db.passport.google || !typeof db.passport.google === 'function') {
     console.warn('Error: MongoDB unable to initialize passport-google-oauth');
     return;
   }
@@ -33,5 +33,5 @@ export default (passport) => {
     clientSecret: config.get('google.clientSecret'),
     callbackURL: config.get('google.callbackURL'),
     passReqToCallback: true,
-  }, dbPassport.google));
+  }, db.passport.google));
 };

@@ -2,10 +2,10 @@
  * Routes for express app
  */
 import passport from 'passport';
-import { controllers, passport as passportConfig } from '../db';
+import db from '../db';
 
-const usersController = controllers && controllers.users;
-const topicsController = controllers && controllers.topics;
+const usersController = db.controllers && db.controllers.users;
+const topicsController = db.controllers && db.controllers.topics;
 
 export default (app) => {
   // user routes
@@ -17,7 +17,7 @@ export default (app) => {
     console.warn('Error: DB unable to handle user routes.');
   }
 
-  if (passportConfig && passportConfig.google) {
+  if (db.passport && db.passport.google) {
     // google auth
     // Redirect the user to Google for authentication. When complete, Google
     // will redirect the user back to the application at
