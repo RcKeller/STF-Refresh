@@ -1,5 +1,7 @@
 import { apiEndpoint } from '../../config/app';
 import createRestApiClient from '../utils/createRestApiClient';
+// import config from 'config'
+// const baseURL = config.get('api')
 
 export default () => {
   const client = createRestApiClient().withConfig({ baseURL: apiEndpoint });
@@ -26,4 +28,3 @@ export default () => {
     })
   };
 };
-
