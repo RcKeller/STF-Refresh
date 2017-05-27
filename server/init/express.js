@@ -75,11 +75,11 @@ export default (app) => {
   };
 
   console.log('--------------------------');
-  console.log(`===> 😊  Starting ${config.get('env')} Server . . .`);
-  console.log(`===>  Listening on port: ${app.get('port')}`);
+  console.log(`<=== 😊  Starting ${config.get('env')} Server . . .`);
+  console.log(`<===  Listening on port: ${app.get('port')}`);
   if (config.has('prod')) {
-    console.log('===> 🚦  Note: In order for authentication to work in production');
-    console.log('===>           you will need a secure HTTPS connection');
+    console.log('<=== 🚦  Note: In order for authentication to work in production');
+    console.log('<===           you will need a secure HTTPS connection');
     sess.cookie.secure = true; // Serve secure cookies
   }
   console.log('--------------------------');

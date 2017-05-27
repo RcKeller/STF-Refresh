@@ -1,14 +1,8 @@
-import { apiEndpoint } from '../../config/app';
 import createRestApiClient from '../utils/createRestApiClient';
 import env from '../environment'
-console.log(env)
-// let config = require('config')
-// const baseURL = config.get('api')
-
-console.log(process.env.NODE_ENV)
 
 export default () => {
-  const client = createRestApiClient().withConfig({ baseURL: apiEndpoint });
+  const client = createRestApiClient().withConfig({ baseURL: env.api });
   return {
     getTopics: () => client.request({
       method: 'GET',

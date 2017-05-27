@@ -1,8 +1,8 @@
-import { GOOGLE_ANALYTICS_ID } from '../../../config/env';
+import config from 'config'
 
 const createAppScript = () => '<script type="text/javascript" charset="utf-8" src="/assets/app.js"></script>';
 
-const createTrackingScript = () => GOOGLE_ANALYTICS_ID ? createAnalyticsSnippet(GOOGLE_ANALYTICS_ID) : '';
+const createTrackingScript = () => config.has('analytics.google') ? createAnalyticsSnippet(config.get('analytics.google')) : '';
 
 const createAnalyticsSnippet = id =>
   `<script>
@@ -15,4 +15,3 @@ ga('send', 'pageview');
 const createStylesheets = () => '<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Condensed" />';
 
 export { createAppScript, createTrackingScript, createStylesheets };
-

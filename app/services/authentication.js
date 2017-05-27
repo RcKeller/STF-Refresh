@@ -1,10 +1,8 @@
-import { apiEndpoint } from '../../config/app';
 import createRestApiClient from '../utils/createRestApiClient';
-// import config from 'config'
-// const baseURL = config.get('api')
+import env from '../environment'
 
 export default () => {
-  const client = createRestApiClient().withConfig({ baseURL: apiEndpoint });
+  const client = createRestApiClient().withConfig({ baseURL: env.api });
   return {
     login: ({ email, password }) => client.request({
       method: 'POST',

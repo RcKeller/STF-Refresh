@@ -1,9 +1,9 @@
-import { GOOGLE_ANALYTICS_ID } from '../../../config/env';
+import config from 'config'
 import assets from '../../../public/assets/manifest.json';
 
 const createAppScript = () => `<script type="text/javascript" charset="utf-8" src="/assets/${assets['app.js']}"></script>`;
 
-const createTrackingScript = () => GOOGLE_ANALYTICS_ID ? createAnalyticsSnippet(GOOGLE_ANALYTICS_ID) : '';
+const createTrackingScript = () => config.has('analytics.google') ? createAnalyticsSnippet(config.get('analytics.google')) : '';
 
 const createAnalyticsSnippet = id =>
   `<script>
@@ -19,4 +19,3 @@ const createStylesheets = () => `
 `;
 
 export { createAppScript, createTrackingScript, createStylesheets };
-
