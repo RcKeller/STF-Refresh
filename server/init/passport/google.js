@@ -1,7 +1,6 @@
 import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth';
-import { google } from '../../../config/secrets';
-import unsupportedMessage from '../../db/unsupportedMessage';
 import { passport as dbPassport } from '../../db';
+import config from 'config';
 
 export default (passport) => {
   if (!dbPassport || !dbPassport.google || !typeof dbPassport.google === 'function') {
@@ -30,9 +29,9 @@ export default (passport) => {
   * as options specifying a client ID, client secret, and callback URL.
   */
   passport.use(new GoogleStrategy({
-    clientID: google.clientID,
-    clientSecret: google.clientSecret,
-    callbackURL: google.callbackURL,
+    clientID: config.get('google.clientID'),
+    clientSecret: config.get('google.clientSecret'),
+    callbackURL: config.get('google.callbackURL'),
     passReqToCallback: true,
   }, dbPassport.google));
 };

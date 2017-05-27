@@ -1,3 +1,6 @@
 {
-  "env": "development"
+  "env": "development",
+  "port": 3000,
+  "api": "http://localhost:3000",
+  "sessionSecret": "Your Session Secret goes here"
 }

@@ -3,8 +3,6 @@ import { routerMiddleware } from 'react-router-redux';
 import thunk from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 import rootReducer from '../reducers';
-import { isClient, isDebug } from '../../config/app';
-
 /*
  * @param {Object} initial state to bootstrap our stores with for server-side rendering
  * @param {History Object} a history object. We use `createMemoryHistory` for server-side rendering,
@@ -15,8 +13,9 @@ export default function configureStore(initialState, history) {
   // Installs hooks that always keep react-router and redux store in sync
   const middleware = [thunk, routerMiddleware(history)];
   let store;
-
-  if (isClient && isDebug) {
+  // The below used to reference a JS module for env info.
+  // That fails in isomorphic contexts. Thus, directly accessing the process env.
+  if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
     middleware.push(createLogger());
     store = createStore(rootReducer, initialState, compose(
       applyMiddleware(...middleware),

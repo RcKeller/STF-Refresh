@@ -7,15 +7,13 @@ import flash from 'express-flash';
 import methodOverride from 'method-override';
 import gzip from 'compression';
 import helmet from 'helmet';
-import { sessionSecret } from '../../config/secrets';
-import { ENV } from '../../config/env';
 import config from 'config';
 import { session as dbSession } from '../db';
 
 export default (app) => {
-  app.set('port', (process.env.PORT || 3000));
+  app.set('port', (config.get('port')));
 
-  if (ENV === 'production') {
+  if (config.has('prod')) {
     app.use(gzip());
     // Secure your Express apps by setting various HTTP headers. Documentation: https://github.com/helmetjs/helmet
     app.use(helmet());
@@ -64,7 +62,7 @@ export default (app) => {
   const sess = {
     resave: false,
     saveUninitialized: false,
-    secret: sessionSecret,
+    secret: config.get('sessionSecret'),
     proxy: true, // The "X-Forwarded-Proto" header will be used.
     name: 'sessionId',
     // Add HTTPOnly, Secure attributes on Session Cookie
@@ -79,7 +77,7 @@ export default (app) => {
   console.log('--------------------------');
   console.log(`===> 😊  Starting ${config.get('env')} Server . . .`);
   console.log(`===>  Listening on port: ${app.get('port')}`);
-  if (ENV === 'production') {
+  if (config.has('prod')) {
     console.log('===> 🚦  Note: In order for authentication to work in production');
     console.log('===>           you will need a secure HTTPS connection');
     sess.cookie.secure = true; // Serve secure cookies

@@ -1,0 +1,11 @@
+{
+  "env": "production",
+  "prod": true,
+  "api": "https://demo-reactgo.herokuapp.com",
+  "sessionSecret": "Your Session Secret goes here",
+  "google": {
+    "clientID": "62351010161-eqcnoa340ki5ekb9gvids4ksgqt9hf48.apps.googleusercontent.com",
+    "clientSecret": "6cKCWD75gHgzCvM4VQyR5_TU",
+    "callbackURL": "/auth/google/callback"
+  }
+}

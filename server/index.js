@@ -1,6 +1,6 @@
 import express from 'express';
 import webpack from 'webpack';
-import { isDebug } from '../config/app';
+import config from 'config';
 import { connect } from './db';
 import initPassport from './init/passport';
 import initExpress from './init/express';
@@ -21,7 +21,7 @@ connect();
  */
 initPassport();
 
-if (isDebug) {
+if (config.has('dev')) {
   // enable webpack hot module replacement
   const webpackDevMiddleware = require('webpack-dev-middleware');
   const webpackHotMiddleware = require('webpack-hot-middleware');
