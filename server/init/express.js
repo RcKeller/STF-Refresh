@@ -9,6 +9,7 @@ import gzip from 'compression';
 import helmet from 'helmet';
 import { sessionSecret } from '../../config/secrets';
 import { ENV } from '../../config/env';
+import config from 'config';
 import { session as dbSession } from '../db';
 
 export default (app) => {
@@ -76,7 +77,7 @@ export default (app) => {
   };
 
   console.log('--------------------------');
-  console.log(`===> 😊  Starting ${ENV} Server . . .`);
+  console.log(`===> 😊  Starting ${config.get('env')} Server . . .`);
   console.log(`===>  Listening on port: ${app.get('port')}`);
   if (ENV === 'production') {
     console.log('===> 🚦  Note: In order for authentication to work in production');
