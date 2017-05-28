@@ -1,11 +1,9 @@
 /* Initializing passport.js */
 import passport from 'passport';
+import config from 'config'
+import db from '../../db';
 import google from './google';
 import uw from './uw';
-import db from '../../db';
-
-const googleAuth = typeof db.passport.google === 'function'
-const uwAuth = typeof db.passport.uw === 'function'
 
 export default () => {
   // Configure Passport authenticated session persistence.
@@ -17,27 +15,17 @@ export default () => {
   // deserializing.
 
   if (db.passport && db.passport.deserializeUser) {
-    if (googleAuth) {
-      passport.serializeUser((user, done) => {
-        done(null, user.id);
-      });
+    passport.serializeUser((user, done) => {
+      done(null, user.id);
+    });
 
-      passport.deserializeUser(db.passport.deserializeUser);
-    } else {
-      console.warn('Error: MongoDB failed to (de)serialize Google User');
-    }
-    if (uwAuth) {
-      passport.serializeUser((user, done) => {
-        done(null, user.id);
-      });
-
-      passport.deserializeUser(db.passport.deserializeUser);
-    } else {
-      console.warn('Error: MongoDB failed to (de)serialize UW User');
-    }
+    passport.deserializeUser(db.passport.deserializeUser);
+  } else {
+    console.warn(unsupportedMessage('(de)serialize User'));
   }
 
-  // use the following strategies
-  google(passport);
-  // uw(passport);
+  // Load strategies based on the env
+  if (config.has('google')) { google(passport) }
+  if (config.has('uw')) { uw(passport) }
+  // local(passport);
 };
