@@ -60,8 +60,8 @@ export default (app) => {
   }
 
   const sess = {
-    resave: false,
-    saveUninitialized: false,
+    resave: true,  // Per legacy site, default is false
+    saveUninitialized: true, // Per legacy site, default is false
     secret: config.get('sessionSecret'),
     proxy: true, // The "X-Forwarded-Proto" header will be used.
     name: 'sessionId',

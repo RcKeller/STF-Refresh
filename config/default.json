@@ -1,7 +1,16 @@
 {
   "env": "development",
+  "protocol": "http",
+  "domain": "localhost",
   "port": 3000,
   "api": "http://localhost:3000",
   "db": "mongodb://192.168.99.100:27017/uw",
-  "sessionSecret": "Your Session Secret goes here"
+  "sessionSecret": "Your Session Secret goes here",
+  "key": "",
+  "cert": "",
+  "google": {
+    "clientID": "62351010161-eqcnoa340ki5ekb9gvids4ksgqt9hf48.apps.googleusercontent.com",
+    "clientSecret": "6cKCWD75gHgzCvM4VQyR5_TU",
+    "callbackURL": "/auth/google/callback"
+  }
 }
