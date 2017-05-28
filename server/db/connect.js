@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
-import { db } from './constants';
 import loadModels from './models';
-
+import config from 'config'
+const db = config.get('db')
 export default () => {
   // Find the appropriate database to connect to, default to localhost if not found.
   const connect = () => {

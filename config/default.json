@@ -2,5 +2,6 @@
   "env": "development",
   "port": 3000,
   "api": "http://localhost:3000",
+  "db": "mongodb://192.168.99.100:27017/uw",
   "sessionSecret": "Your Session Secret goes here"
 }
