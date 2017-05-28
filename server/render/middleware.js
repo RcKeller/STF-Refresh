@@ -11,15 +11,35 @@ import fetchDataForRoute from '../../app/utils/fetchDataForRoute';
  * and pass it into the Router.run function.
  */
 export default function render(req, res) {
-  console.log(req.user)
+  console.log("RENDERING FOR USER:", req.user)
   const authenticated = req.isAuthenticated();
   const history = createMemoryHistory();
+
+  // const user = {
+  //   // AuthN tracking data
+  //   authenticated,
+  //   isWaiting: false,
+  //   message: '',
+  //   isLogin: true,
+  // }
+  // let name = req.user.name
+  // let netID = req.user.netID
+  // let email = req.user.email
+  // let auth = req.user.auth
+  // Object.assign(user, name, netID, email, auth)
+  // TODO: Fix, have to go to bed.
   const store = configureStore({
     user: {
+      // AuthN tracking data
       authenticated,
       isWaiting: false,
       message: '',
-      isLogin: true
+      isLogin: true,
+      //  if AuthZ data exists, include. Test length as a condition. ES6 trickery here.
+      ...req.user.name && { name: req.user.name },
+      ...req.user.netID && { netID: req.user.netID },
+      ...req.user.email && { email: req.user.email },
+      ...Object.keys(req.user.auth).length && { auth: req.user.auth }
     }
   }, history);
   const routes = createRoutes(store);

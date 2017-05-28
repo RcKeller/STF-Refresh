@@ -6,25 +6,22 @@
 import bcrypt from 'bcrypt-nodejs';
 import mongoose from 'mongoose';
 
-// Other oauthtypes to be added
-
-/*
- User Schema
- */
-
 const UserSchema = new mongoose.Schema({
+  name: { type: String, default: '' },
+  netID: { type: String, unique: true, lowercase: true },
   email: { type: String, unique: true, lowercase: true },
-  password: String,
-  tokens: Array,
-  profile: {
-    name: { type: String, default: '' },
-    gender: { type: String, default: '' },
-    location: { type: String, default: '' },
-    website: { type: String, default: '' },
-    picture: { type: String, default: '' }
+  /*
+  The auth(orization) object will not pass to the client unless
+  there's some sort of elevated privlege. Delete this object to remove
+  a member's entire association with this org, assign or adjust to change privlege.
+  */
+  auth: {
+    spectator: Boolean,
+    member: Boolean,
+    admin: Boolean,
   },
-  resetPasswordToken: String,
-  resetPasswordExpires: Date,
+  // Tokens and the google object are used by Oauth for the google (dev) strategy
+  tokens: Array,
   google: {}
 });
 
