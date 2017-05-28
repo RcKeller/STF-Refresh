@@ -35,7 +35,8 @@ export default (app) => {
     // Google will redirect the user to this URL after authentication. Finish the
     // process by verifying the assertion. If valid, the user will be logged in.
     // Otherwise, the authentication has failed.
-    app.get(config.get('google.callbackURL'),
+    const googleCallback = config.get('google.callbackURL')
+    app.get(googleCallback,
       passport.authenticate('google', {
         successRedirect: '/',
         failureRedirect: '/login'
@@ -44,9 +45,9 @@ export default (app) => {
   }
   if (db.passport && config.has('uw')) {
     console.log('UW Shib specified in config, but routes/API not ready yet.')
-    app.get(config.get('uw.callbackURL'),
-      console.log('Error - UW Shib not connected yet! In development.')
-    );
+    const uwCallback = config.get('uw.callbackURL')
+    const shibPlaceholder = () => console.log('Error - UW Shib not connected yet! In development.')
+    app.get(uwCallback, shibPlaceholder);
   }
 
   // topic routes
