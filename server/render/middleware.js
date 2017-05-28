@@ -11,6 +11,7 @@ import fetchDataForRoute from '../../app/utils/fetchDataForRoute';
  * and pass it into the Router.run function.
  */
 export default function render(req, res) {
+  console.log(req.user)
   const authenticated = req.isAuthenticated();
   const history = createMemoryHistory();
   const store = configureStore({

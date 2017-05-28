@@ -5,19 +5,20 @@ import User from '../models/user';
  * POST /login
  */
 export function login(req, res, next) {
+  console.log('ERROR: Failed to authenticate user:', req)
   // Do email and password validation for the server
-  passport.authenticate('local', (authErr, user, info) => {
-    if (authErr) return next(authErr);
-    if (!user) {
-      return res.sendStatus(401);
-    }
-    // Passport exposes a login() function on req (also aliased as
-    // logIn()) that can be used to establish a login session
-    return req.logIn(user, (loginErr) => {
-      if (loginErr) return res.sendStatus(401);
-      return res.sendStatus(200);
-    });
-  })(req, res, next);
+  // passport.authenticate('local', (authErr, user, info) => {
+  //   if (authErr) return next(authErr);
+  //   if (!user) {
+  //     return res.sendStatus(401);
+  //   }
+  //   // Passport exposes a login() function on req (also aliased as
+  //   // logIn()) that can be used to establish a login session
+  //   return req.logIn(user, (loginErr) => {
+  //     if (loginErr) return res.sendStatus(401);
+  //     return res.sendStatus(200);
+  //   });
+  // })(req, res, next);
 }
 
 /**

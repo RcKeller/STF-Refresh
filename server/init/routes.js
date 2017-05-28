@@ -44,6 +44,9 @@ export default (app) => {
   }
   if (db.passport && config.has('uw')) {
     console.log('UW Shib specified in config, but routes/API not ready yet.')
+    app.get(config.get('uw.callbackURL'),
+      console.log('Error - UW Shib not connected yet! In development.')
+    );
   }
 
   // topic routes
