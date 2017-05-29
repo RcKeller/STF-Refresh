@@ -1,16 +1,14 @@
 import { combineReducers } from 'redux';
 import { routerReducer as routing } from 'react-router-redux';
+import { reducer as form } from 'redux-form';
 import user from '../reducers/user';
-import topic from '../reducers/topic';
-import message from '../reducers/message';
-import * as types from '../types';
 
 const isFetching = (state = false, action) => {
   switch (action.type) {
-    case types.CREATE_REQUEST:
+    case 'CREATE_REQUEST':
       return true;
-    case types.REQUEST_SUCCESS:
-    case types.REQUEST_FAILURE:
+    case 'REQUEST_SUCCESS':
+    case 'REQUEST_FAILURE':
       return false;
     default:
       return state;
@@ -20,11 +18,10 @@ const isFetching = (state = false, action) => {
 // Combine reducers with routeReducer which keeps track of
 // router state
 const rootReducer = combineReducers({
+  routing, // react-router-redux
+  form,  //  redux-form
   isFetching,
-  topic,
-  user,
-  message,
-  routing
+  user
 });
 
 export default rootReducer;

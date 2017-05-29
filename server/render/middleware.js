@@ -1,7 +1,7 @@
 import { createMemoryHistory, match } from 'react-router';
 import createRoutes from '../../app/routes';
 import configureStore from '../../app/store/configureStore';
-import * as types from '../../app/types';
+// import * as types from '../../app/types';
 import pageRenderer from './pageRenderer';
 import fetchDataForRoute from '../../app/utils/fetchDataForRoute';
 
@@ -56,10 +56,10 @@ export default function render(req, res) {
     } else if (props) {
       // This method waits for all render component
       // promises to resolve before returning to browser
-      store.dispatch({ type: types.CREATE_REQUEST });
+      // store.dispatch({ type: types.CREATE_REQUEST });
       fetchDataForRoute(props)
         .then((data) => {
-          store.dispatch({ type: types.REQUEST_SUCCESS, data });
+          // store.dispatch({ type: types.REQUEST_SUCCESS, data });
           const html = pageRenderer(store, props);
           res.status(200).send(html);
         })

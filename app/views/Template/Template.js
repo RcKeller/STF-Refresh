@@ -20,13 +20,13 @@ import duck from './ducks/'
 // @connect()
 // @connect(
 //   state => ({user: state.user}),
-//   dispatch => ({
-//     actions: { testAction }
-//   })
+//   dispatch => ({ actions: bindActionCreators(duck, dispatch) })
 // )
 @connect(
   state => ({user: state.user}),
-  dispatch => ({ actions: bindActionCreators(duck, dispatch) })
+  dispatch => ({
+    actions: { testAction }
+  })
 )
 class Template extends React.Component {
   constructor (props) {

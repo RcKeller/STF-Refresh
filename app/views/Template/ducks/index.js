@@ -1,40 +1,38 @@
 import { push } from 'react-router-redux';
 import { authService } from '../../../services';
 
-import * as types from '../../../types';
-
 export function beginLogin() {
-  return { type: types.MANUAL_LOGIN_USER };
+  return { type: 'MANUAL_LOGIN_USER' };
 }
 
 export function loginSuccess(message) {
   return {
-    type: types.LOGIN_SUCCESS_USER,
+    type: 'LOGIN_SUCCESS_USER',
     message
   };
 }
 
 export function loginError(message) {
   return {
-    type: types.LOGIN_ERROR_USER,
+    type: 'LOGIN_ERROR_USER',
     message
   };
 }
 
 export function beginLogout() {
-  return { type: types.LOGOUT_USER};
+  return { type: 'LOGOUT_USER'};
 }
 
 export function logoutSuccess() {
-  return { type: types.LOGOUT_SUCCESS_USER };
+  return { type: 'LOGOUT_SUCCESS_USER' };
 }
 
 export function logoutError() {
-  return { type: types.LOGOUT_ERROR_USER };
+  return { type: 'LOGOUT_ERROR_USER' };
 }
 
 export function toggleLoginMode() {
-  return { type: types.TOGGLE_LOGIN_MODE };
+  return { type: 'TOGGLE_LOGIN_MODE' };
 }
 
 export function manualLogin(data) {
