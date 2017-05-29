@@ -73,19 +73,19 @@ const authenticated = (
 };
 
 const userReducer = combineReducers({
-  isLogin,
-  isWaiting,
+  // isLogin,
+  // isWaiting,
   authenticated,
-  message,
+  // message,
   /*
   User data is passed from redux stores on the backend.
   No actions will modify this for security purposes, for now.
   Without this, redux will warn you and users who could identify minified auth data.
   */
-  name: (s = {}) => s,
-  netID: (s = {}) => s,
-  email: (s = {}) => s,
-  auth: (s = {}) => s
+  name: (s = '') => s,
+  netID: (s = '') => s,
+  email: (s = '') => s,
+  is: (s = {}) => s
 });
 
 export default userReducer;

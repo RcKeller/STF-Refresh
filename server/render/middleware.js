@@ -14,19 +14,15 @@ export default function render(req, res) {
   const authenticated = req.isAuthenticated();
   const history = createMemoryHistory();
 
-  const user = {
-    // AuthN tracking data
-    authenticated,
-    isWaiting: false,
-    message: '',
-    isLogin: true,
-  }
-  // AuthZ data if user exists.
-  if (req.user) {
-    user.name = req.user.name
-    user.netID = req.user.netID
-    user.email = req.user.email
-    user.auth = req.user.auth
+  let user = { authenticated }
+  // AuthZ data if user is initialized.
+  if (user && req.user) {
+    Object.assign(user, {
+      name: req.user.name,
+      netID: req.user.netID,
+      email: req.user.email,
+      auth: req.user.auth
+    })
   }
   const store = configureStore({ user }, history);
   const routes = createRoutes(store);
