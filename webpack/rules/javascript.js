@@ -17,8 +17,7 @@ module.exports = ({ production = false, browser = false } = {}) => {
     plugins.push([
         'transform-react-remove-prop-types',
         'transform-react-constant-elements',
-        'transform-react-inline-elements',
-        'transform-decorators-legacy'
+        'transform-react-inline-elements'
     ])
   }
 
