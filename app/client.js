@@ -48,3 +48,6 @@ render(
     </Router>
   </Provider>, document.getElementById('app')
 );
+
+//  Apply antd styles
+import './css/ant-theme.less'

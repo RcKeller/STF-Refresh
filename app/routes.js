@@ -30,7 +30,7 @@ export default (store) => {
    callback();
  };
   return (
-    <Route path="/" component={App}>
+    <Route path="/" component={Template}>
       <IndexRoute component={Vote} fetchData={fetchVoteData} />
       <Route path="login" component={LoginOrRegister} onEnter={redirectAuth} />
       <Route path="dashboard" component={Dashboard} onEnter={requireAuth} />
