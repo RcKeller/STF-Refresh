@@ -75,11 +75,11 @@ export default (app) => {
   };
 
   console.log('--------------------------');
-  console.log(`<=== 😊  Starting ${config.get('env')} Server . . .`);
+  console.log(`<===  Starting ${config.get('env')} Server . . .`);
   console.log(`<===  Listening on port: ${app.get('port')}`);
-  if (config.has('prod')) {
-    console.log('<=== 🚦  Note: In order for authentication to work in production');
-    console.log('<===           you will need a secure HTTPS connection');
+  if (config.has('uw')) {
+    console.log('<===    Note: Auth with UW\'s Shibboleth Service');
+    console.log('<===    requires secure HTTPS from the actual registed domain.');
     sess.cookie.secure = true; // Serve secure cookies
   }
   console.log('--------------------------');

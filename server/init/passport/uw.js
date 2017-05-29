@@ -14,6 +14,7 @@ export default (passport) => {
       domain
     })
     passport.use(UWStrategy);
+    console.log(`Connected to UW Shibboleth as ${url}`)
   } catch (err) {
     console.warn(`ERROR: UW Shib strategy failed to initialize. Auth WILL be broken.\n${err}`)
   }

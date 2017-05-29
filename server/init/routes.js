@@ -11,8 +11,7 @@ const topicsController = db.controllers && db.controllers.topics;
 export default (app) => {
   // user routes
   if (usersController) {
-    app.post('/sessions', usersController.login);
-    app.post('/users', usersController.signUp);
+    //  Log out from a session.
     app.delete('/sessions', usersController.logout);
   } else {
     console.warn('Error: DB unable to handle user routes.');
@@ -31,20 +30,19 @@ export default (app) => {
         'https://www.googleapis.com/auth/userinfo.email'
       ]
     }));
-
     // Google will redirect the user to this URL after authentication. Finish the
     // process by verifying the assertion. If valid, the user will be logged in.
     // Otherwise, the authentication has failed.
     const googleCallback = config.get('google.callbackURL')
-    app.get(googleCallback,
-      passport.authenticate('google', {
-        successRedirect: '/',
-        failureRedirect: '/login'
-      })
+    const successRedirect = '/'
+    const failureRedirect = '/login'
+    app.get(
+      googleCallback,
+      passport.authenticate('google', { successRedirect, failureRedirect })
     );
   }
   if (db.passport && config.has('uw')) {
-    console.log('UW Shib specified in config, but routes/API not ready yet.')
+    console.log('WARNING: UW Shib specified in config, but routes/API not ready yet.')
     const uwCallback = config.get('uw.callbackURL')
     const shibPlaceholder = () => console.log('Error - UW Shib not connected yet! In development.')
     app.get(uwCallback, shibPlaceholder);
