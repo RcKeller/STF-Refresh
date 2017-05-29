@@ -1,0 +1,11 @@
+.template {
+  overflow-x: hidden;
+}
+
+.header {
+  height: 70px;
+}
+
+.body {
+  height: calc(100vh - 70px);
+}

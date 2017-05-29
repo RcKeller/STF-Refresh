@@ -1,23 +1,41 @@
-@import 'settings';
 @import 'common/layout';
 @import 'common/typography';
+/*
+@import 'settings';
 
-@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);
+/*@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);*/
+@import url(https://fonts.googleapis.com/css?family=Roboto);
 
 
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
-  font-family: var(--fontMontserrat);
+  font-family: var(--fontFace);
+  font-weight: normal;
+  font-smoothing: antialiased;
 }
 
-.app {
+article {
+  min-height: calc(100% - var(--header));
+  padding: 8px;
+  background: #fff;
+}
+
+/* Medium screens */
+@media (min-width: 992px) {
+	article {
+		margin: 24px 48px;
+		padding: 16px;
+	}
+}
+
+/*.app {
   @apply --box;
   height: 100%;
   font-weight: normal;
   font-smoothing: antialiased;
-}
+}*/
 
 
 /* Add your global styles below... */

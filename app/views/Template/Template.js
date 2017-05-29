@@ -8,7 +8,7 @@ import { Link, browserHistory } from 'react-router'
 import Helmet from 'react-helmet'
 
 import { Layout, Menu, Icon, Alert } from 'antd'
-const { Content, Sider } = Layout
+const { Header, Content, Sider } = Layout
 const SubMenu = Menu.SubMenu
 const ItemGroup = Menu.ItemGroup
 const Item = Menu.Item
@@ -22,6 +22,7 @@ import duck from './ducks/'
 //   state => ({user: state.user}),
 //   dispatch => ({ actions: bindActionCreators(duck, dispatch) })
 // )
+import styles from './Template.css'
 @connect(
   state => ({user: state.user}),
   dispatch => ({
@@ -43,13 +44,16 @@ class Template extends React.Component {
   render () {
     const { user } = this.props
     return (
-      <Layout>
+      <Layout className={styles['template']}>
         <Helmet
           title='UW Student Tech Fee Commitee'
           titleTemplate='%s - Student Tech Fee'
         />
-        {/* <UWHeader /> */}
-        <Layout style={{ minHeight: 'calc(100vh - 58px)' }}>
+        <Header className={styles['header']}>
+          UW & STF Header here.
+        </Header>
+        {/* <Layout style={{ minHeight: 'calc(100vh - 58px)' }}> */}
+        <Layout className={styles['body']}>
           <Sider breakpoint='md' width={240} collapsedWidth='0' style={{zIndex: 999, background: '#FFF'}}>
             {user.authenticated
               ? <Link
@@ -100,9 +104,11 @@ class Template extends React.Component {
               />
             </Menu>
           </Sider>
-          <Content>
-            {this.props.children}
-          </Content>
+          <Layout>
+            <Content>
+              {this.props.children}
+            </Content>
+          </Layout>
         </Layout>
       </Layout>
     )

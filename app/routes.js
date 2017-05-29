@@ -1,8 +1,7 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import { fetchVoteData } from './fetch-data';
-// import { App, Vote, Dashboard, About, LoginOrRegister } from './pages';
-import { Template } from './views'
+import { Template, FrontPage } from './views'
 /*
  * @param {Redux Store}
  * We require store as an argument here because we wish to get
@@ -30,7 +29,8 @@ export default (store) => {
    callback();
  };
   return (
-    <Route path="/" component={Template}>
+    <Route path="/" component={Template} >
+    <IndexRoute component={FrontPage} />
       {/* <IndexRoute component={Vote} fetchData={fetchVoteData} />
       <Route path="login" component={LoginOrRegister} onEnter={redirectAuth} />
       <Route path="dashboard" component={Dashboard} onEnter={requireAuth} />

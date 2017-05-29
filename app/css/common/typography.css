@@ -1,7 +1,7 @@
 
 :root {
 
-  --fontMontserrat:           'Montserrat', Helvetica, Arial, sans-serif;
+  --fontFace:           'Roboto', Helvetica, Arial, sans-serif;
 
   --fontSmall:                12px;
   --fontMedium:               16px;
@@ -15,6 +15,7 @@
   }
 
   --subHeading {
+    font-style: italic;
     font-size: 21px;
     font-weight: 700;
     line-height: 24px;
