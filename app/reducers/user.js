@@ -26,7 +26,7 @@ const userReducer = combineReducers({
   name: (s = '') => s,
   netID: (s = '') => s,
   email: (s = '') => s,
-  is: (s = {}) => s
+  auth: (s = {}) => s
 });
 
 export default userReducer;

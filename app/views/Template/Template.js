@@ -2,15 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { browserHistory } from 'react-router'
+import { Link, browserHistory } from 'react-router'
 
 import Helmet from 'react-helmet'
-const meta = [
-  { charset: 'utf-8' },
-  { 'http-equiv': 'X-UA-Compatible', content: 'IE=edge' },
-  { name: 'viewport', content: 'width=device-width, initial-scale=1' }
-]
-
 
 import { Layout, Menu, Icon, Alert } from 'antd'
 const { Content, Sider } = Layout
@@ -18,16 +12,16 @@ const SubMenu = Menu.SubMenu
 const ItemGroup = Menu.ItemGroup
 const Item = Menu.Item
 
+const testAction = console.log('Placeholder action')
+
 // import styles from './Template.css'
-// @connect(
-//   state => state.user,
-//   dispatch => ({
-//     actions: {
-//       test: console.log('Placeholder action')
-//     }
-//   })
-// )
-@connect()
+// @connect()
+@connect(
+  state => ({user: state.user}),
+  dispatch => ({
+    actions: { testAction }
+  })
+)
 class Template extends React.Component {
   constructor (props) {
     super(props)
@@ -36,18 +30,27 @@ class Template extends React.Component {
   }
   componentDidMount () { this.highlight() }
   componentWillReceiveProps () { this.highlight() }
-  highlight () { this.setState({selected: router.location.pathname}) }
+  // TODO: Fix associated errors.
+  highlight () {
+    const selected = this.props.router.location.pathname
+    this.setState({ selected }) }
   render () {
+    const { user } = this.props
     return (
       <Layout>
-        <Helmet meta={meta}
+        <Helmet
           title='UW Student Tech Fee Commitee'
           titleTemplate='%s - Student Tech Fee'
         />
         {/* <UWHeader /> */}
         <Layout style={{ minHeight: 'calc(100vh - 58px)' }}>
           <Sider breakpoint='md' width={240} collapsedWidth='0' style={{zIndex: 999, background: '#FFF'}}>
-            {/* <div className={styles['logo']} style={{background: `url(${STFLogo})`}} onClick={() => browserHistory.push('/')} /> */}
+            { user.authenticated ? (
+              <Link
+                onClick={() => console.log("Placeholder for action: logOut")} to="/">Logout</Link>
+            ) : (
+              <Link to="/login">Log in</Link>
+            )}
             <div>LOGO HERE</div>
             <Menu mode='inline'
               defaultSelectedKeys={['1']}
@@ -103,16 +106,8 @@ class Template extends React.Component {
 // Template.contextTypes = { router: React.PropTypes.object }
 // export default Template
 
-Template.propTypes = {
-  router: PropTypes.object.isRequired,
-  user: PropTypes.object
-};
-function mapStateToProps(state) {
-  return {
-    user: state.user
-  };
-}
-
-// Read more about where to place `connect` here:
-// https://github.com/rackt/react-redux/issues/75#issuecomment-135436563
-export default connect(mapStateToProps)(Template);
+// Template.propTypes = {
+//   router: PropTypes.object,
+//   user: PropTypes.object
+// };
+export default Template
