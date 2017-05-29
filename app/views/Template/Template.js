@@ -11,18 +11,25 @@ import { connect } from 'react-redux';
 // const Item = Menu.Item
 
 // import styles from './Template.css'
-@connect(
-  state => state.user,
-  dispatch => ({
-    actions: {
-      test: console.log('Placeholder action')
-    }
-  })
-)
+// @connect(
+//   state => state.user,
+//   dispatch => ({
+//     actions: {
+//       test: console.log('Placeholder action')
+//     }
+//   })
+// )
+@connect()
 class Template extends React.Component {
   render () {
+    const { user } = this.props
+    console.log("USER", user)
     return (
+      <div>
       <div>Template!</div>
+      <ul>
+      </ul>
+      </div>
     )
   }
 }
