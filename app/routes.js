@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import { fetchVoteData } from './fetch-data';
 import { App, Vote, Dashboard, About, LoginOrRegister } from './pages';
-
+import { Template } from './views'
 /*
  * @param {Redux Store}
  * We require store as an argument here because we wish to get
@@ -10,8 +10,8 @@ import { App, Vote, Dashboard, About, LoginOrRegister } from './pages';
  */
 export default (store) => {
   const requireAuth = (nextState, replace, callback) => {
-    const { user: { authenticated }} = store.getState();
-    if (!authenticated) {
+    const { user } = store.getState();
+    if (!user) {
       replace({
         pathname: '/login',
         state: { nextPathname: nextState.location.pathname }
@@ -21,8 +21,8 @@ export default (store) => {
   };
 
   const redirectAuth = (nextState, replace, callback) => {
-    const { user: { authenticated }} = store.getState();
-    if (authenticated) {
+    const { user} = store.getState();
+    if (user) {
       replace({
         pathname: '/'
       });
@@ -30,7 +30,7 @@ export default (store) => {
     callback();
   };
   return (
-    <Route path="/" component={App}>
+    <Route path="/" component={Template}>
       <IndexRoute component={Vote} fetchData={fetchVoteData} />
       <Route path="login" component={LoginOrRegister} onEnter={redirectAuth} />
       <Route path="dashboard" component={Dashboard} onEnter={requireAuth} />
