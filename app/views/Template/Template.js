@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { Link, browserHistory } from 'react-router'
@@ -14,13 +15,18 @@ const Item = Menu.Item
 
 const testAction = console.log('Placeholder action')
 
+import duck from './ducks/'
 // import styles from './Template.css'
 // @connect()
+// @connect(
+//   state => ({user: state.user}),
+//   dispatch => ({
+//     actions: { testAction }
+//   })
+// )
 @connect(
   state => ({user: state.user}),
-  dispatch => ({
-    actions: { testAction }
-  })
+  dispatch => ({ actions: bindActionCreators(duck, dispatch) })
 )
 class Template extends React.Component {
   constructor (props) {
@@ -45,12 +51,13 @@ class Template extends React.Component {
         {/* <UWHeader /> */}
         <Layout style={{ minHeight: 'calc(100vh - 58px)' }}>
           <Sider breakpoint='md' width={240} collapsedWidth='0' style={{zIndex: 999, background: '#FFF'}}>
-            { user.authenticated ? (
-              <Link
-                onClick={() => console.log("Placeholder for action: logOut")} to="/">Logout</Link>
-            ) : (
-              <Link to="/login">Log in</Link>
-            )}
+            {user.authenticated
+              ? <Link
+                onClick={() =>
+                  console.log("Placeholder for action: logOut")
+                } to="/">Logout</Link>
+              : <Link to="/login">Log in</Link>
+            }
             <div>LOGO HERE</div>
             <Menu mode='inline'
               defaultSelectedKeys={['1']}
