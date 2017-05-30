@@ -11,12 +11,12 @@ import fetchDataForRoute from '../../app/utils/fetchDataForRoute';
  * and pass it into the Router.run function.
  */
 export default function render(req, res) {
-  const authenticated = req.isAuthenticated();
+  let authenticated = req.isAuthenticated();
   const history = createMemoryHistory();
 
   let user = { authenticated }
   // AuthZ data if user is initialized.
-  if (user && req.user) {
+  if (authenticated && req.user) {
     Object.assign(user, {
       name: req.user.name,
       netID: req.user.netID,

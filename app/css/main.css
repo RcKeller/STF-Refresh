@@ -1,7 +1,7 @@
 @import './common/layout';
 @import './common/typography';
 
-@import url(https://fonts.googleapis.com/css?family=Roboto);
+/*@import url(https://fonts.googleapis.com/css?family=Roboto);*/
 
 * { box-sizing: border-box; }
 
@@ -11,7 +11,7 @@ body {
   font-smoothing: antialiased;
 }
 
-article {
+:global article {
   margin: 4px;
   padding: 8px;
   background: #fff;
@@ -19,7 +19,7 @@ article {
 }
 /* Medium screens */
 @media (min-width: 992px) {
-	article {
+	:global article {
 		margin: 24px 48px;
 		padding: 16px;
 	}

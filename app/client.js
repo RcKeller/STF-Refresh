@@ -30,11 +30,11 @@ function onUpdate() {
     return;
   }
 
-  store.dispatch({ type: 'CREATE_REQUEST' });
-  fetchDataForRoute(this.state)
-    .then((data) => {
-      return store.dispatch({ type: 'REQUEST_SUCCESS', data });
-    });
+  // store.dispatch({ type: 'CREATE_REQUEST' });
+  // fetchDataForRoute(this.state)
+  //   .then((data) => {
+  //     return store.dispatch({ type: 'REQUEST_SUCCESS', data });
+  //   });
 }
 
 

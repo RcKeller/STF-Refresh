@@ -55,13 +55,11 @@ class Template extends React.Component {
         <Layout className={styles['content']}>
           <Sider breakpoint='md' width={240} collapsedWidth='0' style={{zIndex: 999, background: '#FFF'}}>
             {this.props.user.authenticated
-              ? <Link
-                onClick={() =>
+              ? <Link onClick={() =>
                   console.log("Placeholder for action: logOut")
                 } to="/">Logout</Link>
               : <a href="/auth/google">Login with Google</a>
             }
-            <div>LOGO HERE</div>
             <Menu mode='inline'
               defaultSelectedKeys={['1']}
               selectedKeys={[this.state.selected ? this.state.selected : '/']}
