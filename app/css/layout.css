@@ -3,21 +3,19 @@
   --header: {
     height: var(--headerHeight, 70px);
   }
-  --content {
+  --body {
     height: calc(100vh - var(headerHeight, 70px));
+    z-index: 9;
   }
   --page {
     margin: 24px 0 0 0;
     padding: 8px;
     background: #fff;
     border-radius: 4px;
+    @media (min-width: 992px) {
+      margin: 24px 48px;
+      padding: 24px;
+    }
   }
 
-  /* Medium screens */
-  /*@media (min-width: 992px) {
-  	---page {
-  		margin: 24px 48px;
-  		padding: 24px;
-  	}
-  }*/
 }

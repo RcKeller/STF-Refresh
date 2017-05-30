@@ -15,14 +15,12 @@ const Item = Menu.Item
 
 const testAction = console.log('Placeholder action')
 
-import duck from './ducks/'
-// import styles from './Template.css'
-// @connect()
 // @connect(
 //   state => ({user: state.user}),
 //   dispatch => ({ actions: bindActionCreators(duck, dispatch) })
 // )
 import styles from './Template.css'
+import duck from './ducks/'
 @connect(
   state => ({user: state.user}),
   dispatch => ({
@@ -49,10 +47,10 @@ class Template extends React.Component {
           title='UW Student Tech Fee Commitee'
           titleTemplate='%s - Student Tech Fee'
         />
-        <Header className={styles['header']}>
+        <Header>
           UW & STF Header here.
         </Header>
-        <Layout className={styles['content']}>
+        <Layout className={styles['body']}>
           <Sider breakpoint='md' width={240} collapsedWidth='0' style={{zIndex: 999, background: '#FFF'}}>
             {this.props.user.authenticated
               ? <Link onClick={() =>
