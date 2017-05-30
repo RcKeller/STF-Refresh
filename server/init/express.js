@@ -1,6 +1,7 @@
 import express from 'express';
 import passport from 'passport';
 import session from 'express-session';
+import logger from 'morgan';
 import bodyParser from 'body-parser';
 import path from 'path';
 import flash from 'express-flash';
@@ -18,6 +19,9 @@ export default (app) => {
     // Secure your Express apps by setting various HTTP headers. Documentation: https://github.com/helmetjs/helmet
     app.use(helmet());
   }
+
+  // LOGGING
+  app.use(logger('dev'));
 
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded

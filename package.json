@@ -80,6 +80,7 @@
     "lodash": "^4.16.2",
     "method-override": "^2.3.8",
     "mongoose": "^4.9.3",
+    "morgan": "^1.8.2",
     "npm-install-webpack2-plugin": "^4.1.0",
     "passport": "^0.3.2",
     "passport-google-oauth": "^1.0.0",

@@ -1,10 +1,11 @@
 import React from 'react'
 
-const FrontPage = () => {
+const FrontPage = () => (
   <article>
     <div>
       Article
     </div>
   </article>
-}
+)
+
 export default FrontPage

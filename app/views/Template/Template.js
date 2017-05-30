@@ -42,7 +42,7 @@ class Template extends React.Component {
     const selected = this.props.router.location.pathname
     this.setState({ selected }) }
   render () {
-    const { user } = this.props
+    // const { user } = this.props
     return (
       <Layout className={styles['template']}>
         <Helmet
@@ -55,7 +55,7 @@ class Template extends React.Component {
         {/* <Layout style={{ minHeight: 'calc(100vh - 58px)' }}> */}
         <Layout className={styles['body']}>
           <Sider breakpoint='md' width={240} collapsedWidth='0' style={{zIndex: 999, background: '#FFF'}}>
-            {user.authenticated
+            {this.props.user.authenticated
               ? <Link
                 onClick={() =>
                   console.log("Placeholder for action: logOut")
@@ -114,13 +114,9 @@ class Template extends React.Component {
     )
   }
 }
-
-// Template.propTypes = { children: PropTypes.object.isRequired }
-// Template.contextTypes = { router: React.PropTypes.object }
-// export default Template
-
-// Template.propTypes = {
-//   router: PropTypes.object,
-//   user: PropTypes.object
-// };
+Template.propTypes = {
+  children: PropTypes.object.isRequired,
+  router: PropTypes.object.isRequired,
+  user: PropTypes.object
+};
 export default Template
