@@ -1,4 +1,0 @@
-:root {
-  --header:                   70px;
-  --content:                  calc(100vh - var(--header));
-}

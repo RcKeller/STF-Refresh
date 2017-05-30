@@ -7,9 +7,6 @@ import createRoutes from './routes';
 import configureStore from './store/configureStore';
 import fetchDataForRoute from './utils/fetchDataForRoute';
 
-//  Apply antd styles
-import './css/ant-theme.less'
-
 // Grab the state from a global injected into
 // server-generated HTML
 const initialState = window.__INITIAL_STATE__;
@@ -50,3 +47,6 @@ render(
     </Router>
   </Provider>, document.getElementById('app')
 );
+
+//  Apply antd styles
+import './css/theme.less'

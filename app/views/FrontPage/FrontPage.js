@@ -1,7 +1,7 @@
 import React from 'react'
-
+import styles from './FrontPage.css'
 const FrontPage = () => (
-  <article>
+  <article className={styles['frontpage']}>
     <div>
       Article
     </div>
