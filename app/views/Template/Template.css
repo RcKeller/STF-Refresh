@@ -1,11 +1,21 @@
+/*Include main CSS!*/
+/*@import '../../css/main';*/
+@import '../../css/main';
+
+/*--header: 70px;*/
+
 .template {
   overflow-x: hidden;
 }
 
-.header {
-  height: 70px;
-}
+/*.header {
+  height: var(--header);
+}*/
 
 .body {
   height: calc(100vh - 70px);
+}
+
+:global .ant-layout-sider-zero-width-trigger {
+  top: 8px !important;
 }

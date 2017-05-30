@@ -1,30 +1,28 @@
-@import 'common/layout';
-@import 'common/typography';
-/*
-@import 'settings';
+@import './common/layout';
+@import './common/typography';
 
-/*@import url(https://fonts.googleapis.com/css?family=Montserrat:400,700);*/
 @import url(https://fonts.googleapis.com/css?family=Roboto);
-
 
 * { box-sizing: border-box; }
 
 body {
-  margin: 0;
   font-family: var(--fontFace);
   font-weight: normal;
   font-smoothing: antialiased;
 }
 
-article {
-  min-height: calc(100% - var(--header));
+:global article {
+  /*min-height: calc(var(--body) - 64px);*/
+  /*min-height: calc(100% - 70px);*/
+  min-height: calc(var(--body) - 64px);
+  margin: 4px;
   padding: 8px;
   background: #fff;
+  border-radius: 4px;
 }
-
 /* Medium screens */
 @media (min-width: 992px) {
-	article {
+	:global article {
 		margin: 24px 48px;
 		padding: 16px;
 	}
@@ -48,3 +46,13 @@ article {
 }
 
 */
+
+
+/*:root {
+
+  --globalRadius:             4px;
+
+  --ViewTransitionIn:         opacity .4s ease-in;
+  --ViewTransitionOut:        opacity .1s ease-out;
+
+}*/
