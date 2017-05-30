@@ -1,6 +1,6 @@
 /*Include main CSS!*/
-/*@import '../../css/main';*/
 @import '../../css/main';
+@import '../../css/common/layout';
 
 /*--header: 70px;*/
 
@@ -8,12 +8,12 @@
   overflow-x: hidden;
 }
 
-/*.header {
+.header {
   height: var(--header);
-}*/
+}
 
-.body {
-  height: calc(100vh - 70px);
+.content {
+  height: var(--content);
 }
 
 :global .ant-layout-sider-zero-width-trigger {

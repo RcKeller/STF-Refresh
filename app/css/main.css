@@ -11,10 +11,7 @@ body {
   font-smoothing: antialiased;
 }
 
-:global article {
-  /*min-height: calc(var(--body) - 64px);*/
-  /*min-height: calc(100% - 70px);*/
-  min-height: calc(var(--body) - 64px);
+article {
   margin: 4px;
   padding: 8px;
   background: #fff;
@@ -22,7 +19,7 @@ body {
 }
 /* Medium screens */
 @media (min-width: 992px) {
-	:global article {
+	article {
 		margin: 24px 48px;
 		padding: 16px;
 	}

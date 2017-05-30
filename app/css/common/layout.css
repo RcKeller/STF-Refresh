@@ -1,4 +1,4 @@
 :root {
   --header:                   70px;
-  --body:                     calc(100vh - var(--header))
+  --content:                  calc(100vh - var(--header));
 }

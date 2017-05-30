@@ -7,7 +7,7 @@ import { Link, browserHistory } from 'react-router'
 
 import Helmet from 'react-helmet'
 
-import { Layout, Menu, Icon, Alert } from 'antd'
+import { Layout, Menu, Icon, Alert, Breadcrumb } from 'antd'
 const { Header, Content, Sider } = Layout
 const SubMenu = Menu.SubMenu
 const ItemGroup = Menu.ItemGroup
@@ -52,15 +52,14 @@ class Template extends React.Component {
         <Header className={styles['header']}>
           UW & STF Header here.
         </Header>
-        {/* <Layout style={{ minHeight: 'calc(100vh - 58px)' }}> */}
-        <Layout className={styles['body']}>
+        <Layout className={styles['content']}>
           <Sider breakpoint='md' width={240} collapsedWidth='0' style={{zIndex: 999, background: '#FFF'}}>
             {this.props.user.authenticated
               ? <Link
                 onClick={() =>
                   console.log("Placeholder for action: logOut")
                 } to="/">Logout</Link>
-              : <Link to="/login">Log in</Link>
+              : <a href="/auth/google">Login with Google</a>
             }
             <div>LOGO HERE</div>
             <Menu mode='inline'
@@ -106,6 +105,7 @@ class Template extends React.Component {
           </Sider>
           <Layout>
             <Content>
+              <Breadcrumb routes={this.props.routes} />
               {this.props.children}
             </Content>
           </Layout>
