@@ -9,6 +9,11 @@
   @apply --body;
 }
 
+.nav {
+  z-index: 999;
+  background: #d9d9d9;
+}
+
 :global .ant-layout-sider-zero-width-trigger {
   top: 8px !important;
 }

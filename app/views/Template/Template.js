@@ -8,12 +8,13 @@ import { Link, browserHistory } from 'react-router'
 import Helmet from 'react-helmet'
 
 import { Layout, Menu, Icon, Alert, Breadcrumb } from 'antd'
+// Nav === Sider from antd docs (horrid namespace)
 const { Header, Content, Sider } = Layout
 const SubMenu = Menu.SubMenu
 const ItemGroup = Menu.ItemGroup
 const Item = Menu.Item
 
-const testAction = console.log('Placeholder action')
+const testAction = () => console.log('Placeholder action')
 
 // @connect(
 //   state => ({user: state.user}),
@@ -51,7 +52,7 @@ class Template extends React.Component {
           UW & STF Header here.
         </Header>
         <Layout className={styles['body']}>
-          <Sider breakpoint='md' width={240} collapsedWidth='0' style={{zIndex: 999, background: '#FFF'}}>
+          <Sider breakpoint='md' width={240} collapsedWidth='0' className={styles['nav']}>
             {this.props.user.authenticated
               ? <Link onClick={() =>
                   console.log("Placeholder for action: logOut")
