@@ -17,7 +17,17 @@ module.exports = ({ production = false, browser = false } = {}) => {
     plugins.push([
         'transform-react-remove-prop-types',
         'transform-react-constant-elements',
-        'transform-react-inline-elements'
+        'transform-react-inline-elements',
+        /*
+        babel-plugin-import:
+        Only imports the parts of libs and antd
+        that are actually used. Code splitting on imports.
+        30-40% performance gain on building.
+        */
+        ['import', {
+          libraryName: 'antd',
+          style: true,
+        }]
     ])
   }
 

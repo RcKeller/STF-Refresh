@@ -52,14 +52,16 @@ class Template extends React.Component {
           UW & STF Header here.
         </Header>
         <Layout className={styles['body']}>
-          <Sider breakpoint='md' width={240} collapsedWidth='0' className={styles['nav']}>
+          <Sider breakpoint='md'
+            width={240} collapsedWidth='0'
+            className={styles['nav']}>
             {this.props.user.authenticated
               ? <Link onClick={() =>
                   console.log("Placeholder for action: logOut")
                 } to="/">Logout</Link>
               : <a href="/auth/google">Login with Google</a>
             }
-            <Menu mode='inline'
+            <Menu mode='inline' theme='dark' className={styles['ant-menu']}
               defaultSelectedKeys={['1']}
               selectedKeys={[this.state.selected ? this.state.selected : '/']}
               onClick={(i) => i.key && browserHistory.push(i.key)}
@@ -95,6 +97,7 @@ class Template extends React.Component {
                 <Item key='/posts'>Upcoming Events</Item>
               </SubMenu>
               <Alert type='info' banner showIcon
+                className={styles['nav-event']}
                 message='Meetings'
                 description={<span>Every Monday<br />3:30 - 5:30PM<br />HUB 305</span>}
               />
