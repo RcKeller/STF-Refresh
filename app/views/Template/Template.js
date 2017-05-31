@@ -9,10 +9,12 @@ import Helmet from 'react-helmet'
 
 import { Layout, Menu, Icon, Alert, Breadcrumb } from 'antd'
 // Nav === Sider from antd docs (horrid namespace)
-const { Header, Content, Sider } = Layout
+const { Content, Sider } = Layout
 const SubMenu = Menu.SubMenu
 const ItemGroup = Menu.ItemGroup
 const Item = Menu.Item
+
+import Header from './components/Header/Header'
 
 const testAction = () => console.log('Placeholder action')
 
@@ -41,21 +43,19 @@ class Template extends React.Component {
     const selected = this.props.router.location.pathname
     this.setState({ selected }) }
   render () {
-    // const { user } = this.props
+    const { children, routes, user } = this.props
     return (
       <Layout className={styles['template']}>
         <Helmet
           title='UW Student Tech Fee Commitee'
           titleTemplate='%s - Student Tech Fee'
         />
-        <Header>
-          UW & STF Header here.
-        </Header>
+        <Header />
         <Layout className={styles['body']}>
           <Sider breakpoint='md'
             width={240} collapsedWidth='0'
             className={styles['nav']}>
-            {this.props.user.authenticated
+            {user.authenticated
               ? <Link onClick={() =>
                   console.log("Placeholder for action: logOut")
                 } to="/">Logout</Link>
@@ -105,8 +105,8 @@ class Template extends React.Component {
           </Sider>
           <Layout>
             <Content>
-              <Breadcrumb routes={this.props.routes} />
-              {this.props.children}
+              <Breadcrumb routes={routes} />
+              {children}
             </Content>
           </Layout>
         </Layout>
