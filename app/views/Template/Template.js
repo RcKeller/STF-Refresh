@@ -12,6 +12,7 @@ const { Content, Sider } = Layout
 // Nav === Sider from antd docs (horrid namespace)
 
 import Header from './components/Header/Header'
+import Login from './components/Login/Login'
 import Nav from './components/Nav/Nav'
 import Body from './components/Body/Body'
 
@@ -29,9 +30,9 @@ const testAction = () => console.log('Placeholder action')
 //   })
 // )
 import styles from './Template.css'
-@connect(
-  state => ({user: state.user})
-)
+// @connect(
+//   state => ({user: state.user})
+// )
 class Template extends React.Component {
   render () {
     const { children, router, routes, user } = this.props
@@ -46,7 +47,8 @@ class Template extends React.Component {
           <Sider breakpoint='md'
             width={240} collapsedWidth='0'
             className={styles['nav']}>
-            <Nav user={user} router={router} />
+            <Login router={router} />
+            <Nav router={router} />
           </Sider>
           <Content>
             <Body routes={routes} children={children} />

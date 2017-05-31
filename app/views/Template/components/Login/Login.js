@@ -8,12 +8,14 @@ import { Link, browserHistory } from 'react-router'
 import { Button } from 'antd'
 
 @connect(
-  state => ({user: state.user})
+  state => ({
+    user: state.user
+    // Router comes from parent (not in redux)
+  })
   // actions here
 )
 class Login extends React.Component {
-  render () {
-    const {router, user} = this.props
+  render ({ user, router } = this.props) {
     return (
       <div>
         {user.authenticated
@@ -31,8 +33,8 @@ class Login extends React.Component {
   }
 }
 
-Template.propTypes = {
-  router: PropTypes.object.isRequired,
-  user: PropTypes.object.isRequired
+Login.propTypes = {
+  user: PropTypes.object,
+  router: PropTypes.object.isRequired
 };
 export default Login

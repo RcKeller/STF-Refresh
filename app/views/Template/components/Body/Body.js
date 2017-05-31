@@ -4,7 +4,7 @@ import { Breadcrumb } from 'antd'
 
 const Body = ({routes, children}) => (
     <div>
-      <Breadcrumb />
+      <Breadcrumb routes={routes} />
       {children}
     </div>
 )
