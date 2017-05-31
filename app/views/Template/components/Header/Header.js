@@ -4,7 +4,6 @@ import React from 'react'
 import Helmet from 'react-helmet'
 
 import { Layout } from 'antd'
-// Nav === Sider from antd docs (horrid namespace)
 const { Header: AntHeader } = Layout
 
 const Header = () => (

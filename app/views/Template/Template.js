@@ -7,12 +7,9 @@ import { Link, browserHistory } from 'react-router'
 
 import Helmet from 'react-helmet'
 
-import { Layout, Menu, Icon, Alert, Breadcrumb } from 'antd'
-// Nav === Sider from antd docs (horrid namespace)
+import { Layout } from 'antd'
 const { Content, Sider } = Layout
-const SubMenu = Menu.SubMenu
-const ItemGroup = Menu.ItemGroup
-const Item = Menu.Item
+// Nav === Sider from antd docs (horrid namespace)
 
 import Header from './components/Header/Header'
 import Nav from './components/Nav/Nav'
@@ -24,26 +21,18 @@ const testAction = () => console.log('Placeholder action')
 //   state => ({user: state.user}),
 //   dispatch => ({ actions: bindActionCreators(duck, dispatch) })
 // )
+// or
+// @connect(
+//   state => ({user: state.user}),
+//   dispatch => ({
+//     actions: { testAction }
+//   })
+// )
 import styles from './Template.css'
-import duck from './ducks/'
 @connect(
-  state => ({user: state.user}),
-  dispatch => ({
-    actions: { testAction }
-  })
+  state => ({user: state.user})
 )
 class Template extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = { selected: '/' }
-    this.highlight = this.highlight.bind(this)
-  }
-  componentDidMount () { this.highlight() }
-  componentWillReceiveProps () { this.highlight() }
-  // TODO: Fix associated errors.
-  highlight () {
-    const selected = this.props.router.location.pathname
-    this.setState({ selected }) }
   render () {
     const { children, router, routes, user } = this.props
     return (
@@ -53,7 +42,7 @@ class Template extends React.Component {
           titleTemplate='%s - Student Tech Fee'
         />
         <Header />
-        <Layout>
+        <Layout className={styles['body']}>
           <Sider breakpoint='md'
             width={240} collapsedWidth='0'
             className={styles['nav']}>
@@ -62,9 +51,7 @@ class Template extends React.Component {
           <Content>
             <Body routes={routes} children={children} />
           </Content>
-
         </Layout>
-
       </Layout>
     )
   }

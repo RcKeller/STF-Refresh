@@ -7,27 +7,34 @@ import { Link, browserHistory } from 'react-router'
 
 import Helmet from 'react-helmet'
 
-import { Layout, Menu, Icon, Alert, Breadcrumb } from 'antd'
-// Nav === Sider from antd docs (horrid namespace)
-const { Content, Sider } = Layout
+import { Menu, Icon, Button, Alert } from 'antd'
 const SubMenu = Menu.SubMenu
 const ItemGroup = Menu.ItemGroup
 const Item = Menu.Item
 
-import styles from '../../Template.css'
+import styles from './Nav.css'
 const Nav = ({router, user}) => (
   <div>
-      {user.authenticated
-        ? <Link onClick={() =>
-            console.log("Placeholder for action: logOut")
-          } to="/">Logout</Link>
-        : <a href="/auth/google">Login with Google</a>
-      }
-      <Menu mode='inline' theme='dark' className={styles['ant-menu']}
+    {user.authenticated
+      ? <Button size='large' onClick={() => console.log("Placeholder for action: logOut")}>
+        Log Out
+      </Button>
+      : <a href='/auth/google'>
+          <Button size='large' href='/auth/google'>
+          Log in with Google
+          </Button>
+        </a>
+    }
+      <Menu mode='inline' theme='dark'
         defaultSelectedKeys={['1']}
         selectedKeys={[router.location.pathname]}
-        onClick={(i) => i.key && browserHistory.push(i.key)}
+        onClick={(i) => i.key && router.push(i.key)}
       >
+        <Alert type='info' banner showIcon
+          className={styles['nav-event']}
+          message='Meetings'
+          description={<span>Every Monday<br />3:30 - 5:30PM<br />HUB 305</span>}
+        />
         <SubMenu key='sub1' title={<span><Icon type='solution' /><span>Proposals</span></span>}>
           <ItemGroup key='g1' title='Browse'>
             <Item key='/proposals/browse'>All Proposals</Item>
@@ -58,11 +65,7 @@ const Nav = ({router, user}) => (
           <Item key='/calendar'>Schedule</Item>
           <Item key='/posts'>Upcoming Events</Item>
         </SubMenu>
-        <Alert type='info' banner showIcon
-          className={styles['nav-event']}
-          message='Meetings'
-          description={<span>Every Monday<br />3:30 - 5:30PM<br />HUB 305</span>}
-        />
+
       </Menu>
     </div>
 )

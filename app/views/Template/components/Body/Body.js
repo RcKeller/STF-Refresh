@@ -1,7 +1,6 @@
 import React from 'react'
 
-import { Layout, Breadcrumb } from 'antd'
-const { Content } = Layout
+import { Breadcrumb } from 'antd'
 
 const Body = ({routes, children}) => (
     <div>
