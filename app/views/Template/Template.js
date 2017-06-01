@@ -3,20 +3,16 @@ import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { Link, browserHistory } from 'react-router'
-
 import Helmet from 'react-helmet'
+import { Link, browserHistory } from 'react-router'
 
 import { Layout } from 'antd'
 const { Content, Sider } = Layout
-// Nav === Sider from antd docs (horrid namespace)
 
-import Header from './components/Header/Header'
-import Login from './components/Login/Login'
-import Nav from './components/Nav/Nav'
-import Body from './components/Body/Body'
-
-const testAction = () => console.log('Placeholder action')
+import Header from './Header/Header'
+import Login from './Login/Login'
+import Nav from './Nav/Nav'
+import Body from './Body/Body'
 
 // @connect(
 //   state => ({user: state.user}),
@@ -30,11 +26,9 @@ const testAction = () => console.log('Placeholder action')
 //   })
 // )
 import styles from './Template.css'
-// @connect(
-//   state => ({user: state.user})
-// )
 class Template extends React.Component {
   render () {
+    // React-router is separated from redux store - too heavy to persist.
     const { children, router, routes, user } = this.props
     return (
       <Layout className={styles['template']}>

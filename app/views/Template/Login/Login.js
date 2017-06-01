@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types';
-// import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { Link, browserHistory } from 'react-router'
@@ -8,11 +7,8 @@ import { Link, browserHistory } from 'react-router'
 import { Button } from 'antd'
 
 @connect(
-  state => ({
-    user: state.user
-    // Router comes from parent (not in redux)
-  })
-  // actions here
+  state => ({ user: state.user })
+  // Router comes from parent (not in redux)
 )
 class Login extends React.Component {
   render ({ user, router } = this.props) {
