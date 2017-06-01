@@ -1,4 +1,5 @@
-.nav-event {
-  margin: 16px;
+.event {
+  margin: 22px;
+  padding: 8px 8px 8px 60px !important;
   border-radius: 4px !important;
 }

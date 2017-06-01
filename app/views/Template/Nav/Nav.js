@@ -20,13 +20,13 @@ const Nav = ({ router }) => (
     onClick={(i) => i.key && router.push(i.key)}
   >
     <Alert type='info' banner showIcon
-      className={styles['nav-event']}
+      className={styles['event']}
       message='Meetings'
       description={<span>Every Monday<br />3:30 - 5:30PM<br />HUB 305</span>}
     />
     <SubMenu key='sub1' title={<span><Icon type='solution' /><span>Proposals</span></span>}>
       <ItemGroup key='g1' title='Browse'>
-        <Item key='/proposals/browse'>All Proposals</Item>
+        <Item key='/proposals'>All Proposals</Item>
         <Item key='/proposals/myproposals'>My Proposals</Item>
         <Item key='/blocks'>Funding Blocks</Item>
       </ItemGroup>

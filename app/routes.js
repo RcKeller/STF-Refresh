@@ -3,7 +3,8 @@ import { Route, IndexRoute } from 'react-router';
 import { fetchVoteData } from './fetch-data';
 import {
   Template, FrontPage,
-  FAQ, About, Contact
+  FAQ, About, Contact,
+  Browse, Create, Documents
 } from './views'
 /*
  * @param {Redux Store}
@@ -32,11 +33,16 @@ export default (store) => {
    callback();
  };
   return (
-    <Route path="/" component={Template} >
+    <Route path="/" breadcrumbName="Home" component={Template} >
       <IndexRoute component={FrontPage} />
-      <Route path="/faq" component={FAQ}/>
-      <Route path="/about" component={About}/>
-      <Route path="/contact" component={Contact}/>
+
+      <Route path="/faq" breadcrumbName="F.A.Q." component={FAQ}/>
+      <Route path="/about" breadcrumbName="About" component={About}/>
+      <Route path="/contact" breadcrumbName="Contact Us" component={Contact}/>
+
+      <Route path="/proposals" breadcrumbName="Browse Proposals" component={Browse}/>
+      <Route path="/proposals/create" breadcrumbName="Create Proposal" component={Create}/>
+      <Route path="/documents" breadcrumbName="Documents" component={Documents}/>
       {/* <IndexRoute component={Vote} fetchData={fetchVoteData} />
       <Route path="login" component={LoginOrRegister} onEnter={redirectAuth} />
       <Route path="dashboard" component={Dashboard} onEnter={requireAuth} />

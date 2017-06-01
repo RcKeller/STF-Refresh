@@ -8,3 +8,6 @@ export { default as About } from './About/About';
 export { default as Contact } from './Contact/Contact';
 export { default as FAQ } from './FAQ/FAQ';
 // DYNAMIC PAGES
+export { default as Proposals } from './Proposals/Browse/Browse';
+export { default as Create } from './Proposals/Create/Create';
+export { default as Documents } from './Documents/Documents';
