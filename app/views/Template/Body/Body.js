@@ -4,7 +4,7 @@ import { Breadcrumb } from 'antd'
 
 const Body = ({routes, children}) => (
     <div>
-      {routes[1].path.length >= 2 && <Breadcrumb routes={routes} /> }
+      {routes[1].path && <Breadcrumb routes={routes} /> }
       {children}
     </div>
 )
