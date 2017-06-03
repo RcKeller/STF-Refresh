@@ -3,7 +3,7 @@ import { routerReducer as routing } from 'react-router-redux'
 import { reducer as form } from 'redux-form'
 
 
-import user from '../views/Template/Login/ducks'
+import user from './views/Template/Login/ducks'
 
 const rootReducer = combineReducers({
   routing, // react-router-redux

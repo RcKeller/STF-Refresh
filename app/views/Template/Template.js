@@ -56,6 +56,6 @@ Template.propTypes = {
   children: PropTypes.object.isRequired,
   router: PropTypes.object.isRequired,
   routes: PropTypes.array.isRequired,
-  user: PropTypes.object
+  user: PropTypes.object  // Async
 }
 export default Template

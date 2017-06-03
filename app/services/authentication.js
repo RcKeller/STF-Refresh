@@ -1,5 +1,5 @@
 import createRestApiClient from '../utils/createRestApiClient'
-import env from '../environment'
+import env from './environment'
 
 export default () => {
   const client = createRestApiClient().withConfig({ baseURL: env.api })
