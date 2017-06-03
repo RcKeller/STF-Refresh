@@ -1,12 +1,13 @@
-import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import React from 'react'
+import { Route, IndexRoute } from 'react-router'
 import {
   //  Core components
   Template, FrontPage,
   //  Static Pages
   FAQ, About, Contact,
   //  Dynamic pages
-  Browse, Create, Documents
+  Browse, Create, Documents,
+  Calendar, Events
 } from './views'
 /*
  * @param {Redux Store}
@@ -14,40 +15,43 @@ import {
  * state from the store after it has been authenticated.
  */
 export default (store) => {
- const requireAuth = (nextState, replace, callback) => {
-   const { user: { authenticated }} = store.getState();
-   if (!authenticated) {
-     replace({
-       pathname: '/login',
-       state: { nextPathname: nextState.location.pathname }
-     });
-   }
-   callback();
- };
+  const requireAuth = (nextState, replace, callback) => {
+    const { user: { authenticated }} = store.getState()
+    if (!authenticated) {
+      replace({
+        pathname: '/login',
+        state: { nextPathname: nextState.location.pathname }
+      })
+    }
+    callback()
+  }
 
- const redirectAuth = (nextState, replace, callback) => {
-   const { user: { authenticated }} = store.getState();
-   if (authenticated) {
-     replace({
-       pathname: '/'
-     });
-   }
-   callback();
- };
+  const redirectAuth = (nextState, replace, callback) => {
+    const { user: { authenticated }} = store.getState()
+    if (authenticated) {
+      replace({
+        pathname: '/'
+      })
+    }
+    callback()
+  }
   return (
-    <Route path="/" breadcrumbName="Home" component={Template} >
+    <Route path='/' breadcrumbName='Home' component={Template} >
       <IndexRoute component={FrontPage} />
 
-      <Route path="/faq" breadcrumbName="F.A.Q." component={FAQ}/>
-      <Route path="/about" breadcrumbName="About" component={About}/>
-      <Route path="/contact" breadcrumbName="Contact Us" component={Contact}/>
-      <Route path="/proposals" breadcrumbName="Browse Proposals" component={Browse}>
-        <Route path="/create" breadcrumbName="Create Proposal" component={Create}/>
+      <Route path='/faq' breadcrumbName='F.A.Q.' component={FAQ} />
+      <Route path='/about' breadcrumbName='About' component={About} />
+      <Route path='/contact' breadcrumbName='Contact Us' component={Contact} />
+      <Route path='/proposals' breadcrumbName='Proposals' component={Browse}>
+        <Route path='/create' breadcrumbName='Create Proposal' component={Create} />
       </Route>
-      <Route path="/documents" breadcrumbName="Documents" component={Documents}/>
+      <Route path='/documents' breadcrumbName='Documents' component={Documents} />
+      <Route path='/calendar' breadcrumbName='Calendar' component={Calendar}>
+        <Route path='/events' breadcrumbName='Events' component={Events} />
+      </Route>
     </Route>
-  );
-};
+  )
+}
 
 /*
 Example routes w/ Auth:

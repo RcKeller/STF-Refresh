@@ -6,11 +6,11 @@ import React from 'react'
 // @connect(
 //   state => ({ content: state.content.thiscomponent })
 // )
-import styles from './Browse.css'
-const Browse = () => (
+import styles from './Proposals.css'
+const Proposals = () => (
   <article className={styles['article']}>
-    Placeholder - Browse
+    Placeholder - Proposals
   </article>
 )
 
-export default Browse
+export default Proposals
