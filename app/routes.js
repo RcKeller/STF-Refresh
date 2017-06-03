@@ -1,9 +1,11 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
-import { fetchVoteData } from './fetch-data';
 import {
+  //  Core components
   Template, FrontPage,
+  //  Static Pages
   FAQ, About, Contact,
+  //  Dynamic pages
   Browse, Create, Documents
 } from './views'
 /*

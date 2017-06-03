@@ -1,3 +1,9 @@
+/*
+Example code from prior repo
+Fetches posts n' such.
+*/
+
+/*
 import createRestApiClient from '../utils/createRestApiClient';
 import env from '../environment'
 
@@ -24,3 +30,4 @@ export default () => {
     })
   };
 };
+*/
