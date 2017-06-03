@@ -12,5 +12,5 @@ module.exports = ({ production = false, browser = false } = {}) => ({
     test: /\.less$/,
     use: ['style-loader', 'css-loader', 'less-loader'
   ],
-    include: [PATHS.app, PATHS.antd]
+    include: [PATHS.app, PATHS.modules]
 });

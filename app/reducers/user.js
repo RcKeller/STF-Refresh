@@ -22,16 +22,16 @@ Without this, redux will warn you and users who could identify minified auth dat
 const name = (s = '') => s
 const netID = (s = '') => s
 const email = (s = '') => s
-const auth = (s = {}) => s
+const committee = (s = {}) => s
 
 const userReducer = combineReducers({
-  authenticated,
   /*
   User data is passed from redux stores on the backend.
   No actions will modify this for security purposes, for now.
   Without this, redux will warn you and users who could identify minified auth data.
   */
-  name, netID, email, auth
+  name, netID, email,
+  authenticated, committee
 });
 
 export default userReducer;

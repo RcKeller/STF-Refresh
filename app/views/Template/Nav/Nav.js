@@ -52,7 +52,7 @@ const Nav = ({ router }) => (
     </Item>
     <SubMenu key='sub4' title={<span><Icon type='calendar' /><span>Calendar</span></span>}>
       <Item key='/calendar'>Schedule</Item>
-      <Item key='/posts'>Upcoming Events</Item>
+      <Item key='/events'>Upcoming Events</Item>
     </SubMenu>
   </Menu>
 )

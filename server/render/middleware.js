@@ -13,16 +13,20 @@ import fetchDataForRoute from '../../app/utils/fetchDataForRoute';
 export default function render(req, res) {
   let authenticated = req.isAuthenticated();
   const history = createMemoryHistory();
-
+  //
   let user = { authenticated }
   // AuthZ data if user is initialized.
-  if (authenticated && req.user) {
+  if (user.authenticated && req.user) {
     Object.assign(user, {
       name: req.user.name,
       netID: req.user.netID,
-      email: req.user.email,
-      auth: req.user.auth
+      email: req.user.email
     })
+    if (req.user.committee) {
+      Object.assign(user, {
+        committee: req.user.committee
+      })
+    }
   }
   const store = configureStore({ user }, history);
   const routes = createRoutes(store);

@@ -39,9 +39,9 @@ export default (store) => {
       <Route path="/faq" breadcrumbName="F.A.Q." component={FAQ}/>
       <Route path="/about" breadcrumbName="About" component={About}/>
       <Route path="/contact" breadcrumbName="Contact Us" component={Contact}/>
-
-      <Route path="/proposals" breadcrumbName="Browse Proposals" component={Browse}/>
-      <Route path="/proposals/create" breadcrumbName="Create Proposal" component={Create}/>
+      <Route path="/proposals" breadcrumbName="Browse Proposals" component={Browse}>
+        <Route path="/create" breadcrumbName="Create Proposal" component={Create}/>
+      </Route>
       <Route path="/documents" breadcrumbName="Documents" component={Documents}/>
       {/* <IndexRoute component={Vote} fetchData={fetchVoteData} />
       <Route path="login" component={LoginOrRegister} onEnter={redirectAuth} />
