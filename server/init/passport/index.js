@@ -1,9 +1,9 @@
 /* Initializing passport.js */
-import passport from 'passport';
+import passport from 'passport'
 import config from 'config'
-import db from '../../db';
-import google from './google';
-import uw from './uw';
+import db from '../../db'
+import google from './google'
+import uw from './uw'
 
 export default () => {
   // Configure Passport authenticated session persistence.
@@ -16,16 +16,16 @@ export default () => {
 
   if (db.passport && db.passport.deserializeUser) {
     passport.serializeUser((user, done) => {
-      done(null, user.id);
-    });
+      done(null, user.id)
+    })
 
-    passport.deserializeUser(db.passport.deserializeUser);
+    passport.deserializeUser(db.passport.deserializeUser)
   } else {
-    console.warn(unsupportedMessage('(de)serialize User'));
+    console.warn(unsupportedMessage('(de)serialize User'))
   }
 
   // Load strategies based on the env
   if (config.has('google')) { google(passport) }
   if (config.has('uw')) { uw(passport) }
   // local(passport);
-};
+}

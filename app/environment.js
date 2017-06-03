@@ -16,9 +16,9 @@ const env = {
     : 'https://demo-reactgo.herokuapp.com'
   )
 }
-console.log('--------------------------');
-console.log(`===>  Initialized ${env.env} web client`);
-console.log(`===>  Speaking with ${env.api}`);
-console.log('--------------------------');
+console.log('--------------------------')
+console.log(`===>  Initialized ${env.env} web client`)
+console.log(`===>  Speaking with ${env.api}`)
+console.log('--------------------------')
 
 export default env

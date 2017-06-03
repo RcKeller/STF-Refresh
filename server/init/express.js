@@ -1,33 +1,33 @@
-import express from 'express';
-import passport from 'passport';
-import session from 'express-session';
-import logger from 'morgan';
-import bodyParser from 'body-parser';
-import path from 'path';
-import flash from 'express-flash';
-import methodOverride from 'method-override';
-import gzip from 'compression';
-import helmet from 'helmet';
-import config from 'config';
-import db from '../db';
+import express from 'express'
+import passport from 'passport'
+import session from 'express-session'
+import logger from 'morgan'
+import bodyParser from 'body-parser'
+import path from 'path'
+import flash from 'express-flash'
+import methodOverride from 'method-override'
+import gzip from 'compression'
+import helmet from 'helmet'
+import config from 'config'
+import db from '../db'
 
 export default (app) => {
-  app.set('port', (config.get('port')));
+  app.set('port', (config.get('port')))
 
   if (config.has('prod')) {
-    app.use(gzip());
+    app.use(gzip())
     // Secure your Express apps by setting various HTTP headers. Documentation: https://github.com/helmetjs/helmet
-    app.use(helmet());
+    app.use(helmet())
   }
 
   // LOGGING
-  app.use(logger('dev'));
+  app.use(logger('dev'))
 
-  app.use(bodyParser.json());
-  app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
-  app.use(methodOverride());
+  app.use(bodyParser.json())
+  app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+  app.use(methodOverride())
 
-  app.use(express.static(path.join(process.cwd(), 'public')));
+  app.use(express.static(path.join(process.cwd(), 'public')))
 
   // I am adding this here so that the Heroku deploy will work
   // Indicates the app is behind a front-facing proxy,
@@ -39,7 +39,7 @@ export default (app) => {
   // To enable it, use the values described in the trust proxy options table.
   // The trust proxy setting is implemented using the proxy-addr package. For more information, see its documentation.
   // loopback - 127.0.0.1/8, ::1/128
-  app.set('trust proxy', 'loopback');
+  app.set('trust proxy', 'loopback')
   // Create a session middleware with the given options
   // Note session data is not saved in the cookie itself, just the session ID. Session data is stored server-side.
   // Options: resave: forces the session to be saved back to the session store, even if the session was never
@@ -56,11 +56,11 @@ export default (app) => {
   //          cookie: Please note that secure: true is a recommended option.
   //                  However, it requires an https-enabled website, i.e., HTTPS is necessary for secure cookies.
   //                  If secure is set, and you access your site over HTTP, the cookie will not be set.
-  let sessionStore = null;
+  let sessionStore = null
   if (!db.session) {
-    console.warn('Error: MongoDB failed to handle session storage');
+    console.warn('Error: MongoDB failed to handle session storage')
   } else {
-    sessionStore = db.session();
+    sessionStore = db.session()
   }
 
   const sess = {
@@ -73,26 +73,25 @@ export default (app) => {
     // If secure is set, and you access your site over HTTP, the cookie will not be set
     cookie: {
       httpOnly: true,
-      secure: false,
+      secure: false
     },
     store: sessionStore
-  };
-
-  console.log('--------------------------');
-  console.log(`<===  Starting ${config.get('env')} Server . . .`);
-  console.log(`<===  Listening on port: ${app.get('port')}`);
-  if (config.has('uw')) {
-    console.log('<===    Note: Auth with UW\'s Shibboleth Service');
-    console.log('<===    requires secure HTTPS from the actual registed domain.');
-    sess.cookie.secure = true; // Serve secure cookies
   }
-  console.log('--------------------------');
 
+  console.log('--------------------------')
+  console.log(`<===  Starting ${config.get('env')} Server . . .`)
+  console.log(`<===  Listening on port: ${app.get('port')}`)
+  if (config.has('uw')) {
+    console.log('<===    Note: Auth with UW\'s Shibboleth Service')
+    console.log('<===    requires secure HTTPS from the actual registed domain.')
+    sess.cookie.secure = true // Serve secure cookies
+  }
+  console.log('--------------------------')
 
-  app.use(session(sess));
+  app.use(session(sess))
 
-  app.use(passport.initialize());
-  app.use(passport.session());
+  app.use(passport.initialize())
+  app.use(passport.session())
 
-  app.use(flash());
-};
+  app.use(flash())
+}

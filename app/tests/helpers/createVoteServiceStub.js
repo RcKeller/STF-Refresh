@@ -1,17 +1,16 @@
-import sinon from 'sinon';
-import * as voteService from '../../services/topics';
+import sinon from 'sinon'
+import * as voteService from '../../services/topics'
 
 const createVoteServiceStub = () => ({
   replace: method => ({
     with: data => {
-      const sandbox = sinon.sandbox.create();
+      const sandbox = sinon.sandbox.create()
       sandbox.stub(voteService, 'default').returns({
         [method]: data
-      });
-      return sandbox;
+      })
+      return sandbox
     }
   })
-});
+})
 
-export default createVoteServiceStub;
-
+export default createVoteServiceStub

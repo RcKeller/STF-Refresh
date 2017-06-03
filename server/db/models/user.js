@@ -2,7 +2,7 @@
  * Defining a User Model in mongoose
  * Code modified from https://github.com/sahat/hackathon-starter
  */
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 const UserSchema = new mongoose.Schema({
   name: { type: String, default: '' },
   netID: { type: String, unique: true, lowercase: true },
@@ -15,10 +15,10 @@ const UserSchema = new mongoose.Schema({
   committee: {
     spectator: Boolean,
     member: Boolean,
-    admin: Boolean,
+    admin: Boolean
   },
   // Tokens and the google object are used by Oauth for the google (dev) strategy
   tokens: Array,
   google: Object
-});
-export default mongoose.model('User', UserSchema);
+})
+export default mongoose.model('User', UserSchema)

@@ -4,4 +4,4 @@ This includes things like authentication, etc.
 Logic coupled with a component should be in the respective duck.
 */
 
-export { default as authService } from './authentication';
+export { default as authService } from './authentication'

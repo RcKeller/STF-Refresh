@@ -1,7 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import PropTypes from 'prop-types'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
 import Helmet from 'react-helmet'
 import { Link, browserHistory } from 'react-router'
@@ -57,5 +57,5 @@ Template.propTypes = {
   router: PropTypes.object.isRequired,
   routes: PropTypes.array.isRequired,
   user: PropTypes.object
-};
+}
 export default Template

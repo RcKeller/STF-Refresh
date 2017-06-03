@@ -1,20 +1,20 @@
 /**
  * Routes for express app
  */
-import passport from 'passport';
-import db from '../db';
+import passport from 'passport'
+import db from '../db'
 import config from 'config'
 
-const usersController = db.controllers && db.controllers.users;
-const topicsController = db.controllers && db.controllers.topics;
+const usersController = db.controllers && db.controllers.users
+const topicsController = db.controllers && db.controllers.topics
 
 export default (app) => {
   // user routes
   if (usersController) {
     //  Log out from a session.
-    app.delete('/sessions', usersController.logout);
+    app.delete('/sessions', usersController.logout)
   } else {
-    console.warn('Error: DB unable to handle user routes.');
+    console.warn('Error: DB unable to handle user routes.')
   }
 
   if (db.passport && config.has('google')) {
@@ -29,7 +29,7 @@ export default (app) => {
         'https://www.googleapis.com/auth/userinfo.profile',
         'https://www.googleapis.com/auth/userinfo.email'
       ]
-    }));
+    }))
     // Google will redirect the user to this URL after authentication. Finish the
     // process by verifying the assertion. If valid, the user will be logged in.
     // Otherwise, the authentication has failed.
@@ -39,22 +39,22 @@ export default (app) => {
     app.get(
       googleCallback,
       passport.authenticate('google', { successRedirect, failureRedirect })
-    );
+    )
   }
   if (db.passport && config.has('uw')) {
     console.log('WARNING: UW Shib specified in config, but routes/API not ready yet.')
     const uwCallback = config.get('uw.callbackURL')
     const shibPlaceholder = () => console.log('Error - UW Shib not connected yet! In development.')
-    app.get(uwCallback, shibPlaceholder);
+    app.get(uwCallback, shibPlaceholder)
   }
 
   // topic routes
   if (topicsController) {
-    app.get('/topic', topicsController.all);
-    app.post('/topic/:id', topicsController.add);
-    app.put('/topic/:id', topicsController.update);
-    app.delete('/topic/:id', topicsController.remove);
+    app.get('/topic', topicsController.all)
+    app.post('/topic/:id', topicsController.add)
+    app.put('/topic/:id', topicsController.update)
+    app.delete('/topic/:id', topicsController.remove)
   } else {
-    console.warn('Error: DB unable to handle topics routes');
+    console.warn('Error: DB unable to handle topics routes')
   }
-};
+}

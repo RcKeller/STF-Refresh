@@ -1,7 +1,7 @@
-const image = require('./image');
-const javascript = require('./javascript');
-const css = require('./css');
-const less = require('./less');
+const image = require('./image')
+const javascript = require('./javascript')
+const css = require('./css')
+const less = require('./less')
 
 module.exports = ({ production = false, browser = false } = {}) => (
   [
@@ -10,4 +10,4 @@ module.exports = ({ production = false, browser = false } = {}) => (
     css({ production, browser }),
     image()
   ]
-);
+)

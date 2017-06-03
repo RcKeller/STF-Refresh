@@ -7,10 +7,10 @@ Antd includes a global inclusion of normalize.css.
 This will override global css-modules (which is a
 anti-pattern anyways).
 */
-const PATHS = require('../paths');
+const PATHS = require('../paths')
 module.exports = ({ production = false, browser = false } = {}) => ({
-    test: /\.less$/,
-    use: ['style-loader', 'css-loader', 'less-loader'
+  test: /\.less$/,
+  use: ['style-loader', 'css-loader', 'less-loader'
   ],
-    include: [PATHS.app, PATHS.modules]
-});
+  include: [PATHS.app, PATHS.modules]
+})
