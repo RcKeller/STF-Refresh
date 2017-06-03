@@ -2,9 +2,8 @@ import { combineReducers } from 'redux'
 import { routerReducer as routing } from 'react-router-redux'
 import { reducer as form } from 'redux-form'
 
-//  COMMON REDUCERS
-import user from '../reducers/user'
-//  COMPONENT REDUCERS
+
+import user from '../views/Template/Login/ducks'
 
 const rootReducer = combineReducers({
   routing, // react-router-redux

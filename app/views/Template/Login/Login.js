@@ -34,6 +34,6 @@ class Login extends React.Component {
 Login.propTypes = {
   // router: PropTypes.object.isRequired
   user: PropTypes.object,
-  logOut: PropTypes.func.isRequired
+  logOut: PropTypes.func
 };
 export default Login

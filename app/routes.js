@@ -42,13 +42,15 @@ export default (store) => {
       <Route path='/faq' breadcrumbName='F.A.Q.' component={FAQ} />
       <Route path='/about' breadcrumbName='About' component={About} />
       <Route path='/contact' breadcrumbName='Contact Us' component={Contact} />
-      <Route path='/proposals' breadcrumbName='Proposals' component={Browse}>
-        <Route path='/create' breadcrumbName='Create Proposal' component={Create} />
-      </Route>
+
+      <Route path='/proposals' breadcrumbName='Proposals' component={Browse} />
+      <Route path='/proposals/create' breadcrumbName='Create Proposal' component={Create} />
+
       <Route path='/documents' breadcrumbName='Documents' component={Documents} />
-      <Route path='/calendar' breadcrumbName='Calendar' component={Calendar}>
-        <Route path='/events' breadcrumbName='Events' component={Events} />
-      </Route>
+
+      <Route path='/calendar' breadcrumbName='Calendar' component={Calendar} />
+      <Route path='/calendar/events' breadcrumbName='Events' component={Events} />
+      
     </Route>
   )
 }
