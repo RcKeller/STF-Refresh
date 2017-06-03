@@ -45,10 +45,15 @@ export default (store) => {
         <Route path="/create" breadcrumbName="Create Proposal" component={Create}/>
       </Route>
       <Route path="/documents" breadcrumbName="Documents" component={Documents}/>
-      {/* <IndexRoute component={Vote} fetchData={fetchVoteData} />
-      <Route path="login" component={LoginOrRegister} onEnter={redirectAuth} />
-      <Route path="dashboard" component={Dashboard} onEnter={requireAuth} />
-      <Route path="about" component={About} /> */}
     </Route>
   );
 };
+
+/*
+Example routes w/ Auth:
+
+<IndexRoute component={Vote} fetchData={fetchVoteData} />
+<Route path="login" component={LoginOrRegister} onEnter={redirectAuth} />
+<Route path="dashboard" component={Dashboard} onEnter={requireAuth} />
+<Route path="about" component={About} />
+*/

@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
 import createRoutes from './routes';
-import configureStore from './store/configureStore';
+import configureStore from './redux/configureStore';
 import fetchDataForRoute from './utils/fetchDataForRoute';
 
 // Grab the state from a global injected into
