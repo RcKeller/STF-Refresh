@@ -18,8 +18,11 @@ Proposal:
 
   manifests: [populate manifest(s)],
 
-  amendments : [populate amendment(s)]
   comments: [populate comment(s)]
+
+  amendments : [populate amendment(s)]
+
+  reports: [populate report(s)]
 
 Contact:
   type: String (enum) - Primary, Budget, Dean, Student
@@ -98,11 +101,53 @@ Decision
   // TODO: Add budget, reporting and award logic here. Somewhat unclear.
 
 Block
-  
+  _id (number) (require)
+  year: Integer (require)
+  number: Integer (require)
 
-User
+  title: String (require)
+  organization: String (enum) ...
+  contacts: [populate contact(s)]
+
+  status: String (enum)
+
+  asked: Integer
+  received: Integer (optional)
+
+  content: {
+    overview: {
+      abstract: String (required),
+      objectives: [String] (required)
+    },
+    plan {
+      state: String (req),
+      strategy: String (req),
+      risk: String (req)
+    }
+  }
+
 
 Manifest
+  original: Boolean (false if partial)
+  Items: [{
+    title: String,
+    description: String,
+    quantity: Integer,
+    price: Integer,
+    priority: Integer,
+    taxExempt: Boolean (default false)
+    }]
+  tax: Integer (default 10.1),
+  total: Integer (recalculate on changes using pre)
 
-Item
--
+User:
+  authenticated:
+  netID: String,
+  name: String,
+  email: String,
+  proposals: [populate contact(s)],
+  committee: (optional, no default) {
+    spectator: Boolean
+    member: Boolean
+    admin: Boolean
+  }
