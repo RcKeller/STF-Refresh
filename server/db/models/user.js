@@ -17,6 +17,8 @@ const UserSchema = new mongoose.Schema({
     member: Boolean,
     admin: Boolean
   },
+  //  Populate the associated proposals (Use: Viewing your own proposals)
+  proposals: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Contact' }]
   // Tokens and the google object are used by Oauth for the google (dev) strategy
   tokens: Array,
   google: Object

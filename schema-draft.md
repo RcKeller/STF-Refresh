@@ -10,7 +10,7 @@ Proposal:
   organization: String (enum) ...
   contacts: [populate contact(s)]
 
-  content: [Populate content(s)]
+  body: [Populate content(s)]
 
   status: String (enum)
   asked: Integer
@@ -34,7 +34,7 @@ Contact:
   signature: Boolean (required, default false)
 
 
-Content:
+BusinessCase:
   overview: {
     abstract: String (required),
     objectives: [String] (required),
@@ -82,7 +82,7 @@ Comment
   internal: Boolean (for votes/metrics),
   user: [populate user],
   title: String (require),
-  content: String (require),
+  body: String (require),
   date: Date,
 
 Review
@@ -97,6 +97,9 @@ Review
 
 Decision
   approved: Boolean (require),
+  author: [populate User],
+  body: String (req)
+
 
   // TODO: Add budget, reporting and award logic here. Somewhat unclear.
 
@@ -114,7 +117,7 @@ Block
   asked: Integer
   received: Integer (optional)
 
-  content: {
+  body: {
     overview: {
       abstract: String (required),
       objectives: [String] (required)
