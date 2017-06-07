@@ -6,6 +6,7 @@ import db from '../db'
 import config from 'config'
 
 const usersController = db.controllers && db.controllers.users
+const contactsController = db.controllers && db.controllers.contacts
 // const topicsController = db.controllers && db.controllers.topics
 
 export default (app) => {
@@ -46,6 +47,15 @@ export default (app) => {
     const uwCallback = config.get('uw.callbackURL')
     const shibPlaceholder = () => console.log('Error - UW Shib not connected yet! In development.')
     app.get(uwCallback, shibPlaceholder)
+  }
+  //  CONTACTS controller
+  if (contactsController) {
+    app.get('/contacts', contactsController.all)
+    app.post('/contacts/:id', contactsController.add)
+    app.put('/contacts/:id', contactsController.update)
+    app.delete('/contacts/:id', contactsController.remove)
+  } else {
+    console.warn('Error: DB unable to handle Contact routes')
   }
   /*
   // topic routes
