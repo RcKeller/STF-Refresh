@@ -11,7 +11,7 @@ import { logOut } from './ducks'
 import { Button } from 'antd'
 
 // import { logout } from '../../../services/'
-import { authService } from '../../../services/'
+import { authentication } from '../../../services/'
 // @connect(
 //   state => ({ user: state.user }),
 //   dispatch => ({ logOut: bindActionCreators(logOut, dispatch) })
@@ -20,7 +20,7 @@ import { authService } from '../../../services/'
 // @connectRequest( () => logout() )
 @compose(
   connect( state => ({ user: state.user }) ),
-  connectRequest( () => authService.logout() )
+  connectRequest( () => authentication.logout() )
 )
 class Login extends React.Component {
   render ({ user, logOut } = this.props) {
