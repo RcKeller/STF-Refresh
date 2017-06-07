@@ -1,8 +1,5 @@
 // import topics from './topics'
-import users from './users'
-
-// export { topics, users }
-export { users }
+import users from './Users'
 
 export default {
   // topics,
