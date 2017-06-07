@@ -17,7 +17,7 @@ const version = process.env.VERSION || 'v1'
 
 console.log('--------------------------')
 console.log(`===>  Initialized ${ENV} web client`)
-console.log(`===>  Speaking with ${API}, version ${version}`)
+console.log(`===>  Speaking with ${API}`)
 console.log('--------------------------')
 
 export { ENV, API, version }

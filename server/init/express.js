@@ -10,11 +10,14 @@ import gzip from 'compression'
 import helmet from 'helmet'
 import config from 'config'
 import db from '../db'
+const env = config.get('env')
+const port = config.get('port')
+const version = config.get('version')
 
 export default (app) => {
-  app.set('port', (config.get('port')))
+  app.set('port', port)
 
-  if (config.has('prod')) {
+  if (env === 'prod') {
     app.use(gzip())
     // Secure your Express apps by setting various HTTP headers. Documentation: https://github.com/helmetjs/helmet
     app.use(helmet())
@@ -79,8 +82,9 @@ export default (app) => {
   }
 
   console.log('--------------------------')
-  console.log(`<===  Starting ${config.get('env')} Server . . .`)
-  console.log(`<===  Listening on port: ${app.get('port')}`)
+  console.log(`<===  Starting ${env} API . . .`)
+  console.log(`<===  Release version: ${version}`)
+  console.log(`<===  Listening on port: ${port}`)
   if (config.has('uw')) {
     console.log('<===    Note: Auth with UW\'s Shibboleth Service')
     console.log('<===    requires secure HTTPS from the actual registed domain.')
