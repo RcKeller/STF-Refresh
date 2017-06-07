@@ -6,5 +6,4 @@ In essense, these are "getters" framed in the sense of a feature/service that
 isn't coupled with a specific view.
 */
 
-// export { default as authService } from './authentication'
-export { default as authService } from './authentication-test'
+export { default as authentication } from './authentication'

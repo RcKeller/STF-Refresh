@@ -7,18 +7,18 @@ this JS file will provide the requisite config data.
 This is actually a good thing, thus config can't be hijacked for
 API keys and security files.
 */
-const env = {
-  env: process.env.NODE_ENV,
-  dev: process.env.NODE_ENV === 'development',
-  prod: process.env.NODE_ENV === 'production',
-  api: (process.env.NODE_ENV === 'development'
-    ? 'http://localhost:3000'
-    : 'https://demo-reactgo.herokuapp.com'
-  )
-}
+const ENV = process.env.NODE_ENV
+// const DEV: process.env.NODE_ENV === 'development',
+// const PROD: process.env.NODE_ENV === 'production',
+const API = (process.env.NODE_ENV === 'development'
+  ? 'http://localhost:3000'
+  : 'https://demo-reactgo.herokuapp.com'
+)
+
 console.log('--------------------------')
-console.log(`===>  Initialized ${env.env} web client`)
-console.log(`===>  Speaking with ${env.api}`)
+console.log(`===>  Initialized ${ENV} web client`)
+console.log(`===>  Speaking with ${API}`)
 console.log('--------------------------')
 
-export default env
+export { ENV, API }
+// export { ENV, API }

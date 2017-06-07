@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { compose, bindActionCreators } from 'redux';
 import {
   connectRequest
 } from 'redux-query';
@@ -10,14 +10,18 @@ import { logOut } from './ducks'
 
 import { Button } from 'antd'
 
-import { logout } from '../../../services/'
-
+// import { logout } from '../../../services/'
+import { authService } from '../../../services/'
 // @connect(
 //   state => ({ user: state.user }),
 //   dispatch => ({ logOut: bindActionCreators(logOut, dispatch) })
 // )
-@connect( state => ({ user: state.user }) )
-@connectRequest( () => logout() )
+// @connect( state => ({ user: state.user }) )
+// @connectRequest( () => logout() )
+@compose(
+  connect( state => ({ user: state.user }) ),
+  connectRequest( () => authService.logout() )
+)
 class Login extends React.Component {
   render ({ user, logOut } = this.props) {
     return (
