@@ -1,4 +1,3 @@
-
 /*
 ENVIRONMENT CONFIG FOR CLIENT
 The client side is walled off from the filesystem,
@@ -14,11 +13,11 @@ const API = (process.env.NODE_ENV === 'development'
   ? 'http://localhost:3000'
   : 'https://demo-reactgo.herokuapp.com'
 )
+const version = process.env.VERSION || 'v1'
 
 console.log('--------------------------')
 console.log(`===>  Initialized ${ENV} web client`)
-console.log(`===>  Speaking with ${API}`)
+console.log(`===>  Speaking with ${API}, version ${version}`)
 console.log('--------------------------')
 
-export { ENV, API }
-// export { ENV, API }
+export { ENV, API, version }

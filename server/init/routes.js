@@ -4,6 +4,7 @@
 import passport from 'passport'
 import db from '../db'
 import config from 'config'
+const version = config.get('version')
 
 const usersController = db.controllers && db.controllers.users
 const contactsController = db.controllers && db.controllers.contacts
@@ -50,10 +51,10 @@ export default (app) => {
   }
   //  CONTACTS controller
   if (contactsController) {
-    app.get('/contacts', contactsController.all)
-    app.post('/contacts/:id', contactsController.add)
-    app.put('/contacts/:id', contactsController.update)
-    app.delete('/contacts/:id', contactsController.remove)
+    app.get(`${version}/contacts`, contactsController.all)
+    app.post(`${version}/contacts/:id`, contactsController.add)
+    app.put(`${version}/contacts/:id`, contactsController.update)
+    app.delete(`${version}/contacts/:id`, contactsController.remove)
   } else {
     console.warn('Error: DB unable to handle Contact routes')
   }

@@ -7,3 +7,4 @@ isn't coupled with a specific view.
 */
 
 export { default as authentication } from './authentication'
+export { default as contacts } from './contacts'
