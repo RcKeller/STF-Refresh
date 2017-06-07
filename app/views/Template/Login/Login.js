@@ -2,16 +2,22 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
+import {
+  connectRequest
+} from 'redux-query';
 import { Link, browserHistory } from 'react-router'
 import { logOut } from './ducks'
 
 import { Button } from 'antd'
 
-@connect(
-  state => ({ user: state.user }),
-  dispatch => ({ logOut: bindActionCreators(logOut, dispatch) })
-)
+import { logout } from '../../../services/'
+
+// @connect(
+//   state => ({ user: state.user }),
+//   dispatch => ({ logOut: bindActionCreators(logOut, dispatch) })
+// )
+@connect( state => ({ user: state.user }) )
+@connectRequest( () => logout() )
 class Login extends React.Component {
   render ({ user, logOut } = this.props) {
     return (
