@@ -16,7 +16,8 @@
     "build": "npm run clean && cross-env NODE_ENV=production npm run webpack -- --env.browser && cross-env NODE_ENV=production npm run webpack -- --env.server",
     "webpack": "webpack --colors --display-error-details --config ./webpack/webpack.config.js",
     "test": "mocha ./app/tests/setup.js --compilers css:./app/tests/compilers/css ./app/**/*-test.js",
-    "test:watch": "mocha ./app/tests/setup.js --watch --compilers css:./app/tests/compilers/css ./app/**/*-test.js"
+    "test:watch": "mocha ./app/tests/setup.js --watch --compilers css:./app/tests/compilers/css ./app/**/*-test.js",
+    "component": "generact"
   },
   "author": "Ryan Keller",
   "license": "Apache-2.0",
@@ -74,6 +75,7 @@
     "express-session": "^1.15.2",
     "extract-text-webpack-plugin": "^2.1.0",
     "file-loader": "^0.11.1",
+    "generact": "^0.1.1",
     "helmet": "^3.5.0",
     "json-loader": "^0.5.4",
     "less": "^2.7.2",
