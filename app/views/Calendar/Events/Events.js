@@ -6,7 +6,7 @@ import React from 'react'
 // @connect(
 //   state => ({ content: state.content.thiscomponent })
 // )
-import styles from './Eveents.css'
+import styles from './Events.css'
 const Events = () => (
   <article className={styles['article']}>
     Placeholder - Events

@@ -15,27 +15,20 @@ const ProposalSchema = new mongoose.Schema({
   category: { type: String, required: true },
   uac: { type: Boolean, default: false }, // UAC === uniform access / tri-campus.
   organization: { type: String, required: true }, // === department in legacy code
-  // Contacts - array of objects, can iterate over via client with Object.keys().forEach(k, i) {}
-  contacts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Contact' }],
-  // Body contains the business case/details, de-coupled from the core doc so that searching proposals is more efficient.
-  body: { type: mongoose.Schema.Types.ObjectId, ref: 'BusinessCase' },
   //  Proposal status, differs from decisions in that this is "summary" data for table viewing.
   status: { type: String, default: 'In Review' },
   asked: Number,
   received: Number,
+  // Contacts - array of objects, can iterate over via client with Object.keys().forEach(k, i) {}
+
+  contacts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Contact' }],
+  // Body contains the business case/details, de-coupled from the core doc so that searching proposals is more efficient.
+  body: { type: mongoose.Schema.Types.ObjectId, ref: 'BusinessCase' },
   /*
   Manifests are the items requested. One is listed as the "original" (Boolean),
   the others are partial or revised manifests that reflect what is actually funded.
   */
   manifests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Manifest' }],
-  /*
-  Comments are user endorsements of a proposal. They're abstracted out
-  so that we can view "feeds" of endorsements and examine trends in user activity.
-  */
-  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]
-
-  //  The decision contains details about the actual award, provisions, etc.
-  decision: { type: mongoose.Schema.Types.ObjectId, ref: 'Decision' },
   /*
   Amendments, AKA "supplementals", are revisions to the original propsal.
   These will be shown as "updates" or revisions to the proposal, but don't
@@ -45,6 +38,13 @@ const ProposalSchema = new mongoose.Schema({
   amendments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Amendment' }],
   // TODO: Reports (they're unclear to me). Renders in another tab.
   reports: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Report' }],
+  //  The decision contains details about the actual award, provisions, etc.
+  decision: { type: mongoose.Schema.Types.ObjectId, ref: 'Decision' },
+  /*
+  Comments are user endorsements of a proposal. They're abstracted out
+  so that we can view "feeds" of endorsements and examine trends in user activity.
+  */
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]
 })
 export default mongoose.model('Proposal', ProposalSchema)
 

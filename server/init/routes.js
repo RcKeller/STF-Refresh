@@ -6,7 +6,7 @@ import db from '../db'
 import config from 'config'
 
 const usersController = db.controllers && db.controllers.users
-const topicsController = db.controllers && db.controllers.topics
+// const topicsController = db.controllers && db.controllers.topics
 
 export default (app) => {
   // user routes
@@ -47,7 +47,7 @@ export default (app) => {
     const shibPlaceholder = () => console.log('Error - UW Shib not connected yet! In development.')
     app.get(uwCallback, shibPlaceholder)
   }
-
+  /*
   // topic routes
   if (topicsController) {
     app.get('/topic', topicsController.all)
@@ -57,4 +57,5 @@ export default (app) => {
   } else {
     console.warn('Error: DB unable to handle topics routes')
   }
+  */
 }

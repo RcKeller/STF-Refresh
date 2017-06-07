@@ -7,6 +7,8 @@ const UserSchema = new mongoose.Schema({
   name: { type: String, default: '' },
   netID: { type: String, unique: true, lowercase: true },
   email: { type: String, unique: true, lowercase: true },
+  //  Populate the associated proposals (Use: Viewing your own proposals)
+  proposals: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Contact' }],
   /*
   The commitee(orization) object will not pass to the client unless
   there's some sort of elevated privlege. Delete this object to remove
@@ -17,8 +19,6 @@ const UserSchema = new mongoose.Schema({
     member: Boolean,
     admin: Boolean
   },
-  //  Populate the associated proposals (Use: Viewing your own proposals)
-  proposals: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Contact' }]
   // Tokens and the google object are used by Oauth for the google (dev) strategy
   tokens: Array,
   google: Object

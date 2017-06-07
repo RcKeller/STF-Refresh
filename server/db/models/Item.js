@@ -1,6 +1,8 @@
 
 import mongoose from 'mongoose'
 const ItemSchema = new mongoose.Schema({
+  //  Items are tied to manifests, tied to proposals.
+  manifest: { type: mongoose.Schema.Types.ObjectId, ref: 'Manifest' },
   title: { type: String, required: true },
   // Description will contain the old "justification" element at the end,
   description: String,

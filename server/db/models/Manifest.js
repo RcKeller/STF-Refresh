@@ -1,6 +1,7 @@
 
 import mongoose from 'mongoose'
 const ManifestSchema = new mongoose.Schema({
+  proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
   // Is this the initial proposition? If not, it's a "partial" manifest for what was actually funded.
   original: { type: Boolean, default: false },
   // Items in the manifest.
