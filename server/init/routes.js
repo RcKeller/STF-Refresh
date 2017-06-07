@@ -51,10 +51,10 @@ export default (app) => {
   }
   //  CONTACTS controller
   if (contactsController) {
-    app.get(`${version}/contacts`, contactsController.all)
-    app.post(`${version}/contacts/:id`, contactsController.add)
-    app.put(`${version}/contacts/:id`, contactsController.update)
-    app.delete(`${version}/contacts/:id`, contactsController.remove)
+    app.get(`/${version}/contacts`, contactsController.all)
+    app.post(`/${version}/contacts/:id`, contactsController.add)
+    app.put(`/${version}/contacts/:id`, contactsController.update)
+    app.delete(`/${version}/contacts/:id`, contactsController.remove)
   } else {
     console.warn('Error: DB unable to handle Contact routes')
   }
