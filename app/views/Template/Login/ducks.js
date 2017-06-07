@@ -7,34 +7,31 @@ https://medium.com/front-end-hacking/structuring-react-and-redux-applications-25
 /* *****
 ACTIONS
 ***** */
-import { authService } from '../../../services'
+import { authentication } from '../../../services'
+import { mutateAsync } from 'redux-query';
 
-export function beginLogout () {
-  return { type: 'LOGOUT_USER'}
-}
-
-export function logoutSuccess () {
-  return { type: 'LOGOUT_SUCCESS_USER' }
-}
-
-export function logoutError () {
-  return { type: 'LOGOUT_ERROR_USER' }
-}
-
-export function logOut () {
-  return (dispatch) => {
-    dispatch(beginLogout())
-
-    return authService().logOut()
-      .then((response) => {
-        dispatch(logoutSuccess())
-        try { location.reload() } catch (e) { console.log('Failed to refresh post-logout') }
-      })
-      .catch((err) => {
-        dispatch(logoutError())
-      })
-  }
-}
+const logOut = () => mutateAsync(authentication.logout())
+// .then(() =>{
+//   try { location.reload() }
+//   catch (e) { console.log('Failed to refresh post-logout') }
+// }
+// )
+export { logOut }
+// export function logOut () {
+//
+//   return (dispatch) => {
+//     dispatch(beginLogout())
+//
+//     return authentication.logout()
+//       // .then((response) => {
+//       //   dispatch(logoutSuccess())
+//       //   try { location.reload() } catch (e) { console.log('Failed to refresh post-logout') }
+//       // })
+//       // .catch((err) => {
+//       //   dispatch(logoutError())
+//       // })
+//   }
+// }
 
 /* *****
 REDUCERS

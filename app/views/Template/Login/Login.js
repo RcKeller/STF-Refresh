@@ -11,16 +11,21 @@ import { logOut } from './ducks'
 import { Button } from 'antd'
 
 // import { logout } from '../../../services/'
-import { authentication } from '../../../services/'
+// import { authentication } from '../../../services/'
 // @connect(
 //   state => ({ user: state.user }),
 //   dispatch => ({ logOut: bindActionCreators(logOut, dispatch) })
 // )
 // @connect( state => ({ user: state.user }) )
 // @connectRequest( () => logout() )
-@compose(
-  connect( state => ({ user: state.user }) ),
-  connectRequest( () => authentication.logout() )
+// @compose(
+//   connect( state => ({ user: state.user }) ),
+//   dispatch => ({ logOut: bindActionCreators(logOut, dispatch) }),
+//   connectRequest( () => authentication.logout() )
+// )
+@connect(
+  state => ({ user: state.user }),
+  dispatch => ({ logOut: bindActionCreators(logOut, dispatch) })
 )
 class Login extends React.Component {
   render ({ user, logOut } = this.props) {
