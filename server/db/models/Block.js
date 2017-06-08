@@ -1,4 +1,3 @@
-
 import mongoose from 'mongoose'
 const BlockSchema = new mongoose.Schema({
   /*
@@ -35,8 +34,7 @@ const BlockSchema = new mongoose.Schema({
   status: { type: String, default: 'In Review' },
   asked: Number,
   received: Number,
-  //  The decision contains details about the actual award, provisions, etc.
-  decision: { type: mongoose.Schema.Types.ObjectId, ref: 'Decision' },
+
 })
 export default mongoose.model('Block', BlockSchema)
 /*
