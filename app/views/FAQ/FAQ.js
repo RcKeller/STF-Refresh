@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Collapse } from 'antd'
+import { Collapse } from 'uw-antd'
 const Panel = Collapse.Panel
 
 //  TODO: Reducer pls

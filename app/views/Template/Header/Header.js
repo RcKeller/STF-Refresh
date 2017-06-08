@@ -3,7 +3,7 @@ import React from 'react'
 
 import Helmet from 'react-helmet'
 
-import { Layout } from 'antd'
+import { Layout } from 'uw-antd'
 const { Header: AntHeader } = Layout
 
 const Header = () => (

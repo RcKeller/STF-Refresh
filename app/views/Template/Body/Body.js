@@ -13,7 +13,7 @@ function itemRender(route, params, routes, paths) {
 }
 
 
-import { Breadcrumb } from 'antd'
+import { Breadcrumb } from 'uw-antd'
 
 import styles from './Body.css'
 const Body = ({routes, children}) => (

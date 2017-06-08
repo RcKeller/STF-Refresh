@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router'
 
-import { Row, Col, Card } from 'antd'
+import { Row, Col, Card } from 'uw-antd'
 
 const leadership = [
   {
