@@ -11,11 +11,6 @@ import { authentication } from '../../../services'
 import { mutateAsync } from 'redux-query';
 
 const logOut = () => mutateAsync(authentication.logout())
-// .then(() =>{
-//   try { location.reload() }
-//   catch (e) { console.log('Failed to refresh post-logout') }
-// }
-// )
 export { logOut }
 // export function logOut () {
 //
