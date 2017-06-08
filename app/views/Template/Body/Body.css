@@ -1,6 +1,8 @@
 .breadcrumb {
   margin: 24px 0 0 0;
+  padding: 0 48px;
   @media (min-width: 992px) {
     margin: 24px 48px;
+    padding: 0;
   }
 }

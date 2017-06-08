@@ -36,14 +36,14 @@ class Template extends React.Component {
           title='UW Student Tech Fee Commitee'
           titleTemplate='%s - Student Tech Fee'
         />
-        <Header />
+        <Sider breakpoint='md'
+          width={240} collapsedWidth='0'
+          className={styles['nav']}>
+          <Login router={router} />
+          <Nav router={router} />
+        </Sider>
         <Layout className={styles['body']}>
-          <Sider breakpoint='md'
-            width={240} collapsedWidth='0'
-            className={styles['nav']}>
-            <Login router={router} />
-            <Nav router={router} />
-          </Sider>
+          <Header />
           <Content>
             <Body routes={routes} children={children} />
           </Content>

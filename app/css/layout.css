@@ -1,10 +1,11 @@
 :root {
   --headerHeight: 70px;
   --header: {
-    height: var(--headerHeight, 70px);
+    height: var(--headerHeight, 80px);
   }
   --body {
-    height: calc(100vh - var(headerHeight, 70px));
+    height: 100vh;
+    /*height: 100%;*/
     z-index: 9;
   }
   --page {
