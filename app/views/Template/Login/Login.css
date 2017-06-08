@@ -1,0 +1,32 @@
+@import '../../../css/layout';
+@import '../../../css/colors';
+
+.button {
+  width: 196px;
+  margin: 8px 22px;
+  /*padding: 8px;*/
+  padding: 8px 8px 8px 60px !important;
+  color: white;
+  background-color: var(--purple, purple);
+  border-radius: 4px;
+  border-color: none;
+  border-style: none;
+}
+
+.button strong, small {
+  display: inline-block;
+  text-align: left;
+}
+.button strong {
+  display: block;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 32px;
+}
+.button small {
+  display: block;
+  color: #b3a4cc;
+  font-size: 12px;
+  font-weight: 300;
+  line-height: 16px;
+}

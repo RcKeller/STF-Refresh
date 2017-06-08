@@ -1,7 +1,8 @@
 
 :root {
 
-  --fontFace:           'Roboto', Helvetica, Arial, sans-serif;
+  /*--fontFace:           'Roboto', Helvetica, Arial, sans-serif;*/
+  --fontFace:           "Open Sans", sans-serif;
 
   --fontSmall:                12px;
   --fontMedium:               16px;

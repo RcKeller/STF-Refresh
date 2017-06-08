@@ -19,11 +19,6 @@ const Nav = ({ router }) => (
     selectedKeys={[router.location.pathname]}
     onClick={(i) => i.key && router.push(i.key)}
   >
-    <Alert type='info' banner showIcon
-      className={styles['event']}
-      message='Meetings'
-      description={<span>Every Monday<br />3:30 - 5:30PM<br />HUB 305</span>}
-    />
     <SubMenu key='sub1' title={<span><Icon type='solution' /><span>Proposals</span></span>}>
       <ItemGroup key='g1' title='Browse'>
         <Item key='/proposals'>All Proposals</Item>
@@ -54,6 +49,11 @@ const Nav = ({ router }) => (
       <Item key='/calendar'>Schedule</Item>
       <Item key='/events'>Upcoming Events</Item>
     </SubMenu>
+    <Alert type='info' banner showIcon
+      className={styles['event']}
+      message='Meetings'
+      description={<span>Every Monday<br />3:30 - 5:30PM<br />HUB 305</span>}
+    />
   </Menu>
 )
 export default Nav

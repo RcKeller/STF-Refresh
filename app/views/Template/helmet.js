@@ -1,4 +1,4 @@
-import favicon from '../images/favicon.ico';
+import favicon from '../../images/favicon.ico';
 
 const meta = [
     { charset: 'utf-8' },
@@ -25,9 +25,9 @@ const meta = [
     { name: 'apple-mobile-web-app-status-bar-style', content: 'black' },
     { name: 'apple-mobile-web-app-title', content: 'UW STF' },
 ]
-const links = [
+const link = [
     // Add to homescreen for Chrome on Android
     { rel: 'icon', href: favicon }
   ]
 
-export default { meta, links }
+export default { meta, link }

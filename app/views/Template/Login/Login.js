@@ -8,7 +8,7 @@ import {
 import { Link, browserHistory } from 'react-router'
 import { logOut } from './ducks'
 
-import { Button } from 'antd'
+// import { Button } from 'antd'
 
 // import { logout } from '../../../services/'
 // import { authentication } from '../../../services/'
@@ -23,23 +23,47 @@ import { Button } from 'antd'
 //   dispatch => ({ logOut: bindActionCreators(logOut, dispatch) }),
 //   connectRequest( () => authentication.logout() )
 // )
+
+const LoginButton = ({title, subtitle}) => {
+  <button className={styles['button']}>
+    <div className={styles['text']}>
+      <strong>{title}</strong>
+      <small>{subtitle}</small>
+    </div>
+  </button>
+}
+
+import styles from './Login.css'
 @connect(
   state => ({ user: state.user }),
   dispatch => ({ logOut: bindActionCreators(logOut, dispatch) })
 )
 class Login extends React.Component {
   render ({ user, logOut } = this.props) {
+    /*
+    This function determines the highest authN level of the user.
+    It's ugly and inefficient, because the schema was built as an object.
+    However, this is the only time we need this information.
+    */
+    const privleges = [
+      user.committee.admin && 'Admin',
+      user.committee.member && 'Member',
+      user.committee.spectator && 'Ex-Officio'
+    ]
+    const role = privleges.filter((e) => {if (e) return e})[0]
     return (
       <div>
-        {user.authenticated
-          ? <Button size='large' onClick={logOut}>
-              Log Out
-            </Button>
-          : <a href='/auth/google'>
-              <Button size='large' href='/auth/google'>
-              Log in with Google
-              </Button>
-            </a>
+        {!user.authenticated
+        ? <a href='/auth/google'>
+            <button className={styles['button']} >
+              <strong>UW NetID</strong>
+              <small>WEBLOGIN</small>
+            </button>
+          </a>
+        : <button className={styles['button']} onClick={logOut} >
+            <strong>{user.netID}</strong>
+            <small>{role ? role : 'Logged in'}</small>
+          </button>
         }
       </div>
     )
