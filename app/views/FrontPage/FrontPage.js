@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Row, Col, Card, Alert, Timeline } from 'antd'
+import { Row, Col, Card, Alert, Timeline } from 'uw-antd'
 const Item = Timeline.Item
 
 import styles from './FrontPage.css'

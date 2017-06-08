@@ -38,7 +38,7 @@ const link = [
   { rel: 'icon', href: favicon }
 ]
 
-import { Layout } from 'antd'
+import { Layout } from 'uw-antd'
 const { Content, Sider } = Layout
 
 import Header from './Header/Header'

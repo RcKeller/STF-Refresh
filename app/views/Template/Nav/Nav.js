@@ -7,7 +7,7 @@ import { Link, browserHistory } from 'react-router'
 
 import Helmet from 'react-helmet'
 
-import { Menu, Icon, Button, Alert } from 'antd'
+import { Menu, Icon, Button, Alert } from 'uw-antd'
 const SubMenu = Menu.SubMenu
 const ItemGroup = Menu.ItemGroup
 const Item = Menu.Item

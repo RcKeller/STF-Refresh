@@ -28,7 +28,7 @@ module.exports = ({ production = false, browser = false } = {}) => {
     https://github.com/ant-design/babel-plugin-import/issues/58
     https://github.com/ant-design/babel-plugin-import#style
     */
-    ['import', { libraryName: 'antd' }]
+    ['import', { libraryName: 'uw-antd' }]
   ]
   if (production) {
     plugins.push([

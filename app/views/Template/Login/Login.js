@@ -8,7 +8,7 @@ import {
 import { Link, browserHistory } from 'react-router'
 import { logOut } from './ducks'
 
-// import { Button } from 'antd'
+// import { Button } from 'uw-antd'
 
 // import { logout } from '../../../services/'
 // import { authentication } from '../../../services/'
@@ -23,15 +23,6 @@ import { logOut } from './ducks'
 //   dispatch => ({ logOut: bindActionCreators(logOut, dispatch) }),
 //   connectRequest( () => authentication.logout() )
 // )
-
-const LoginButton = ({title, subtitle}) => {
-  <button className={styles['button']}>
-    <div className={styles['text']}>
-      <strong>{title}</strong>
-      <small>{subtitle}</small>
-    </div>
-  </button>
-}
 
 import styles from './Login.css'
 @connect(

@@ -13,5 +13,5 @@ module.exports = {
   compiled: path.resolve(CURRENT_WORKING_DIR, 'compiled'),
   public: '/assets/', // use absolute path for css-loader?
   modules: path.resolve(CURRENT_WORKING_DIR, 'node_modules'),
-  antd: path.resolve(CURRENT_WORKING_DIR, 'node_modules/antd')
+  antd: path.resolve(CURRENT_WORKING_DIR, 'node_modules/uw-antd')
 }

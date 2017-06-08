@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Col, Card } from 'antd'
+import { Col, Card } from 'uw-antd'
 
 import styles from './Bio.css'
 const Bio = ({name, position, description, photo}) => (
