@@ -4,8 +4,9 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import Helmet from 'react-helmet'
-import { Link, browserHistory } from 'react-router'
+import { meta, links } from '../meta'
 
+import { Link, browserHistory } from 'react-router'
 import { Layout } from 'antd'
 const { Content, Sider } = Layout
 
@@ -33,8 +34,10 @@ class Template extends React.Component {
     return (
       <Layout className={styles['template']}>
         <Helmet
-          title='UW Student Tech Fee Commitee'
+          title='UW Student Tech Fee'
           titleTemplate='%s - Student Tech Fee'
+          meta={meta}
+
         />
         <Sider breakpoint='md'
           width={240} collapsedWidth='0'
