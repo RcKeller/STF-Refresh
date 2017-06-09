@@ -10,6 +10,15 @@ const FrontPage = () => (
       <Col className='gutter-row' xs={24}>
         <h1>About the STF Committee</h1>
         <p>The STF committee...</p>
+        <h2>H2</h2>
+        <p>The STF committee...</p>
+        <h3>H3</h3>
+        <p>The STF committee...</p>
+        <h4>H4</h4>
+        <p>The STF committee...</p>
+        <h5>H5</h5>
+        <p>The STF committee...</p>
+        <h6>H6</h6>
       </Col>
     </Row>
     <Row gutter={16}>
