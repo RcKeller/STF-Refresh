@@ -1,15 +1,21 @@
-import Contact from './models/contact'
+import mongoose from 'mongoose'
 import config from 'config'
 import faker from 'faker'
 
+import Contact from './models/contact'
+//  For faking Object ID's. THESE WILL BE RANDOM AND NOT POINT TO REAL DATA.
+
 function dummyContacts (min) {
+  //  Check the db for existing data satisfying min required
   Contact.count().exec((err, count) => {
     if (err) {
       console.warn(`Unable to count Contact schema: ${err}`)
     } else if (count < min) {
-      try {
-        const contactA = new Contact({
-          // proposal: '',
+      //  If it didn't, inject dummies.
+      let fakeContacts = []
+      for (let i = 0; i < min; i++) {
+        fakeContacts[i] = new Contact({
+          proposal: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
           role: 'primary',
           netID: faker.internet.userName(),
           name: faker.name.findName(),
@@ -18,20 +24,11 @@ function dummyContacts (min) {
           mailbox: faker.address.secondaryAddress(),
           signature: false
         })
-        console.log(contactA)
-        Contact.create([contactA], (error) => {
-          if (!error) { console.log(`SEED: Created fake contacts`) }
-        })
-
-          // const post1 = new Post({ name: 'Admin', title: 'Hello MERN', slug: 'hello-mern', cuid: 'cikqgkv4q01ck7453ualdn3hd', content: content1 });
-          // const post2 = new Post({ name: 'Admin', title: 'Lorem Ipsum', slug: 'lorem-ipsum', cuid: 'cikqgkv4q01ck7453ualdn3hf', content: content2 });
-          //
-          // Post.create([post1, post2], (error) => {
-          //  if (!error) {
-          //    // console.log('ready to go....');
-          //  }
-          // });
-      } catch (err) { console.warn(`Seed error: ${err}`) }
+      }
+      //  Create will push our fakes into the DB.
+      Contact.create(fakeContacts, (error) => {
+        if (!error) { console.log(`SEED: Created fake contacts (${fakeContacts.length})`) }
+      })
     }
   })
 }
