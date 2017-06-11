@@ -29,7 +29,7 @@ const BlockSchema = new mongoose.Schema({
       strategy: { type: String, required: true },
       risk: { type: String, required: true },
     }
-  }
+  },
   //  Proposal status, differs from decisions in that this is "summary" data for table viewing.
   status: { type: String, default: 'In Review' },
   asked: Number,

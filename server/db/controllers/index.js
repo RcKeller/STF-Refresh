@@ -1,8 +1,11 @@
 // import topics from './topics'
-import users from './Users'
-import contacts from './Contacts'
+import users from './users'
+import contacts from './contacts'
+
+import blocks from './blocks'
 
 export default {
   users,
-  contacts
+  contacts,
+  blocks
 }

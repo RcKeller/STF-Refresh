@@ -1,47 +1,47 @@
 import passport from 'passport'
-import Contact from '../models/contact'
+import Block from '../models/block'
 
 /* *****
   List
 ***** */
 export function all (req, res) {
-  Contact.find({}).exec((err, Contacts) => {
-    if (err) { return res.status(500).send('Server error retrieving all Contact documents') }
-    return res.json(Contacts)
+  Block.find({}).exec((err, Blocks) => {
+    if (err) { return res.status(500).send('Server error retrieving all Block documents') }
+    return res.json(Blocks)
   })
 }
 
 /* *****
-  Add a Contact
+  Add a Block
 ***** */
 export function add (req, res) {
-  Contact.create(req.body, (err) => {
+  Block.create(req.body, (err) => {
     if (err) { return res.status(400).send(err) }
     return res.status(200).send('OK')
   })
 }
 
 /* *****
-  Update a Contact
+  Update a Block
 ***** */
 export function update (req, res) {
   const query = { id: req.params.id }
   const omitKeys = ['id', '_id', '_v']
   const data = _.omit(req.body, omitKeys)
 
-  Contact.findOneAndUpdate(query, data, (err) => {
-    if (err) { return res.status(500).send('Server error saving Contact') }
+  Block.findOneAndUpdate(query, data, (err) => {
+    if (err) { return res.status(500).send('Server error saving Block') }
     return res.status(200).send('Updated successfully')
   })
 }
 
 /* *****
-  Remove a Contact
+  Remove a Block
 ***** */
 export function remove (req, res) {
   const query = { id: req.params.id }
-  Contact.findOneAndRemove(query, (err) => {
-    if (err) { return res.status(500).send('Server error deleting Contact') }
+  Block.findOneAndRemove(query, (err) => {
+    if (err) { return res.status(500).send('Server error deleting Block') }
     return res.status(200).send('Removed Successfully')
   })
 }

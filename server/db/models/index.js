@@ -1,4 +1,5 @@
 export default function loadModels () {
   require('./user')
-  require('./Contact')
+  require('./contact')
+  require('./block')
 }

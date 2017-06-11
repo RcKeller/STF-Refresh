@@ -1,26 +1,51 @@
-/**
- * Routes for express app
- */
 import passport from 'passport'
 import db from '../db'
 import config from 'config'
 const version = config.get('version')
 
+/*
+STANDARD CONTROLLERS:
+These have core get/post/put/delete requests, the later 3 of which are tied to ID.
+Routes are automatically mapped for core services, then custom ones get mapped later.
+*/
+const api = {
+  contacts: db.controllers && db.controllers.contacts,
+  blocks: db.controllers && db.controllers.blocks,
+}
+/*
+CUSTOM CONTROLLERS:
+These don't contain core services, routes are bespoke.
+*/
 const usersController = db.controllers && db.controllers.users
-const contactsController = db.controllers && db.controllers.contacts
-// const topicsController = db.controllers && db.controllers.topics
 
+//  GENERATE ROUTES
 export default (app) => {
-  // user routes
-  if (usersController) {
-    //  Log out from a session.
-    app.delete('/sessions', usersController.logout)
-  } else {
-    console.warn('Error: DB unable to handle user routes.')
-  }
+  //  CORE SERVICES
+  Object.keys(api).forEach(function(key) {
+    const service = api[key]
+    if (typeof service != 'undefined') {
+      app.get(`/${version}/${key}`, service.all)
+      app.post(`/${version}/${key}/:id`, service.add)
+      app.put(`/${version}/${key}/:id`, service.update)
+      app.delete(`/${version}/${key}/:id`, service.remove)
+      console.log(`API:  Core services live for: ${key}`)
+    } else { console.warn(`Error: DB unable to handle ${key} routes`) }
+  })
 
+  // USER PROFILE ROUTES
+  if (usersController) {
+    app.delete('/sessions', usersController.logout)
+  } else { console.warn('Error: DB unable to handle user routes.') }
+  //  PRODUCTION AUTH
+  if (db.passport && config.has('uw')) {
+    console.log('WARNING: UW Shib specified in config, but routes/API not ready yet.')
+    const uwCallback = config.get('uw.callbackURL')
+    const shibPlaceholder = () => console.log('Error - UW Shib not connected yet! In development.')
+    app.get(uwCallback, shibPlaceholder)
+    console.log('AUTH: Shibboleth Enabled')
+  }
+  //  DEV MODE MOCK AUTH
   if (db.passport && config.has('google')) {
-    // google auth
     // Redirect the user to Google for authentication. When complete, Google
     // will redirect the user back to the application at
     // /auth/google/return
@@ -42,31 +67,7 @@ export default (app) => {
       googleCallback,
       passport.authenticate('google', { successRedirect, failureRedirect })
     )
+    console.log('AUTH: Google "Psuedo-Auth" Enabled')
   }
-  if (db.passport && config.has('uw')) {
-    console.log('WARNING: UW Shib specified in config, but routes/API not ready yet.')
-    const uwCallback = config.get('uw.callbackURL')
-    const shibPlaceholder = () => console.log('Error - UW Shib not connected yet! In development.')
-    app.get(uwCallback, shibPlaceholder)
-  }
-  //  CONTACTS controller
-  if (contactsController) {
-    app.get(`/${version}/contacts`, contactsController.all)
-    app.post(`/${version}/contacts/:id`, contactsController.add)
-    app.put(`/${version}/contacts/:id`, contactsController.update)
-    app.delete(`/${version}/contacts/:id`, contactsController.remove)
-  } else {
-    console.warn('Error: DB unable to handle Contact routes')
-  }
-  /*
-  // topic routes
-  if (topicsController) {
-    app.get('/topic', topicsController.all)
-    app.post('/topic/:id', topicsController.add)
-    app.put('/topic/:id', topicsController.update)
-    app.delete('/topic/:id', topicsController.remove)
-  } else {
-    console.warn('Error: DB unable to handle topics routes')
-  }
-  */
+
 }
