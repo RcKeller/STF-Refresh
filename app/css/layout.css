@@ -1,7 +1,7 @@
 :root {
-  --headerHeight: 70px;
+  --headerHeight: 60px;
   --header: {
-    height: var(--headerHeight, 80px);
+    height: var(--headerHeight, 60px);
   }
   --body {
     height: 100vh;

@@ -1,22 +1,22 @@
 import React from 'react'
-// import { Link, browserHistory } from 'react-router'
+import { Link } from 'react-router'
 
 import Helmet from 'react-helmet'
 
 import { Layout } from 'antd'
 const { Header: AntHeader } = Layout
-// import uwPatch from './Header.svg';
-import w from '../../../images/w.svg';
-import uw from '../../../images/uw.svg';
-// import letter from './Letter.svg';
-// import logo from './Logo.svg';
+
+import stf from '../../../images/logoname.png'
+import w from '../../../images/w.svg'
+
+import styles from './Header.css'
 const Header = () => (
   <AntHeader>
-    <div height='60' width='200'>
-    {w}
-    <img src={uw} />
-    </div>
-    UW & STF Header here.
+    <Link to='/'>
+    {/* <img src={uw} height={50} width='50%'/> */}
+      <img src={w} height={50} className={styles['w']} />
+      <img src={stf} height={50} className={styles['stf']} />
+    </Link>
   </AntHeader>
 )
 export default Header
