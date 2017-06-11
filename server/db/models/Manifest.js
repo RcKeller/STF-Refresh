@@ -7,7 +7,7 @@ const ManifestSchema = new mongoose.Schema({
   // Items in the manifest.
   items: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item' }],
 
-  subtotal: { type: Number, required: true, default: 0 }
+  subtotal: { type: Number, required: true, default: 0 },
   //  Tax rate, used to automatically account for tax.
   tax: { type: Number, required: true, default: 10.1, min: 0 },
   //  Total cost.

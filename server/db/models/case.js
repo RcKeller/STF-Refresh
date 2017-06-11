@@ -1,7 +1,7 @@
 
 import mongoose from 'mongoose'
 /*
-This is the body of a proposal - the business case.
+This is the body or "Business Case" of a proposal - the business case.
 
 Business cases are a new process for handling proposals.
 They frame things as current vs. future state, so we evaluate
@@ -11,13 +11,13 @@ Legacy proposals are just a stream of Q/A, without any sort of structure
 (totally flat), so to handle them we store the information in an array with
 { title: body }, then the client can use map() to render them.
 */
-const BusinessCaseSchema = new mongoose.Schema({
+const CaseSchema = new mongoose.Schema({
   overview: {
-    abstract: { type: string, required: true },
+    abstract: { type: String, required: true },
     //  Objectives are key notes/bullet points.
-    objectives: [{ type: string, required: true }],
+    objectives: [{ type: String, required: true }],
     //  Justification is a brief answer to "why", or info about urgent need.
-    justification: { type: string, required: true }
+    justification: { type: String, required: true }
   },
   /*
   Current vs. future state questions in the project plan are arrays.
@@ -29,18 +29,18 @@ const BusinessCaseSchema = new mongoose.Schema({
   (e.g. current vs. future state) should be viewable side-by-side.
   */
   plan: {
-    state: [{ type: string, required: true }],
-    availability: [{ type: string, required: true }],
-    strategy: [{ type: string, required: true }],
-    outreact: [{ type: string, required: true }],
-    risk: [{ type: string, required: true }]
+    state: [{ type: String, required: true }],
+    availability: [{ type: String, required: true }],
+    strategy: [{ type: String, required: true }],
+    outreact: [{ type: String, required: true }],
+    risk: [{ type: String, required: true }]
   },
   legacy: [{
-    title: { type: string, required: true },
-    body: { type: string, required: true }
+    title: { type: String, required: true },
+    body: { type: String, required: true }
   }]
 })
-export default mongoose.model('BusinessCase', BusinessCaseSchema)
+export default mongoose.model('Case', CaseSchema)
 /*
 BusinessCase:
   overview: {

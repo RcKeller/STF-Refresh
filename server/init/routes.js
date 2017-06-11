@@ -10,8 +10,18 @@ Routes are automatically mapped for core services, then custom ones get mapped l
 (BTW, we test the existence of the controller first. Prevents exceptions).
 */
 const api = {
+  //  Users is non-standard
   contacts: db.controllers && db.controllers.contacts,
-  blocks: db.controllers && db.controllers.blocks
+  comments: db.controllers && db.controllers.comments,
+  proposals: db.controllers && db.controllers.proposals,
+  cases: db.controllers && db.controllers.cases,
+  amendments: db.controllers && db.controllers.amendments,
+  manifests: db.controllers && db.controllers.manifests,
+  items: db.controllers && db.controllers.items,
+  blocks: db.controllers && db.controllers.blocks,
+  reviews: db.controllers && db.controllers.reviews,
+  decisions: db.controllers && db.controllers.decisions,
+  reports: db.controllers && db.controllers.reports
 }
 /*
 CUSTOM CONTROLLERS:
