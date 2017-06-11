@@ -1,7 +1,9 @@
 import mongoose from 'mongoose'
 import loadModels from './models'
+import dummyData from './lorem-ipsum'
 import config from 'config'
 const db = config.get('db')
+
 export default () => {
   // Find the appropriate database to connect to, default to localhost if not found.
   const connect = () => {
@@ -12,6 +14,7 @@ export default () => {
         console.log(`Reason: ${err}`)
       } else {
         console.log(`===>  Succeeded in connecting to ${db}`)
+        if (config.has('lorem-ipsum')) { dummyData() }
       }
     })
   }
