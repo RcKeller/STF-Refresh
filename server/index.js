@@ -16,9 +16,7 @@ const app = express()
  */
 db.connect()
 
-/*
- * REMOVE if you do not need passport configuration
- */
+// REMOVE if you do not need passport configuration
 initPassport()
 
 if (config.has('dev')) {
@@ -32,16 +30,11 @@ if (config.has('dev')) {
   app.use(webpackHotMiddleware(compiler))
 }
 
-/*
- * Bootstrap application settings
- */
+//  Bootstrap application settings
 initExpress(app)
 
-/*
- * REMOVE if you do not need any routes
- *
- * Note: Some of these routes have passport and database model dependencies
- */
+// REMOVE if you do not need any routes
+// Note: Some of these routes have passport and database model dependencies
 initRoutes(app)
 
 /*
@@ -51,5 +44,4 @@ initRoutes(app)
  * HTML
  */
 app.get('*', renderMiddleware)
-
 app.listen(app.get('port'))

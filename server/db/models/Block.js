@@ -22,18 +22,18 @@ const BlockSchema = new mongoose.Schema({
   body: {
     overview: {
       abstract: { type: String, required: true },
-      objectives: { type: String, required: true },
+      objectives: { type: String, required: true }
     },
     plan: {
       state: { type: String, required: true },
       strategy: { type: String, required: true },
-      risk: { type: String, required: true },
+      risk: { type: String, required: true }
     }
   },
   //  Proposal status, differs from decisions in that this is "summary" data for table viewing.
   status: { type: String, default: 'In Review' },
   asked: Number,
-  received: Number,
+  received: Number
 
 })
 export default mongoose.model('Block', BlockSchema)

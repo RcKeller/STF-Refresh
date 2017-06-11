@@ -5,10 +5,8 @@ import { Router, browserHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import createRoutes from './routes'
 import configureStore from './redux/configureStore'
-import fetchDataForRoute from './utils/fetchDataForRoute'
 
-// Grab the state from a global injected into
-// server-generated HTML
+// Grab the state from a global injected into server-generated HTML
 const initialState = window.__INITIAL_STATE__
 
 const store = configureStore(initialState, browserHistory)
@@ -25,15 +23,7 @@ function onUpdate () {
   // We set it to null so that every subsequent client-side navigation will
   // still trigger a fetch data.
   // Read more: https://github.com/choonkending/react-webpack-node/pull/203#discussion_r60839356
-  if (window.__INITIAL_STATE__ !== null) {
-    window.__INITIAL_STATE__ = null
-  }
-
-  // store.dispatch({ type: 'CREATE_REQUEST' });
-  // fetchDataForRoute(this.state)
-  //   .then((data) => {
-  //     return store.dispatch({ type: 'REQUEST_SUCCESS', data });
-  //   });
+  if (window.__INITIAL_STATE__ !== null) { window.__INITIAL_STATE__ = null }
 }
 
 // Router converts <Route> element hierarchy to a route config:

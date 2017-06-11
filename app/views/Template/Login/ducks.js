@@ -8,7 +8,7 @@ https://medium.com/front-end-hacking/structuring-react-and-redux-applications-25
 ACTIONS
 ***** */
 import { authentication } from '../../../services'
-import { mutateAsync } from 'redux-query';
+import { mutateAsync } from 'redux-query'
 
 const logOut = () => mutateAsync(authentication.logout())
 export { logOut }

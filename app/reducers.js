@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 import { routerReducer as routing } from 'react-router-redux'
 import { reducer as form } from 'redux-form'
-import { entitiesReducer as entities, queriesReducer as queries } from 'redux-query';
+import { entitiesReducer as entities, queriesReducer as queries } from 'redux-query'
 
 import user from './views/Template/Login/ducks'
 

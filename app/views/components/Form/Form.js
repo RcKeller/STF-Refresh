@@ -8,7 +8,7 @@ import { Input as AntInput, InputNumber as AntInputNumber } from 'antd'
 // const AutoCompleteOption = AutoComplete.Option
 
 export const Input = ({input, label, ...custom}) => (
-  <AntInput size="large"
+  <AntInput size='large'
     placeholder={label}
     value={input.value}
     onChange={input.onChange}
@@ -17,7 +17,7 @@ export const Input = ({input, label, ...custom}) => (
 )
 
 export const InputNumber = ({input, ...custom}) => (
-  <AntInputNumber size="large"
+  <AntInputNumber size='large'
     value={input.value}
     onChange={input.onChange}
     // {...defaultValue}
@@ -26,7 +26,7 @@ export const InputNumber = ({input, ...custom}) => (
 )
 
 export const InputCurrency = ({input, ...custom}) => (
-  <AntInputNumber size="large"
+  <AntInputNumber size='large'
     value={input.value ? input.value : 0.00}
     onChange={input.onChange}
     // defaultValue={0}
@@ -36,7 +36,7 @@ export const InputCurrency = ({input, ...custom}) => (
   />
 )
 export const InputTax = ({input, ...custom}) => (
-  <AntInputNumber size="large"
+  <AntInputNumber size='large'
     value={input.value ? input.value : 10.1}
     onChange={input.onChange}
     // defaultValue={10.1}

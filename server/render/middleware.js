@@ -2,7 +2,7 @@ import { createMemoryHistory, match } from 'react-router'
 import createRoutes from '../../app/routes'
 import configureStore from '../../app/redux/configureStore'
 import pageRenderer from './pageRenderer'
-import fetchDataForRoute from '../../app/utils/fetchDataForRoute'
+import fetchDataForRoute from './fetchDataForRoute'
 
 /*
  * Export render function to be used in server/config/routes.js
@@ -59,10 +59,8 @@ export default function render (req, res) {
     } else if (props) {
       // This method waits for all render component
       // promises to resolve before returning to browser
-      // store.dispatch({ type: types.CREATE_REQUEST });
       fetchDataForRoute(props)
         .then((data) => {
-          // store.dispatch({ type: types.REQUEST_SUCCESS, data });
           const html = pageRenderer(store, props)
           res.status(200).send(html)
         })

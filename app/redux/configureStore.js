@@ -3,9 +3,9 @@ import { routerMiddleware } from 'react-router-redux'
 import thunk from 'redux-thunk'
 import { createLogger } from 'redux-logger'
 //  Redux query needs selectors as args:  https://amplitude.github.io/redux-query/
-import { queryMiddleware } from 'redux-query';
-export const getQueries = (state) => state.queries;
-export const getEntities = (state) => state.entities;
+import { queryMiddleware } from 'redux-query'
+export const getQueries = (state) => state.queries
+export const getEntities = (state) => state.entities
 
 import rootReducer from '../reducers'
 /*

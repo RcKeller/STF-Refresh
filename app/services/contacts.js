@@ -5,5 +5,5 @@ const contacts = () => ({
   url: `${API}/${version}/contacts`,
   options: { method: 'GET' },
   update: {}  //  No args
-});
+})
 export default { contacts }

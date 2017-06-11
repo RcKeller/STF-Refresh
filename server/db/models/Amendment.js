@@ -5,7 +5,7 @@ const AmendmentSchema = new mongoose.Schema({
   contact: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Contact' }],
   title: { type: String, require: true },
   body: { type: String, require: true },
-  decision: { type: mongoose.Schema.Types.ObjectId, ref: 'Decision' },
+  decision: { type: mongoose.Schema.Types.ObjectId, ref: 'Decision' }
 })
 export default mongoose.model('Amendment', AmendmentSchema)
 /*

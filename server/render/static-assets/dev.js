@@ -12,9 +12,7 @@ ga('send', 'pageview');
 </script>
 <script async src='https://www.google-analytics.com/analytics.js'></script>`
 
-const createStylesheets = () => `
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans" />
-`
+const createStylesheets = () => `<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans" />`
 /* UW CSS CDN
 <link rel="stylesheet" id="uw-master-css"  href="https://www.washington.edu/wp-content/themes/uw-2014/style.css?ver=3.6" type="text/css" media="all" />
 */

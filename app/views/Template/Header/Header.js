@@ -13,7 +13,7 @@ import styles from './Header.css'
 const Header = () => (
   <AntHeader>
     <Link to='/'>
-    {/* <img src={uw} height={50} width='50%'/> */}
+      {/* <img src={uw} height={50} width='50%'/> */}
       <img src={w} height={50} className={styles['w']} />
       <img src={stf} height={50} className={styles['stf']} />
     </Link>

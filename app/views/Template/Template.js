@@ -3,11 +3,10 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-
 import { Link, browserHistory } from 'react-router'
 
 import Helmet from 'react-helmet'
-import favicon from '../../images/favicon.ico';
+import favicon from '../../images/favicon.ico'
 const meta = [
   { charset: 'utf-8' },
   // Meta descriptions are commonly used on search engine result pages to
@@ -31,7 +30,7 @@ const meta = [
   // Add to homescreen for Safari on IOS
   { name: 'apple-mobile-web-app-capable', content: 'yes' },
   { name: 'apple-mobile-web-app-status-bar-style', content: 'black' },
-  { name: 'apple-mobile-web-app-title', content: 'UW STF' },
+  { name: 'apple-mobile-web-app-title', content: 'UW STF' }
 ]
 const link = [
   // Add to homescreen for Chrome on Android
@@ -46,7 +45,7 @@ import Login from './Login/Login'
 import Nav from './Nav/Nav'
 import Body from './Body/Body'
 
-import coreStyles from '../../css/main';
+import coreStyles from '../../css/main'
 import styles from './Template.css'
 class Template extends React.Component {
   render () {

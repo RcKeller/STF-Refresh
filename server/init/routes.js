@@ -7,10 +7,11 @@ const version = config.get('version')
 STANDARD CONTROLLERS:
 These have core get/post/put/delete requests, the later 3 of which are tied to ID.
 Routes are automatically mapped for core services, then custom ones get mapped later.
+(BTW, we test the existence of the controller first. Prevents exceptions).
 */
 const api = {
   contacts: db.controllers && db.controllers.contacts,
-  blocks: db.controllers && db.controllers.blocks,
+  blocks: db.controllers && db.controllers.blocks
 }
 /*
 CUSTOM CONTROLLERS:
@@ -21,9 +22,9 @@ const usersController = db.controllers && db.controllers.users
 //  GENERATE ROUTES
 export default (app) => {
   //  CORE SERVICES
-  Object.keys(api).forEach(function(key) {
+  Object.keys(api).forEach(function (key) {
     const service = api[key]
-    if (typeof service != 'undefined') {
+    if (typeof service !== 'undefined') {
       app.get(`/${version}/${key}`, service.all)
       app.post(`/${version}/${key}/:id`, service.add)
       app.put(`/${version}/${key}/:id`, service.update)
@@ -46,20 +47,24 @@ export default (app) => {
   }
   //  DEV MODE MOCK AUTH
   if (db.passport && config.has('google')) {
-    // Redirect the user to Google for authentication. When complete, Google
-    // will redirect the user back to the application at
-    // /auth/google/return
-    // Authentication with google requires an additional scope param, for more info go
-    // here https://developers.google.com/identity/protocols/OpenIDConnect#scope-param
+    /*
+    Redirect the user to Google for authentication. When complete, Google
+    will redirect the user back to the application at
+    /auth/google/return
+    Authentication with google requires an additional scope param, for more info go
+    here https://developers.google.com/identity/protocols/OpenIDConnect#scope-param
+    */
     app.get('/auth/google', passport.authenticate('google', {
       scope: [
         'https://www.googleapis.com/auth/userinfo.profile',
         'https://www.googleapis.com/auth/userinfo.email'
       ]
     }))
-    // Google will redirect the user to this URL after authentication. Finish the
-    // process by verifying the assertion. If valid, the user will be logged in.
-    // Otherwise, the authentication has failed.
+    /*
+    Google will redirect the user to this URL after authentication. Finish the
+    process by verifying the assertion. If valid, the user will be logged in.
+    Otherwise, the authentication has failed.
+    */
     const googleCallback = config.get('google.callbackURL')
     const successRedirect = '/'
     const failureRedirect = '/login'
@@ -69,5 +74,4 @@ export default (app) => {
     )
     console.log('AUTH: Google "Psuedo-Auth" Enabled')
   }
-
 }
