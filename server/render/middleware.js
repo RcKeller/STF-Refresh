@@ -1,6 +1,6 @@
 import { createMemoryHistory, match } from 'react-router'
 import createRoutes from '../../app/routes'
-import configureStore from '../../app/redux/configureStore'
+import configureStore from '../../app/store'
 import pageRenderer from './pageRenderer'
 import fetchDataForRoute from './fetchDataForRoute'
 

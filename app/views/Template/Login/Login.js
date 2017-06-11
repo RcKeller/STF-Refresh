@@ -8,7 +8,7 @@ import {
 import { Link, browserHistory } from 'react-router'
 import { logOut } from './ducks'
 
-// import { Button } from 'antd'
+// import { Avatar } from 'antd'
 
 // import { logout } from '../../../services/'
 // import { authentication } from '../../../services/'
@@ -61,6 +61,7 @@ class Login extends React.Component {
             </button>
           </a>
         : <button className={styles['button']} onClick={logOut} >
+            {/* <Avatar shape="square" size="large" icon="user" /> */}
             <strong>{user.netID}</strong>
             <small>{role ? role : 'Logged in'}</small>
           </button>
