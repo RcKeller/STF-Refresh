@@ -1,13 +1,17 @@
 import config from 'config'
 
 import dummyContacts from './contact'
-//  For faking Object ID's. THESE WILL BE RANDOM AND NOT POINT TO REAL DATA.
+import dummyAmendments from './amendment'
+import dummyBlocks from './block'
+ // For faking Object ID's. THESE WILL BE RANDOM AND NOT POINT TO REAL DATA.
 
 export default function () {
   const min = config.has('lorem-ipsum') ? config.get('lorem-ipsum') : 5 // default
   console.log(`SEED: Lorem Ipsum Mode enabled. Seeding up to ${min} documents each...`)
 
   dummyContacts(min)
+  dummyAmendments(min)
+  dummyBlocks(min)
 }
 
 // export default function loadModels () {
