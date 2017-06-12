@@ -85,7 +85,7 @@
     "json-loader": "^0.5.4",
     "less": "^2.7.2",
     "less-loader": "^4.0.3",
-    "lodash": "^4.16.2",
+    "lodash": "^4.17.4",
     "lorem-ipsum": "^1.0.4",
     "method-override": "^2.3.8",
     "mongoose": "^4.9.3",

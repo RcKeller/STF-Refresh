@@ -1,4 +1,4 @@
-import passport from 'passport'
+import _ from 'lodash'
 import Proposal from '../models/proposal'
 
 /* *****

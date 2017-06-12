@@ -49,9 +49,9 @@ export default (app) => {
   } else { console.warn('Error: DB unable to handle user routes.') }
   //  PRODUCTION AUTH
   if (db.passport && config.has('uw')) {
-    console.log('WARNING: UW Shib specified in config, but routes/API not ready yet.')
+    console.warn('WARNING: UW Shib specified in config, but routes/API not ready yet.')
     const uwCallback = config.get('uw.callbackURL')
-    const shibPlaceholder = () => console.log('Error - UW Shib not connected yet! In development.')
+    const shibPlaceholder = () => console.warn('Error - UW Shib not connected yet! In development.')
     app.get(uwCallback, shibPlaceholder)
     console.log('AUTH: Shibboleth Enabled')
   }

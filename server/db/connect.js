@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import loadModels from './models'
-import dummyData from './lorem-ipsum'
+import dummyData from './dummies'
 import config from 'config'
 const db = config.get('db')
 
@@ -10,8 +10,7 @@ export default () => {
     mongoose.Promise = require('bluebird')
     mongoose.connect(db, (err) => {
       if (err) {
-        console.log(`===>  Error connecting to ${db}`)
-        console.log(`Reason: ${err}`)
+        console.warn(`===>  Error connecting to ${db}\n${err}`)
       } else {
         console.log(`===>  Succeeded in connecting to ${db}`)
         if (config.has('lorem-ipsum')) { dummyData() }

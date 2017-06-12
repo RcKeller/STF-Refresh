@@ -1,4 +1,4 @@
-import passport from 'passport'
+import _ from 'lodash'
 import Block from '../models/block'
 
 /* *****

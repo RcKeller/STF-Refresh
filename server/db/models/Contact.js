@@ -12,17 +12,6 @@ const ContactSchema = new mongoose.Schema({
   phone: String,
   mailbox: String,
   //  Have they signed the proposal?
-  signature: Boolean
+  signature: { type: Boolean, default: false }
 })
 export default mongoose.model('Contact', ContactSchema)
-
-/*
-Contact:
-  type: String (enum) - Primary, Budget, Dean, Student
-  netID: String (unique)
-  name: String (required)
-  title: String (required)
-  phone: String
-  mailbox: String
-  signature: Boolean (required, default false)
-*/
