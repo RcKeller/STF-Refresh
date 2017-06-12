@@ -5,7 +5,7 @@ const ProposalSchema = new mongoose.Schema({
   _id and _v(ersion) are populated by mongoose, but I think this
   might be a good field to fill manually, prevents namespace issues later.
   */
-  _id: { type: String, unique: true },
+  // _id: { type: String, unique: true },
   date: { type: Date, default: Date.now },
   year: { type: Number, required: true },
   number: { type: Number, required: true },

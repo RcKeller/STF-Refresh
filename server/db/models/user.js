@@ -7,8 +7,6 @@ const UserSchema = new mongoose.Schema({
   name: { type: String, default: '' },
   netID: { type: String, unique: true, lowercase: true },
   email: { type: String, unique: true, lowercase: true },
-  //  Populate the associated proposals (Use: Viewing your own proposals)
-  proposals: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Contact' }],
   /*
   The commitee(orization) object will not pass to the client unless
   there's some sort of elevated privlege. Delete this object to remove

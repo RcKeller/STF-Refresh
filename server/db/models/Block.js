@@ -22,7 +22,7 @@ const BlockSchema = new mongoose.Schema({
   body: {
     overview: {
       abstract: { type: String, required: true },
-      objectives: { type: String, required: true }
+      objectives: [{ type: String, required: true }]
     },
     plan: {
       state: { type: String, required: true },

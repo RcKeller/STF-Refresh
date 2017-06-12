@@ -12,6 +12,8 @@ Legacy proposals are just a stream of Q/A, without any sort of structure
 { title: body }, then the client can use map() to render them.
 */
 const CaseSchema = new mongoose.Schema({
+  //  No link to a proposal. We will never have to reverse engineer a proposal.
+  //  If that ever happens, implementing the relationship should be trivial.
   overview: {
     abstract: { type: String, required: true },
     //  Objectives are key notes/bullet points.
