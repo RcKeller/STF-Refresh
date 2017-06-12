@@ -1,11 +1,10 @@
 import React from 'react'
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import { compose, bindActionCreators } from 'redux';
-import {
-  connectRequest
-} from 'redux-query';
-import { Link, browserHistory } from 'react-router'
+import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+// import { compose, bindActionCreators } from 'redux'
+// import { connectRequest } from 'redux-query'
+// import { Link } from 'react-router'
 import { logOut } from './ducks'
 
 // import { Avatar } from 'antd'
@@ -24,16 +23,8 @@ import { logOut } from './ducks'
 //   connectRequest( () => authentication.logout() )
 // )
 
-const LoginButton = ({title, subtitle}) => {
-  <button className={styles['button']}>
-    <div className={styles['text']}>
-      <strong>{title}</strong>
-      <small>{subtitle}</small>
-    </div>
-  </button>
-}
-
 import styles from './Login.css'
+
 @connect(
   state => ({ user: state.user }),
   dispatch => ({ logOut: bindActionCreators(logOut, dispatch) })
@@ -50,7 +41,7 @@ class Login extends React.Component {
       user.committee.member && 'Member',
       user.committee.spectator && 'Ex-Officio'
     ]
-    const role = privleges.filter((e) => {if (e) return e})[0]
+    const role = privleges.filter((e) => { if (e) return e })[0]
     return (
       <div>
         {!user.authenticated
@@ -75,5 +66,5 @@ Login.propTypes = {
   // router: PropTypes.object.isRequired
   user: PropTypes.object,
   logOut: PropTypes.func
-};
+}
 export default Login

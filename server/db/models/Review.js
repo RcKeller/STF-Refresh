@@ -12,16 +12,3 @@ const ReviewSchema = new mongoose.Schema({
   ratings: []
 })
 export default mongoose.model('Review', ReviewSchema)
-/*
-
-Review
-  proposal: String,
-  user: [populate user]
-  body: String
-  decision: Boolean (require),
-  score: Int (require),
-  ratings: [{
-    // breakdown scores go here.
-  }]
-
-*/

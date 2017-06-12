@@ -14,17 +14,3 @@ const ManifestSchema = new mongoose.Schema({
   total: { type: Number, required: true, default: 0 }
 })
 export default mongoose.model('Manifest', ManifestSchema)
-/*
-Manifest
-  original: Boolean (false if partial)
-  Items: [{
-    title: String,
-    description: String,
-    quantity: Integer,
-    price: Integer,
-    priority: Integer,
-    taxExempt: Boolean (default false)
-    }]
-  tax: Integer (default 10.1),
-  total: Integer (recalculate on changes using pre)
-*/

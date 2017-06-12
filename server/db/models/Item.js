@@ -13,17 +13,3 @@ const ItemSchema = new mongoose.Schema({
   taxExempt: { type: Boolean, default: false }
 })
 export default mongoose.model('Item', ItemSchema)
-/*
-Manifest
-  original: Boolean (false if partial)
-  Items: [{
-    title: String,
-    description: String,
-    quantity: Integer,
-    price: Integer,
-    priority: Integer,
-    taxExempt: Boolean (default false)
-    }]
-  tax: Integer (default 10.1),
-  total: Integer (recalculate on changes using pre)
-*/

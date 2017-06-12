@@ -1,13 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import { Link } from 'react-router'
 
-import { Link, browserHistory } from 'react-router'
-
-import Helmet from 'react-helmet'
-
-import { Menu, Icon, Button, Alert } from 'antd'
+import { Menu, Icon, Alert } from 'antd'
 const SubMenu = Menu.SubMenu
 const ItemGroup = Menu.ItemGroup
 const Item = Menu.Item
@@ -57,10 +51,3 @@ const Nav = ({ router }) => (
   </Menu>
 )
 export default Nav
-//
-// Template.propTypes = {
-//   children: PropTypes.object.isRequired,
-//   router: PropTypes.object.isRequired,
-//   user: PropTypes.object
-// };
-// export default Template

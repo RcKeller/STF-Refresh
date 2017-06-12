@@ -32,9 +32,6 @@ if (config.has('dev')) {
 
 //  Bootstrap application settings
 initExpress(app)
-
-// REMOVE if you do not need any routes
-// Note: Some of these routes have passport and database model dependencies
 initRoutes(app)
 
 /*

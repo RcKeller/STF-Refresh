@@ -1,4 +1,4 @@
-import db from '../../db'
+// import db from '../../db'
 import config from 'config'
 
 export default (passport) => {

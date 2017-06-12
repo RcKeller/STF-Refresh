@@ -37,30 +37,3 @@ const BlockSchema = new mongoose.Schema({
 
 })
 export default mongoose.model('Block', BlockSchema)
-/*
-Block
-  _id (number) (require)
-  year: Integer (require)
-  number: Integer (require)
-
-  title: String (require)
-  organization: String (enum) ...
-  contacts: [populate contact(s)]
-
-  status: String (enum)
-
-  asked: Integer
-  received: Integer (optional)
-
-  body: {
-    overview: {
-      abstract: String (required),
-      objectives: [String] (required)
-    },
-    plan {
-      state: String (req),
-      strategy: String (req),
-      risk: String (req)
-    }
-  }
-*/

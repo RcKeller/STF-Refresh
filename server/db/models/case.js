@@ -43,39 +43,3 @@ const CaseSchema = new mongoose.Schema({
   }]
 })
 export default mongoose.model('Case', CaseSchema)
-/*
-BusinessCase:
-  overview: {
-    abstract: String (required),
-    objectives: [String] (required),
-    justification: String (required)
-  },
-  plan: {
-    state: {
-      current: String (req),
-      future: String (req)
-    },
-    availability: {
-      current: String (req),
-      future: String (req)
-    },
-    strategy: {
-      current: String (req),
-      future: String (req)
-    },
-    outreach: {
-      current: String (req),
-      future: String (req)
-    },
-    risk: {
-      current: String (req),
-      future: String (req)
-    },
-
-  },
-  //  Legacy contains old fields, stored in key-values and mapped to render.
-  legacy: [{
-    title: String
-    body: String
-  }],
-*/

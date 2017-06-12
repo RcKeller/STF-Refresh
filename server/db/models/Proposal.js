@@ -47,32 +47,3 @@ const ProposalSchema = new mongoose.Schema({
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]
 })
 export default mongoose.model('Proposal', ProposalSchema)
-
-/*
-Proposal:
-  _id (year-number) (require)
-  year: Integer (require)
-  number: Integer (require)
-  quarter: String (enum) (autumn, winter, spring, summer)
-
-  title: String (require)
-  category: String (enum) ...
-  uac: Boolean (default false)
-  organization: String (enum) ...
-  contacts: [populate contact(s)]
-
-  content: [Populate content(s)]
-
-  status: String (enum)
-  asked: Integer
-  received: Integer (optional)
-
-  manifests: [populate manifest(s)],
-
-  comments: [populate comment(s)]
-
-  amendments : [populate amendment(s)]
-
-  reports: [populate report(s)]
-
-*/

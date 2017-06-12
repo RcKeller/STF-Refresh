@@ -14,10 +14,3 @@ const DecisionSchema = new mongoose.Schema({
   report: { type: mongoose.Schema.Types.ObjectId, ref: 'Report' }
 })
 export default mongoose.model('Decision', DecisionSchema)
-/*
-Decision
-  approved: Boolean (require),
-  author: [populate User],
-  body: String (req)
-
-*/

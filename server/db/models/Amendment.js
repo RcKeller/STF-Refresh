@@ -8,12 +8,3 @@ const AmendmentSchema = new mongoose.Schema({
   decision: { type: mongoose.Schema.Types.ObjectId, ref: 'Decision' }
 })
 export default mongoose.model('Amendment', AmendmentSchema)
-/*
-Amendment (supplemental):
-  contact: [populate contact]
-  title: String (require),
-  body: String (require),
-  decision: String
-  approved: Boolean
-
-*/

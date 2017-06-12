@@ -10,12 +10,3 @@ const CommentSchema = new mongoose.Schema({
 
 })
 export default mongoose.model('Comment', CommentSchema)
-/*
-Comment
-  proposal: String,
-  internal: Boolean (for votes/metrics),
-  user: [populate user],
-  title: String (require),
-  body: String (require),
-  date: Date,
-*/

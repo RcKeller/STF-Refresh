@@ -1,9 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
 
-import { Link, browserHistory } from 'react-router'
+import { Link } from 'react-router'
 
 import Helmet from 'react-helmet'
 import favicon from '../../images/favicon.ico'

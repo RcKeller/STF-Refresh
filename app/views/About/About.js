@@ -57,17 +57,17 @@ const ASUW = [
     position: 'ASUW Representative',
     description: 'Navid is a junior studying Business Administration and this is his second year on the STF Committee. Navid has had widespread campus involvement during his time at UW from ASUW, RCSA, First Year Programs, CoMotion, and the Foster School of Business. He works as a Lead for UW Information Technology in Odegaard and is the Director for DubHacks, UW’s hackathon. He is involved in numerous groups on campus promoting innovation, entrepreneurship, inclusion, and diversity. Navid is also a mentor for the UW Leaders program and member of the Provost Advisory Committee for Students.',
     photo: 'https://uwstf.org/img/bios/navid.jpg'
-  }, , {
+  }, {
     name: 'PAri Gabriel',
     position: 'ASUW Representative',
     description: 'Pari Gabriel is a sophomore currently in the pre-engineering program soon to be applying to the college of Human Centered Design &amp; Engineering. He grew up in the rural city of Prosser, Washington and moved to Seattle in 2015 to attend UW. He loves to stay fit by playing basketball and lifting weights, is a freelance graphic designer, and also works for ASUW as a visual designer under the Office of Communications',
     photo: 'https://uwstf.org/img/bios/pari.jpg'
-  }, , {
+  }, {
     name: 'Kai Frenay',
     position: 'ASUW Student Senate Liaison',
     description: 'Kai is a Senior from Guam currently studying International Security and Foreign Policy through the Jackson School’s International Studies major. Having also heavily studied Korean language and society he plans to work for the CIA/FBI with a focus on regional stability and foreign policy in Southeast Asia. During his free time he enjoys going on road trips with friends, going to music festivals, playing video games, engaging in politics, investing, and he tries to go to the gym semi-routinely. Outside of his responsibilities to ASUW and STF, he serves as a board officer of the UW College Republicans and is a consultant for the UWIT.',
     photo: 'https://uwstf.org/img/bios/kai.jpg'
-  }, , {
+  }, {
     name: 'Lizzie Palmer',
     position: 'ASUW Finance and Budget Director',
     description: 'Lizzie Palmer is a junior from Little Rock, Arkansas studying Accounting in the Foster School of Business. Lizzie hopes to pursue a career in tax accounting with either a nonprofit organization or a company known for their corporate social responsibility and community service. During her free time, Lizzie likes to go hiking, travel, and play board games/solve puzzles. She serves as a liaison between the STF Committee and the ASUW Board of Directors as the ASUW Finance &amp; Budget Director. Outside of student government, Lizzie is involved in the Global Case Competition Club and Delta Gamma Sorority as well as various volunteer opportunities across Seattle.',
@@ -80,17 +80,17 @@ const GPSS = [
     position: 'GPSS Representative',
     description: 'Erin Firth is a 5th year graduate student in the school of Oceanography with interest in microbiology and education. She has served in student government for the entire length of her tenure at UW, and has held a position on both the Services and Activities Fee Committee, and Student Technology Fee Committee for multiple years. Erin is a Southern California native, and despite missing the ability to surf during the winter holidays, she greatly enjoys the clouds and rain of Seattle. Erin is also passionate about social justice and activism, especially in regards to the LGBTQ+ community.',
     photo: 'https://uwstf.org/img/bios/erin.jpg'
-  }, , {
+  }, {
     name: 'Kristen Garofali',
     position: 'GPSS Representative',
     description: 'No biography available.',
     photo: 'https://uwstf.org/img/bios/kristen.jpg'
-  }, , {
+  }, {
     name: 'Peder Digre',
     position: 'GPSS Representative',
     description: 'Peder Digre is a dual student in the Evans School of Public Policy and Governance and the Department of Global Health pursuing a Master of Public Administration and a Master of Public Health in Health Metrics and Evaluation. Peder became involved in student government last year when he was appointed to be a Graduate and Professional Student Senate (GPSS) Senator from the Department of Global Health. Peder is involved in numerous councils across campus, including as Vice Chair of the Services and Activities Fee Committee, the GPSS Finance and Budget Committee, the GPSS State Legislative Advisory Board, and the Dean’s Advisory Council for Students in the School of Public Health. Peder’s background is in global health, having worked at PATH—a local non-profit—for the past four years. Peder graduated from the University of Washington in 2013 with a BS in Molecular, Cellular, and Developmental Biology and a BA in Scandinavian Studies.',
     photo: 'https://uwstf.org/img/bios/peder.jpg'
-  }, , {
+  }, {
     name: 'Michaella Rogers',
     position: 'GPSS Treasurer',
     description: 'Michaella Rogers is a second year Master of Public Administration student at the Evans School of Public Policy and Governance and is also pursuing a Technology Entrepreneurship Certificate from the Foster School of Business. She is interested in working on public-private partnerships or in the business for social good sector. She became involved in student government during her first year of grad school and currently serves as Treasurer for the Graduate and Professional Student Senate. She sits on the Services and Activities Fee Committee and Student Technology Fee Committee and chairs the Finance and Budget Committee and the Travel Grants Committee. Michaella is a Colorado native and graduated from the University of Colorado with a BA in International Relations and Italian. She loves to travel, do yoga, paint, hike, try new restaurants and cook',

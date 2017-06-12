@@ -23,7 +23,7 @@ export default () => {
 
     passport.deserializeUser(db.passport.deserializeUser)
   } else {
-    console.warn(unsupportedMessage('(de)serialize User'))
+    console.warn('Failed to (de)serialize User')
   }
 
   // Load strategies based on the env
