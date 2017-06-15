@@ -25,8 +25,3 @@ heroku config:set GOOGLE_CLIENTID=YOUR_CLIENTID
 heroku config:set GOOGLE_SECRET=YOUR_SECRET
 heroku config:set GOOGLE_CALLBACK=YOUR_CALLBACK
 ```
-4. I do not know how to write React Components/anything in ES6. Help!
-	- Don't you worry child. Read [this](https://github.com/choonkending/react-webpack-node/blob/master/docs/ReactInES6.md).
-	- You can learn more about ES6 (or ES2015) [here](http://babeljs.io/docs/learn-es2015/).
-
-

@@ -1,6 +1,6 @@
 ## CSS
 
-We recently removed sass from the boilerplate, and opted in several postcss plugins:
+We're using CSSNext via PostCSS. This is an implementation of proposed CSS features. By using this, we "future-proof" the application's styling as much as we can. Currently, we're using these postcss plugins:
 - [postcss-import](https://github.com/postcss/postcss-import)
 - [postcss-mixins](https://github.com/postcss/postcss-mixins)[unused]
 - [postcss-simple-vars](https://github.com/postcss/postcss-simple-vars)
@@ -8,10 +8,9 @@ We recently removed sass from the boilerplate, and opted in several postcss plug
 - [autoprefixer](https://github.com/postcss/autoprefixer)
 - [postcss-reporter](https://github.com/postcss/postcss-reporter)
 
-
 Please refer to [this](https://github.com/choonkending/react-webpack-node/issues/150) for more reading.
 
-Note: This change to postcss is experimental, as there might be features you want from a preprocessor such as sass that might not be supported - unless you write a plugin yourself.
+
 
 ## CSS module questions
 
