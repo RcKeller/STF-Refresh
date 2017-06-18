@@ -7,4 +7,5 @@ isn't coupled with a specific view.
 */
 export { default as environment } from './environment'
 export { default as authentication } from './authentication'
+export { default as proposals } from './proposals'
 export { default as contacts } from './contacts'
