@@ -4,8 +4,6 @@ In the interest of minimizing technical debt and preserving continuity for devel
 
 Mongo combined with Mongoose makes working with our data super easy, especially considering Mongo has roots in the JSON format. Our data is light on nesting, but we use ObjectId's to populate extra data as necessary. For example, if you get all proposals, it will contain top level data like the title, department, and status, but for the actual business case, reports, etc you will have to `populate()` the data via mongoose. Which, with our API, is simply including a boolean for each field we want to hydrate.
 
-
-
 ### Initialize DB
 
 Here's a script to initialize a MongoDB container on Windows (open source version ONLY):
@@ -27,12 +25,9 @@ echo DB LIVE: $MONGO_URL
 ```
 
 
-#### Legacy DB Data
-
-
 # Schema Design
 
-## Proposal
+### Proposal
 ```js
 _id (year-number) (require)
 year: Integer (require)
@@ -60,7 +55,7 @@ amendments : [populate amendment(s)]
 reports: [populate report(s)]
 ```
 
-## Contact:
+### Contact:
 ```js
 type: String (enum) - Primary, Budget, Dean, Student
 netID: String (unique)
@@ -108,7 +103,7 @@ legacy: [{
 }],
 ```
 
-## Amendment (supplemental):
+### Amendment (supplemental):
 ```js
 contact: [populate contact]
 title: String (require),
@@ -117,7 +112,7 @@ decision: String
 approved: Boolean
 ```
 
-## Comment
+### Comment
 ```js
 proposal: String,
 internal: Boolean (for votes/metrics),
@@ -127,7 +122,7 @@ body: String (require),
 date: Date,
 ```
 
-## Review
+### Review
 ```js
 proposal: String,
 user: [populate user]
@@ -139,17 +134,17 @@ ratings: [{
 }]
 ```
 
-## Decision
+### Decision
 ```js
 approved: Boolean (require),
 author: [populate User],
 body: String (req)
 ```
 
-## Report
+### Report
 TODO: Add budget, reporting and award logic here. Somewhat unclear.
 
-## Block
+### Block
 ```js
 _id (number) (require)
 year: Integer (require)
@@ -177,8 +172,7 @@ body: {
 }
 ```
 
-
-## Manifest
+### Manifest
 ```js
 original: Boolean (false if partial)
 Items: [{
@@ -193,7 +187,7 @@ tax: Integer (default 10.1),
 total: Integer (recalculate on changes using pre)
 ```
 
-## User
+### User
 ```js
 authenticated:
 netID: String,

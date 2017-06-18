@@ -1,7 +1,7 @@
 ## EXPRESS.JS REST API
 # Version: v1
 
-UW-STF uses a RESTful API to retrieve data from the backend. I'm using a microservice model, which consists of the following:
+UW-STF uses a RESTful API to retrieve data from the backend. I'm using a microservice model with the following services:
 - **Core Services**: A consistent API for querying schema data (get all or one, update one, delete one).
 - **Special Services**: Extensions to core API routes that allow special queries and hydration of data.
 - **Authentication**: Unique, secured routes for user data.
@@ -16,6 +16,8 @@ PUT | /`version`/`schema`/`id`/ | Update an existing document
 DELETE | /`version`/`schema`/`id`/ | Remove an existing document
 
 ### Special Services
+
+Bespoke, for special use only.
 
 ### Authentication
 
