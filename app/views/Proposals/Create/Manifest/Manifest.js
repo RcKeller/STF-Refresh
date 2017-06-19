@@ -1,12 +1,19 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 import {Field, reduxForm} from 'redux-form'
 
 import { Row, Col, Alert, Button, Icon } from 'antd'
 
 import { Input, InputNumber, InputCurrency, InputTax } from '../../../../components/Form/Form'
 
+@reduxForm({
+  //  This is the first of potentially many "partial" manifests.
+  //  Partial manifests are made to fund a section of an award.
+  form: 'create.manifests[0]',
+  validate: (values) => {
+    const errors = {}
+    return errors
+  }
+})
 class Manifest extends React.Component {
   constructor (props) {
     super(props)
@@ -22,8 +29,7 @@ class Manifest extends React.Component {
     let items = this.state.items
     items.splice(i, 1) && this.setState({ items })
   }
-  render () {
-    const {handleSubmit, pristine, reset, submitting} = this.props
+  render ({handleSubmit, pristine, reset, submitting} = this.props) {
     return (
       <form onSubmit={handleSubmit}>
         <Alert
@@ -37,15 +43,15 @@ class Manifest extends React.Component {
             <Row gutter={16}>
               <Col className='gutter-row' xs={24} md={16} >
                 <h2>Item Name</h2>
-                <Field name={`name-${i}`} component={Input} />
+                <Field name={`items[${i}].name`} component={Input} />
                 <h3>Description</h3>
-                <Field name={`description-${i}`} component={Input} type='textarea' size='small' rows={2} />
+                <Field name={`items[${i}].description`} component={Input} type='textarea' size='small' rows={2} />
               </Col>
               <Col className='gutter-row' xs={24} md={8}>
                 <Row>
                   <Col xs={12}>
                     <h5>Quantity</h5>
-                    <Field name={`quantity-${i}`} component={Input} />
+                    <Field name={`items[${i}].quantity`} component={InputNumber} initialValue={1} />
                   </Col>
                   <Col xs={12}>
                     <Button type='dashed' style={{ color: 'crimson', marginTop: 28 }} onClick={() => this.remove(i)}>
@@ -56,15 +62,15 @@ class Manifest extends React.Component {
                 <Row>
                   <Col xs={12}>
                     <h5>Price</h5>
-                    <Field name={`price-${i}`} component={InputCurrency} />
+                    <Field name={`items[${i}].price`} component={InputCurrency} />
                   </Col>
                   <Col xs={12}>
                     <h5>Tax Rate</h5>
-                    <Field name={`taxrate-${i}`} initialValue={10.1} component={InputTax} />
+                    <Field name={`items[${i}].taxrate`} initialValue={10.1} component={InputTax} />
                   </Col>
                 </Row>
                 <h5>Priority Order (descending)</h5>
-                <Field name={`priority-${i}`} component={Input} />
+                <Field name={`items[${i}].priority`} component={InputNumber} />
               </Col>
             </Row>
             <hr />
@@ -81,13 +87,4 @@ class Manifest extends React.Component {
     )
   }
 }
-
-const validate = values => {
-  const errors = {}
-  return errors
-}
-export default reduxForm({
-  form: 'create.manifests[0]',
-  validate,
-  enableReinitialize: true
-})(Manifest)
+export default Manifest

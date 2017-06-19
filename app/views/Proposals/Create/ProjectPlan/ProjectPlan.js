@@ -1,6 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 import {Field, reduxForm} from 'redux-form'
 
 import { Input } from '../../../../components/Form/Form'
@@ -30,7 +28,6 @@ const availability = [
     field: 'availability.future'
   }
 ]
-
 const plan = [
   {
     title: 'Organizational Backing',
@@ -66,94 +63,95 @@ const risk = [
 ]
 
 import styles from './ProjectPlan.css'
-const ProjectPlan = props => {
-  const {handleSubmit, pristine, reset, submitting} = props
-  return (
-    <form onSubmit={handleSubmit}>
-      <Row gutter={64}>
-        <h2>State of Technology</h2>
-        <p><em>
-          Tell us about how the state of student technology can change.
-        </em></p>
-        {state.map((e, i) => (
-          <Col key={i} className='gutter-row' xs={24} md={12}>
-            <h2 className={styles['subheader']}>{e.title}</h2>
-            <p className={styles['prompt']}><em>
-              {e.subtitle}
-            </em></p>
-            <Field name={`${e.field}`} component={Input} type='textarea' rows={6} />
-          </Col>
-        ))}
-      </Row>
-      <Row gutter={64}>
-        <h2>Service Availability</h2>
-        <p><em>
-          How are students using this technology without this project, and how could that change?
-        </em></p>
-        {availability.map((e, i) => (
-          <Col key={i} className='gutter-row' xs={24} md={12}>
-            <h2 className={styles['subheader']}>{e.title}</h2>
-            <p className={styles['prompt']}><em>
-              {e.subtitle}
-            </em></p>
-            <Field name={`${e.field}`} component={Input} type='textarea' rows={6} />
-          </Col>
-        ))}
-      </Row>
-      <Row gutter={64}>
-        <h2>Project Strategy</h2>
-        <p><em>
-          How can your organization back this project? What's the overall strategy?
-        </em></p>
-        {plan.map((e, i) => (
-          <Col key={i} className='gutter-row' xs={24} md={12}>
-            <h2 className={styles['subheader']}>{e.title}</h2>
-            <p><em>
-              {e.subtitle}
-            </em></p>
-            <Field name={`${e.field}`} component={Input} type='textarea' rows={6} />
-          </Col>
-        ))}
-      </Row>
-      <Row gutter={64}>
-        <h2>Student Outreach</h2>
-        <p><em>
-          How does your organization interact with the student community?
-        </em></p>
-        {outreach.map((e, i) => (
-          <Col key={i} className='gutter-row' xs={24} md={12}>
-            <h2 className={styles['subheader']}>{e.title}</h2>
-            <p className={styles['prompt']}><em>
-              {e.subtitle}
-            </em></p>
-            <Field name={`${e.field}`} component={Input} type='textarea' rows={6} />
-          </Col>
-        ))}
-      </Row>
-      <Row gutter={64}>
-        <h2>Risk Factors</h2>
-        <p><em>
-          How are you managing risks and concerns?
-        </em></p>
-        {risk.map((e, i) => (
-          <Col key={i} className='gutter-row' xs={24} md={12}>
-            <h2 className={styles['subheader']}>{e.title}</h2>
-            <p className={styles['prompt']}><em>
-              {e.subtitle}
-            </em></p>
-            <Field name={`${e.field}`} component={Input} type='textarea' rows={6} />
-          </Col>
-        ))}
-      </Row>
-    </form>
-  )
+@reduxForm({
+  form: 'create.body.plan',
+  validate: (values) => {
+    const errors = {}
+    return errors
+  }
+})
+class ProjectPlan extends React.Component {
+  render ({handleSubmit, pristine, reset, submitting} = this.props) {
+    return (
+      <form onSubmit={handleSubmit}>
+        <Row gutter={64}>
+          <h2>State of Technology</h2>
+          <p><em>
+            Tell us about how the state of student technology can change.
+          </em></p>
+          {state.map((e, i) => (
+            <Col key={i} className='gutter-row' xs={24} md={12}>
+              <h2 className={styles['subheader']}>{e.title}</h2>
+              <p className={styles['prompt']}><em>
+                {e.subtitle}
+              </em></p>
+              <Field name={`${e.field}`} component={Input} type='textarea' rows={6} />
+            </Col>
+          ))}
+        </Row>
+        <Row gutter={64}>
+          <h2>Service Availability</h2>
+          <p><em>
+            How are students using this technology without this project, and how could that change?
+          </em></p>
+          {availability.map((e, i) => (
+            <Col key={i} className='gutter-row' xs={24} md={12}>
+              <h2 className={styles['subheader']}>{e.title}</h2>
+              <p className={styles['prompt']}><em>
+                {e.subtitle}
+              </em></p>
+              <Field name={`${e.field}`} component={Input} type='textarea' rows={6} />
+            </Col>
+          ))}
+        </Row>
+        <Row gutter={64}>
+          <h2>Project Strategy</h2>
+          <p><em>
+            How can your organization back this project? What's the overall strategy?
+          </em></p>
+          {plan.map((e, i) => (
+            <Col key={i} className='gutter-row' xs={24} md={12}>
+              <h2 className={styles['subheader']}>{e.title}</h2>
+              <p><em>
+                {e.subtitle}
+              </em></p>
+              <Field name={`${e.field}`} component={Input} type='textarea' rows={6} />
+            </Col>
+          ))}
+        </Row>
+        <Row gutter={64}>
+          <h2>Student Outreach</h2>
+          <p><em>
+            How does your organization interact with the student community?
+          </em></p>
+          {outreach.map((e, i) => (
+            <Col key={i} className='gutter-row' xs={24} md={12}>
+              <h2 className={styles['subheader']}>{e.title}</h2>
+              <p className={styles['prompt']}><em>
+                {e.subtitle}
+              </em></p>
+              <Field name={`${e.field}`} component={Input} type='textarea' rows={6} />
+            </Col>
+          ))}
+        </Row>
+        <Row gutter={64}>
+          <h2>Risk Factors</h2>
+          <p><em>
+            How are you managing risks and concerns?
+          </em></p>
+          {risk.map((e, i) => (
+            <Col key={i} className='gutter-row' xs={24} md={12}>
+              <h2 className={styles['subheader']}>{e.title}</h2>
+              <p className={styles['prompt']}><em>
+                {e.subtitle}
+              </em></p>
+              <Field name={`${e.field}`} component={Input} type='textarea' rows={6} />
+            </Col>
+          ))}
+        </Row>
+      </form>
+    )
+  }
 }
 
-const validate = values => {
-  const errors = {}
-  return errors
-}
-export default reduxForm({
-  form: 'create.body.plan',
-  validate
-})(ProjectPlan)
+export default ProjectPlan

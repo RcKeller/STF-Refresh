@@ -11,19 +11,19 @@ const contactTypes = [
   {
     title: 'Primary Contact',
     subtitle: 'The primary lead and point-of-contact for this project.',
-    prefix: 'primary'
+    field: 'primary'
   }, {
     title: 'Student Lead',
     subtitle: 'We recommend that there be at least one student representing a project, as STF funds are intended for student use.',
-    prefix: 'student'
+    field: 'student'
   }, {
     title: 'Organizational Head',
     subtitle: 'A departmental head or organization president to officiate this proposal.',
-    prefix: 'organization'
+    field: 'organization'
   }, {
     title: 'Budget Director',
     subtitle: 'Contact for budgetary concerns and handling transfers of funds.',
-    prefix: 'budget'
+    field: 'budget'
   }
 ]
 
@@ -43,13 +43,13 @@ class Introduction extends React.Component {
           <Col className='gutter-row' sm={24} md={12} lg={8} >
             <h2>Proposal Title</h2>
             <Field name='title' label='Proposal Title'
-              component={Input} prefix={<Icon type='edit' />} />
+              component={Input} field={<Icon type='edit' />} />
             <h4>Category</h4>
             <Field name='category' label='Category'
-              component={Input} prefix={<Icon type='folder' />} />
+              component={Input} field={<Icon type='folder' />} />
             <h4>Organization</h4>
             <Field name='organization' label='Organization'
-              component={Input} prefix={<Icon type='team' />} />
+              component={Input} field={<Icon type='team' />} />
             {/* <h4>UAC: <Field name='uac'
               component={Switch} /></h4> */}
             <Alert type='warning'
@@ -68,16 +68,16 @@ class Introduction extends React.Component {
                   <h2>{c.title}</h2>
                   <p className={styles['role-description']}>{c.subtitle}</p>
                   <div>
-                    <Field name={`${c.prefix}.name`} label='Name'
-                      component={Input} prefix={<Icon type='user' />} />
-                    <Field name={`${c.prefix}.netid`} label='NetID'
-                      component={Input} prefix={<Icon type='idcard' />} />
-                    <Field name={`${c.prefix}.title`} label='Title'
-                      component={Input} prefix={<Icon type='info-circle-o' />} />
-                    <Field name={`${c.prefix}.phone`} label='Phone'
-                      component={Input} prefix={<Icon type='phone' />} />
-                    <Field name={`${c.prefix}.mail`} label='Mailbox'
-                      component={Input} prefix={<Icon type='inbox' />} />
+                    <Field name={`${c.field}.name`} label='Name'
+                      component={Input} field={<Icon type='user' />} />
+                    <Field name={`${c.field}.netid`} label='NetID'
+                      component={Input} field={<Icon type='idcard' />} />
+                    <Field name={`${c.field}.title`} label='Title'
+                      component={Input} field={<Icon type='info-circle-o' />} />
+                    <Field name={`${c.field}.phone`} label='Phone'
+                      component={Input} field={<Icon type='phone' />} />
+                    <Field name={`${c.field}.mail`} label='Mailbox'
+                      component={Input} field={<Icon type='inbox' />} />
                   </div>
                 </Col>
           ))}

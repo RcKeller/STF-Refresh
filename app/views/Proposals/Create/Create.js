@@ -22,7 +22,7 @@ const steps = [
     content: <Overview />,
     icon: 'solution'
   }, {
-    title: 'Project Plan',
+    title: 'Plan',
     content: <ProjectPlan />,
     icon: 'book'
   }, {
