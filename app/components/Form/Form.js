@@ -1,7 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Input as AntInput, InputNumber as AntInputNumber } from 'antd'
+import {
+  Input as AntInput,
+  InputNumber as AntInputNumber,
+  Switch as AntSwitch
+} from 'antd'
 // import { Form, Input as AntInput, Tooltip, Icon, Cascader, Select, Row, Col, Checkbox, Button, AutoComplete } from 'antd'
 // const FormItem = Form.Item
 // const Option = Select.Option
@@ -44,6 +48,14 @@ export const InputTax = ({input, ...custom}) => (
     step={0.1}
     formatter={value => `%${value}`}
     parser={value => value.replace('%', '')}
+    {...custom}
+  />
+)
+
+export const Switch = ({input, ...custom}) => (
+  <AntSwitch size='large'
+    value={input.value}
+    onChange={input.onChange}
     {...custom}
   />
 )
