@@ -87,7 +87,7 @@ const validate = values => {
   return errors
 }
 export default reduxForm({
-  form: 'ProposalsCreateManifest',
+  form: 'create.manifests[0]',
   validate,
   enableReinitialize: true
 })(Manifest)

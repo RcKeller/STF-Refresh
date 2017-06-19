@@ -34,7 +34,7 @@ const CaseSchema = new mongoose.Schema({
     state: [{ type: String, required: true }],
     availability: [{ type: String, required: true }],
     strategy: [{ type: String, required: true }],
-    outreact: [{ type: String, required: true }],
+    outreach: [{ type: String, required: true }],
     risk: [{ type: String, required: true }]
   },
   legacy: [{

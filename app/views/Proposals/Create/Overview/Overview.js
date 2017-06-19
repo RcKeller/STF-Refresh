@@ -77,6 +77,6 @@ const validate = values => {
   return errors
 }
 export default reduxForm({
-  form: 'ProposalsCreateOverview',
+  form: 'create.body.overview',
   validate
 })(Overview)

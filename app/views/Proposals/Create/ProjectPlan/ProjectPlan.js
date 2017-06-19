@@ -11,11 +11,11 @@ const state = [
   {
     title: 'Current State',
     subtitle: 'Describe the resources currently available, and how students utilize these resources.',
-    prefix: 'currentState'
+    field: 'state.current'
   }, {
     title: 'Future State',
     subtitle: 'Describe the new resources being made available to students, including any advantages over current technology.',
-    prefix: 'futureState'
+    field: 'state.future'
   }
 ]
 
@@ -23,11 +23,11 @@ const availability = [
   {
     title: 'Current Availability',
     subtitle: 'How many students use these resources per quarter? Include any restrictions that are involved, including hours of operations, mandatory training, and associations with organizations',
-    prefix: 'currentAvailability'
+    field: 'availability.current'
   }, {
     title: 'Future State',
     subtitle: 'How will students be able to use the proposed resources? Include any restrictions that are involved, including hours of operations, mandatory training, and associations with organizations.',
-    prefix: 'futureAvailability'
+    field: 'availability.future'
   }
 ]
 
@@ -35,22 +35,33 @@ const plan = [
   {
     title: 'Organizational Backing',
     subtitle: 'What sort of resources will your organization make available to ensure the success of this project?',
-    prefix: 'currentPlan'
+    field: 'strategy.current'
   }, {
     title: 'Future State',
     subtitle: 'Briefly describe the implementation process, and include a timeline if possible.',
-    prefix: 'futurePlan'
+    field: 'strategy.future'
   }
 ]
 const outreach = [
   {
     title: 'Prior Outreach',
     subtitle: 'Describe efforts to receive departmental funding and community endorsements for this project and similar initiatives.',
-    prefix: 'currentOutreach'
+    field: 'outreach.current'
   }, {
     title: 'Outreach Strategy',
     subtitle: 'If approved, how will you reach out to the student community and inform them about this resource.',
-    prefix: 'futureOutreach'
+    field: 'outreach.future'
+  }
+]
+const risk = [
+  {
+    title: 'Current Risks',
+    subtitle: 'Are there any current concerns regarding privacy or security? Have you scoped out insurance for the proposed technology?',
+    field: 'risk.current'
+  }, {
+    title: 'Outreach Strategy',
+    subtitle: 'If approved, how will you secure the systems and technology for this project.',
+    field: 'risk.future'
   }
 ]
 
@@ -70,7 +81,7 @@ const ProjectPlan = props => {
             <p className={styles['prompt']}><em>
               {e.subtitle}
             </em></p>
-            <Field name={`${e.prefix}`} component={Input} type='textarea' rows={6} />
+            <Field name={`${e.field}`} component={Input} type='textarea' rows={6} />
           </Col>
         ))}
       </Row>
@@ -85,7 +96,7 @@ const ProjectPlan = props => {
             <p className={styles['prompt']}><em>
               {e.subtitle}
             </em></p>
-            <Field name={`${e.prefix}`} component={Input} type='textarea' rows={6} />
+            <Field name={`${e.field}`} component={Input} type='textarea' rows={6} />
           </Col>
         ))}
       </Row>
@@ -100,7 +111,7 @@ const ProjectPlan = props => {
             <p><em>
               {e.subtitle}
             </em></p>
-            <Field name={`${e.prefix}`} component={Input} type='textarea' rows={6} />
+            <Field name={`${e.field}`} component={Input} type='textarea' rows={6} />
           </Col>
         ))}
       </Row>
@@ -115,7 +126,22 @@ const ProjectPlan = props => {
             <p className={styles['prompt']}><em>
               {e.subtitle}
             </em></p>
-            <Field name={`${e.prefix}`} component={Input} type='textarea' rows={6} />
+            <Field name={`${e.field}`} component={Input} type='textarea' rows={6} />
+          </Col>
+        ))}
+      </Row>
+      <Row gutter={64}>
+        <h2>Risk Factors</h2>
+        <p><em>
+          How are you managing risks and concerns?
+        </em></p>
+        {risk.map((e, i) => (
+          <Col key={i} className='gutter-row' xs={24} md={12}>
+            <h2 className={styles['subheader']}>{e.title}</h2>
+            <p className={styles['prompt']}><em>
+              {e.subtitle}
+            </em></p>
+            <Field name={`${e.field}`} component={Input} type='textarea' rows={6} />
           </Col>
         ))}
       </Row>
@@ -128,6 +154,6 @@ const validate = values => {
   return errors
 }
 export default reduxForm({
-  form: 'ProposalsCreateProjectPlan',
+  form: 'create.body.plan',
   validate
 })(ProjectPlan)
