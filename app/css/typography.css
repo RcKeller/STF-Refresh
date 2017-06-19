@@ -1,13 +1,18 @@
 
 :root {
 
-  /*--fontFace:           'Roboto', Helvetica, Arial, sans-serif;*/
   --fontFace:           "Open Sans", sans-serif;
 
   --fontSmall:                12px;
   --fontMedium:               16px;
   --fontLarge:                21px;
   --fontHuge:                 28px;
+
+  --typography {
+    font-face: "Open Sans", sans-serif;
+    font-size: 62.5%;
+    font-smoothing: antialiased;
+  }
 
   --heading {
     font-size: 28px;

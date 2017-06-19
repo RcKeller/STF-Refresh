@@ -2,10 +2,63 @@
 @import 'layout';
 @import 'typography';
 
-* { box-sizing: border-box !important; }
+/*https://www.memeexplorer.com/cache/846.jpg*/
+* {
+  box-sizing: border-box !important;
+  -webkit-font-smoothing: antialiased;
+}
 
-.app {
-  height: 100% !important;
-  font-weight: normal !important;
-  font-smoothing: antialiased !important;
+/*Define variables and style classes*/
+:root {
+  --header {
+    font-weight: 800;
+  };
+}
+
+/* *****
+ANTD STYLE BUSTER
+---
+Ant design includes a global normalizer.
+Annoying, but we would've done this anyways.
+The below applies UW-brand theming to basic semantic html
+that is not associated with ant design components
+***** */
+:global html:not([class^="ant"]) {
+  & h1 {
+    @apply --header;
+    color: var(--purple, purple);
+    font-size: 37px;
+  }
+  & h2 {
+    @apply --header;
+    color: var(--purple, purple);
+    font-size: 28px;
+  }
+  & h3 {
+    @apply --header;
+    color: var(--black, black);
+    font-size: 23px;
+  }
+  & h4 {
+    @apply --header;
+    color: var(--black, black);
+    font-size: 21px;
+  }
+  & h5 {
+    @apply --header;
+    color: var(--black, black);
+    font-size: 18px;
+  }
+  & h6 {
+    @apply --header;
+    color: var(--black, black);
+    font-size: 16px;
+  }
+  & p {
+    color: var(--black, black);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.72;
+    margin-bottom: 14px;
+  }
 }
