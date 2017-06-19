@@ -42,12 +42,9 @@ class Create extends React.Component {
     super(props)
     this.state = { current: 0 }
   }
-  next () {
-    this.setState({ current: ++this.state.current })
-  }
-  prev () {
-    this.setState({ current: --this.state.current })
-  }
+  //  Mechanism for controlling movement to next steps.
+  next () { this.setState({ current: ++this.state.current }) }
+  prev () { this.setState({ current: --this.state.current }) }
   render () {
     return (
       <article className={styles['create']}>
@@ -63,13 +60,13 @@ class Create extends React.Component {
           {steps[this.state.current].content}
         </div>
         <section className='steps-action'>
-          {this.state.current < steps.length - 1 &&
+          {this.state.current < steps.length - 1 && // Next
             <Button size='large' type='primary' onClick={() => this.next()}>Next</Button>
           }
-          {this.state.current === steps.length - 1 &&
+          {this.state.current === steps.length - 1 && // Submit
             <Button size='large' type='primary' onClick={() => console.log('Processing complete!')}>Submit Proposal!</Button>
           }
-          {this.state.current > 0 &&
+          {this.state.current > 0 &&  // Previous
             <Button size='large' style={{ marginLeft: 8 }} onClick={() => this.prev()}>Previous</Button>
           }
         </section>

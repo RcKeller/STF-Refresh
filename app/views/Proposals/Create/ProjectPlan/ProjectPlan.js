@@ -70,7 +70,7 @@ const ProjectPlan = props => {
             <p className={styles['prompt']}><em>
               {e.subtitle}
             </em></p>
-            <Field name={`${e.prefix}`} component={Input} type='textarea' rows={6} autosize />
+            <Field name={`${e.prefix}`} component={Input} type='textarea' rows={6} />
           </Col>
         ))}
       </Row>
@@ -85,7 +85,7 @@ const ProjectPlan = props => {
             <p className={styles['prompt']}><em>
               {e.subtitle}
             </em></p>
-            <Field name={`${e.prefix}`} component={Input} type='textarea' rows={6} autosize />
+            <Field name={`${e.prefix}`} component={Input} type='textarea' rows={6} />
           </Col>
         ))}
       </Row>
@@ -100,7 +100,7 @@ const ProjectPlan = props => {
             <p><em>
               {e.subtitle}
             </em></p>
-            <Field name={`${e.prefix}`} component={Input} type='textarea' rows={6} autosize />
+            <Field name={`${e.prefix}`} component={Input} type='textarea' rows={6} />
           </Col>
         ))}
       </Row>
@@ -115,7 +115,7 @@ const ProjectPlan = props => {
             <p className={styles['prompt']}><em>
               {e.subtitle}
             </em></p>
-            <Field name={`${e.prefix}`} component={Input} type='textarea' rows={6} autosize />
+            <Field name={`${e.prefix}`} component={Input} type='textarea' rows={6} />
           </Col>
         ))}
       </Row>

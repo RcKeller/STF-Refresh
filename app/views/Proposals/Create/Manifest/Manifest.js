@@ -35,34 +35,36 @@ class Manifest extends React.Component {
         {this.state.items.map((item, i) => (
           <div key={i}>
             <Row gutter={16}>
-              <Col className='gutter-row' xs={24}>
+              <Col className='gutter-row' xs={24} md={16} >
                 <h2>Item Name</h2>
                 <Field name={`name-${i}`} component={Input} />
+                <h3>Description</h3>
+                <Field name={`description-${i}`} component={Input} type='textarea' size='small' rows={2} />
               </Col>
-              <Col className='gutter-row' xs={24} sm={12} md={8}>
-                <h4>Quantity</h4>
-                <Field name={`quantity-${i}`} component={Input} />
-                <h4>Price</h4>
-                <Field name={`price-${i}`} component={InputCurrency}
-                />
-                <h4>Tax Rate</h4>
-                <Field name={`taxrate-${i}`} initialValue={10.1} component={InputTax}
-                 />
-                <h4>Priority Order (descending)</h4>
+              <Col className='gutter-row' xs={24} md={8}>
+                <Row>
+                  <Col xs={12}>
+                    <h5>Quantity</h5>
+                    <Field name={`quantity-${i}`} component={Input} />
+                  </Col>
+                  <Col xs={12}>
+                    <Button type='dashed' style={{ color: 'crimson', marginTop: 28 }} onClick={() => this.remove(i)}>
+                      <Icon type='minus' /> Delete
+                    </Button>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col xs={12}>
+                    <h5>Price</h5>
+                    <Field name={`price-${i}`} component={InputCurrency} />
+                  </Col>
+                  <Col xs={12}>
+                    <h5>Tax Rate</h5>
+                    <Field name={`taxrate-${i}`} initialValue={10.1} component={InputTax} />
+                  </Col>
+                </Row>
+                <h5>Priority Order (descending)</h5>
                 <Field name={`priority-${i}`} component={Input} />
-              </Col>
-              <Col className='gutter-row' xs={24} sm={12} md={8}>
-                <h4>Description</h4>
-                <Field name={`description-${i}`} component={Input} type='textarea' size='small' autosize />
-              </Col>
-              <Col className='gutter-row' xs={24} sm={12} md={8}>
-                <h4>Justification</h4>
-                <Field name={`justification-${i}`} component={Input} type='textarea' size='small' autosize />
-              </Col>
-              <Col className='gutter-row' xs={24}>
-                <Button size='small' type='dashed' style={{ color: 'crimson' }} onClick={() => this.remove(i)}>
-                  <Icon type='minus' /> Delete
-                </Button>
               </Col>
             </Row>
             <hr />

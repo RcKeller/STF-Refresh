@@ -34,14 +34,14 @@ const Overview = props => {
           <p><em>
             A brief summary of the proposal and the technology being made available to students.
           </em></p>
-          <Field name='abstract' component={Input} type='textarea' rows={6} autosize />
+          <Field name='abstract' component={Input} type='textarea' rows={6} />
         </Col>
         <Col className='gutter-row' xs={24} md={12}>
           <h2>Key Objectives</h2>
           <p><em>
             The changes proposed and the desired outcome.
           </em></p>
-          <Field name='objectives' component={Input} type='textarea' rows={6} autosize />
+          <Field name='objectives' component={Input} type='textarea' rows={6} />
         </Col>
       </Row>
       <Row>
@@ -50,7 +50,7 @@ const Overview = props => {
           <p><em>
             Briefly describe the outstanding student need for this technology and the justification for this project.
           </em></p>
-          <Field name='justification' component={Input} type='textarea' rows={4} autosize />
+          <Field name='justification' component={Input} type='textarea' rows={4} />
         </Col>
       </Row>
       <Row gutter={32}>
@@ -64,7 +64,7 @@ const Overview = props => {
           <Col key={i} className='gutter-row' xs={24} md={8}>
             <h3>{impact.title}</h3>
             <p className={styles['subtitle']}><em>{impact.subtitle}</em></p>
-            <Field name={`${impact.prefix}Impact`} component={Input} type='textarea' rows={4} autosize />
+            <Field name={`${impact.prefix}Impact`} component={Input} type='textarea' rows={4} />
           </Col>
         ))}
       </Row>
