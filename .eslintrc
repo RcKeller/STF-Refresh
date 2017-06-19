@@ -18,12 +18,8 @@
     "es6": true,
     "classes": true
   },
-  "plugins": [
-    "react"
-  ],
-  "extends": [
-    "standard"
-  ],
+  "plugins": ["react"],
+  "extends": ["standard", "standard-react"],
   "globals": {
     "__DEVSERVER__": true,
     "__DEVCLIENT__": true

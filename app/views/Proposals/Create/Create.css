@@ -1,5 +1,9 @@
 @import '../../../css/layout';
 
-.article {
+.create {
   @apply --page;
+}
+/* Proposals styles */
+.form-container {
+  overflow-y: auto;
 }
