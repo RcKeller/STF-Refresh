@@ -30,6 +30,7 @@ const contactTypes = [
 import styles from './Introduction.css'
 @reduxForm({
   form: 'create',
+  destroyOnUnmount: false,
   validate: (values) => {
     const errors = {}
     return errors

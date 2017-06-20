@@ -1,7 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-// import { browserHistory, Link } from 'react-router'
 
 import Introduction from './Introduction/Introduction'
 import Overview from './Overview/Overview'
@@ -13,27 +10,11 @@ import { Steps, Icon, Button } from 'antd'
 const Step = Steps.Step
 
 const steps = [
-  {
-    title: 'Introduction',
-    content: <Introduction />,
-    icon: 'team'
-  }, {
-    title: 'Overview',
-    content: <Overview />,
-    icon: 'solution'
-  }, {
-    title: 'Plan',
-    content: <ProjectPlan />,
-    icon: 'book'
-  }, {
-    title: 'Manifest',
-    content: <Manifest />,
-    icon: 'wallet'
-  }, {
-    title: 'Signatures',
-    content: <Signatures />,
-    icon: 'edit'
-  }
+  { title: 'Introduction', content: <Introduction />, icon: 'team' },
+  { title: 'Overview', content: <Overview />, icon: 'solution' },
+  { title: 'Plan', content: <ProjectPlan />, icon: 'book' },
+  { title: 'Manifest', content: <Manifest />, icon: 'wallet' },
+  { title: 'Signatures', content: <Signatures />, icon: 'edit' }
 ]
 
 import styles from './Create.css'
@@ -74,8 +55,4 @@ class Create extends React.Component {
     )
   }
 }
-
-const mapStateToProps = (state) => { return {} }
-const mapDispatchToProps = (dispatch) => { return {} }
-// Create.propTypes = {}
-export default connect(mapStateToProps, mapDispatchToProps)(Create)
+export default Create

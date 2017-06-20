@@ -9,6 +9,7 @@ import { Input, InputNumber, InputCurrency, InputTax } from '../../../../compone
   //  This is the first of potentially many "partial" manifests.
   //  Partial manifests are made to fund a section of an award.
   form: 'create.manifests[0]',
+  destroyOnUnmount: false,
   validate: (values) => {
     const errors = {}
     return errors

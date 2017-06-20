@@ -65,6 +65,7 @@ const risk = [
 import styles from './ProjectPlan.css'
 @reduxForm({
   form: 'create.body.plan',
+  destroyOnUnmount: false,
   validate: (values) => {
     const errors = {}
     return errors

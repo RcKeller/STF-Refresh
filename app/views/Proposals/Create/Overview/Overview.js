@@ -24,6 +24,7 @@ const impactTypes = [
 import styles from './Overview.css'
 @reduxForm({
   form: 'create.body.overview',
+  destroyOnUnmount: false,
   validate: (values) => {
     const errors = {}
     return errors

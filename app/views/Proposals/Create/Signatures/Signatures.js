@@ -26,6 +26,7 @@ const contactTypes = [
 // import styles from './Introduction.css'
 @reduxForm({
   form: 'create.signatures',
+  destroyOnUnmount: false,
   validate: (values) => {
     const errors = {}
     return errors
