@@ -65,10 +65,12 @@ class Signatures extends React.Component {
             {contactTypes.map((c, i) => (
               <Col key={i} className='gutter-row' xs={24}>
                 {contacts[c.field] &&
-                <Field name={`signatures.${c.field}`} component={Switch} size='large'
-                  checkedChildren={c.title} unCheckedChildren={c.title}
-                  disabled={contacts[c.field].netID !== user.netID}
-                />
+                  <h5>{c.title}: <Field name={`signatures.${c.field}`}
+                    component={Switch} size='large'
+                      checkedChildren={contacts[c.field].name} unCheckedChildren={contacts[c.field].name}
+                      disabled={contacts[c.field].netID !== user.netID}
+                    />
+                  </h5>
               }
               </Col>
             ))}
