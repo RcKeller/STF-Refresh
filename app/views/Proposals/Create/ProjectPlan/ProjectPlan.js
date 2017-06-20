@@ -23,25 +23,25 @@ const availability = [
     subtitle: 'How many students use these resources per quarter? Include any restrictions that are involved, including hours of operations, mandatory training, and associations with organizations',
     field: 'availability.current'
   }, {
-    title: 'Future State',
+    title: 'Future Availability',
     subtitle: 'How will students be able to use the proposed resources? Include any restrictions that are involved, including hours of operations, mandatory training, and associations with organizations.',
     field: 'availability.future'
   }
 ]
-const plan = [
+const strategy = [
   {
     title: 'Organizational Backing',
     subtitle: 'What sort of resources will your organization make available to ensure the success of this project?',
     field: 'strategy.current'
   }, {
-    title: 'Future State',
+    title: 'Implementation Strategy',
     subtitle: 'Briefly describe the implementation process, and include a timeline if possible.',
     field: 'strategy.future'
   }
 ]
 const outreach = [
   {
-    title: 'Prior Outreach',
+    title: 'Prior Efforts',
     subtitle: 'Describe efforts to receive departmental funding and community endorsements for this project and similar initiatives.',
     field: 'outreach.current'
   }, {
@@ -56,7 +56,7 @@ const risk = [
     subtitle: 'Are there any current concerns regarding privacy or security? Have you scoped out insurance for the proposed technology?',
     field: 'risk.current'
   }, {
-    title: 'Outreach Strategy',
+    title: 'Proposed Mitigations',
     subtitle: 'If approved, how will you secure the systems and technology for this project.',
     field: 'risk.future'
   }
@@ -102,7 +102,7 @@ class ProjectPlan extends React.Component {
           <p><em>
             How can your organization back this project? What's the overall strategy?
           </em></p>
-          {plan.map((e, i) => (
+          {strategy.map((e, i) => (
             <Col key={i} className='gutter-row' xs={24} md={12}>
               <h2 className={styles['subheader']}>{e.title}</h2>
               <p><em>

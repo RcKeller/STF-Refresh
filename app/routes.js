@@ -6,7 +6,7 @@ import {
   //  Static Pages
   FAQ, About, Contact,
   //  Dynamic pages
-  Proposals, Create, Documents,
+  Proposals, Create, Agreement, Documents,
   Calendar, Events
 } from './views'
 /*
@@ -18,8 +18,10 @@ export default (store) => {
   const requireAuth = (nextState, replace, callback) => {
     const { user: { authenticated }} = store.getState()
     if (!authenticated) {
+      window.location = '/auth/google'
       replace({
-        pathname: '/login',
+        //  TODO: When shib is fully implemented, dynamically re-route based on ENV
+        // pathname: '/login',
         state: { nextPathname: nextState.location.pathname }
       })
     }
@@ -44,7 +46,11 @@ export default (store) => {
       <Route path='/contact' breadcrumbName='Contact Us' component={Contact} />
 
       <Route path='/proposals' breadcrumbName='Proposals' component={Proposals} />
-      <Route path='/proposals/create' breadcrumbName='Create Proposal' component={Create} />
+      <Route path='/proposals/create' onEnter={requireAuth}
+        breadcrumbName='Create Proposal' component={Agreement}
+      />
+      {/* <Route path='/proposals/create' breadcrumbName='Create Proposal' component={Create} /> */}
+      <Route path='/proposals/create/:id/' breadcrumbName='Create Proposal' component={Create} />
 
       <Route path='/documents' breadcrumbName='Documents' component={Documents} />
 

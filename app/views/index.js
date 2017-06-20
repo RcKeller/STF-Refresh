@@ -10,6 +10,7 @@ export { default as FAQ } from './FAQ/FAQ'
 // DYNAMIC PAGES
 export { default as Proposals } from './Proposals/Proposals'
 export { default as Create } from './Proposals/Create/Create'
+export { default as Agreement } from './Proposals/Create/Agreement/Agreement'
 export { default as Documents } from './Documents/Documents'
 export { default as Calendar } from './Calendar/Calendar'
 export { default as Events } from './Calendar/Events/Events'
