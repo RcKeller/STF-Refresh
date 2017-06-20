@@ -55,6 +55,7 @@ export const InputTax = ({input, ...custom}) => (
 export const Switch = ({input, ...custom}) => (
   <AntSwitch size='large'
     value={input.value}
+    checked={input.value}
     onChange={input.onChange}
     {...custom}
   />

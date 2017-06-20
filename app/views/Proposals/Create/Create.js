@@ -1,4 +1,5 @@
 import React from 'react'
+import {Field, reduxForm} from 'redux-form'
 
 import Introduction from './Introduction/Introduction'
 import Overview from './Overview/Overview'
@@ -18,15 +19,36 @@ const steps = [
 ]
 
 import styles from './Create.css'
+@reduxForm({
+  form: 'create',
+  destroyOnUnmount: false,
+  validate: (values) => {
+    const errors = {}
+    return errors
+  }
+  // initialValues: {
+  //   //  Order matters.
+  //   contacts: [
+  //     { role: 'primary' },
+  //     { role: 'organization' },
+  //     { role: 'budget' },
+  //     { role: 'student' }
+  //   ]
+  // }
+})
 class Create extends React.Component {
   constructor (props) {
     super(props)
     this.state = { current: 0 }
   }
+  //  Load roles for contacts
+  componentDidMount () {
+
+  }
   //  Mechanism for controlling movement to next steps.
   next () { this.setState({ current: ++this.state.current }) }
   prev () { this.setState({ current: --this.state.current }) }
-  render () {
+  render ({handleSubmit, load, pristine, reset, submitting} = this.props) {
     return (
       <article className={styles['create']}>
         <h1>Creating Proposal</h1>
@@ -38,7 +60,9 @@ class Create extends React.Component {
           ))}
         </Steps>
         <div>
-          {steps[this.state.current].content}
+          <form onSubmit={handleSubmit}>
+            {steps[this.state.current].content}
+          </form>
         </div>
         <section className='steps-action'>
           {this.state.current < steps.length - 1 && // Next

@@ -24,18 +24,10 @@ const contactTypes = [
 ]
 
 // import styles from './Introduction.css'
-@reduxForm({
-  form: 'create.signatures',
-  destroyOnUnmount: false,
-  validate: (values) => {
-    const errors = {}
-    return errors
-  }
-})
 class Signatures extends React.Component {
-  render ({handleSubmit, pristine, reset, submitting} = this.props) {
+  render () {
     return (
-      <form onSubmit={handleSubmit}>
+      <div>
         <Row gutter={32} type='flex' justify='space-between' align='bottom'>
           <Col className='gutter-row' xs={24} sm={12}>
             <h2>Final Signatures</h2>
@@ -53,14 +45,14 @@ class Signatures extends React.Component {
             />
             {contactTypes.map((c, i) => (
               <Col key={i} className='gutter-row' xs={24}>
-                <Field name={c.field} component={Switch} size='large'
+                <Field name={`signatures.${c.field}`} component={Switch} size='large'
                   checkedChildren={c.title} unCheckedChildren={c.title}
                 />
               </Col>
             ))}
           </Col>
         </Row>
-      </form>
+      </div>
     )
   }
 }

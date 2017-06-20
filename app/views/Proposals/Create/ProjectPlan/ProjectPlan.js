@@ -1,5 +1,5 @@
 import React from 'react'
-import {Field, reduxForm} from 'redux-form'
+import { Field } from 'redux-form'
 
 import { Input } from '../../../../components/Form/Form'
 
@@ -63,18 +63,10 @@ const risk = [
 ]
 
 import styles from './ProjectPlan.css'
-@reduxForm({
-  form: 'create.body.plan',
-  destroyOnUnmount: false,
-  validate: (values) => {
-    const errors = {}
-    return errors
-  }
-})
 class ProjectPlan extends React.Component {
-  render ({handleSubmit, pristine, reset, submitting} = this.props) {
+  render () {
     return (
-      <form onSubmit={handleSubmit}>
+      <div>
         <Row gutter={64}>
           <h2>State of Technology</h2>
           <p><em>
@@ -86,7 +78,7 @@ class ProjectPlan extends React.Component {
               <p className={styles['prompt']}><em>
                 {e.subtitle}
               </em></p>
-              <Field name={`${e.field}`} component={Input} type='textarea' rows={6} />
+              <Field name={`body.plan.${e.field}`} component={Input} type='textarea' rows={6} />
             </Col>
           ))}
         </Row>
@@ -101,7 +93,7 @@ class ProjectPlan extends React.Component {
               <p className={styles['prompt']}><em>
                 {e.subtitle}
               </em></p>
-              <Field name={`${e.field}`} component={Input} type='textarea' rows={6} />
+              <Field name={`body.plan.${e.field}`} component={Input} type='textarea' rows={6} />
             </Col>
           ))}
         </Row>
@@ -116,7 +108,7 @@ class ProjectPlan extends React.Component {
               <p><em>
                 {e.subtitle}
               </em></p>
-              <Field name={`${e.field}`} component={Input} type='textarea' rows={6} />
+              <Field name={`body.plan.${e.field}`} component={Input} type='textarea' rows={6} />
             </Col>
           ))}
         </Row>
@@ -131,7 +123,7 @@ class ProjectPlan extends React.Component {
               <p className={styles['prompt']}><em>
                 {e.subtitle}
               </em></p>
-              <Field name={`${e.field}`} component={Input} type='textarea' rows={6} />
+              <Field name={`body.plan.${e.field}`} component={Input} type='textarea' rows={6} />
             </Col>
           ))}
         </Row>
@@ -146,11 +138,11 @@ class ProjectPlan extends React.Component {
               <p className={styles['prompt']}><em>
                 {e.subtitle}
               </em></p>
-              <Field name={`${e.field}`} component={Input} type='textarea' rows={6} />
+              <Field name={`body.plan.${e.field}`} component={Input} type='textarea' rows={6} />
             </Col>
           ))}
         </Row>
-      </form>
+      </div>
     )
   }
 }
