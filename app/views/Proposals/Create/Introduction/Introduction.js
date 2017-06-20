@@ -59,11 +59,9 @@ class Introduction extends React.Component {
                   <h2>{c.title}</h2>
                   <p className={styles['role-description']}>{c.subtitle}</p>
                   <div>
-                    {/* <Field name={`contacts[${i}].title`} component={<input />} style={{display: 'none'}} value={c.title} />
-                    <Field name={`contacts[${i}].role`} component={<input />} style={{display: 'none'}} value={c.role} /> */}
                     <Field name={`contacts.${c.role}.name`} label='Name'
                       component={Input} field={<Icon type='user' />} />
-                    <Field name={`contacts.${c.role}.netid`} label='NetID'
+                    <Field name={`contacts.${c.role}.netID`} label='NetID'
                       component={Input} field={<Icon type='idcard' />} />
                     <Field name={`contacts.${c.role}.title`} label='Title'
                       component={Input} field={<Icon type='info-circle-o' />} />

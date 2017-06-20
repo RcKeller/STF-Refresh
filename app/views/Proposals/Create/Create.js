@@ -26,15 +26,6 @@ import styles from './Create.css'
     const errors = {}
     return errors
   }
-  // initialValues: {
-  //   //  Order matters.
-  //   contacts: [
-  //     { role: 'primary' },
-  //     { role: 'organization' },
-  //     { role: 'budget' },
-  //     { role: 'student' }
-  //   ]
-  // }
 })
 class Create extends React.Component {
   constructor (props) {

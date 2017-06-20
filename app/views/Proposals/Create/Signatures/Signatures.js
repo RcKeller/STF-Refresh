@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import {Field, reduxForm} from 'redux-form'
+import {Field, formValueSelector} from 'redux-form'
 
 import { Input, Switch } from '../../../../components/Form/Form'
 
@@ -24,8 +24,27 @@ const contactTypes = [
 ]
 
 // import styles from './Introduction.css'
+const selector = formValueSelector('create') // <-- same as form name
+
+//  https://stackoverflow.com/questions/43999623/how-to-provide-validations-for-react-js-form/44005986#44005986
+@connect(
+  state => {
+    // const primary = selector(state, 'contacts.primary.netID')
+    const contacts = selector(state, 'contacts')
+    const user = state.user
+    //  Object destructuring, e.g primary: primary
+    return { contacts, user }
+    // const primary = selector(state, 'contacts.primary.netID')
+    // const budget = selector(state, 'contacts.budget.netID')
+    // const organization = selector(state, 'contacts.organization.netID')
+    // const student = selector(state, 'contacts.student.netID')
+    // const user = state.user
+    // //  Object destructuring, e.g primary: primary
+    // return { primary, budget, organization, student, user }
+  }
+)
 class Signatures extends React.Component {
-  render () {
+  render ({user, contacts} = this.props) {
     return (
       <div>
         <Row gutter={32} type='flex' justify='space-between' align='bottom'>
@@ -45,9 +64,12 @@ class Signatures extends React.Component {
             />
             {contactTypes.map((c, i) => (
               <Col key={i} className='gutter-row' xs={24}>
+                {contacts[c.field] &&
                 <Field name={`signatures.${c.field}`} component={Switch} size='large'
                   checkedChildren={c.title} unCheckedChildren={c.title}
+                  disabled={contacts[c.field].netID !== user.netID}
                 />
+              }
               </Col>
             ))}
           </Col>

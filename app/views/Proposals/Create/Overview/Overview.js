@@ -32,14 +32,14 @@ class Overview extends React.Component {
             <p><em>
               A brief summary of the proposal and the technology being made available to students.
             </em></p>
-            <Field name='body.overview.abstract' component={Input} type='textarea' rows={6} autosize />
+            <Field name='body.overview.abstract' component={Input} type='textarea' rows={6} />
           </Col>
           <Col className='gutter-row' xs={24} md={12}>
             <h2>Key Objectives</h2>
             <p><em>
               The changes proposed and the desired outcome.
             </em></p>
-            <Field name='body.overview.objectives' component={Input} type='textarea' rows={6} autosize />
+            <Field name='body.overview.objectives' component={Input} type='textarea' rows={6} />
           </Col>
         </Row>
         <Row>
@@ -48,7 +48,7 @@ class Overview extends React.Component {
             <p><em>
               Briefly describe the outstanding student need for this technology and the justification for this project.
             </em></p>
-            <Field name='body.overview.justification' component={Input} type='textarea' rows={4} autosize />
+            <Field name='body.overview.justification' component={Input} type='textarea' rows={4} />
           </Col>
         </Row>
         <Row gutter={32}>
@@ -62,7 +62,7 @@ class Overview extends React.Component {
             <Col key={i} className='gutter-row' xs={24} md={8}>
               <h3>{impact.title}</h3>
               <p className={styles['subtitle']}><em>{impact.subtitle}</em></p>
-              <Field name={`body.overview.impact.${impact.field}`} component={Input} type='textarea' rows={4} autosize />
+              <Field name={`body.overview.impact.${impact.field}`} component={Input} type='textarea' rows={4} />
             </Col>
           ))}
         </Row>
