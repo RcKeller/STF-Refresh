@@ -6,6 +6,7 @@ import { createLogger } from 'redux-logger'
 import { queryMiddleware } from 'redux-query'
 export const getQueries = (state) => state.queries
 export const getEntities = (state) => state.entities
+import { responsiveStoreEnhancer } from 'redux-responsive'
 
 import rootReducer from './reducers'
 /*
@@ -16,13 +17,18 @@ import rootReducer from './reducers'
  */
 export default function configureStore (initialState, history) {
   // Installs hooks that always keep react-router and redux store in sync
-  const middleware = [thunk, routerMiddleware(history), queryMiddleware(getQueries, getEntities)]
+  const middleware = [
+    thunk,
+    routerMiddleware(history),
+    queryMiddleware(getQueries, getEntities)
+  ]
   let store
   // The below used to reference a JS module for env info.
   // That fails in isomorphic contexts. Thus, directly accessing the process env.
   if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
     middleware.push(createLogger())
     store = createStore(rootReducer, initialState, compose(
+      responsiveStoreEnhancer,
       applyMiddleware(...middleware),
       typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
     ))

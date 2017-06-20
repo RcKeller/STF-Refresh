@@ -1,5 +1,9 @@
 @import '../../css/layout';
 
-.article {
+.blocks {
   @apply --page;
+  /*Cut all padding for small, table has its own*/
+  @media (max-width: 768px) {
+    padding: 0;
+  }
 }
