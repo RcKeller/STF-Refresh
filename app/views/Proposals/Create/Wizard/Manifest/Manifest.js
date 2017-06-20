@@ -3,7 +3,7 @@ import { Field } from 'redux-form'
 
 import { Row, Col, Alert, Button, Icon } from 'antd'
 
-import { Input, InputNumber, InputCurrency, InputTax } from '../../../../components/Form/Form'
+import { Input, InputNumber, InputCurrency, InputTax } from '../../../../../components/Form/Form'
 
 //  This is the first of potentially many "partial" manifests.
 //  Partial manifests are made to fund a section of an award.

@@ -1,9 +1,0 @@
-@import '../../../../css/layout';
-
-.agreement {
-  @apply --page;
-}
-/* Proposals styles */
-.form-container {
-  overflow-y: auto;
-}

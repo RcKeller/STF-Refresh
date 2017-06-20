@@ -3,7 +3,7 @@ import React from 'react'
 // import { connect } from 'react-redux'
 import { Field } from 'redux-form'
 
-import { Input, Switch } from '../../../../components/Form/Form'
+import { Input, Switch } from '../../../../../components/Form/Form'
 
 import { Row, Col, Icon, Alert } from 'antd'
 

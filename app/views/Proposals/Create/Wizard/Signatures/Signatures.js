@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import {Field, formValueSelector} from 'redux-form'
 
-import { Input, Switch } from '../../../../components/Form/Form'
+import { Input, Switch } from '../../../../../components/Form/Form'
 
 import { Row, Col, Alert, Button, Icon } from 'antd'
 

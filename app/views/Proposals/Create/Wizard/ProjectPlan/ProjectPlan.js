@@ -1,7 +1,7 @@
 import React from 'react'
 import { Field } from 'redux-form'
 
-import { Input } from '../../../../components/Form/Form'
+import { Input } from '../../../../../components/Form/Form'
 
 import { Row, Col } from 'antd'
 
