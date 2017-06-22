@@ -12,7 +12,7 @@ import { restModels } from '../db/models' //  Models for REST routes
 CUSTOM CONTROLLERS:
 Bespoke, non-RESTful routes for things like authN.
 */
-const usersController = db.controllers && db.controllers.users
+const users = db.controllers && db.controllers.users
 
 //  GENERATE ROUTES
 export default (app) => {
@@ -31,8 +31,8 @@ export default (app) => {
   app.use(rest) && console.log(`REST: API live for all ${restModels.length} core models.`)
 
   // USER PROFILE ROUTES
-  if (usersController) {
-    app.delete('/sessions', usersController.logout)
+  if (users) {
+    app.delete('/sessions', users.logout)
   } else { console.warn('Error: DB unable to handle user routes.') }
   //  PRODUCTION AUTH
   if (db.passport && config.has('uw')) {

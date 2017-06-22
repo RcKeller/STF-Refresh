@@ -6,7 +6,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 //  Our services
-import { proposals } from '../../services'
+import api from '../../services'
 
 //  Import modular CSS. Needs to run through JS because styles are hashed.
 import styles from './Proposals.css'
@@ -16,7 +16,7 @@ import styles from './Proposals.css'
   //  Connect component to cached DB entities
   connect(state => ({ proposals: state.entities.proposals })),
   //  Execute necessary AJAX to load said entities
-  connectRequest(() => proposals.getAll())
+  connectRequest(() => api.getAll('proposal'))
 )
 class Proposals extends React.Component {
   //  Shorthand assignment of variables when defining render
