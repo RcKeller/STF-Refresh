@@ -1,15 +1,5 @@
-import passport from 'passport'
-import User from '../models/user'
-
-/**
- * POST /login
-    Removed (part of local strategy)
- */
-
- /**
- * POST /signup
- Removed (part of local strategy)
- */
+// import passport from 'passport'
+// import User from '../models/user'
 
 /**
  * POST /logout

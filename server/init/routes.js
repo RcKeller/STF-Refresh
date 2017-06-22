@@ -1,47 +1,34 @@
+import express from 'express'
+import restify from 'express-restify-mongoose'
 import passport from 'passport'
 import db from '../db'
 import config from 'config'
-const version = config.get('version')
-
 /*
-STANDARD CONTROLLERS:
-These have core get/post/put/delete requests, the later 3 of which are tied to ID.
-Routes are automatically mapped for core services, then custom ones get mapped later.
-(BTW, we test the existence of the controller first. Prevents exceptions).
+RESTful MODELS (sans-controller)
+Controllers are automatically mapped using express-restify-mongoose
 */
-const api = {
-  //  Users is non-standard
-  contacts: db.controllers && db.controllers.contacts,
-  comments: db.controllers && db.controllers.comments,
-  proposals: db.controllers && db.controllers.proposals,
-  cases: db.controllers && db.controllers.cases,
-  amendments: db.controllers && db.controllers.amendments,
-  manifests: db.controllers && db.controllers.manifests,
-  items: db.controllers && db.controllers.items,
-  blocks: db.controllers && db.controllers.blocks,
-  reviews: db.controllers && db.controllers.reviews,
-  decisions: db.controllers && db.controllers.decisions,
-  reports: db.controllers && db.controllers.reports
-}
+import { restModels } from '../db/models' //  Models for REST routes
 /*
 CUSTOM CONTROLLERS:
-These don't contain core services, routes are bespoke.
+Bespoke, non-RESTful routes for things like authN.
 */
 const usersController = db.controllers && db.controllers.users
 
 //  GENERATE ROUTES
 export default (app) => {
-  //  CORE SERVICES
-  Object.keys(api).forEach(function (key) {
-    const service = api[key]
-    if (typeof service !== 'undefined') {
-      app.get(`/${version}/${key}`, service.all)
-      app.post(`/${version}/${key}/:id`, service.add)
-      app.put(`/${version}/${key}/:id`, service.update)
-      app.delete(`/${version}/${key}/:id`, service.remove)
-      console.log(`API:  Core services live for: ${key}`)
-    } else { console.warn(`Error: DB unable to handle ${key} routes`) }
-  })
+  /*
+  CORE REST API:
+  https://florianholzapfel.github.io/express-restify-mongoose/
+  Routes are generated for our core models per RESTful standards.
+  We have full query capabilities for all these APIs. Can accept query params and process them accordingly.
+  */
+  //  Set defaults (removing /api prefix, setting /version)
+  restify.defaults({ prefix: '', version: `/${config.get('version')}` })
+  //  Initialize a router, map every core model's restify routes.
+  const rest = express.Router()
+  restModels.map((model) => restify.serve(rest, model))
+  //  Now, we use the router!
+  app.use(rest) && console.log(`REST: API live for all ${restModels.length} core models.`)
 
   // USER PROFILE ROUTES
   if (usersController) {

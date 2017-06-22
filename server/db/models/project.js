@@ -11,7 +11,7 @@ Legacy proposals are just a stream of Q/A, without any sort of structure
 (totally flat), so to handle them we store the information in an array with
 { title: body }, then the client can use map() to render them.
 */
-const CaseSchema = new mongoose.Schema({
+const ProjectSchema = new mongoose.Schema({
   //  No link to a proposal. We will never have to reverse engineer a proposal.
   //  If that ever happens, implementing the relationship should be trivial.
   overview: {
@@ -42,4 +42,4 @@ const CaseSchema = new mongoose.Schema({
     body: { type: String, required: true }
   }]
 })
-export default mongoose.model('Case', CaseSchema)
+export default mongoose.model('Project', ProjectSchema)

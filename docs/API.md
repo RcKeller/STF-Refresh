@@ -6,7 +6,7 @@ UW-STF uses a RESTful API to retrieve data from the backend. I'm using a microse
 - **Special Services**: Extensions to core API routes that allow special queries and hydration of data.
 - **Authentication**: Unique, secured routes for user data.
 
-### Core Services
+### REST Services
 
 | Method | Route | Result |
 | :------------- | :------------- | -------------: |
@@ -14,6 +14,8 @@ GET | /`version`/`schema`/ | Get all documents for that schema
 POST | /`version`/`schema`/`id`/ | Add a new document to the schema
 PUT | /`version`/`schema`/`id`/ | Update an existing document
 DELETE | /`version`/`schema`/`id`/ | Remove an existing document
+
+For info on querying the API, using populate, etc, check the docs for [express-restify-mongoose](https://florianholzapfel.github.io/express-restify-mongoose/)
 
 ### Special Services
 

@@ -1,19 +1,19 @@
 import faker from 'faker'
-import Case from '../models/case'
+import Project from '../models/project'
 
 /*
-FAKE DATA GENERATOR: Case
+FAKE DATA GENERATOR: Project
 */
-export default function dummyCases (min) {
+export default function dummyProjects (min) {
   //  Check the db for existing data satisfying min required
-  Case.count().exec((err, count) => {
+  Project.count().exec((err, count) => {
     if (err) {
-      console.warn(`Unable to count Case schema: ${err}`)
+      console.warn(`Unable to count Project schema: ${err}`)
     } else if (count < min) {
       //  If it didn't, inject dummies.
       let fakes = []
       for (let i = 0; i < min; i++) {
-        fakes[i] = new Case({
+        fakes[i] = new Project({
           overview: {
             abstract: faker.lorem.paragraph(),
             objectives: [
@@ -57,8 +57,8 @@ export default function dummyCases (min) {
         })
       }
       //  Create will push our fakes into the DB.
-      Case.create(fakes, (error) => {
-        if (!error) { console.log(`SEED: Created fake Case (${fakes.length})`) }
+      Project.create(fakes, (error) => {
+        if (!error) { console.log(`SEED: Created fake Project (${fakes.length})`) }
       })
     }
   })

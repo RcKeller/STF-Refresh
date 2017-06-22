@@ -3,7 +3,7 @@ import config from 'config'
 import dummyContacts from './contact'
 import dummyAmendments from './amendment'
 import dummyBlocks from './block'
-import dummyCases from './case'
+import dummyProjects from './project'
 import dummyComments from './comment'
 import dummyDecisions from './decision'
 import dummyItems from './item'
@@ -25,7 +25,7 @@ export default function () {
   dummyComments(min)
   //  Proposals
   dummyProposals(min)
-  dummyCases(min)
+  dummyProjects(min)
   dummyAmendments(min)
   dummyManifests(min)
   dummyItems(min)
