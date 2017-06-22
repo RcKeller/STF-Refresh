@@ -1,22 +1,7 @@
-//  Export all core service models for creating a standard RESTful api
-import contact from './contact'
-import proposal from './proposal'
-import project from './project'
-import amendment from './amendment'
-import manifest from './manifest'
-import item from './item'
-import block from './block'
-import review from './review'
-import decision from './decision'
-import report from './report'
-import comment from './comment'
-export const restModels = [
-  contact, comment,
-  proposal, project, amendment, manifest, item, block,
-  review, decision, report
-]
-
-//  Loads models into the app - used in init
+/*
+MODEL INITIALIZER
+Uses require() to pass the imports around as a func.
+*/
 export default function loadModels () {
   //  Auth and User data
   require('./user')
@@ -35,3 +20,30 @@ export default function loadModels () {
   require('./decision')
   require('./report')
 }
+
+/*
+RESTful MODELS (and their dummy data generators)
+For express-restify-mongoose
+*/
+import contact, { dummyContacts } from './contact'
+import proposal, { dummyProposals } from './proposal'
+import project, { dummyProjects } from './project'
+import amendment, { dummyAmendments } from './amendment'
+import manifest, { dummyManifests } from './manifest'
+import item, { dummyItems } from './item'
+import block, { dummyBlocks } from './block'
+import review, { dummyReviews } from './review'
+import decision, { dummyDecisions } from './decision'
+import report, { dummyReports } from './report'
+import comment, { dummyComments } from './comment'
+//  Note that users are not here, that's bespoke.
+export const restModels = [
+  contact, comment,
+  proposal, project, amendment, manifest, item, block,
+  review, decision, report
+]
+export const restDummies = [
+  dummyContacts, dummyComments,
+  dummyProposals, dummyProjects, dummyAmendments, dummyManifests, dummyItems, dummyBlocks,
+  dummyReviews, dummyDecisions, dummyReports
+]
