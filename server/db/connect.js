@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import loadModels from './models'
-import dummyData from './dummies'
+// import dummyData from './dummies'
+import dummyData from './dummy'
 import config from 'config'
 const db = config.get('db')
 
@@ -13,7 +14,6 @@ export default () => {
         console.warn(`===>  Error connecting to ${db}\n${err}`)
       } else {
         console.log(`===>  Succeeded in connecting to ${db}`)
-        if (config.has('lorem-ipsum')) { dummyData() }
       }
     })
   }
@@ -23,4 +23,5 @@ export default () => {
   mongoose.connection.on('disconnected', connect)
 
   loadModels()
+  if (config.has('lorem-ipsum')) { dummyData() }
 }

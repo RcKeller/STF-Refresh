@@ -1,17 +1,17 @@
 import config from 'config'
 
-import dummyContacts from './contact'
-import dummyAmendments from './amendment'
-import dummyBlocks from './block'
-import dummyProjects from './project'
-import dummyComments from './comment'
-import dummyDecisions from './decision'
-import dummyItems from './item'
-import dummyUsers from './user'
-import dummyReports from './report'
-import dummyManifests from './manifest'
-import dummyReviews from './review'
-import dummyProposals from './proposal'
+// import { dummyUsers } from './models/user'
+import { dummyContacts } from './models/contact'
+import { dummyComments } from './models/comment'
+import { dummyProposals } from './models/proposal'
+import { dummyProjects } from './models/project'
+import { dummyAmendments } from './models/amendment'
+import { dummyManifests } from './models/manifest'
+import { dummyItems } from './models/item'
+import { dummyBlocks } from './models/block'
+import { dummyReviews } from './models/review'
+import { dummyDecisions } from './models/decision'
+import { dummyReports } from './models/report'
  // For faking Object ID's. THESE WILL BE RANDOM AND NOT POINT TO REAL DATA.
 
 export default function () {
@@ -19,7 +19,7 @@ export default function () {
   console.log(`SEED: Lorem Ipsum Mode enabled. Seeding up to ${min} documents each...`)
 
   //  Auth and User data
-  dummyUsers(min)
+  // dummyUsers(min)
   dummyContacts(min)
   //  Community content (mostly endorsements)
   dummyComments(min)

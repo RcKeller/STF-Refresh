@@ -1,5 +1,6 @@
-
 import mongoose from 'mongoose'
+import faker from 'faker'
+
 const ItemSchema = new mongoose.Schema({
   //  Items are tied to manifests, tied to proposals.
   manifest: { type: mongoose.Schema.Types.ObjectId, ref: 'Manifest' },
@@ -12,4 +13,37 @@ const ItemSchema = new mongoose.Schema({
   priority: { type: Number, min: 0 },
   taxExempt: { type: Boolean, default: false }
 })
-export default mongoose.model('Item', ItemSchema)
+const Item = mongoose.model('Item', ItemSchema)
+export default Item
+
+/* *****
+FAKE DATA GENERATOR: Contact
+***** */
+const dummyItems = (min) => {
+  //  Check the db for existing data satisfying min required
+  Item.count().exec((err, count) => {
+    if (err) {
+      console.warn(`Unable to count Item schema: ${err}`)
+    } else if (count < min) {
+      //  If it didn't, inject dummies.
+      let fakes = []
+      for (let i = 0; i < min; i++) {
+        fakes[i] = new Item({
+          manifest: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
+          title: faker.company.bsNoun(),
+          description: faker.lorem.paragraph(),
+          quantity: faker.random.number(),
+          price: faker.random.number(),
+          priority: faker.random.number(),
+          taxExempt: faker.random.boolean()
+        })
+      }
+      //  Create will push our fakes into the DB.
+      Item.create(fakes, (error) => {
+        if (!error) { console.log(`SEED: Created fake Item (${fakes.length})`) }
+      })
+    }
+  })
+}
+
+export { dummyItems }
