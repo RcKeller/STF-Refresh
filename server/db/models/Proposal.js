@@ -24,7 +24,7 @@ const ProposalSchema = new mongoose.Schema({
 
   contacts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Contact' }],
   // Body contains the business case/details, de-coupled from the core doc so that searching proposals is more efficient.
-  body: { type: mongoose.Schema.Types.ObjectId, ref: 'Plan' },
+  body: { type: mongoose.Schema.Types.ObjectId, ref: 'Project' },
   /*
   Manifests are the items requested. One is listed as the "original" (Boolean),
   the others are partial or revised manifests that reflect what is actually funded.
