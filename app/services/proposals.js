@@ -1,14 +1,11 @@
 import { API, version } from './environment'
 
-//  GET all Proposals
+//  GET ALL Proposal(s)
 const getAll = () => ({
-  url: `${API}/${version}/proposals`,
-  // Server responds with an array. Assign to prop.
-  transform: body => ({
-    proposals: body
-  }),
-  update: {
-    proposals: (prev, next) => next
-  }
+  url: `${API}/${version}/proposal`,
+  //  Server responds with an array. Assign to prop.
+  transform: body => ({ proposals: body }),
+  //  Update store with next state
+  update: { proposals: (prev, next) => next }
 })
 export default { getAll }

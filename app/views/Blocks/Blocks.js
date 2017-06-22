@@ -5,7 +5,20 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
-import { blocks } from '../../services'
+// import { blocks } from '../../services'
+//
+// import { Table } from 'antd'
+//
+// import styles from './Blocks.css'
+// @compose(
+//   connect(state => ({
+//     blocks: state.entities.blocks,
+//     screen: state.screen
+//   })),
+//   connectRequest(() => blocks.getAll())
+// )
+
+import { api } from '../../services'
 
 import { Table } from 'antd'
 
@@ -15,7 +28,7 @@ import styles from './Blocks.css'
     blocks: state.entities.blocks,
     screen: state.screen
   })),
-  connectRequest(() => blocks.getAll())
+  connectRequest(() => api.block.getAll())
 )
 class Blocks extends React.Component {
   constructor (props) {
