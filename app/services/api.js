@@ -1,24 +1,21 @@
 import { API, version } from './environment'
 
-//  Define models so we can give methods as props later.
-let api = {}
-const models = [
-  'contact', 'comment',
-  'proposal', 'project', 'amendment', 'manifest', 'item', 'block',
-  'review', 'decision', 'report'
-]
+/*
+FOREWARD:
+This file can be a little confusing, but here's what we're doing:
+A) Creating a list of models that have restful endpoints
+B) Initializing an API, which will hold methods for accessing each of those.
+*/
 
-models.map((model) => {
-  api[model] = {}
-  api[model].getAll = () => ({
-    url: `${API}/${version}/${model}`,
-    //  Server responds with an array. Assign to prop.
-    transform: body => ({ [`${model}s`]: body }),
-    //  Update store with next state
-    update: { [`${model}s`]: (prev, next) => next }
-  })
+const getAll = (model) => ({
+  url: `${API}/${version}/${model}`,
+  // Server responds with an array. Assign to prop.
+  transform: body => ({
+    [`${model}s`]: body
+  }),
+  update: {
+    [`${model}s`]: (prev, next) => next
+  }
 })
-console.log(api)
-console.log('---')
-console.log(api.proposal.getAll())
-export default api
+
+export default { getAll }
