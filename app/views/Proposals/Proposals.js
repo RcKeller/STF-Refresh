@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
-//  Our services
+//  Our API services
 import api from '../../services'
 
 //  Import modular CSS. Needs to run through JS because styles are hashed.
