@@ -11,6 +11,7 @@ import { Form, Steps, Icon, Button } from 'antd'
 const Step = Steps.Step
 const FormItem = Form.Item
 const ButtonGroup = Button.Group
+const AntForm = (component) => Form.create(component)
 
 // const AntForm = (component) => Form.create(component)
 
@@ -26,7 +27,7 @@ const steps = [
   { title: 'Signatures', icon: 'edit' }
 ]
 // import validate from './validate'
-// import styles from './Create.css'
+import styles from './Wizard.css'
 // @reduxForm({
 //   form: 'create',
 //   destroyOnUnmount: false,
@@ -38,11 +39,11 @@ connectRequest should get proposal by ID
 If there is no ID, or there is an ID but you're a contact...
 Render form components. Run validation and api.patch() to update the remote as necessary
 */
-// @AntForm
 class Wizard extends React.Component {
   constructor (props) {
     super(props)
-    this.state = { current: 0 }
+    //  Index - the step we're on.
+    this.state = { index: 0 }
   }
   // Disable submit button at the beginning.
   componentDidMount () {
@@ -68,10 +69,10 @@ class Wizard extends React.Component {
       if (!err) {
         switch (direction) {
           case 'next':
-            this.setState({ current: ++this.state.current })
+            this.setState({ index: ++this.state.index })
             break
           case 'prev':
-            this.setState({ current: --this.state.current })
+            this.setState({ index: --this.state.index })
             break
         }
         console.log('FORM', values)
@@ -81,10 +82,13 @@ class Wizard extends React.Component {
     })
   }
   render ({handleSubmit, form} = this.props) {
+    const content = [
+      <Introduction {...form} />
+    ]
     return (
       <article>
         <h1>Creating Proposal</h1>
-        <Steps current={this.state.current}>
+        <Steps index={this.state.index}>
           {steps.map((s, i) => (
             <Step key={i} title={s.title}
               icon={<Icon type={s.icon} />}
@@ -92,32 +96,33 @@ class Wizard extends React.Component {
           ))}
         </Steps>
         <Form onSubmit={handleSubmit}>
-          <Introduction {...form} />
-          {/* {steps[this.state.current].content} */}
           <section className='steps-action'>
-            <ButtonGroup>
+            <ButtonGroup className={styles['button-container']}>
               <Button size='large' type='primary'
-                disabled={this.state.current === 0}
+                className={styles['step-button']}
+                disabled={this.state.index === 0}
                 onClick={() => this.handleStep('prev')}
               >
                 <Icon type='left' />Previous
               </Button>
               <Button size='large' type='primary'
-                disabled={this.state.current >= steps.length - 1}
+                className={styles['step-button']}
+                disabled={this.state.index >= steps.length - 1}
                 onClick={() => this.handleStep('next')}
-              >
-                Next<Icon type='right' />
+                >
+                  Next<Icon type='right' />
               </Button>
             </ButtonGroup>
-            <FormItem>
+            <div>
+              {content[this.state.index]}
+            </div>
+            <FormItem className={styles['button-container']}>
               <Button size='large' type='primary'
+                className={styles['submit-button']}
                 htmlType='submit'
                 disabled={hasErrors(form.getFieldsError())}
               >Submit</Button>
             </FormItem>
-            {/* {next}
-            {submit}
-            {previous} */}
           </section>
         </Form>
       </article>
@@ -127,6 +132,6 @@ class Wizard extends React.Component {
 Wizard.propTypes = {
   form: PropTypes.object
 }
-// export default Wizard
+// Decoration doesn't work.
 const WizardForm = Form.create()(Wizard)
 export default WizardForm

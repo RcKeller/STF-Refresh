@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 // import { Input, Switch } from '../../../../../components/Form/Form'
@@ -26,22 +27,61 @@ const contactTypes = [
   }
 ]
 
-import styles from './Introduction.css'
+
+const introItemLayout = {
+  labelCol: { xs: { span: 24 }, sm: { span: 6 } },
+  wrapperCol: { xs: { span: 24 }, sm: { span: 14 } }
+}
+
+function hasErrors (fields) {
+  return Object.keys(fields).some(field => fields[field])
+}
+
+// import styles from './Introduction.css'
 class Introduction extends React.Component {
-  render () {
+  render ({getFieldDecorator, getFieldsError, getFieldError, isFieldTouched} = this.props) {
+    const invalidTitle = isFieldTouched('title') && getFieldError('title')
+    const invalidCategory = isFieldTouched('category') && getFieldError('category')
+    const invalidOrganization = isFieldTouched('organization') && getFieldError('organization')
     return (
       <div>
-        <Row gutter={64}>
-          <Col className='gutter-row' sm={24} md={12} lg={8} >
-            <h2>Proposal Title</h2>
-            <FormItem validateStatus='error'
+            <h1>Proposal Data</h1>
+            <FormItem label='Title'
+              {...introItemLayout} hasFeedback
+              validateStatus={invalidTitle ? 'error' : ''}
+              help={invalidTitle || ''}
+            >
+              {getFieldDecorator('title', {
+                rules: [{
+                  required: true,
+                  message: 'Please input your title!'
+                }]
+              })(
+                <Input prefix={<Icon type='edit' />} />
+              )}
+            </FormItem>
+            <FormItem label='Category'
+              {...introItemLayout} hasFeedback
+              validateStatus={invalidTitle ? 'error' : ''}
+              help={invalidTitle || ''}
+            >
+              {getFieldDecorator('category', {
+                rules: [{
+                  required: true,
+                  message: 'Select a category.'
+                }]
+              })(
+                <Input prefix={<Icon type='edit' />} />
+              )}
+            </FormItem>
+            {/* <FormItem validateStatus='error'
               help='Oh no! Did you forget to include a title?'
             >
               <Input
                 placeholder='Proposal Title'
                 prefix={<Icon type='edit' />}
               />
-            </FormItem>
+            </FormItem> */}
             {/* <h4>Category</h4>
             <Field name='category' label='Category'
               component={Input} field={<Icon type='folder' />} />
@@ -50,7 +90,7 @@ class Introduction extends React.Component {
               component={Input} field={<Icon type='team' />} />
             <Alert type='warning'
               message={<span>
-                Tri-Campus / "UAC" Proposal: <Field
+                Tri-Campus / 'UAC' Proposal: <Field
                   name='uac' component={Switch} size='small' />
               </span>}
               description='
@@ -78,10 +118,13 @@ class Introduction extends React.Component {
                 </Col>
           ))}
             </Row> */}
-          </Col>
-        </Row>
+          {/* </Col>
+        </Row> */}
       </div>
     )
   }
+}
+Introduction.propTypes = {
+  form: PropTypes.object
 }
 export default Introduction
