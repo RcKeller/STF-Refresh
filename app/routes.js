@@ -6,7 +6,8 @@ import {
   //  Static Pages
   FAQ, About, Contact,
   //  Dynamic pages
-  Proposals, Proposal, Create,
+  Proposals, Proposal,
+  Create, Agreement,
   Blocks,
   Documents,
   Calendar, Events
@@ -52,6 +53,10 @@ export default (store) => {
       <Route path='/proposals/create'
       //  onEnter={requireAuth}
         breadcrumbName='Create Proposal' component={Create}
+      />
+      <Route path='/proposals/create/agreement'
+        //  onEnter={requireAuth}
+        breadcrumbName='Proposal Agreement' component={Agreement}
       />
       <Route path='/blocks' breadcrumbName='Blocks' component={Blocks} />
       <Route path='/documents' breadcrumbName='Documents' component={Documents} />

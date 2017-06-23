@@ -1,0 +1,5 @@
+@import '../../../../css/layout';
+
+.agreement {
+  @apply --page;
+}

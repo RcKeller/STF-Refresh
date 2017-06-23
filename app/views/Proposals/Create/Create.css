@@ -3,7 +3,14 @@
 .create {
   @apply --page;
 }
-/* Proposals styles */
-.form-container {
-  overflow-y: auto;
+
+.button-container {
+  width: 100%;
+  margin: 16px 0;
+}
+.step-button {
+  width: 50%;
+}
+.submit-button {
+  width: 50%;
 }

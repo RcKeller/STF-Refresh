@@ -1,27 +1,141 @@
 import React from 'react'
-import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 
-import Agreement from './Agreement/Agreement'
-import Wizard from './Wizard/Wizard'
+import Introduction from './Introduction/Introduction'
+// import Overview from './Overview/Overview'
+// import ProjectPlan from './ProjectPlan/ProjectPlan'
+// import Manifest from './Manifest/Manifest'
+// import Signatures from './Signatures/Signatures'
 
+import { Form, Steps, Icon, Button } from 'antd'
+const Step = Steps.Step
+const FormItem = Form.Item
+const ButtonGroup = Button.Group
+const AntForm = (component) => Form.create(component)
+
+// const AntForm = (component) => Form.create(component)
+
+function hasErrors (fields) {
+  return Object.keys(fields).some(field => fields[field])
+}
+
+const steps = [
+  { title: 'Introduction', icon: 'team' },
+  { title: 'Overview', icon: 'solution' },
+  { title: 'Plan', icon: 'book' },
+  { title: 'Manifest', icon: 'wallet' },
+  { title: 'Signatures', icon: 'edit' }
+]
+// import validate from './validate'
 import styles from './Create.css'
+// @reduxForm({
+//   form: 'create',
+//   destroyOnUnmount: false,
+//   validate: validate
+// })
+
 /*
-This simple container serves as a gateway - if the route has an ?id=...,
-we open up that proposal. The proposal wizard will kick out unauthorized users.
-The state connection is weird - it's connecting to our router's queries.
+connectRequest should get proposal by ID
+If there is no ID, or there is an ID but you're a contact...
+Render form components. Run validation and api.patch() to update the remote as necessary
 */
-// @connect(state => ({ query: { id }} =  state.routing.locationBeforeTransitions.query))
-// @connect(state => ({ id: state.routing.locationBeforeTransitions.query || '' }))
 class Create extends React.Component {
-  // render ({ id } = this.props) {
-  render () {
+  constructor (props) {
+    super(props)
+    //  Index - the step we're on.
+    this.state = { index: 0 }
+  }
+  // Disable submit button at the beginning.
+  componentDidMount () {
+    this.props.form.validateFields()
+  }
+  /*
+  handleSubmit will handle the FINAL submission, which includes
+  marking a proposal as complete / not a draft.
+  */
+  handleSubmit = (e, direction) => {
+    e.preventDefault()
+    this.props.form.validateFields((err, values) => {
+      if (!err) console.log('FORM', values)
+    })
+  }
+  /*
+  Moving forwards or backwards triggers form validation
+  You can only move by validating your data.
+  This prevents stuff like signaure spoofing, etc
+  */
+  handleStep (e, direction) {
+    e.preventDefault()
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        switch (direction) {
+          case 'next':
+            this.setState({ index: ++this.state.index })
+            break
+          case 'prev':
+            this.setState({ index: --this.state.index })
+            break
+        }
+        console.log('FORM', values)
+      }
+    })
+  }
+  render ({handleSubmit, form} = this.props) {
+    const content = [
+      <Introduction {...form} />
+    ]
+    const invalidData = hasErrors(form.getFieldsError())
     return (
       <article className={styles['create']}>
-        <Wizard />
-        {/* {!id ? <Agreement /> : <Wizard id={id} />} */}
+        <h1>Creating Proposal</h1>
+        <Steps index={this.state.index}>
+          {steps.map((s, i) => (
+            <Step key={i} title={s.title}
+              icon={<Icon type={s.icon} />}
+            />
+          ))}
+        </Steps>
+        <Form onSubmit={handleSubmit}>
+          <section className='steps-action'>
+            <ButtonGroup className={styles['button-container']}>
+              <Button size='large' type='primary'
+                className={styles['step-button']}
+                htmlType='submit'
+                disabled={invalidData || this.state.index === 0}
+                onClick={(e) => this.handleStep(e, 'prev')}
+              >
+                <Icon type='left' />Previous
+              </Button>
+              <Button size='large' type='primary'
+                className={styles['step-button']}
+                htmlType='submit'
+                disabled={invalidData || this.state.index >= steps.length - 1}
+                onClick={(e) => this.handleStep(e, 'next')}
+                >
+                  Next<Icon type='right' />
+              </Button>
+            </ButtonGroup>
+            <div>
+              {content[this.state.index]}
+            </div>
+            {this.state.index === steps.length - 1 &&
+              <FormItem className={styles['button-container']}>
+                <Button size='large' type='primary'
+                  className={styles['submit-button']}
+                  htmlType='submit'
+                  disabled={invalidData}
+                  >Submit</Button>
+                </FormItem>
+            }
+          </section>
+        </Form>
       </article>
     )
   }
 }
-
-export default Create
+Create.propTypes = {
+  form: PropTypes.object
+}
+// Decoration doesn't work.
+const CreateForm = Form.create()(Create)
+export default CreateForm

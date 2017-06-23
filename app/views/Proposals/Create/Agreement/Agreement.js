@@ -43,11 +43,11 @@ const standardAgreements = [
   }
 ]
 
-// import styles from './Agreement.css'
+import styles from './Agreement.css'
 class Agreement extends React.Component {
   render () {
     return (
-      <article>
+      <article className={styles['agreement']}>
         <h1>Proposal Agreement</h1>
         <p>
           The Student Technology Fee Committee was created to ensure the best return on collected student dollars. By proposing to the committee, you agree to follow all requirements, current and future, set by the STFC. Included below are particularly relevant documents, along with brief summary and their full text.

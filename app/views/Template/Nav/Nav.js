@@ -20,7 +20,7 @@ const Nav = ({ router }) => (
         <Item key='/blocks'>Funding Blocks</Item>
       </ItemGroup>
       <ItemGroup key='g2' title='Submit'>
-        <Item key='/proposals/create'>Proposal</Item>
+        <Item key='/proposals/create/agreement'>Proposal</Item>
       </ItemGroup>
     </SubMenu>
     <SubMenu key='sub2' title={<span><Icon type='file' /><span>Documents</span></span>}>
