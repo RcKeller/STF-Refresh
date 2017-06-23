@@ -17,15 +17,12 @@ const steps = [
   { title: 'Manifest', content: <Manifest />, icon: 'wallet' },
   { title: 'Signatures', content: <Signatures />, icon: 'edit' }
 ]
-
+import validate from './validate'
 // import styles from './Create.css'
 @reduxForm({
   form: 'create',
   destroyOnUnmount: false,
-  validate: (values) => {
-    const errors = {}
-    return errors
-  }
+  validate: validate
 })
 class Create extends React.Component {
   constructor (props) {
@@ -50,22 +47,20 @@ class Create extends React.Component {
             />
           ))}
         </Steps>
-        <div>
-          <form onSubmit={handleSubmit}>
-            {steps[this.state.current].content}
-          </form>
-        </div>
-        <section className='steps-action'>
-          {this.state.current < steps.length - 1 && // Next
-            <Button size='large' type='primary' onClick={() => this.next()}>Next</Button>
-          }
-          {this.state.current === steps.length - 1 && // Submit
-            <Button size='large' type='primary' onClick={() => console.log('Processing complete!')}>Submit Proposal!</Button>
-          }
-          {this.state.current > 0 &&  // Previous
-            <Button size='large' style={{ marginLeft: 8 }} onClick={() => this.prev()}>Previous</Button>
-          }
-        </section>
+        <form onSubmit={handleSubmit}>
+          {steps[this.state.current].content}
+          <section className='steps-action'>
+            {this.state.current < steps.length - 1 && // Next
+              <Button size='large' type='primary' onClick={() => this.next()}>Next</Button>
+            }
+            {this.state.current === steps.length - 1 && // Submit
+              <Button size='large' type='primary' onClick={() => console.log('Processing complete!')}>Submit Proposal!</Button>
+            }
+            {this.state.current > 0 &&  // Previous
+              <Button size='large' style={{ marginLeft: 8 }} onClick={() => this.prev()}>Previous</Button>
+            }
+          </section>
+        </form>
       </article>
     )
   }
