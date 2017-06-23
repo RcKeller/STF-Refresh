@@ -1,11 +1,9 @@
 import React from 'react'
-// import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { Field } from 'redux-form'
 
-import { Input, Switch } from '../../../../../components/Form/Form'
+// import { Input, Switch } from '../../../../../components/Form/Form'
 // import { required, alphaNumeric } from '../validate'
-import { Row, Col, Icon, Alert, Form } from 'antd'
+import { Row, Col, Icon, Alert, Form, Input, Switch } from 'antd'
 const FormItem = Form.Item
 
 const contactTypes = [
@@ -29,7 +27,6 @@ const contactTypes = [
 ]
 
 import styles from './Introduction.css'
-@connect(state => ({ errors: state.form.create.syncErrors }))
 class Introduction extends React.Component {
   render () {
     return (
@@ -40,12 +37,12 @@ class Introduction extends React.Component {
             <FormItem validateStatus='error'
               help='Oh no! Did you forget to include a title?'
             >
-              <Field name='title' label='Proposal Title'
-                // validate={required}
-                component={Input} field={<Icon type='edit' />}
+              <Input
+                placeholder='Proposal Title'
+                prefix={<Icon type='edit' />}
               />
             </FormItem>
-            <h4>Category</h4>
+            {/* <h4>Category</h4>
             <Field name='category' label='Category'
               component={Input} field={<Icon type='folder' />} />
             <h4>Organization</h4>
@@ -80,7 +77,7 @@ class Introduction extends React.Component {
                   </div>
                 </Col>
           ))}
-            </Row>
+            </Row> */}
           </Col>
         </Row>
       </div>
