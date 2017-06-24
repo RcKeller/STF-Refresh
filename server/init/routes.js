@@ -64,7 +64,7 @@ export default (app) => {
     */
     const googleCallback = config.get('google.callbackURL')
     const successRedirect = '/'
-    const failureRedirect = '/login'
+    const failureRedirect = '/'
     app.get(
       googleCallback,
       passport.authenticate('google', { successRedirect, failureRedirect })
