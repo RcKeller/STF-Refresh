@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { connectRequest } from 'redux-query'
+import { connectRequest, querySelectors } from 'redux-query'
 
 import api from '../../../services'
 
@@ -28,7 +28,9 @@ Render form components. Run validation and api.patch() to update the remote as n
 import styles from './Create.css'
 @compose(
   connect(
-    state => ({ proposal: state.entities.proposal }),
+    state => ({
+      proposal: state.entities.proposal
+    }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
   connectRequest(() => api.get('proposal', '594b49998dabd50e2c71762d', {
@@ -38,6 +40,13 @@ import styles from './Create.css'
 class Create extends React.Component {
   // Disable submit button at the beginning by running validation.
   componentDidMount () { this.props.form.validateFields() }
+  //  Load fields from server
+  //  TODO: Refactor for efficiency, detect if f
+  componentDidUpdate (prevProps, prevState) {
+    if (!prevProps.proposal && this.props.proposal) {
+      this.props.form.setFieldsValue(this.props.proposal)
+    }
+  }
   /*
   handleSubmit will handle the FINAL submission, which includes
   marking a proposal as complete / not a draft.
@@ -83,7 +92,7 @@ class Create extends React.Component {
               <Icon type='team' />
               Introduction</span>
             }>
-              <Introduction {...form} />
+              <Introduction form={form} proposal={proposal} />
             </TabPane>
             <TabPane key='2' tab={
               <span><Icon type='solution' />Overview</span>

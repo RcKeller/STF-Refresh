@@ -27,7 +27,7 @@ const contactTypes = [
   }
 ]
 
-const introItemLayout = {
+const wideLayout = {
   labelCol: { xs: { span: 24 }, sm: { span: 6 } },
   wrapperCol: { xs: { span: 24 }, sm: { span: 14 } }
 }
@@ -38,47 +38,55 @@ function hasErrors (fields) {
 
 // import styles from './Introduction.css'
 class Introduction extends React.Component {
-  render ({getFieldDecorator, getFieldsError, getFieldError, isFieldTouched} = this.props) {
-    const invalidTitle = isFieldTouched('title') && getFieldError('title')
-    const invalidCategory = isFieldTouched('category') && getFieldError('category')
-    // const invalidOrganization = isFieldTouched('organization') && getFieldError('organization')
+  //  Load fields from server
+  //  TODO: Refactor for efficiency, detect if f
+  // componentDidUpdate (prevProps, prevState) {
+  //   if (!prevProps.proposal && this.props.proposal) {
+  //     this.props.form.setFieldsValue(this.props.proposal)
+  //   }
+  // }
+  render ({ form, proposal } = this.props) {
+    //  Helper functions - these return bools for styling components based on validation
+    const feedback = (field) => form.isFieldTouched(field)
+    const help = (field) => (form.isFieldTouched(field) && form.getFieldError(field)) || ''
+
     return (
       <div>
         <h1>Proposal Data</h1>
-        <FormItem label='Title'
-          {...introItemLayout} hasFeedback
-          validateStatus={invalidTitle ? 'error' : ''}
-          help={invalidTitle || ''}
-            >
-          {getFieldDecorator('title', {
-            rules: [{
-              required: true,
-              message: 'Please input your title!'
-            }]
+        <FormItem label='Title' {...wideLayout}
+          hasFeedback={feedback('title')} help={help('title')}
+        >
+          {form.getFieldDecorator('title', {
+            rules: [{ required: true, message: 'Please input your title!' }]
           })(
             <Input prefix={<Icon type='edit' />} />
-              )}
+          )}
         </FormItem>
-        <FormItem label='Category'
-          {...introItemLayout} hasFeedback
-          validateStatus={invalidCategory ? 'error' : ''}
-          help={invalidCategory || ''}
-            >
-          {getFieldDecorator('category', {
-            rules: [{
-              required: true,
-              message: 'Select a category.'
-            }]
+        <FormItem label='Category' {...wideLayout}
+          hasFeedback={feedback('category')} help={help('category')}
+        >
+          {form.getFieldDecorator('category', {
+            rules: [{ required: true, message: 'Select a category.' }]
           })(
             <Input prefix={<Icon type='edit' />} />
-              )}
+          )}
+        </FormItem>
+        <FormItem label='Organization' {...wideLayout}
+          hasFeedback={feedback('organization')} help={help('organization')}
+        >
+          {form.getFieldDecorator('organization', {
+            rules: [{ required: true, message: 'Select an organization.' }]
+          })(
+            <Input prefix={<Icon type='edit' />} />
+          )}
         </FormItem>
       </div>
     )
   }
 }
 Introduction.propTypes = {
-  form: PropTypes.object
+  form: PropTypes.object.isRequired,
+  proposal: PropTypes.object  // async
 }
 export default Introduction
 
