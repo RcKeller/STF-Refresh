@@ -33,7 +33,7 @@ export default function configureStore (initialState, history) {
       typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
     ))
   } else {
-    store = createStore(rootReducer, initialState, compose(applyMiddleware(...middleware), f => f))
+    store = createStore(rootReducer, initialState, compose(responsiveStoreEnhancer, applyMiddleware(...middleware), f => f))
   }
 
   if (module.hot) {
