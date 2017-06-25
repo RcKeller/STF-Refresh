@@ -2,13 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Avatar } from 'antd'
+// import { Avatar, Icon } from 'antd'
+// import Avatar from 'antd/lib/avatar'
 
-import { logOut } from '../../../services/authentication'
+import { endSession } from '../../../services/authentication'
+
 import styles from './Login.css'
 @connect(
   state => ({ user: state.user }),
-  dispatch => ({ signOut: bindActionCreators(logOut, dispatch) })
+  dispatch => ({ signOut: bindActionCreators(endSession, dispatch) })
 )
 class Login extends React.Component {
   render ({ user, signOut } = this.props) {
@@ -29,7 +31,6 @@ class Login extends React.Component {
           : <button className={styles['button']}
             onClick={() => signOut()}
           >
-            {/* <Avatar shape="square" size="large" icon="user" /> */}
             <strong>{user.netID}</strong>
           </button>
         }
