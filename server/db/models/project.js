@@ -20,7 +20,13 @@ const ProjectSchema = new mongoose.Schema({
     //  Objectives are key notes/bullet points. Not stored in array for consistency.
     objectives: { type: String, required: true },
     //  Justification is a brief answer to "why", or info about urgent need.
-    justification: { type: String, required: true }
+    justification: { type: String, required: true },
+    //  The impact on students in various aspects
+    impact: {
+      academic: { type: String, required: true },
+      research: { type: String, required: true },
+      career: { type: String, required: true }
+    }
   },
   /*
   Projects are framed in the sense of current vs. fututre state.
@@ -87,7 +93,12 @@ const dummyProjects = (min) => {
           overview: {
             abstract: faker.lorem.paragraph(),
             objectives: faker.lorem.paragraph(),
-            justification: faker.lorem.paragraph()
+            justification: faker.lorem.paragraph(),
+            impact: {
+              academic: faker.lorem.paragraph(),
+              research: faker.lorem.paragraph(),
+              career: faker.lorem.paragraph()
+            }
           },
           plan: {
             state: {

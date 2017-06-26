@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 // import { connect } from 'react-redux'
 
 // import { Input, Switch } from '../../../../../components/Form/Form'
-import { Icon, Alert, Form, Input, Switch, Select } from 'antd'
+import { Row, Col, Icon, Alert, Form, Input, Switch, Select } from 'antd'
 const FormItem = Form.Item
 const Option = Select.Option
 
@@ -87,64 +87,68 @@ class Introduction extends React.Component {
           )}
         </FormItem>
         <Alert type='warning'
-          message='Regarding Tri-Campus Proposals'
+          message={<span>
+            <FormItem label='Tri-Campus' {...wideLayout} >
+              {form.getFieldDecorator('uac', { valuePropName: 'checked' })(
+                // valuePropName is documented in the antd docs, that's a selector for switch vals.
+                <Switch size='small' />
+              )}
+            </FormItem>
+          </span>}
           description='
-          The Universal Access Committee reviews proposals for tri-campus projects. Select this if your proposal is UAC. Most proposals are *NOT* UAC - reach out to the Proposal Officer if you have any questions.'
+          The Universal Access Committee reviews proposals for tri-campus projects. Select this if your proposal is UAC. Most proposals are NOT - reach out to the Proposal Officer if you have any questions.'
         />
-        <FormItem label='Tri-Campus' {...wideLayout} >
-          {form.getFieldDecorator('uac', { valuePropName: 'checked' })(
-            <Switch size='small' />
-          )}
-        </FormItem>
-        {contactTypes.map((c, i) => (
-          <div key={i}>
-            <h3>{c.title}</h3>
-            <p className={styles['role-description']}>{c.subtitle}</p>
-            <FormItem label='Name' {...wideLayout}
-              hasFeedback={feedback(`contacts[${c.index}].name`)} help={help(`contacts[${c.index}].name`)}
-            >
-              {form.getFieldDecorator(`contacts[${c.index}].name`, {
-                rules: [{ required: true, message: 'Name required.' }]
-              })(
-                <Input prefix={<Icon type='edit' />} />
-              )}
-            </FormItem>
-            <FormItem label='NetID' {...wideLayout}
-              hasFeedback={feedback(`contacts[${c.index}].netID`)} help={help(`contacts[${c.index}].netID`)}
-            >
-              {form.getFieldDecorator(`contacts[${c.index}].netID`, {
-                rules: [{ required: true, message: 'NetID required.' }]
-              })(
-                <Input prefix={<Icon type='idcard' />} />
-              )}
-            </FormItem>
-            <FormItem label='Title' {...wideLayout}
-              hasFeedback={feedback(`contacts[${c.index}].title`)} help={help(`contacts[${c.index}].title`)}
-            >
-              {form.getFieldDecorator(`contacts[${c.index}].title`, {
-                rules: [{ required: true, message: 'Title required.' }]
-              })(
-                <Input prefix={<Icon type='info-circle-o' />} />
-              )}
-            </FormItem>
-            <FormItem label='Phone' {...wideLayout}
-              hasFeedback={feedback(`contacts[${c.index}].phone`)} help={help(`contacts[${c.index}].phone`)}
-            >
-              {form.getFieldDecorator(`contacts[${c.index}].phone`, {
-                rules: [{ required: true, message: 'Name required.' }]
-              })(
-                <Input prefix={<Icon type='phone' />} />
-              )}
-            </FormItem>
-            <FormItem label='Mailbox' {...wideLayout}
-              hasFeedback={feedback(`contacts[${c.index}].mailbox`)} help={help(`contacts[${c.index}].mailbox`)}
-            >
-              {form.getFieldDecorator(`contacts[${c.index}].mailbox`)(
-                <Input prefix={<Icon type='inbox' />} />
-              )}
-            </FormItem>
-          </div>
-        ))}
+        <Row gutter={32}>
+          {contactTypes.map((c, i) => (
+            <Col key={i} className='gutter-row' xs={24} md={12} lg={6} >
+              <h3>{c.title}</h3>
+              <p className={styles['role-description']}>{c.subtitle}</p>
+              <FormItem label='Name' {...wideLayout}
+                hasFeedback={feedback(`contacts[${c.index}].name`)} help={help(`contacts[${c.index}].name`)}
+              >
+                {form.getFieldDecorator(`contacts[${c.index}].name`, {
+                  rules: [{ required: true, message: 'Name required.' }]
+                })(
+                  <Input prefix={<Icon type='edit' />} />
+                )}
+              </FormItem>
+              <FormItem label='NetID' {...wideLayout}
+                hasFeedback={feedback(`contacts[${c.index}].netID`)} help={help(`contacts[${c.index}].netID`)}
+              >
+                {form.getFieldDecorator(`contacts[${c.index}].netID`, {
+                  rules: [{ required: true, message: 'NetID required.' }]
+                })(
+                  <Input prefix={<Icon type='idcard' />} />
+                )}
+              </FormItem>
+              <FormItem label='Title' {...wideLayout}
+                hasFeedback={feedback(`contacts[${c.index}].title`)} help={help(`contacts[${c.index}].title`)}
+              >
+                {form.getFieldDecorator(`contacts[${c.index}].title`, {
+                  rules: [{ required: true, message: 'Title required.' }]
+                })(
+                  <Input prefix={<Icon type='info-circle-o' />} />
+                )}
+              </FormItem>
+              <FormItem label='Phone' {...wideLayout}
+                hasFeedback={feedback(`contacts[${c.index}].phone`)} help={help(`contacts[${c.index}].phone`)}
+              >
+                {form.getFieldDecorator(`contacts[${c.index}].phone`, {
+                  rules: [{ required: true, message: 'Name required.' }]
+                })(
+                  <Input prefix={<Icon type='phone' />} />
+                )}
+              </FormItem>
+              <FormItem label='Mailbox' {...wideLayout}
+                hasFeedback={feedback(`contacts[${c.index}].mailbox`)} help={help(`contacts[${c.index}].mailbox`)}
+              >
+                {form.getFieldDecorator(`contacts[${c.index}].mailbox`)(
+                  <Input prefix={<Icon type='inbox' />} />
+                )}
+              </FormItem>
+            </Col>
+          ))}
+        </Row>
       </div>
     )
   }

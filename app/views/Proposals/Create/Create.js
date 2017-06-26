@@ -2,12 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { connectRequest, querySelectors } from 'redux-query'
+import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
 
 import Introduction from './Introduction/Introduction'
-// import Overview from './Overview/Overview'
+import Overview from './Overview/Overview'
 // import ProjectPlan from './ProjectPlan/ProjectPlan'
 // import Manifest from './Manifest/Manifest'
 // import Signatures from './Signatures/Signatures'
@@ -98,7 +98,7 @@ class Create extends React.Component {
             <TabPane key='2' tab={
               <span><Icon type='solution' />Overview</span>
             }>
-              <p>Overview</p>
+              <Overview form={form} proposal={proposal} />
             </TabPane>
             <TabPane key='3' tab={
               <span><Icon type='book' />Plan</span>
