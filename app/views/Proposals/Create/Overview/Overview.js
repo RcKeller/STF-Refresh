@@ -6,15 +6,15 @@ const Option = Select.Option
 
 const impactTypes = [
   {
-    field: 'academic',
+    field: 'overview.impact.academic',
     title: 'Academic Experience',
     subtitle: 'How will this project enrich a student’s learning environment and experience?'
   }, {
-    field: 'research',
+    field: 'overview.impact.research',
     title: 'Research Involvement',
     subtitle: 'Can this project be used for scholarly research?'
   }, {
-    field: 'career',
+    field: 'overview.impact.career',
     title: 'Career Development',
     subtitle: 'Can this technology be used to further a student’s career?'
   }
@@ -43,27 +43,27 @@ class Overview extends React.Component {
       <div>
         <h1>Proposal Overview</h1>
         <FormItem label='Abstract' {...wideLayout}
-          hasFeedback={feedback('abstract')} help={help('abstract')}
+          hasFeedback={feedback('overview.abstract')} help={help('overview.abstract')}
         >
-          {form.getFieldDecorator('abstract', {
+          {form.getFieldDecorator('overview.abstract', {
             rules: [{ required: true, message: 'An abstract is requried.' }]
           })(
             <Input type='textarea' rows={6} />
           )}
         </FormItem>
         <FormItem label='Objectives' {...wideLayout}
-          hasFeedback={feedback('objectives')} help={help('objectives')}
+          hasFeedback={feedback('overview.objectives')} help={help('overview.objectives')}
         >
-          {form.getFieldDecorator('objectives', {
+          {form.getFieldDecorator('overview.objectives', {
             rules: [{ required: true, message: 'Objectives are requried.' }]
           })(
             <Input type='textarea' rows={4} />
           )}
         </FormItem>
         <FormItem label='Justification' {...wideLayout}
-          hasFeedback={feedback('justification')} help={help('justification')}
+          hasFeedback={feedback('overview.justification')} help={help('overview.justification')}
         >
-          {form.getFieldDecorator('justification', {
+          {form.getFieldDecorator('overview.justification', {
             rules: [{ required: true, message: 'The overall justification is requried.' }]
           })(
             <Input type='textarea' rows={4} />
@@ -75,9 +75,9 @@ class Overview extends React.Component {
               <h3>{impact.title}</h3>
               <p className={styles['subtitle']}><em>{impact.subtitle}</em></p>
               <FormItem
-                hasFeedback={feedback(`impact.${impact.field}`)} help={help(`impact.${impact.field}`)}
+                hasFeedback={feedback(impact.field)} help={help(impact.field)}
               >
-                {form.getFieldDecorator(`impact.${impact.field}`, {
+                {form.getFieldDecorator(impact.field, {
                   rules: [{ required: true, message: `An overview for student ${impact.field} impact is required.` }]
                 })(
                   <Input type='textarea' rows={4} />

@@ -8,7 +8,7 @@ import api from '../../../services'
 
 import Introduction from './Introduction/Introduction'
 import Overview from './Overview/Overview'
-// import ProjectPlan from './ProjectPlan/ProjectPlan'
+import ProjectPlan from './ProjectPlan/ProjectPlan'
 // import Manifest from './Manifest/Manifest'
 // import Signatures from './Signatures/Signatures'
 
@@ -103,7 +103,7 @@ class Create extends React.Component {
             <TabPane key='3' tab={
               <span><Icon type='book' />Plan</span>
             }>
-              <p>Plan</p>
+              <ProjectPlan form={form} proposal={proposal} />
             </TabPane>
             <TabPane key='4' tab={
               <span><Icon type='wallet' />Manifest</span>
