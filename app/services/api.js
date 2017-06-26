@@ -30,38 +30,17 @@ TODO: create a querystring adapter that is API specific, packages don't work for
 
 */
 
-/*
-Utility that creates the populate() calls in the querystring consistently.
-e.g. /Invoices?populate=[{"path":"customer"},{"path":"products"}]
-restify-express-mongoose is picky and will throw errors if using
-JSON.stringify, the body object or other methods, unfortunately.
-*/
-function populateFields (populate) {
-  if (populate) {
-    let querystring = '['
-    //
-    populate.map((m) => querystring + `{"path":"${m}"},`)
-    //  Remove trailing comma, close array
-    querystring = querystring.slice(0, -1) + ']'
-  } else {
-    return ''
-  }
-}
-
 /* *****
 GET ALL
 ex: api.getAll('proposal', { populate: 'contacts,decision' })
 ***** */
-const getAll = (model, populate) => {
-  populate = populateFields(populate)
-  return {
-    url: `${API}/${version}/${model}/${populate}`,
-    options: { method: 'GET' },
-    transform: body => ({ [`${model}s`]: body }),
-    // body: { ...query },
-    update: { [`${model}s`]: (prev, next) => next }
-  }
-}
+const getAll = (model, populate) => ({
+  url: `${API}/${version}/${model}/${populate}`,
+  options: { method: 'GET' },
+  transform: body => ({ [`${model}s`]: body }),
+  // body: { ...query },
+  update: { [`${model}s`]: (prev, next) => next }
+})
 
 /* *****
 GET by ID
@@ -106,15 +85,13 @@ UPDATE: PATCH
 ex: api.put('report', '594b49998dabd50e2c7176bf',
 { date: "2000-06-21T07:15:10.746Z" })
 ***** */
-const patch = (model, id, body, populate) => {
-  mutateAsync({
-    url: `${API}/${version}/${model}/${id}`,
-    options: { method: 'PATCH' },
-    transform: body => ({ [`${model}`]: body }),
-    body,
-    update: { [`${model}`]: (prev, next) => next }
-  })
-}
+const patch = (model, id, body, populate) => mutateAsync({
+  url: `${API}/${version}/${model}/${id}`,
+  options: { method: 'PATCH' },
+  transform: body => ({ [`${model}`]: body }),
+  body,
+  update: { [`${model}`]: (prev, next) => next }
+})
 
 /* *****
 DELETE
