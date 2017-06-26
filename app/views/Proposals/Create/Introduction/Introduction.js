@@ -31,20 +31,17 @@ const wideLayout = {
   labelCol: { xs: { span: 24 }, sm: { span: 6 } },
   wrapperCol: { xs: { span: 24 }, sm: { span: 14 } }
 }
+const slimLayout = {
+  labelCol: { xs: { span: 24 }, sm: { span: 3 } },
+  wrapperCol: { xs: { span: 24 }, sm: { span: 7 } }
+}
 
 function hasErrors (fields) {
   return Object.keys(fields).some(field => fields[field])
 }
 
-// import styles from './Introduction.css'
+import styles from './Introduction.css'
 class Introduction extends React.Component {
-  //  Load fields from server
-  //  TODO: Refactor for efficiency, detect if f
-  // componentDidUpdate (prevProps, prevState) {
-  //   if (!prevProps.proposal && this.props.proposal) {
-  //     this.props.form.setFieldsValue(this.props.proposal)
-  //   }
-  // }
   render ({ form, proposal } = this.props) {
     //  Helper functions - these return bools for styling components based on validation
     const feedback = (field) => form.isFieldTouched(field)
@@ -80,6 +77,65 @@ class Introduction extends React.Component {
             <Input prefix={<Icon type='edit' />} />
           )}
         </FormItem>
+        <Alert type='warning'
+          message='Regarding Tri-Campus Proposals'
+          description='
+          The Universal Access Committee reviews proposals for tri-campus projects. Select this if your proposal is UAC. Most proposals are *NOT* UAC - reach out to the Proposal Officer if you have any questions.'
+        />
+        <FormItem label='Tri-Campus' {...wideLayout} >
+          {form.getFieldDecorator('uac', { valuePropName: 'checked' })(
+            <Switch size='small' />
+          )}
+        </FormItem>
+        {contactTypes.map((c, i) => (
+          <div key={i}>
+            <h3>{c.title}</h3>
+            <p className={styles['role-description']}>{c.subtitle}</p>
+            <FormItem label='Name' {...wideLayout}
+              hasFeedback={feedback(`contacts.${c.role}.name`)} help={help(`contacts.${c.role}.name`)}
+            >
+              {form.getFieldDecorator(`contacts.${c.role}.name`, {
+                rules: [{ required: true, message: 'Name required.' }]
+              })(
+                <Input prefix={<Icon type='edit' />} />
+              )}
+            </FormItem>
+            <FormItem label='NetID' {...wideLayout}
+              hasFeedback={feedback(`contacts.${c.role}.netID`)} help={help(`contacts.${c.role}.netID`)}
+            >
+              {form.getFieldDecorator(`contacts.${c.role}.netID`, {
+                rules: [{ required: true, message: 'NetID required.' }]
+              })(
+                <Input prefix={<Icon type='idcard' />} />
+              )}
+            </FormItem>
+            <FormItem label='Title' {...wideLayout}
+              hasFeedback={feedback(`contacts.${c.role}.title`)} help={help(`contacts.${c.role}.title`)}
+            >
+              {form.getFieldDecorator(`contacts.${c.role}.title`, {
+                rules: [{ required: true, message: 'Title required.' }]
+              })(
+                <Input prefix={<Icon type='info-circle-o' />} />
+              )}
+            </FormItem>
+            <FormItem label='Phone' {...wideLayout}
+              hasFeedback={feedback(`contacts.${c.role}.phone`)} help={help(`contacts.${c.role}.phone`)}
+            >
+              {form.getFieldDecorator(`contacts.${c.role}.phone`, {
+                rules: [{ required: true, message: 'Name required.' }]
+              })(
+                <Input prefix={<Icon type='phone' />} />
+              )}
+            </FormItem>
+            {/* <FormItem label='Mailbox' {...wideLayout}
+              hasFeedback={feedback(`contacts.${c.role}.mailbox`)} help={help(`contacts.${c.role}.mailbox`)}
+            >
+              {form.getFieldDecorator(`contacts.${c.role}.mailbox`)(
+                <Input prefix={<Icon type='inbox' />} />
+              )}
+            </FormItem> */}
+          </div>
+        ))}
       </div>
     )
   }
