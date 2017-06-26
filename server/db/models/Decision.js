@@ -2,16 +2,18 @@ import mongoose from 'mongoose'
 import faker from 'faker'
 
 const DecisionSchema = new mongoose.Schema({
-  //  A decision can be for a proposal OR amendment.
-  proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
-  amendment: { type: mongoose.Schema.Types.ObjectId, ref: 'Amendment' },
-  //  Decisions are structured like brief, formal comments.
   date: { type: Date, default: Date.now },
+  //  A decision for a proposal. Gets revised in case of amendments.
+  proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
+  //  Author, typically the chair or proposal officer
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  body: { type: String, required: true },
+  //  Optional description that comes with the decision. "We liked..."
+  body: String,
+  //  Final decision
   approved: { type: Boolean, required: true },
   //  If this decision is an award, it will have a grant amount and associated report.
   grant: Number,
+  //  Reports due by the proposal next author for audit purposes.
   report: { type: mongoose.Schema.Types.ObjectId, ref: 'Report' }
 })
 const Decision = mongoose.model('Decision', DecisionSchema)

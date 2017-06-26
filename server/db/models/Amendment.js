@@ -3,14 +3,13 @@ import faker from 'faker'
 
 const AmendmentSchema = new mongoose.Schema({
   proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
-  contact: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Contact' }],
+  contact: { type: mongoose.Schema.Types.ObjectId, ref: 'Contact' },
   title: { type: String, require: true },
-  body: { type: String, require: true },
-  decision: { type: mongoose.Schema.Types.ObjectId, ref: 'Decision' }
+  //  We want these BRIEF. Very BRIEF. Thus, no extensive plan, etc. This ends up as a headnote for proposals.
+  body: { type: String, require: true }
 })
 const Amendment = mongoose.model('Amendment', AmendmentSchema)
 export default Amendment
-
 
 /* *****
 FAKE DATA GENERATOR: Amendment
@@ -28,8 +27,7 @@ const dummyAmendments = (min) => {
           proposal: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
           contact: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
           title: faker.company.catchPhrase(),
-          body: faker.lorem.paragraph(),
-          decision: new mongoose.Types.ObjectId()  // THIS IS RANDOM
+          body: faker.lorem.paragraph()
         })
       }
       //  Create will push our fakes into the DB.

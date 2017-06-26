@@ -2,12 +2,12 @@ import mongoose from 'mongoose'
 import faker from 'faker'
 
 const ProposalSchema = new mongoose.Schema({
+  date: { type: Date, default: Date.now },
   /*
   _id and _v(ersion) are populated by mongoose, but I think this
   might be a good field to fill manually, prevents namespace issues later.
+  NOTE: Edit, that is not the case, these are CUID's
   */
-  // _id: { type: String, unique: true },
-  date: { type: Date, default: Date.now },
   year: { type: Number, required: true },
   number: { type: Number, required: true },
   quarter: String,
@@ -23,11 +23,11 @@ const ProposalSchema = new mongoose.Schema({
   // Contacts - array of objects, can iterate over via client with Object.keys().forEach(k, i) {}
 
   contacts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Contact' }],
-  // Body contains the business case/details, de-coupled from the core doc so that searching proposals is more efficient.
+  // Body contains the Project Plan, de-coupled from the core doc so that searching proposals is more efficient.
   body: { type: mongoose.Schema.Types.ObjectId, ref: 'Project' },
   /*
-  Manifests are the items requested. One is listed as the "original" (Boolean),
-  the others are partial or revised manifests that reflect what is actually funded.
+  Manifests are the items requested. The first in the array is the ORIGINAL.
+  the others are PARTIAL or revised manifests that reflect what is actually funded.
   */
   manifests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Manifest' }],
   /*

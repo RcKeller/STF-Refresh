@@ -9,9 +9,12 @@ const ItemSchema = new mongoose.Schema({
   description: String,
   quantity: { type: Number, required: true, default: 1, min: 0 },
   price: { type: Number, required: true, min: 0 },
+  //  Tax rate, used to automatically account for tax.
+  //  TODO: Handle tax calculations on the server side.
+  tax: { type: Number, required: true, default: 10.1, min: 0 },
   //  Priority (legacy: group) is used to sort items by importance, lower is most imp.
-  priority: { type: Number, min: 0 },
-  taxExempt: { type: Boolean, default: false }
+  //  Tad confusing, but this is a constant question for proposers.
+  priority: { type: Number, min: 0 }
 })
 const Item = mongoose.model('Item', ItemSchema)
 export default Item
@@ -34,8 +37,8 @@ const dummyItems = (min) => {
           description: faker.lorem.paragraph(),
           quantity: faker.random.number(),
           price: faker.random.number(),
-          priority: faker.random.number(),
-          taxExempt: faker.random.boolean()
+          tax: faker.random.number(),
+          priority: faker.random.number()
         })
       }
       //  Create will push our fakes into the DB.

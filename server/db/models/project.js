@@ -17,27 +17,52 @@ const ProjectSchema = new mongoose.Schema({
   //  If that ever happens, implementing the relationship should be trivial.
   overview: {
     abstract: { type: String, required: true },
-    //  Objectives are key notes/bullet points.
-    objectives: [{ type: String, required: true }],
+    //  Objectives are key notes/bullet points. Not stored in array for consistency.
+    objectives: { type: String, required: true },
     //  Justification is a brief answer to "why", or info about urgent need.
     justification: { type: String, required: true }
   },
   /*
-  Current vs. future state questions in the project plan are arrays.
-  This is so the client can map over them in rendering, and to reduce
-  the amount of complexity/nesting in the DB.
+  Projects are framed in the sense of current vs. fututre state.
+  This is to reflect questions that consistently come up in QA sessions
+  and the fact that our org evaluates proposals as "Changes" to the UW system.
 
   While very opionionated, a key part of the refresh site's UI is
   re-framing the proposal process to be comparative, and related data
   (e.g. current vs. future state) should be viewable side-by-side.
   */
   plan: {
-    state: [{ type: String, required: true }],
-    availability: [{ type: String, required: true }],
-    strategy: [{ type: String, required: true }],
-    outreach: [{ type: String, required: true }],
-    risk: [{ type: String, required: true }]
+    state: {
+      current: { type: String, required: true },
+      future: { type: String, required: true }
+    },
+    availability: {
+      current: { type: String, required: true },
+      future: { type: String, required: true }
+    },
+    strategy: {
+      current: { type: String, required: true },
+      future: { type: String, required: true }
+    },
+    outreach: {
+      current: { type: String, required: true },
+      future: { type: String, required: true }
+    },
+    risk: {
+      current: { type: String, required: true },
+      future: { type: String, required: true }
+    }
   },
+  /*
+  Legacy proposals are in a straightforward Q-A format, with a lot of inconsistency
+  in our datasets. Our soultion for handling this is to collecting these is an array,
+  then map() over them so they are rendered as a block of text, not unlike before the
+  STF Refresh website. This is an elegant solution that prevents us from being opinionated
+  about legacy proposals and requiring lots of join statements.
+
+  To verify if a proposal is legacy or not, just use JS to test the truthiness
+  of the legacy prop: if (proposal.legacy) {proposal.legacy.map((prompt, i)) => (...))}
+  */
   legacy: [{
     title: { type: String, required: true },
     body: { type: String, required: true }
@@ -61,33 +86,30 @@ const dummyProjects = (min) => {
         fakes[i] = new Project({
           overview: {
             abstract: faker.lorem.paragraph(),
-            objectives: [
-              faker.lorem.sentence(),
-              faker.lorem.sentence()
-            ],
+            objectives: faker.lorem.paragraph(),
             justification: faker.lorem.paragraph()
           },
           plan: {
-            state: [
-              faker.lorem.paragraph(),
-              faker.lorem.paragraph()
-            ],
-            availability: [
-              faker.lorem.paragraph(),
-              faker.lorem.paragraph()
-            ],
-            strategy: [
-              faker.lorem.paragraph(),
-              faker.lorem.paragraph()
-            ],
-            outreach: [
-              faker.lorem.paragraph(),
-              faker.lorem.paragraph()
-            ],
-            risk: [
-              faker.lorem.paragraph(),
-              faker.lorem.paragraph()
-            ]
+            state: {
+              current: faker.lorem.paragraph(),
+              future: faker.lorem.paragraph()
+            },
+            availability: {
+              current: faker.lorem.paragraph(),
+              future: faker.lorem.paragraph()
+            },
+            strategy: {
+              current: faker.lorem.paragraph(),
+              future: faker.lorem.paragraph()
+            },
+            outreach: {
+              current: faker.lorem.paragraph(),
+              future: faker.lorem.paragraph()
+            },
+            risk: {
+              current: faker.lorem.paragraph(),
+              future: faker.lorem.paragraph()
+            }
           },
           legacy: [
             {
