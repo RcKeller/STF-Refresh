@@ -23,7 +23,7 @@ export default (app) => {
   We have full query capabilities for all these APIs. Can accept query params and process them accordingly.
   */
   //  Set defaults (removing /api prefix, setting /version)
-  restify.defaults({ prefix: '', version: `/${config.get('version')}` })
+  restify.defaults({ prefix: '', version: `/${config.get('version')}`, findOneAndUpdate: false })
   //  Initialize a router, map every core model's restify routes.
   const rest = express.Router()
   restModels.map((model) => restify.serve(rest, model))

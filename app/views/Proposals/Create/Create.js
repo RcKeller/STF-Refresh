@@ -33,7 +33,8 @@ import styles from './Create.css'
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
-  connectRequest(() => api.get('proposal', '594b49998dabd50e2c71762d', {
+  //  TODO: This ID is placeholder. Get from props.
+  connectRequest(() => api.get('proposal', '5951710b0d789f25e4061af6', {
     populate: 'body,decision,contacts,manifests,reports,amendments,comments,'
   }))
 )

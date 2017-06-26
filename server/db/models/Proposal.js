@@ -21,7 +21,8 @@ const ProposalSchema = new mongoose.Schema({
   asked: Number,
   received: Number,
   // Contacts - array of objects, can iterate over via client with Object.keys().forEach(k, i) {}
-
+  //  NOTE: Although it doesn't make sense for this to be an array vs an object, this makes our scheme
+  //  more agnostic, since the contacts required may change as the proposal process evolves.
   contacts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Contact' }],
   // Body contains the Project Plan, de-coupled from the core doc so that searching proposals is more efficient.
   body: { type: mongoose.Schema.Types.ObjectId, ref: 'Project' },

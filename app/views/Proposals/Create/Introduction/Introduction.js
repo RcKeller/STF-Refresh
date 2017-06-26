@@ -7,21 +7,30 @@ import { Icon, Alert, Form, Input, Switch, Select } from 'antd'
 const FormItem = Form.Item
 const Option = Select.Option
 
+/*
+NOTE: Contacts are stored as an array in the DB
+This is so they are not opinionated.
+As such, we're preparing an array of contacts to update.
+*/
 const contactTypes = [
   {
     role: 'primary',
+    index: 0,
     title: 'Primary Contact',
     subtitle: 'The primary lead and point-of-contact for this project.'
   }, {
     role: 'budget',
+    index: 1,
     title: 'Budget Director',
     subtitle: 'Contact for budgetary concerns and handling transfers of funds.'
   }, {
     role: 'organization',
+    index: 2,
     title: 'Organizational Head',
     subtitle: 'A departmental head or organization president to officiate this proposal.'
   }, {
     role: 'student',
+    index: 3,
     title: 'Student Lead',
     subtitle: 'We recommend that there be at least one student representing a project, as STF funds are intended for student use.'
   }
@@ -92,48 +101,48 @@ class Introduction extends React.Component {
             <h3>{c.title}</h3>
             <p className={styles['role-description']}>{c.subtitle}</p>
             <FormItem label='Name' {...wideLayout}
-              hasFeedback={feedback(`contacts.${c.role}.name`)} help={help(`contacts.${c.role}.name`)}
+              hasFeedback={feedback(`contacts[${c.index}].name`)} help={help(`contacts[${c.index}].name`)}
             >
-              {form.getFieldDecorator(`contacts.${c.role}.name`, {
+              {form.getFieldDecorator(`contacts[${c.index}].name`, {
                 rules: [{ required: true, message: 'Name required.' }]
               })(
                 <Input prefix={<Icon type='edit' />} />
               )}
             </FormItem>
             <FormItem label='NetID' {...wideLayout}
-              hasFeedback={feedback(`contacts.${c.role}.netID`)} help={help(`contacts.${c.role}.netID`)}
+              hasFeedback={feedback(`contacts[${c.index}].netID`)} help={help(`contacts[${c.index}].netID`)}
             >
-              {form.getFieldDecorator(`contacts.${c.role}.netID`, {
+              {form.getFieldDecorator(`contacts[${c.index}].netID`, {
                 rules: [{ required: true, message: 'NetID required.' }]
               })(
                 <Input prefix={<Icon type='idcard' />} />
               )}
             </FormItem>
             <FormItem label='Title' {...wideLayout}
-              hasFeedback={feedback(`contacts.${c.role}.title`)} help={help(`contacts.${c.role}.title`)}
+              hasFeedback={feedback(`contacts[${c.index}].title`)} help={help(`contacts[${c.index}].title`)}
             >
-              {form.getFieldDecorator(`contacts.${c.role}.title`, {
+              {form.getFieldDecorator(`contacts[${c.index}].title`, {
                 rules: [{ required: true, message: 'Title required.' }]
               })(
                 <Input prefix={<Icon type='info-circle-o' />} />
               )}
             </FormItem>
             <FormItem label='Phone' {...wideLayout}
-              hasFeedback={feedback(`contacts.${c.role}.phone`)} help={help(`contacts.${c.role}.phone`)}
+              hasFeedback={feedback(`contacts[${c.index}].phone`)} help={help(`contacts[${c.index}].phone`)}
             >
-              {form.getFieldDecorator(`contacts.${c.role}.phone`, {
+              {form.getFieldDecorator(`contacts[${c.index}].phone`, {
                 rules: [{ required: true, message: 'Name required.' }]
               })(
                 <Input prefix={<Icon type='phone' />} />
               )}
             </FormItem>
-            {/* <FormItem label='Mailbox' {...wideLayout}
-              hasFeedback={feedback(`contacts.${c.role}.mailbox`)} help={help(`contacts.${c.role}.mailbox`)}
+            <FormItem label='Mailbox' {...wideLayout}
+              hasFeedback={feedback(`contacts[${c.index}].mailbox`)} help={help(`contacts[${c.index}].mailbox`)}
             >
-              {form.getFieldDecorator(`contacts.${c.role}.mailbox`)(
+              {form.getFieldDecorator(`contacts[${c.index}].mailbox`)(
                 <Input prefix={<Icon type='inbox' />} />
               )}
-            </FormItem> */}
+            </FormItem>
           </div>
         ))}
       </div>
