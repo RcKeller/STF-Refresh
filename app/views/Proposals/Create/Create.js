@@ -61,9 +61,8 @@ class Create extends React.Component {
         try {
           api.patch({
             model: 'proposal',
-            id: proposal._id,  // _id is a mongo convention
-            values
-          })
+            id: proposal._id  // _id is a mongo convention=
+          }, values)
           // api.patch('proposal', proposal._id, values)
           message.success('Draft updated!')
           //  TODO: Once we add a bool for if proposals are drafts, update this to reflect that.
@@ -117,7 +116,7 @@ class Create extends React.Component {
             }>
               <Manifest form={form} proposal={proposal} />
             </TabPane>
-            <TabPane key='5' tab={
+            <TabPane key='5' disabled={proposal && proposal.contacts.length < 3} tab={
               <span><Icon type='edit' />Signatures</span>
             }>
               <Signatures form={form} proposal={proposal} />
