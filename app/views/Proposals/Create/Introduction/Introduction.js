@@ -3,9 +3,8 @@ import PropTypes from 'prop-types'
 // import { connect } from 'react-redux'
 
 // import { Input, Switch } from '../../../../../components/Form/Form'
-import { Row, Col, Icon, Alert, Form, Input, Switch, Select } from 'antd'
+import { Row, Col, Icon, Alert, Form, Input, Switch } from 'antd'
 const FormItem = Form.Item
-const Option = Select.Option
 
 /*
 NOTE: Contacts are stored as an array in the DB
@@ -36,13 +35,9 @@ const contactTypes = [
   }
 ]
 
-const wideLayout = {
+const layout = {
   labelCol: { xs: { span: 24 }, sm: { span: 6 } },
   wrapperCol: { xs: { span: 24 }, sm: { span: 14 } }
-}
-const slimLayout = {
-  labelCol: { xs: { span: 24 }, sm: { span: 3 } },
-  wrapperCol: { xs: { span: 24 }, sm: { span: 7 } }
 }
 
 function hasErrors (fields) {
@@ -59,7 +54,7 @@ class Introduction extends React.Component {
     return (
       <div>
         <h1>Proposal Data</h1>
-        <FormItem label='Title' {...wideLayout}
+        <FormItem label='Title' {...layout}
           hasFeedback={feedback('title')} help={help('title')}
         >
           {form.getFieldDecorator('title', {
@@ -68,7 +63,7 @@ class Introduction extends React.Component {
             <Input prefix={<Icon type='edit' />} />
           )}
         </FormItem>
-        <FormItem label='Category' {...wideLayout}
+        <FormItem label='Category' {...layout}
           hasFeedback={feedback('category')} help={help('category')}
         >
           {form.getFieldDecorator('category', {
@@ -77,7 +72,7 @@ class Introduction extends React.Component {
             <Input prefix={<Icon type='edit' />} />
           )}
         </FormItem>
-        <FormItem label='Organization' {...wideLayout}
+        <FormItem label='Organization' {...layout}
           hasFeedback={feedback('organization')} help={help('organization')}
         >
           {form.getFieldDecorator('organization', {
@@ -88,7 +83,7 @@ class Introduction extends React.Component {
         </FormItem>
         <Alert type='warning'
           message={<span>
-            <FormItem label='Tri-Campus' {...wideLayout} >
+            <FormItem label='Tri-Campus' {...layout} >
               {form.getFieldDecorator('uac', { valuePropName: 'checked' })(
                 // valuePropName is documented in the antd docs, that's a selector for switch vals.
                 <Switch size='small' />
@@ -103,7 +98,7 @@ class Introduction extends React.Component {
             <Col key={i} className='gutter-row' xs={24} md={12} lg={6} >
               <h3>{c.title}</h3>
               <p className={styles['role-description']}>{c.subtitle}</p>
-              <FormItem label='Name' {...wideLayout}
+              <FormItem label='Name' {...layout}
                 hasFeedback={feedback(`contacts[${c.index}].name`)} help={help(`contacts[${c.index}].name`)}
               >
                 {form.getFieldDecorator(`contacts[${c.index}].name`, {
@@ -112,7 +107,7 @@ class Introduction extends React.Component {
                   <Input prefix={<Icon type='edit' />} />
                 )}
               </FormItem>
-              <FormItem label='NetID' {...wideLayout}
+              <FormItem label='NetID' {...layout}
                 hasFeedback={feedback(`contacts[${c.index}].netID`)} help={help(`contacts[${c.index}].netID`)}
               >
                 {form.getFieldDecorator(`contacts[${c.index}].netID`, {
@@ -121,7 +116,7 @@ class Introduction extends React.Component {
                   <Input prefix={<Icon type='idcard' />} />
                 )}
               </FormItem>
-              <FormItem label='Title' {...wideLayout}
+              <FormItem label='Title' {...layout}
                 hasFeedback={feedback(`contacts[${c.index}].title`)} help={help(`contacts[${c.index}].title`)}
               >
                 {form.getFieldDecorator(`contacts[${c.index}].title`, {
@@ -130,7 +125,7 @@ class Introduction extends React.Component {
                   <Input prefix={<Icon type='info-circle-o' />} />
                 )}
               </FormItem>
-              <FormItem label='Phone' {...wideLayout}
+              <FormItem label='Phone' {...layout}
                 hasFeedback={feedback(`contacts[${c.index}].phone`)} help={help(`contacts[${c.index}].phone`)}
               >
                 {form.getFieldDecorator(`contacts[${c.index}].phone`, {
@@ -139,7 +134,7 @@ class Introduction extends React.Component {
                   <Input prefix={<Icon type='phone' />} />
                 )}
               </FormItem>
-              <FormItem label='Mailbox' {...wideLayout}
+              <FormItem label='Mailbox' {...layout}
                 hasFeedback={feedback(`contacts[${c.index}].mailbox`)} help={help(`contacts[${c.index}].mailbox`)}
               >
                 {form.getFieldDecorator(`contacts[${c.index}].mailbox`)(
@@ -158,53 +153,3 @@ Introduction.propTypes = {
   proposal: PropTypes.object  // async
 }
 export default Introduction
-
-/*
-
-{<FormItem validateStatus='error'
-      help='Oh no! Did you forget to include a title?'
-    >
-      <Input
-        placeholder='Proposal Title'
-        prefix={<Icon type='edit' />}
-      />
-    </FormItem>
-    <h4>Category</h4>
-    <Field name='category' label='Category'
-      component={Input} field={<Icon type='folder' />} />
-    <h4>Organization</h4>
-    <Field name='organization' label='Organization'
-      component={Input} field={<Icon type='team' />} />
-    <Alert type='warning'
-      message={<span>
-        Tri-Campus / 'UAC' Proposal: <Field
-          name='uac' component={Switch} size='small' />
-      </span>}
-      description='
-        The Universal Access Committee reviews proposals for tri-campus projects. Select this if your proposal is UAC. Most proposals are not UAC - reach out to the Proposal Officer if you have any questions.'
-    />
-  </Col>
-  <Col className='gutter-row' sm={12} md={12} lg={16} >
-    <Row gutter={64}>
-      {contactTypes.map((c, i) => (
-        <Col key={i} className='gutter-row' xs={24} sm={12} lg={6}>
-          <h2>{c.title}</h2>
-          <p className={styles['role-description']}>{c.subtitle}</p>
-          <div>
-            <Field name={`contacts.${c.role}.name`} label='Name'
-              component={Input} field={<Icon type='user' />} />
-            <Field name={`contacts.${c.role}.netID`} label='NetID'
-              component={Input} field={<Icon type='idcard' />} />
-            <Field name={`contacts.${c.role}.title`} label='Title'
-              component={Input} field={<Icon type='info-circle-o' />} />
-            <Field name={`contacts.${c.role}.phone`} label='Phone'
-              component={Input} field={<Icon type='phone' />} />
-            <Field name={`contacts.${c.role}.mail`} label='Mailbox'
-              component={Input} field={<Icon type='inbox' />} />
-          </div>
-        </Col>
-  ))}
-    </Row>
-</Col>
-</Row>}
-*/

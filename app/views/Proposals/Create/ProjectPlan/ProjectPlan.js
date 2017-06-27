@@ -5,60 +5,76 @@ const FormItem = Form.Item
 const Option = Select.Option
 const Panel = Collapse.Panel
 
-const state = [
+const plan = [
   {
-    field: 'plan.state.current',
-    title: 'Current State',
-    subtitle: 'Describe the resources currently available, and how students utilize these resources.'
-  }, {
-    field: 'plan.state.future',
-    title: 'Future State',
-    subtitle: 'Describe the new resources being made available to students, including any advantages over current technology.'
-  }
-]
-
-const availability = [
+    title: 'State Analysis',
+    subtitle: 'Tell us about...',
+    current: {
+      field: 'plan.state.current',
+      title: 'Current State',
+      subtitle: 'Describe the resources currently available, and how students utilize these resources.'
+    },
+    future: {
+      field: 'plan.state.future',
+      title: 'Future State',
+      subtitle: 'Describe the new resources being made available to students, including any advantages over current technology.'
+    }
+  },
   {
-    field: 'plan.availability.current',
-    title: 'Current Availability',
-    subtitle: 'How many students use these resources per quarter? Include any restrictions that are involved, including hours of operations, mandatory training, and associations with organizations'
-  }, {
-    field: 'plan.availability.future',
-    title: 'Future Availability',
-    subtitle: 'How will students be able to use the proposed resources? Include any restrictions that are involved, including hours of operations, mandatory training, and associations with organizations.'
-  }
-]
-const strategy = [
+    title: 'Service Availability',
+    subtitle: 'What sort of technology is currently available, and how will this change?',
+    current: {
+      field: 'plan.availability.current',
+      title: 'Current Availability',
+      subtitle: 'How many students use these resources per quarter? Include any restrictions that are involved, including hours of operations, mandatory training, and associations with organizations'
+    },
+    future: {
+      field: 'plan.availability.future',
+      title: 'Future Availability',
+      subtitle: 'How will students be able to use the proposed resources? Include any restrictions that are involved, including hours of operations, mandatory training, and associations with organizations.'
+    }
+  },
   {
-    field: 'plan.strategy.current',
-    title: 'Organizational Backing',
-    subtitle: 'What sort of resources will your organization make available to ensure the success of this project?'
-  }, {
-    field: 'plan.strategy.future',
-    title: 'Implementation Strategy',
-    subtitle: 'Briefly describe the implementation process, and include a timeline if possible.'
-  }
-]
-const outreach = [
-  {
-    field: 'plan.outreach.current',
-    title: 'Prior Efforts',
-    subtitle: 'Describe efforts to receive departmental funding and community endorsements for this project and similar initiatives.'
-  }, {
-    field: 'plan.outreach.future',
     title: 'Outreach Strategy',
-    subtitle: 'If approved, how will you reach out to the student community and inform them about this resource.'
-  }
-]
-const risk = [
+    subtitle: 'Student technology is great, but we also need to connect with the community. How are you working to make sure students are aware of these resources?',
+    current: {
+      field: 'plan.availability.current',
+      title: 'Current Availability',
+      subtitle: 'How many students use these resources per quarter? Include any restrictions that are involved, including hours of operations, mandatory training, and associations with organizations'
+    },
+    future: {
+      field: 'plan.availability.future',
+      title: 'Future Availability',
+      subtitle: 'How will students be able to use the proposed resources? Include any restrictions that are involved, including hours of operations, mandatory training, and associations with organizations.'
+    }
+  },
   {
-    field: 'plan.risk.current',
-    title: 'Current Risks',
-    subtitle: 'Are there any current concerns regarding privacy or security? Have you scoped out insurance for the proposed technology?'
-  }, {
-    field: 'plan.risk.future',
-    title: 'Proposed Mitigations',
-    subtitle: 'If approved, how will you secure the systems and technology for this project.'
+    title: 'Implementation Strategy',
+    subtitle: 'What sort of support have you gathered?',
+    current: {
+      field: 'plan.strategy.current',
+      title: 'Organizational Backing',
+      subtitle: 'What sort of resources will your organization make available to ensure the success of this project?'
+    },
+    future: {
+      field: 'plan.strategy.future',
+      title: 'Implementation Strategy',
+      subtitle: 'Briefly describe the implementation process, and include a timeline if possible.'
+    }
+  },
+  {
+    title: 'Risk Assessment',
+    subtitle: 'How are we accounting for scenarios such as abuse, theft, or negigent use of technology?',
+    current: {
+      field: 'plan.risk.current',
+      title: 'Current Risks',
+      subtitle: 'Are there any current concerns regarding privacy or security? Have you scoped out insurance for the proposed technology?'
+    },
+    future: {
+      field: 'plan.risk.future',
+      title: 'Proposed Mitigations',
+      subtitle: 'If approved, how will you secure the systems and technology for this project.'
+    }
   }
 ]
 
@@ -72,36 +88,94 @@ class ProjectPlan extends React.Component {
     return (
       <div>
         <h1>Project Plan</h1>
-        <p>
-          <Collapse>
-            <Panel header={<h2> State Analysis</h2>} key='1'>
-              <Row gutter={32}>
-                <p>Tell us...</p>
-                {state.map((element, i) => (
-                  <Col key={i} className='gutter-row' xs={24} md={12} >
-                    <h3>{element.title}</h3>
-                    <em>{element.subtitle}</em>
+        <Collapse className={styles['collapse']}>
+          {plan.map((area, i) => (
+              <Panel header={<h2>{area.title}</h2>} >
+                <p>{area.subtitle}</p>
+                <Row gutter={32}>
+                  <Col className='gutter-row' xs={24} md={12} >
+                    <h3>{area.current.title}</h3>
+                    <em>{area.current.subtitle}</em>
                     <FormItem
-                      hasFeedback={feedback(element.field)} help={help(element.field)}
+                      hasFeedback={feedback(area.current.field)} help={help(area.current.field)}
                     >
-                      {form.getFieldDecorator(element.field, {
+                      {form.getFieldDecorator(area.current.field, {
                         rules: [{ required: true, message: 'Required.' }]
                       })(
                         <Input type='textarea' rows={6} />
                       )}
                     </FormItem>
                   </Col>
-                ))}
-              </Row>
-            </Panel>
-          </Collapse>
-        </p>
+                  <Col className='gutter-row' xs={24} md={12} >
+                    <h3>{area.future.title}</h3>
+                    <em>{area.future.subtitle}</em>
+                    <FormItem
+                      hasFeedback={feedback(area.future.field)} help={help(area.future.field)}
+                    >
+                      {form.getFieldDecorator(area.future.field, {
+                        rules: [{ required: true, message: 'Required.' }]
+                      })(
+                        <Input type='textarea' rows={6} />
+                      )}
+                    </FormItem>
+                  </Col>
+                </Row>
+              </Panel>
+          ))}
+        </Collapse>
       </div>
     )
   }
 }
 
 export default ProjectPlan
+
+/*
+
+{/* <p>
+  <Collapse>
+    <Panel header={<h2> State Analysis</h2>} key='1'>
+      <Row gutter={32}>
+        <p>Tell us...</p>
+        {Object.keys(plan).forEach((element, i) => (
+          <Col key={i} className='gutter-row' xs={24} md={12} >
+            <h3>{plan[element].title}</h3>
+            <em>{plan[element].subtitle}</em>
+            <FormItem
+              hasFeedback={feedback(plan[element].field)} help={help(plan[element].field)}
+            >
+              {form.getFieldDecorator(plan[element].field, {
+                rules: [{ required: true, message: 'Required.' }]
+              })(
+                <Input type='textarea' rows={6} />
+              )}
+            </FormItem>
+          </Col>
+        ))}
+      </Row>
+    </Panel>
+  </Collapse>
+</p>
+*/
+
+/*
+
+{/* {area.elements.state.map((element, i) => (
+  <Col key={i} className='gutter-row' xs={24} md={12} >
+    <h3>{plan[element].title}</h3>
+    <em>{plan[element].subtitle}</em>
+    <FormItem
+      hasFeedback={feedback(plan[element].field)} help={help(plan[element].field)}
+    >
+      {form.getFieldDecorator(plan[element].field, {
+        rules: [{ required: true, message: 'Required.' }]
+      })(
+        <Input type='textarea' rows={6} />
+      )}
+    </FormItem>
+  </Col>
+))} }
+*/
 
 /*
 

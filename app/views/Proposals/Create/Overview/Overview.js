@@ -20,13 +20,9 @@ const impactTypes = [
   }
 ]
 
-const wideLayout = {
+const layout = {
   labelCol: { xs: { span: 24 }, sm: { span: 6 } },
   wrapperCol: { xs: { span: 24 }, sm: { span: 14 } }
-}
-const slimLayout = {
-  labelCol: { xs: { span: 24 }, sm: { span: 3 } },
-  wrapperCol: { xs: { span: 24 }, sm: { span: 7 } }
 }
 
 function hasErrors (fields) {
@@ -42,7 +38,7 @@ class Overview extends React.Component {
     return (
       <div>
         <h1>Proposal Overview</h1>
-        <FormItem label='Abstract' {...wideLayout}
+        <FormItem label='Abstract' {...layout}
           hasFeedback={feedback('overview.abstract')} help={help('overview.abstract')}
         >
           {form.getFieldDecorator('overview.abstract', {
@@ -51,7 +47,7 @@ class Overview extends React.Component {
             <Input type='textarea' rows={6} />
           )}
         </FormItem>
-        <FormItem label='Objectives' {...wideLayout}
+        <FormItem label='Objectives' {...layout}
           hasFeedback={feedback('overview.objectives')} help={help('overview.objectives')}
         >
           {form.getFieldDecorator('overview.objectives', {
@@ -60,7 +56,7 @@ class Overview extends React.Component {
             <Input type='textarea' rows={4} />
           )}
         </FormItem>
-        <FormItem label='Justification' {...wideLayout}
+        <FormItem label='Justification' {...layout}
           hasFeedback={feedback('overview.justification')} help={help('overview.justification')}
         >
           {form.getFieldDecorator('overview.justification', {
