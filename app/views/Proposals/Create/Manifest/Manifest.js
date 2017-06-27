@@ -1,5 +1,4 @@
 import React from 'react'
-import { Field } from 'redux-form'
 
 import { Row, Col, Icon, Alert, Form, Input, InputNumber, Button } from 'antd'
 const FormItem = Form.Item
@@ -64,7 +63,7 @@ class Manifest extends React.Component {
               help={help(`${manifests}[${i}].quantity`)}
             >
               {form.getFieldDecorator(`${manifests}[${i}].quantity`, {
-                rules: [{ required: true, message: 'Required', initialValue: 1 }]
+                rules: [{ required: true, message: 'Required', type: 'integer', initialValue: 1 }]
               })(
                 <InputNumber min={1} />
               )}
@@ -73,7 +72,9 @@ class Manifest extends React.Component {
               hasFeedback={feedback(`${manifests}[${i}].priority`)}
               help={help(`${manifests}[${i}].priority`)}
               >
-              {form.getFieldDecorator(`${manifests}[${i}].priority`)(
+              {form.getFieldDecorator(`${manifests}[${i}].priority`, {
+                rules: [{ required: true, message: 'Required', type: 'integer' }]
+              })(
                 <InputNumber min={1} />
               )}
             </FormItem>
@@ -82,7 +83,7 @@ class Manifest extends React.Component {
               help={help(`${manifests}[${i}].price`)}
             >
               {form.getFieldDecorator(`${manifests}[${i}].price`, {
-                rules: [{ required: true, message: 'Required', initialValue: 0 }]
+                rules: [{ required: true, message: 'Required', type: 'number', initialValue: 0 }]
               })(
                 <InputNumber min={0} />
               )}
@@ -92,9 +93,9 @@ class Manifest extends React.Component {
               help={help(`${manifests}[${i}].tax`)}
             >
               {form.getFieldDecorator(`${manifests}[${i}].tax`, {
-                rules: [{ required: true, message: 'Required', initialValue: 10.1 }]
+                rules: [{ required: true, message: 'Required', type: 'number', initialValue: 10.1 }]
               })(
-                <InputNumber min={0} />
+                <InputNumber min={0} step={0.1} />
               )}
             </FormItem>
           </Col>

@@ -9,12 +9,12 @@ const plan = [
     title: 'State Analysis',
     subtitle: 'Tell us about...',
     current: {
-      field: 'plan.state.current',
+      field: 'body.plan.state.current',
       title: 'Current State',
       subtitle: 'Describe the resources currently available, and how students utilize these resources.'
     },
     future: {
-      field: 'plan.state.future',
+      field: 'body.plan.state.future',
       title: 'Future State',
       subtitle: 'Describe the new resources being made available to students, including any advantages over current technology.'
     }
@@ -23,40 +23,40 @@ const plan = [
     title: 'Service Availability',
     subtitle: 'What sort of technology is currently available, and how will this change?',
     current: {
-      field: 'plan.availability.current',
+      field: 'body.plan.availability.current',
       title: 'Current Availability',
       subtitle: 'How many students use these resources per quarter? Include any restrictions that are involved, including hours of operations, mandatory training, and associations with organizations'
     },
     future: {
-      field: 'plan.availability.future',
+      field: 'body.plan.availability.future',
       title: 'Future Availability',
       subtitle: 'How will students be able to use the proposed resources? Include any restrictions that are involved, including hours of operations, mandatory training, and associations with organizations.'
     }
   },
   {
-    title: 'Outreach Strategy',
+    title: 'Student Outreach',
     subtitle: 'Student technology is great, but we also need to connect with the community. How are you working to make sure students are aware of these resources?',
     current: {
-      field: 'plan.availability.current',
-      title: 'Current Availability',
-      subtitle: 'How many students use these resources per quarter? Include any restrictions that are involved, including hours of operations, mandatory training, and associations with organizations'
+      field: 'body.plan.outreach.current',
+      title: 'Prior Efforts',
+      subtitle: 'Describe efforts to receive departmental funding and community endorsements for this project and similar initiatives.'
     },
     future: {
-      field: 'plan.availability.future',
-      title: 'Future Availability',
-      subtitle: 'How will students be able to use the proposed resources? Include any restrictions that are involved, including hours of operations, mandatory training, and associations with organizations.'
+      field: 'body.plan.outreach.future',
+      title: 'Outreach Strategy',
+      subtitle: 'If approved, how will you reach out to the student community and inform them about this resource.'
     }
   },
   {
     title: 'Implementation Strategy',
     subtitle: 'What sort of support have you gathered?',
     current: {
-      field: 'plan.strategy.current',
+      field: 'body.plan.strategy.current',
       title: 'Organizational Backing',
       subtitle: 'What sort of resources will your organization make available to ensure the success of this project?'
     },
     future: {
-      field: 'plan.strategy.future',
+      field: 'body.plan.strategy.future',
       title: 'Implementation Strategy',
       subtitle: 'Briefly describe the implementation process, and include a timeline if possible.'
     }
@@ -65,12 +65,12 @@ const plan = [
     title: 'Risk Assessment',
     subtitle: 'How are we accounting for scenarios such as abuse, theft, or negigent use of technology?',
     current: {
-      field: 'plan.risk.current',
+      field: 'body.plan.risk.current',
       title: 'Current Risks',
       subtitle: 'Are there any current concerns regarding privacy or security? Have you scoped out insurance for the proposed technology?'
     },
     future: {
-      field: 'plan.risk.future',
+      field: 'body.plan.risk.future',
       title: 'Proposed Mitigations',
       subtitle: 'If approved, how will you secure the systems and technology for this project.'
     }
@@ -89,7 +89,7 @@ class ProjectPlan extends React.Component {
         <h1>Project Plan</h1>
         <Collapse className={styles['collapse']} defaultActiveKey={['0', '1', '2', '3', '4']} >
           {plan.map((area, i) => (
-            <Panel header={<h2>{area.title}</h2>} >
+            <Panel key={i} header={<h2>{area.title}</h2>} >
               <p>{area.subtitle}</p>
               <Row gutter={32}>
                 <Col className='gutter-row' xs={24} md={12} >
@@ -189,7 +189,7 @@ export default ProjectPlan
         <p className={styles['prompt']}><em>
           {e.subtitle}
         </em></p>
-        <Field name={`body.plan.${e.field}`} component={Input} type='textarea' rows={6} />
+        <Field name={`body.body.plan.${e.field}`} component={Input} type='textarea' rows={6} />
       </Col>
     ))}
   </Row>
@@ -204,7 +204,7 @@ export default ProjectPlan
         <p className={styles['prompt']}><em>
           {e.subtitle}
         </em></p>
-        <Field name={`body.plan.${e.field}`} component={Input} type='textarea' rows={6} />
+        <Field name={`body.body.plan.${e.field}`} component={Input} type='textarea' rows={6} />
       </Col>
     ))}
   </Row>
@@ -219,7 +219,7 @@ export default ProjectPlan
         <p><em>
           {e.subtitle}
         </em></p>
-        <Field name={`body.plan.${e.field}`} component={Input} type='textarea' rows={6} />
+        <Field name={`body.body.plan.${e.field}`} component={Input} type='textarea' rows={6} />
       </Col>
     ))}
   </Row>
@@ -234,7 +234,7 @@ export default ProjectPlan
         <p className={styles['prompt']}><em>
           {e.subtitle}
         </em></p>
-        <Field name={`body.plan.${e.field}`} component={Input} type='textarea' rows={6} />
+        <Field name={`body.body.plan.${e.field}`} component={Input} type='textarea' rows={6} />
       </Col>
     ))}
   </Row>
@@ -249,7 +249,7 @@ export default ProjectPlan
         <p className={styles['prompt']}><em>
           {e.subtitle}
         </em></p>
-        <Field name={`body.plan.${e.field}`} component={Input} type='textarea' rows={6} />
+        <Field name={`body.body.plan.${e.field}`} component={Input} type='textarea' rows={6} />
       </Col>
     ))}
   </Row>

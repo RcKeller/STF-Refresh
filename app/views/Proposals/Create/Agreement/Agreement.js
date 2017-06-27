@@ -1,7 +1,7 @@
 import React from 'react'
 import { browserHistory } from 'react-router'
 
-import { Row, Col, Alert, Button, Icon } from 'antd'
+import { Row, Col, Alert, Button, Icon, message } from 'antd'
 
 const agreements = {
   important: [
@@ -46,6 +46,12 @@ const agreements = {
 
 import styles from './Agreement.css'
 class Agreement extends React.Component {
+  initializeProposal () {
+    console.log('test')
+    let id = '5951710b0d789f25e4061adc'
+    message.success(`Successfully created new proposal! Your ID: ${id}`, 10)
+    browserHistory.push(`/create/${id}`)
+  }
   render () {
     return (
       <article className={styles['agreement']}>
@@ -74,7 +80,7 @@ class Agreement extends React.Component {
           ))}
         </Row>
         <Button size='large' type='primary'
-          onClick={() => browserHistory.push('/proposals/create')}
+          onClick={() => this.initializeProposal()}
         >
           I Agree<Icon type='right' />
         </Button>

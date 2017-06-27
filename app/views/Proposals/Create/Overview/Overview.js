@@ -5,15 +5,15 @@ const FormItem = Form.Item
 
 const impactTypes = [
   {
-    field: 'overview.impact.academic',
+    field: 'body.overview.impact.academic',
     title: 'Academic Experience',
     subtitle: 'How will this project enrich a student’s learning environment and experience?'
   }, {
-    field: 'overview.impact.research',
+    field: 'body.overview.impact.research',
     title: 'Research Involvement',
     subtitle: 'Can this project be used for scholarly research?'
   }, {
-    field: 'overview.impact.career',
+    field: 'body.overview.impact.career',
     title: 'Career Development',
     subtitle: 'Can this technology be used to further a student’s career?'
   }
@@ -34,27 +34,27 @@ class Overview extends React.Component {
       <div>
         <h1>Proposal Overview</h1>
         <FormItem label='Abstract' {...layout}
-          hasFeedback={feedback('overview.abstract')} help={help('overview.abstract')}
+          hasFeedback={feedback('body.overview.abstract')} help={help('body.overview.abstract')}
         >
-          {form.getFieldDecorator('overview.abstract', {
+          {form.getFieldDecorator('body.overview.abstract', {
             rules: [{ required: true, message: 'An abstract is requried.' }]
           })(
             <Input type='textarea' rows={6} />
           )}
         </FormItem>
         <FormItem label='Objectives' {...layout}
-          hasFeedback={feedback('overview.objectives')} help={help('overview.objectives')}
+          hasFeedback={feedback('body.overview.objectives')} help={help('body.overview.objectives')}
         >
-          {form.getFieldDecorator('overview.objectives', {
+          {form.getFieldDecorator('body.overview.objectives', {
             rules: [{ required: true, message: 'Objectives are requried.' }]
           })(
             <Input type='textarea' rows={4} />
           )}
         </FormItem>
         <FormItem label='Justification' {...layout}
-          hasFeedback={feedback('overview.justification')} help={help('overview.justification')}
+          hasFeedback={feedback('body.overview.justification')} help={help('body.overview.justification')}
         >
-          {form.getFieldDecorator('overview.justification', {
+          {form.getFieldDecorator('body.overview.justification', {
             rules: [{ required: true, message: 'The overall justification is requried.' }]
           })(
             <Input type='textarea' rows={4} />
@@ -92,14 +92,14 @@ export default Overview
       <p><em>
         A brief summary of the proposal and the technology being made available to students.
       </em></p>
-      <Field name='body.overview.abstract' component={Input} type='textarea' rows={6} />
+      <Field name='body.body.overview.abstract' component={Input} type='textarea' rows={6} />
     </Col>
     <Col className='gutter-row' xs={24} md={12}>
       <h2>Key Objectives</h2>
       <p><em>
         The changes proposed and the desired outcome.
       </em></p>
-      <Field name='body.overview.objectives' component={Input} type='textarea' rows={6} />
+      <Field name='body.body.overview.objectives' component={Input} type='textarea' rows={6} />
     </Col>
   </Row>
   <Row>
@@ -108,7 +108,7 @@ export default Overview
       <p><em>
         Briefly describe the outstanding student need for this technology and the justification for this project.
       </em></p>
-      <Field name='body.overview.justification' component={Input} type='textarea' rows={4} />
+      <Field name='body.body.overview.justification' component={Input} type='textarea' rows={4} />
     </Col>
   </Row>
   <Row gutter={32}>
@@ -122,7 +122,7 @@ export default Overview
       <Col key={i} className='gutter-row' xs={24} md={8}>
         <h3>{impact.title}</h3>
         <p className={styles['subtitle']}><em>{impact.subtitle}</em></p>
-        <Field name={`body.overview.impact.${impact.field}`} component={Input} type='textarea' rows={4} />
+        <Field name={`body.body.overview.impact.${impact.field}`} component={Input} type='textarea' rows={4} />
       </Col>
     ))}
   </Row>

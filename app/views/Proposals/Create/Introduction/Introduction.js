@@ -76,17 +76,16 @@ class Introduction extends React.Component {
           )}
         </FormItem>
         <Alert type='warning'
-          message={<span>
-            <FormItem label='Tri-Campus' {...layout} >
-              {form.getFieldDecorator('uac', { valuePropName: 'checked' })(
-                // valuePropName is documented in the antd docs, that's a selector for switch vals.
-                <Switch size='small' />
-              )}
-            </FormItem>
-          </span>}
+          message='Tri-Campus Proposals'
           description='
-          The Universal Access Committee reviews proposals for tri-campus projects. Select this if your proposal is UAC. Most proposals are NOT - reach out to the Proposal Officer if you have any questions.'
+          The Universal Access Committee reviews proposals for tri-campus projects. Select this if your proposal has been reviewed by an officer and approved as a tri-campus service. Please reach out to the Proposal Officer if you have any questions.'
         />
+        <FormItem label='Universal Access' {...layout} >
+          {form.getFieldDecorator('uac', { valuePropName: 'checked' })(
+            // valuePropName is documented in the antd docs, that's a selector for switch vals.
+            <Switch size='small' />
+          )}
+        </FormItem>
         <Row gutter={32}>
           {contactTypes.map((c, i) => (
             <Col key={i} className='gutter-row' xs={24} md={12} lg={6} >

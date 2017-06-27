@@ -56,9 +56,15 @@ class Create extends React.Component {
     e.preventDefault()
     let { form, proposal, api } = this.props
     form.validateFields((err, values) => {
+      console.log('SUBMITTING', values)
       if (!err) {
         try {
-          api.patch('proposal', proposal._id, values)
+          api.patch({
+            model: 'proposal',
+            id: proposal._id,  // _id is a mongo convention
+            values
+          })
+          // api.patch('proposal', proposal._id, values)
           message.success('Draft updated!')
           //  TODO: Once we add a bool for if proposals are drafts, update this to reflect that.
         } catch (err) {
@@ -71,6 +77,7 @@ class Create extends React.Component {
   /*
   Util for silently updating the proposal on the backend.
   Leaving this be for now, until we decide on how aggressive our validation will be.
+  BUG: This is incomplete, due to DB migration.
   */
   update () {
     let { form } = this.props

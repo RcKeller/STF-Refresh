@@ -43,7 +43,6 @@ output:
 ...v1/block?query={"number":"70692"}&populate={"path":"contacts"}
 */
 const adapt = (params) => {
-  console.log(params)
   //  Base URL, e.g. ...host/v1/proposal/:id
   //  Object IDs are appended immediately if relevant.
   let url = `${API}/${version}/${params.model}`
@@ -94,12 +93,12 @@ CREATE: POST
 Pass the object in as the body arg
 ex: api.post('report', {})
 ***** */
-const post = (model, body) => mutateAsync({
-  url: `${API}/${version}/${model}`,
+const post = (params, body) => mutateAsync({
+  url: adapt(params),
   options: { method: 'POST' },
-  transform: body => ({ [`${model}`]: body }),
+  transform: body => ({ [`${params.model}`]: body }),
   body,
-  update: { [`${model}`]: (prev, next) => next }
+  update: { [`${params.model}`]: (prev, next) => next }
 })
 
 /* *****
@@ -107,12 +106,12 @@ UPDATE: PUT
 ex: api.put('report', '594b49998dabd50e2c7176bf',
 { date: "2000-06-21T07:15:10.746Z" })
 ***** */
-const put = (model, id, body) => mutateAsync({
-  url: `${API}/${version}/${model}/${id}`,
+const put = (params, body) => mutateAsync({
+  url: adapt(params),
   options: { method: 'PUT' },
-  transform: body => ({ [`${model}`]: body }),
+  transform: body => ({ [`${params.model}`]: body }),
   body,
-  update: { [`${model}`]: (prev, next) => next }
+  update: { [`${params.model}`]: (prev, next) => next }
 })
 
 /* *****
@@ -120,12 +119,12 @@ UPDATE: PATCH
 ex: api.put('report', '594b49998dabd50e2c7176bf',
 { date: "2000-06-21T07:15:10.746Z" })
 ***** */
-const patch = (model, id, body, populate) => mutateAsync({
-  url: `${API}/${version}/${model}/${id}`,
+const patch = (params, body) => mutateAsync({
+  url: adapt(params),
   options: { method: 'PATCH' },
-  transform: body => ({ [`${model}`]: body }),
+  transform: body => ({ [`${params.model}`]: body }),
   body,
-  update: { [`${model}`]: (prev, next) => next }
+  update: { [`${params.model}`]: (prev, next) => next }
 })
 
 /* *****
@@ -133,11 +132,11 @@ DELETE
 ex: api.remove('report', '594b49998dabd50e2c7176bf')
 note: The 'delete' namespace is a JS keyword.
 ***** */
-const remove = (model, id) => mutateAsync({
-  url: `${API}/${version}/${model}/${id}`,
+const remove = (params) => mutateAsync({
+  url: adapt(params),
   options: { method: 'DELETE' },
-  transform: body => ({ [`${model}`]: body }),
-  update: { [`${model}`]: (prev, next) => next }
+  transform: body => ({ [`${params.model}`]: body }),
+  update: { [`${params.model}`]: (prev, next) => next }
 })
 
 export default {
