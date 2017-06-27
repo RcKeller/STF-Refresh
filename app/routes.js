@@ -50,23 +50,35 @@ export default (store) => {
 
       <Route path='/proposals' breadcrumbName='Proposals' component={Proposals} />
       <Route path='/proposals/:year/:number' breadcrumbName='View Proposal' component={Proposal} />
-      <Route path='/proposals/create'
-        onEnter={requireAuth}
-        breadcrumbName='Create Proposal' component={Create}
-      />
-      <Route path='/proposals/create/agreement'
-        onEnter={requireAuth}
-        breadcrumbName='Proposal Agreement' component={Agreement}
-      />
       <Route path='/blocks' breadcrumbName='Blocks' component={Blocks} />
       <Route path='/blocks/:number'
         breadcrumbName='Block' component={Block}
       />
+
+      <Route path='/create'
+        onEnter={requireAuth}
+        breadcrumbName='Create Proposal' component={Agreement}
+      />
+      <Route path='/create/:id'
+        onEnter={requireAuth}
+        breadcrumbName='Proposal Agreement' component={Create}
+      />
+      <Route path='/amend'
+        // onEnter={requireAuth}
+        breadcrumbName='Proposal Agreement' component={<div>Amend</div>}
+      />
+      <Route path='/amend/:id'
+        // onEnter={requireAuth}
+        breadcrumbName='Proposal Agreement' component={<div>Amend an ID</div>}
+      />
+
       <Route path='/documents' breadcrumbName='Documents' component={Documents} />
 
       <Route path='/calendar' breadcrumbName='Calendar' component={Calendar} />
       <Route path='/calendar/events' breadcrumbName='Events' component={Events} />
 
+      <Route path='/docket' breadcrumbName='Calendar' component={<div>Weekly meeting docket, with voting for admins.</div>} />
+      <Route path='/admin' breadcrumbName='Calendar' component={<div>Admin Panel</div>} />
     </Route>
   )
 }

@@ -1,10 +1,11 @@
 import React from 'react'
-import { Link } from 'react-router'
 
 import { Menu, Icon, Alert } from 'antd'
 const SubMenu = Menu.SubMenu
 const ItemGroup = Menu.ItemGroup
 const Item = Menu.Item
+
+const keyserver = 'http://itconnect.uw.edu/wares/acquiring-software-and-hardware/keyserver-help-for-it-staff/'
 
 import styles from './Nav.css'
 const Nav = ({ router }) => (
@@ -20,16 +21,14 @@ const Nav = ({ router }) => (
         <Item key='/blocks'>Funding Blocks</Item>
       </ItemGroup>
       <ItemGroup key='g2' title='Submit'>
-        <Item key='/proposals/create/agreement'>Proposal</Item>
+        <Item key='/create'>Proposal</Item>
       </ItemGroup>
     </SubMenu>
     <SubMenu key='sub2' title={<span><Icon type='file' /><span>Documents</span></span>}>
       <Item key='/documents'>Commitee Docs</Item>
       <Item key='/docs/Current Request for Proposals.pdf' >Request for Proposals</Item>
       <Item key=''>
-        <a href='http://itconnect.uw.edu/wares/acquiring-software-and-hardware/keyserver-help-for-it-staff/' target='_blank'>
-          License Keyserver
-        </a>
+        <a href={keyserver} target='_blank'>License Keyserver</a>
       </Item>
     </SubMenu>
     <SubMenu key='sub3' title={<span><Icon type='team' /><span>About</span></span>}>
