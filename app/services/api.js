@@ -44,16 +44,16 @@ output:
 */
 const adapt = (params) => {
   console.log(params)
+  //  Base URL, e.g. ...host/v1/proposal/:id
+  //  Object IDs are appended immediately if relevant.
+  let url = `${API}/${version}/${params.model}`
+  if (params.id) url = `${url}/${params.id}`
+  //  Query string for joins, queries, ID specification
   let qs = ''
   let operator = '?'
-  //  Select by ID: 'model/:id...'
-  if (params.id) {
-    qs = `${qs}/${params.id}`
-  }
   //  Add queries: '...?query={"number":"1","year":"2017"}'
   if (params.query) {
     qs = `${qs}${operator}query=${JSON.stringify(params.query)}`
-    console.log(qs)
     operator = '&'
   }
   //  Add joins... '...&populate=[{"path":"contacts"},{"path":"reports"}]
@@ -63,7 +63,7 @@ const adapt = (params) => {
     qs = `${qs}${operator}populate=${paths.join(',')}`
     operator = '&'
   }
-  return qs
+  return `${url}${qs}`
 }
 
 /* *****
@@ -81,12 +81,12 @@ const getAll = (model, params) => ({
 GET by ID
 ex: api.get('proposal', '594b49998dabd50e2c71762d')
 ***** */
-const get = (model, params) => ({
-  url: `${API}/${version}/${model}${adapt(params)}`,
+const get = (params) => ({
+  url: adapt(params),
   options: { method: 'GET' },
-  transform: body => ({ [`${model}`]: body }),
+  transform: body => ({ [`${params.model}`]: body }),
   //  This is for a SINGLE document. Return first element if array received.
-  update: { [`${model}`]: (prev, next) => next[0] || next }
+  update: { [`${params.model}`]: (prev, next) => next[0] || next }
 })
 
 const getWithQuery = (model, params) => ({
@@ -172,4 +172,14 @@ EXAMPLE IMPLEMENTATION:
 ...
 render ({ proposal, api } = this.props) {
 ...call like any other standard function.
+
+OR (updated example):
+@compose(
+  connect((state, props) => ({ block: state.entities.block })),
+  connectRequest((props) => api.get({
+    model: 'block',
+    query: { number: props.params.number, year: "2017" },
+    join: ['contacts']
+  }))
+)
 */

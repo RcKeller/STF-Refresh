@@ -10,13 +10,11 @@ import api from '../../../services'
 import styles from './block.css'
 @compose(
   connect((state, props) => ({ block: state.entities.block })),
-  connectRequest((props) => api.get('block', {
+  connectRequest((props) => api.get({
+    model: 'block',
     query: { number: props.params.number, year: "2017" },
-    // id: '59516fa7b7954730c0133dc8',
-    // query: { number: props.params.number, year: 2017, limi },
     join: ['contacts']
-  }
-))
+  }))
   // connectRequest((props) => api.get('block', props.params.id, {
   //   populate: 'contacts'
   // }))
