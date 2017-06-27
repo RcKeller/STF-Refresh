@@ -33,22 +33,31 @@ TODO: create a querystring adapter that is API specific, packages don't work for
 
 /*
 Query string adapter
-.../v1/block?query={%22number%22:%2270692%22}&populate=%22contacts%22
+NOTE: This is a temp solution while we work on the DB migration.
+input:
+{
+  query: { number: props.params.number },
+  join: ['contacts']
+}
+output:
+...v1/block?query={"number":"70692"}&populate={"path":"contacts"}
 */
-const adapter = (query, join) => {
+const adapt = (params) => {
+  console.log(params)
   let qs = ''
   let operator = '?'
-  if (query) {
+  if (params.query) {
     let queries = []
-    Object.keys(query).forEach((key) => (
-      queries.push(JSON.stringify(key))
+    Object.keys(params.query).forEach((key) => (
+      queries.push(`{"${key}":"${params.query[key]}"}`)
     ))
-    qs = `${qs}${operator}query=${queries}`
+    qs = `${qs}${operator}query=${queries.join(',')}`
+    console.log(qs, queries)
     operator = '&'
   }
-  if (join) {
+  if (params.join) {
     let paths = []
-    join.map((model) => paths.push(`{"path":"${model}"}`))
+    params.join.map((model) => paths.push(`{"path":"${model}"}`))
     qs = `${qs}${operator}populate=${paths.join(',')}`
     operator = '&'
   }
@@ -59,8 +68,8 @@ const adapter = (query, join) => {
 GET ALL
 ex: api.getAll('proposal', { populate: 'contacts,decision' })
 ***** */
-const getAll = (model, query) => ({
-  url: `${API}/${version}/${model}${query ? JSON.stringify({...query}) : ''}`,
+const getAll = (model, params) => ({
+  url: `${API}/${version}/${model}${adapt(params)}`,
   options: { method: 'GET' },
   transform: body => ({ [`${model}s`]: body }),
   // body: { ...query },
@@ -76,6 +85,13 @@ const get = (model, id, query) => ({
   options: { method: 'GET' },
   transform: body => ({ [`${model}`]: body }),
   body: { ...query },
+  update: { [`${model}`]: (prev, next) => next }
+})
+
+const getWithQuery = (model, params) => ({
+  url: `${API}/${version}/${model}${adapt(params)}`,
+  options: { method: 'GET' },
+  transform: body => ({ [`${model}`]: body }),
   update: { [`${model}`]: (prev, next) => next }
 })
 
@@ -133,6 +149,7 @@ const remove = (model, id) => mutateAsync({
 export default {
   getAll,
   get,
+  getWithQuery,
   post,
   put,
   patch,
