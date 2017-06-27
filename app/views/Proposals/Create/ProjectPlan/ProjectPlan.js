@@ -1,8 +1,7 @@
 import React from 'react'
 
-import { Row, Col, Collapse, Icon, Alert, Form, Input, Switch, Select } from 'antd'
+import { Row, Col, Collapse, Form, Input } from 'antd'
 const FormItem = Form.Item
-const Option = Select.Option
 const Panel = Collapse.Panel
 
 const plan = [
@@ -88,39 +87,39 @@ class ProjectPlan extends React.Component {
     return (
       <div>
         <h1>Project Plan</h1>
-        <Collapse className={styles['collapse']}>
+        <Collapse className={styles['collapse']} defaultActiveKey={['0', '1', '2', '3', '4']} >
           {plan.map((area, i) => (
-              <Panel header={<h2>{area.title}</h2>} >
-                <p>{area.subtitle}</p>
-                <Row gutter={32}>
-                  <Col className='gutter-row' xs={24} md={12} >
-                    <h3>{area.current.title}</h3>
-                    <em>{area.current.subtitle}</em>
-                    <FormItem
-                      hasFeedback={feedback(area.current.field)} help={help(area.current.field)}
-                    >
-                      {form.getFieldDecorator(area.current.field, {
-                        rules: [{ required: true, message: 'Required.' }]
-                      })(
-                        <Input type='textarea' rows={6} />
-                      )}
-                    </FormItem>
-                  </Col>
-                  <Col className='gutter-row' xs={24} md={12} >
-                    <h3>{area.future.title}</h3>
-                    <em>{area.future.subtitle}</em>
-                    <FormItem
-                      hasFeedback={feedback(area.future.field)} help={help(area.future.field)}
-                    >
-                      {form.getFieldDecorator(area.future.field, {
-                        rules: [{ required: true, message: 'Required.' }]
-                      })(
-                        <Input type='textarea' rows={6} />
-                      )}
-                    </FormItem>
-                  </Col>
-                </Row>
-              </Panel>
+            <Panel header={<h2>{area.title}</h2>} >
+              <p>{area.subtitle}</p>
+              <Row gutter={32}>
+                <Col className='gutter-row' xs={24} md={12} >
+                  <h3>{area.current.title}</h3>
+                  <em>{area.current.subtitle}</em>
+                  <FormItem
+                    hasFeedback={feedback(area.current.field)} help={help(area.current.field)}
+                  >
+                    {form.getFieldDecorator(area.current.field, {
+                      rules: [{ required: true, message: 'Required.' }]
+                    })(
+                      <Input type='textarea' rows={6} />
+                    )}
+                  </FormItem>
+                </Col>
+                <Col className='gutter-row' xs={24} md={12} >
+                  <h3>{area.future.title}</h3>
+                  <em>{area.future.subtitle}</em>
+                  <FormItem
+                    hasFeedback={feedback(area.future.field)} help={help(area.future.field)}
+                  >
+                    {form.getFieldDecorator(area.future.field, {
+                      rules: [{ required: true, message: 'Required.' }]
+                    })(
+                      <Input type='textarea' rows={6} />
+                    )}
+                  </FormItem>
+                </Col>
+              </Row>
+            </Panel>
           ))}
         </Collapse>
       </div>

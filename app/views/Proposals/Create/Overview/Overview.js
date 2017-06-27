@@ -1,8 +1,7 @@
 import React from 'react'
 
-import { Row, Col, Icon, Alert, Form, Input, Switch, Select } from 'antd'
+import { Row, Col, Form, Input, Select } from 'antd'
 const FormItem = Form.Item
-const Option = Select.Option
 
 const impactTypes = [
   {
@@ -23,10 +22,6 @@ const impactTypes = [
 const layout = {
   labelCol: { xs: { span: 24 }, sm: { span: 6 } },
   wrapperCol: { xs: { span: 24 }, sm: { span: 14 } }
-}
-
-function hasErrors (fields) {
-  return Object.keys(fields).some(field => fields[field])
 }
 
 import styles from './Overview.css'

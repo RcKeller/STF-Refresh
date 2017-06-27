@@ -40,10 +40,6 @@ const layout = {
   wrapperCol: { xs: { span: 24 }, sm: { span: 14 } }
 }
 
-function hasErrors (fields) {
-  return Object.keys(fields).some(field => fields[field])
-}
-
 import styles from './Introduction.css'
 class Introduction extends React.Component {
   render ({ form, proposal } = this.props) {
