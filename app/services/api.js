@@ -46,15 +46,17 @@ const adapt = (params) => {
   console.log(params)
   let qs = ''
   let operator = '?'
+  //  Select by ID: 'model/:id...'
+  if (params.id) {
+    qs = `${qs}/${params.id}`
+  }
+  //  Add queries: '...?query={"number":"1","year":"2017"}'
   if (params.query) {
-    let queries = []
-    Object.keys(params.query).forEach((key) => (
-      queries.push(`{"${key}":"${params.query[key]}"}`)
-    ))
-    qs = `${qs}${operator}query=${queries.join(',')}`
-    console.log(qs, queries)
+    qs = `${qs}${operator}query=${JSON.stringify(params.query)}`
+    console.log(qs)
     operator = '&'
   }
+  //  Add joins... '...&populate=[{"path":"contacts"},{"path":"reports"}]
   if (params.join) {
     let paths = []
     params.join.map((model) => paths.push(`{"path":"${model}"}`))
@@ -72,7 +74,6 @@ const getAll = (model, params) => ({
   url: `${API}/${version}/${model}${adapt(params)}`,
   options: { method: 'GET' },
   transform: body => ({ [`${model}s`]: body }),
-  // body: { ...query },
   update: { [`${model}s`]: (prev, next) => next }
 })
 
@@ -80,12 +81,12 @@ const getAll = (model, params) => ({
 GET by ID
 ex: api.get('proposal', '594b49998dabd50e2c71762d')
 ***** */
-const get = (model, id, query) => ({
-  url: `${API}/${version}/${model}/${id}`,
+const get = (model, params) => ({
+  url: `${API}/${version}/${model}${adapt(params)}`,
   options: { method: 'GET' },
   transform: body => ({ [`${model}`]: body }),
-  body: { ...query },
-  update: { [`${model}`]: (prev, next) => next }
+  //  This is for a SINGLE document. Return first element if array received.
+  update: { [`${model}`]: (prev, next) => next[0] || next }
 })
 
 const getWithQuery = (model, params) => ({
