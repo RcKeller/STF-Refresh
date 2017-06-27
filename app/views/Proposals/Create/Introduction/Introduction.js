@@ -13,23 +13,23 @@ As such, we're preparing an array of contacts to update.
 */
 const contactTypes = [
   {
-    role: 'primary',
     index: 0,
+    role: 'primary',
     title: 'Primary Contact',
     subtitle: 'The primary lead and point-of-contact for this project.'
   }, {
-    role: 'budget',
     index: 1,
+    role: 'budget',
     title: 'Budget Director',
     subtitle: 'Contact for budgetary concerns and handling transfers of funds.'
   }, {
-    role: 'organization',
     index: 2,
+    role: 'organization',
     title: 'Organizational Head',
     subtitle: 'A departmental head or organization president to officiate this proposal.'
   }, {
-    role: 'student',
     index: 3,
+    role: 'student',
     title: 'Student Lead',
     subtitle: 'We recommend that there be at least one student representing a project, as STF funds are intended for student use.'
   }

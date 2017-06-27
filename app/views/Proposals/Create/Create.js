@@ -10,7 +10,7 @@ import Introduction from './Introduction/Introduction'
 import Overview from './Overview/Overview'
 import ProjectPlan from './ProjectPlan/ProjectPlan'
 import Manifest from './Manifest/Manifest'
-// import Signatures from './Signatures/Signatures'
+import Signatures from './Signatures/Signatures'
 
 import { Form, Icon, Button, Tabs, message } from 'antd'
 const TabPane = Tabs.TabPane
@@ -113,7 +113,7 @@ class Create extends React.Component {
             <TabPane key='5' tab={
               <span><Icon type='edit' />Signatures</span>
             }>
-              <p>Signatures</p>
+              <Signatures form={form} proposal={proposal} />
             </TabPane>
           </Tabs>
           <FormItem>
