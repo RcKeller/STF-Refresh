@@ -14,7 +14,7 @@ import styles from './Blocks.css'
     blocks: state.entities.blocks,
     screen: state.screen
   })),
-  connectRequest(() => api.getAll('block'))
+  connectRequest(() => api.getAll({ model: 'block' }))
 )
 class Blocks extends React.Component {
   constructor (props) {

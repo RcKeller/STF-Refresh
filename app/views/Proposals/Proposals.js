@@ -16,7 +16,7 @@ import styles from './Proposals.css'
   //  Connect component to cached DB entities
   connect(state => ({ proposals: state.entities.proposals })),
   //  Execute necessary AJAX to load said entities
-  connectRequest(() => api.getAll('proposal'))
+  connectRequest(() => api.getAll({ model: 'proposal' }))
 )
 class Proposals extends React.Component {
   //  Shorthand assignment of variables when defining render

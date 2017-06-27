@@ -70,15 +70,15 @@ const adapt = (params) => {
 GET ALL
 ex: api.getAll('proposal', { populate: 'contacts,decision' })
 ***** */
-const getAll = (model, params) => ({
-  url: `${API}/${version}/${model}${adapt(params)}`,
+const getAll = (params) => ({
+  url: adapt(params),
   options: { method: 'GET' },
-  transform: body => ({ [`${model}s`]: body }),
-  update: { [`${model}s`]: (prev, next) => next }
+  transform: body => ({ [`${params.model}s`]: body }),
+  update: { [`${params.model}s`]: (prev, next) => next }
 })
 
 /* *****
-GET by ID
+GET ONE
 ex: api.get('proposal', '594b49998dabd50e2c71762d')
 ***** */
 const get = (params) => ({
@@ -87,13 +87,6 @@ const get = (params) => ({
   transform: body => ({ [`${params.model}`]: body }),
   //  This is for a SINGLE document. Return first element if array received.
   update: { [`${params.model}`]: (prev, next) => next[0] || next }
-})
-
-const getWithQuery = (model, params) => ({
-  url: `${API}/${version}/${model}${adapt(params)}`,
-  options: { method: 'GET' },
-  transform: body => ({ [`${model}`]: body }),
-  update: { [`${model}`]: (prev, next) => next }
 })
 
 /* *****
@@ -150,7 +143,6 @@ const remove = (model, id) => mutateAsync({
 export default {
   getAll,
   get,
-  getWithQuery,
   post,
   put,
   patch,
@@ -174,6 +166,7 @@ render ({ proposal, api } = this.props) {
 ...call like any other standard function.
 
 OR (updated example):
+
 @compose(
   connect((state, props) => ({ block: state.entities.block })),
   connectRequest((props) => api.get({

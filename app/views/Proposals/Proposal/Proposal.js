@@ -10,8 +10,13 @@ import api from '../../../services'
 import styles from './Proposal.css'
 @compose(
   connect(state => ({ proposal: state.entities.proposal })),
-  connectRequest(() => api.get('proposal', '594b49998dabd50e2c71762d', {
-    populate: 'body,decision,contacts,manifests,reports,amendments,comments,'
+  connectRequest((props) => api.get({
+    model: 'proposal',
+    query: {
+      year: props.params.year,
+      number: props.params.number
+    },
+    join: ['body', 'decision', 'contacts', 'manifests', 'reports', 'amendments', 'comments']
   }))
 )
 class Proposal extends React.Component {
