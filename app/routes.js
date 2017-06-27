@@ -59,7 +59,7 @@ export default (store) => {
         breadcrumbName='Proposal Agreement' component={Agreement}
       />
       <Route path='/blocks' breadcrumbName='Blocks' component={Blocks} />
-      <Route path='/blocks/:id'
+      <Route path='/blocks/:number'
         breadcrumbName='Block' component={Block}
       />
       <Route path='/documents' breadcrumbName='Documents' component={Documents} />

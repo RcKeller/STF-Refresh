@@ -10,9 +10,12 @@ import api from '../../../services'
 import styles from './block.css'
 @compose(
   connect((state, props) => ({ block: state.entities.block })),
-  connectRequest((props) => api.get('block', props.params.id, {
-    populate: 'contacts'
+  connectRequest((props) => api.getAll('block', {
+    sort: { number: props.params.number }
   }))
+  // connectRequest((props) => api.get('block', props.params.id, {
+  //   populate: 'contacts'
+  // }))
 )
 class Block extends React.Component {
   render ({ block } = this.props) {

@@ -1,6 +1,7 @@
 import { API, version } from './environment'
 //  API Mutators are wrapped with async middleware
 import { mutateAsync } from 'redux-query'
+const queryString = require('query-string')
 
 /*
 FOREWARD:
@@ -30,15 +31,39 @@ TODO: create a querystring adapter that is API specific, packages don't work for
 
 */
 
+/*
+Query string adapter
+.../v1/block?query={%22number%22:%2270692%22}&populate=%22contacts%22
+*/
+const adapter = (query, join) => {
+  let qs = ''
+  let operator = '?'
+  if (query) {
+    let queries = []
+    Object.keys(query).forEach((key) => (
+      queries.push(JSON.stringify(key))
+    ))
+    qs = `${qs}${operator}query=${queries}`
+    operator = '&'
+  }
+  if (join) {
+    let paths = []
+    join.map((model) => paths.push(`{"path":"${model}"}`))
+    qs = `${qs}${operator}populate=${paths.join(',')}`
+    operator = '&'
+  }
+  return qs
+}
+
 /* *****
 GET ALL
 ex: api.getAll('proposal', { populate: 'contacts,decision' })
 ***** */
 const getAll = (model, query) => ({
-  url: `${API}/${version}/${model}/`,
+  url: `${API}/${version}/${model}${query ? JSON.stringify({...query}) : ''}`,
   options: { method: 'GET' },
   transform: body => ({ [`${model}s`]: body }),
-  body: { ...query },
+  // body: { ...query },
   update: { [`${model}s`]: (prev, next) => next }
 })
 

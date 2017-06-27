@@ -103,6 +103,7 @@
     "postcss-reporter": "^3.0.0",
     "prop-types": "^15.5.4",
     "qs": "^6.4.0",
+    "query-string": "^4.3.4",
     "react": "^15.5.3",
     "react-addons-test-utils": "^15.5.0",
     "react-dom": "^15.5.3",
