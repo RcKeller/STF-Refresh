@@ -1,8 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-// import { connect } from 'react-redux'
 
-// import { Input, Switch } from '../../../../../components/Form/Form'
 import { Row, Col, Icon, Alert, Form, Input, Switch } from 'antd'
 const FormItem = Form.Item
 

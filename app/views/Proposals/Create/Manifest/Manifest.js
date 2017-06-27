@@ -1,7 +1,7 @@
 import React from 'react'
 import { Field } from 'redux-form'
 
-import { Row, Col, Icon, Alert, Form, Input, InputNumber, Button, Switch } from 'antd'
+import { Row, Col, Icon, Alert, Form, Input, InputNumber, Button } from 'antd'
 const FormItem = Form.Item
 const ButtonGroup = Button.Group
 

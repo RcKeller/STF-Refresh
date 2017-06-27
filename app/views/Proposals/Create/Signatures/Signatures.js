@@ -2,9 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import { Row, Col, Icon, Alert, Form, Input, InputNumber, Button, Switch } from 'antd'
+import { Row, Col, Alert, Form, Button, Switch } from 'antd'
 const FormItem = Form.Item
-const ButtonGroup = Button.Group
 
 const contactTypes = [
   {
@@ -59,7 +58,7 @@ class Signatures extends React.Component {
                 <FormItem label={c.title} {...layout} >
                   {form.getFieldDecorator(`contacts[${i}].signature`, { valuePropName: 'checked' })(
                     // valuePropName is documented in the antd docs, that's a selector for switch vals.
-                    <Switch size='small' />
+                    <Switch size='large' />
                   )}
                 </FormItem>
               }

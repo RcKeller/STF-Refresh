@@ -34,11 +34,11 @@ TODO: create a querystring adapter that is API specific, packages don't work for
 GET ALL
 ex: api.getAll('proposal', { populate: 'contacts,decision' })
 ***** */
-const getAll = (model, populate) => ({
-  url: `${API}/${version}/${model}/${populate}`,
+const getAll = (model, query) => ({
+  url: `${API}/${version}/${model}/`,
   options: { method: 'GET' },
   transform: body => ({ [`${model}s`]: body }),
-  // body: { ...query },
+  body: { ...query },
   update: { [`${model}s`]: (prev, next) => next }
 })
 
