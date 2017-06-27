@@ -6,9 +6,9 @@ import {
   //  Static Pages
   FAQ, About, Contact,
   //  Dynamic pages
-  Proposals, Proposal,
   Create, Agreement,
-  Blocks,
+  Proposals, Proposal,
+  Blocks, Block,
   Documents,
   Calendar, Events
 } from './views'
@@ -51,14 +51,17 @@ export default (store) => {
       <Route path='/proposals' breadcrumbName='Proposals' component={Proposals} />
       <Route path='/proposals/test' breadcrumbName='Proposal Test' component={Proposal} />
       <Route path='/proposals/create'
-      //  onEnter={requireAuth}
+        onEnter={requireAuth}
         breadcrumbName='Create Proposal' component={Create}
       />
       <Route path='/proposals/create/agreement'
-        //  onEnter={requireAuth}
+        onEnter={requireAuth}
         breadcrumbName='Proposal Agreement' component={Agreement}
       />
       <Route path='/blocks' breadcrumbName='Blocks' component={Blocks} />
+      <Route path='/blocks/:id'
+        breadcrumbName='Block' component={Block}
+      />
       <Route path='/documents' breadcrumbName='Documents' component={Documents} />
 
       <Route path='/calendar' breadcrumbName='Calendar' component={Calendar} />
@@ -67,7 +70,14 @@ export default (store) => {
     </Route>
   )
 }
-
+/*
+TODO:
+/docket/:id
+/documents
+/calendar
+/calendar/events
+/
+*/
 /*
 Example routes w/ Auth:
 
