@@ -3,6 +3,7 @@ import faker from 'faker'
 
 const AmendmentSchema = new mongoose.Schema({
   proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
+  //  We only need one contact for an amendment. Let's not make it a heavily involved process.
   contact: { type: mongoose.Schema.Types.ObjectId, ref: 'Contact' },
   title: { type: String, require: true },
   //  We want these BRIEF. Very BRIEF. Thus, no extensive plan, etc. This ends up as a headnote for proposals.

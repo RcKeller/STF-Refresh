@@ -1,6 +1,6 @@
 import config from 'config'
 
-import { dummyUsers } from './models/user'
+// import { dummyUsers } from './models/user'
 import { restDummies } from './models'
 
 export default function () {

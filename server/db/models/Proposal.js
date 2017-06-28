@@ -14,8 +14,10 @@ const ProposalSchema = new mongoose.Schema({
   //  Overall data, probably renders everywhere.
   title: { type: String, unique: true, required: true },
   category: { type: String, required: true },
-  uac: { type: Boolean, default: false }, // UAC === uniform access / tri-campus.
-  organization: { type: String, required: true }, // === department in legacy code
+  // UAC === uniform access / tri-campus.
+  uac: { type: Boolean, default: false },
+  // organization === department in legacy code. This is more inclusive.
+  organization: { type: String, required: true },
   //  Proposal status, differs from decisions in that this is "summary" data for table viewing.
   status: { type: String, default: 'In Review' },
   asked: Number,
@@ -27,26 +29,29 @@ const ProposalSchema = new mongoose.Schema({
   // Body contains the Project Plan, de-coupled from the core doc so that searching proposals is more efficient.
   body: { type: mongoose.Schema.Types.ObjectId, ref: 'Project' },
   /*
-  Manifests are the items requested. The first in the array is the ORIGINAL.
-  the others are PARTIAL or revised manifests that reflect what is actually funded.
-  */
-  manifests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Manifest' }],
-  /*
   Amendments, AKA "supplementals", are revisions to the original propsal.
   These will be shown as "updates" or revisions to the proposal, but don't
   necessarily mean the entire proposal was re-done.
   It's usually just a blurb, plus decision. In rare instances there are multiple.
   */
   amendments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Amendment' }],
-  // TODO: Reports (they're unclear to me). Renders in another tab.
-  reports: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Report' }],
+  /*
+  Manifests are the items requested. The first in the array is the ORIGINAL.
+  the others are PARTIAL or revised manifests that reflect what is actually funded.
+  */
+  manifests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Manifest' }],
   //  The decision contains details about the actual award, provisions, etc.
+  //  NOTE: In the case of amendments, decisions will be changed to "pending review."
+  //  We don't want edge cases where a proposal is viewable as approved, post-amendment.
   decision: { type: mongoose.Schema.Types.ObjectId, ref: 'Decision' },
   /*
   Comments are user endorsements of a proposal. They're abstracted out
   so that we can view "feeds" of endorsements and examine trends in user activity.
   */
-  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
+  // TODO: Reports (they're unclear to me). Renders in another tab.
+  //  Edit: One proposal, one decision, one report.
+  report: { type: mongoose.Schema.Types.ObjectId, ref: 'Report' }
 })
 
 const Proposal = mongoose.model('Proposal', ProposalSchema)
@@ -94,9 +99,7 @@ const dummyProposals = (min) => {
           amendments: [
             new mongoose.Types.ObjectId()  // THIS IS RANDOM
           ],
-          reports: [
-            new mongoose.Types.ObjectId()  // THIS IS RANDOM
-          ],
+          report: new mongoose.Types.ObjectId(),
           decision: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
           comments: [
             new mongoose.Types.ObjectId(),  // THIS IS RANDOM

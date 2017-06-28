@@ -13,9 +13,11 @@ Legacy proposals are just a stream of Q/A, without any sort of structure
 { title: body }, then the client can use map() to render them.
 */
 const ProjectSchema = new mongoose.Schema({
-  //  No link to a proposal. We will never have to reverse engineer a proposal from its low level content.
-  //  If that ever happens, implementing the relationship should be trivial.
-  //  The overview contains high level details, the plan contains the actual strategy. These are separated so that the overview can be shown on weekly meeting dockets, and each part can be cut into components for rendering.
+  /*
+  There is no key to link to a proposal. We will never have to reverse engineer a proposal from its low level content.
+  If that ever happens, implementing the relationship should be trivial.
+  The overview contains high level details, the plan contains the actual strategy. These are separated so that the overview can be shown on weekly meeting dockets, and each part can be cut into components for rendering.
+  */
   overview: {
     abstract: { type: String, required: true },
     //  Objectives are key notes/bullet points. Not stored in array for consistency.

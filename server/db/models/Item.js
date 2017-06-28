@@ -7,7 +7,7 @@ const ItemSchema = new mongoose.Schema({
   title: { type: String, required: true },
   // Description will contain the old "justification" element at the end,
   description: String,
-  quantity: { type: Number, required: true, default: 1, min: 0 },
+  quantity: { type: Number, required: true, default: 1, min: 1 },
   price: { type: Number, required: true, min: 0 },
   //  Tax rate, used to automatically account for tax.
   //  TODO: Handle tax calculations on the server side.
