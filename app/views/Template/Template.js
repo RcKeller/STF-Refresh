@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 
 import { Link } from 'react-router'
 
@@ -35,20 +36,35 @@ const link = [
   { rel: 'icon', href: favicon }
 ]
 
-import { Layout } from 'antd'
-const { Content, Sider } = Layout
+import { Layout, Icon } from 'antd'
+const { Sider, Header, Content } = Layout
 
-import Header from './Header/Header'
+// import Header from './Header/Header'
 import Login from './Login/Login'
 import Nav from './Nav/Nav'
 import Body from './Body/Body'
 
 import coreStyles from '../../css/main'
 import styles from './Template.css'
+
+@connect(state => ({
+  // user: state.user
+  screen: state.screen
+}))
 class Template extends React.Component {
-  render () {
+  constructor (props) {
+    super(props)
+    this.state = { collapsed: true }
+  }
+  componentDidMount() {
+    if (this.props.screen.greaterThan.medium) {
+      this.toggle()
+    }
+  }
+  componentWillReceiveProps
+  toggle = () => { this.setState({ collapsed: !this.state.collapsed }) }
+  render ({ children, router, routes, user, screen } = this.props) {
     // React-router is separated from redux store - too heavy to persist.
-    const { children, router, routes, user } = this.props
     return (
       <Layout className={styles['template']}>
         <Helmet
@@ -56,14 +72,23 @@ class Template extends React.Component {
           titleTemplate='%s - Student Tech Fee'
           meta={meta} link={link}
         />
-        <Sider breakpoint='md'
+        <Sider trigger={null}
+          collapsible
+          collapsed={this.state.collapsed}
           width={240} collapsedWidth='0'
-          className={styles['nav']}>
+          breakpoint='md'
+        >
           <Login router={router} />
           <Nav router={router} />
         </Sider>
         <Layout className={styles['body']}>
-          <Header />
+          <Header>
+            <Icon className="trigger"
+              type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
+              onClick={this.toggle}
+            />
+          </Header>
+          {/* <Header /> */}
           <Content>
             <Body routes={routes} children={children} />
           </Content>
