@@ -36,16 +36,29 @@ const link = [
   { rel: 'icon', href: favicon }
 ]
 
-import { Layout, Icon } from 'antd'
+import { Layout, Icon, Breadcrumb } from 'antd'
 const { Sider, Header, Content } = Layout
 
 // import Header from './Header/Header'
 import Login from './Login/Login'
 import Nav from './Nav/Nav'
-import Body from './Body/Body'
 
 import coreStyles from '../../css/main'
 import styles from './Template.css'
+import stf from '../../images/logoname.png'
+
+/*
+https://ant.design/components/breadcrumb/#components-breadcrumb-demo-router
+Modified so that undefined links to home (glitch?)
+*/
+function breadcrumbRenderFix (route, params, routes, paths) {
+  const last = routes.indexOf(route) === routes.length - 1
+  const path = paths.join('/')
+  return last
+    ? <span>{route.breadcrumbName}</span>
+    : <Link to={path || '/'}>{route.breadcrumbName}</Link>
+}
+
 
 @connect(state => ({
   // user: state.user
@@ -73,24 +86,31 @@ class Template extends React.Component {
           meta={meta} link={link}
         />
         <Sider trigger={null}
-          collapsible
-          collapsed={this.state.collapsed}
-          width={240} collapsedWidth='0'
+          collapsible collapsed={this.state.collapsed}
           breakpoint='md'
+          width={240} collapsedWidth='0'
         >
           <Login router={router} />
           <Nav router={router} />
         </Sider>
         <Layout className={styles['body']}>
           <Header>
-            <Icon className="trigger"
+            <Icon className='trigger'
               type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
               onClick={this.toggle}
             />
+            <Link to='/'>
+              <img src={stf} height={50} className={styles['logo']} />
+            </Link>
           </Header>
-          {/* <Header /> */}
           <Content>
-            <Body routes={routes} children={children} />
+            {routes[1].path &&
+              <Breadcrumb
+                className={styles['breadcrumb']}
+                routes={routes} itemRender={breadcrumbRenderFix}
+              />
+            }
+            {children}
           </Content>
         </Layout>
       </Layout>
