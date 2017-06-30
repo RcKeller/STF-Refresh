@@ -12,7 +12,8 @@ const Panel = Collapse.Panel
 
 const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
 
-const testContacts = [
+//  Currently migrating DB's. Dummy to simulate join
+const dummyContacts = [
   {
     role: 'primary',
     name: 'name',
@@ -21,15 +22,35 @@ const testContacts = [
     email: 'email here',
     phone: 999,
     mailbox: 'addr'
+  },
+  {
+    role: 'budget',
+    name: 'name',
+    netID: 'id',
+    title: 'title',
+    email: 'email here',
+    phone: 999,
+    mailbox: 'addr'
   }
 ]
+const dummyDecision = {
+  date: Date.now,
+  //proposal
+  body: 'Enjoy your money, etc.',
+  //author
+  approved: true,
+  grant: 100000,
+  //reviews
+  //report
+
+}
+
+import styles from './block.css'
 const query = (props) => ({
   model: 'block',
   query: { number: props.params.number },
   join: ['contacts', 'decision']
 })
-
-import styles from './block.css'
 @compose(
   connect((state, props) => ({
     block: state.entities.block,
@@ -39,35 +60,34 @@ import styles from './block.css'
 )
 class Block extends React.Component {
   render ({ block, loading } = this.props) {
-    // let progressStatus = 'active'
-    // if (block.decision) switch(true) {
-    // // if (block.decision) switch(block.decision.approved) {
-    //   case (true):
-    //     progressStatus = 'success'
-    //   case (false):
-    //     progressStatus = 'exception'
-    // }
+    if (block) {
+      block.contacts = dummyContacts
+      block.decision = dummyDecision
+    }
     return (
       <article className={styles['article']}>
         {loading || !block
           ? <Spin size='large' tip='Loading...' />
           : <div>
-            <Row type="flex" justify="space-between">
+            <Row type='flex' justify='space-between'>
               <Col key='intro' xs={24} md={20} xl={22}>
                 <h1>{block.title}</h1>
                 <h2>For {block.organization}</h2>
               </Col>
               <Col key='meta' xs={24} md={4} xl={2}>
-                <Progress type='circle' width={80}
-                  status={block.decision ? (block.decision.approved ? 'success' : 'exception') : 'active'}
-                  // status={block.decision && block.decision.approved ? 'success' : 'exception'}
-                />
+                {block.decision &&
+                  <Progress type='circle' width={80}
+                    status={block.decision ? (block.decision.approved ? 'success' : 'exception') : 'active'}
+                    percent={100}
+                    // status={block.decision && block.decision.approved ? 'success' : 'exception'}
+                  />
+                }
                 <h5>Status: {block.status}</h5>
                 <p>{`ID: ${block.year}-${block.number}`}</p>
               </Col>
             </Row>
-            <Collapse>
-              {testContacts.map((contact, i) => (
+            <Collapse bordered={false} >
+              {block.contacts.map((contact, i) => (
                 <Panel key={i} header={`${capitalize(contact.role)} Contact: ${contact.name}, ${contact.title}`}>
                   <ul>
                     <li>NetID: {contact.netID}</li>

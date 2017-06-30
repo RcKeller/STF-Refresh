@@ -16,7 +16,7 @@ const ReviewSchema = new mongoose.Schema({
   //  Comments included with the ratings. Equivalent of "notes"
   body: String,
   //  Pass or fail the proposal? This is separate, because we may pass things we don't agree with.
-  pass: Boolean
+  approve: Boolean
 })
 const Review = mongoose.model('Review', ReviewSchema)
 export default Review
@@ -45,7 +45,7 @@ const dummyReviews = (min) => {
           user: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
           body: faker.lorem.paragraph(),
           score: faker.random.number(),
-          pass: faker.random.boolean(),
+          approve: faker.random.boolean(),
           ratings: [
             {
               prompt: faker.company.bsNoun(),

@@ -56,7 +56,7 @@ export const Switch = ({input, ...custom}) => (
   <AntSwitch size='large'
     value={input.value}
     //  Checked is like "value", can only accept bool hence the ternary
-    checked={input.value ? true : false}
+    checked={!!input.value}
     onChange={input.onChange}
     {...custom}
   />
