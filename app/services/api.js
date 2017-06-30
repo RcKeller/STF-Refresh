@@ -56,10 +56,10 @@ const adapt = (params) => {
     operator = '&'
   }
   //  Add joins... '...&populate=[{"path":"contacts"},{"path":"reports"}]
+  //  EDIT: valid, simpler syntax: ...&populate="contacts,decision"
   if (params.join) {
-    let paths = []
-    params.join.map((model) => paths.push(`{"path":"${model}"}`))
-    qs = `${qs}${operator}populate=${paths.join(',')}`
+    const joins = params.join.join(',')
+    qs = `${qs}${operator}populate=${joins}`
     operator = '&'
   }
   return `${url}${qs}`
