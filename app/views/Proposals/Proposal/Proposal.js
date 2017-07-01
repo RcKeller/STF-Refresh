@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { connectRequest, querySelectors } from 'redux-query'
+import { connectRequest } from 'redux-query'
 
 import api, { stub } from '../../../services'
 
@@ -13,23 +13,19 @@ const Panel = Collapse.Panel
 const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
 
 import styles from './Proposal.css'
-const query = (props) => ({
-  model: 'proposal',
-  query: {
-    year: props.params.year,
-    number: props.params.number
-  },
-  join: ['body', 'decision', 'contacts', 'manifests', 'reports', 'amendments', 'comments']
-})
 @compose(
-  connect((state, props) => ({
-    proposal: state.entities.proposal,
-    loaded: querySelectors.isPending(state.queries, api.get(query(props)))
-  })),
-  connectRequest((props) => api.get(query(props)))
+  connect(state => ({ proposal: state.entities.proposal })),
+  connectRequest(props => api.get({
+    model: 'proposal',
+    query: {
+      year: props.params.year,
+      number: props.params.number
+    },
+    join: ['body', 'reviews', 'decision', 'contacts', 'manifests', 'report', 'amendments', 'comments']
+  }))
 )
 class Proposal extends React.Component {
-  render ({ proposal, loading } = this.props) {
+  render ({ proposal } = this.props) {
     //  Add stub data to simulate joins as DB issues are resolved.
     if (proposal) {
       proposal.contacts = [stub.contact, stub.contact, stub.contact, stub.contact]
@@ -43,7 +39,7 @@ class Proposal extends React.Component {
     }
     return (
       <article className={styles['article']}>
-        {loading || !proposal
+        {!proposal
           ? <Spin size='large' tip='Loading...' />
           : <div>
             <Row type='flex' justify='space-between'>
