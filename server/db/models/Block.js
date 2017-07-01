@@ -12,12 +12,13 @@ const BlockSchema = new mongoose.Schema({
   //  Overall data, probably renders everywhere.
   title: { type: String, unique: true, required: true },
   category: { type: String, required: true },
-  // UAC === uniform access / tri-campus.
-  uac: { type: Boolean, default: false },
-  // organization === department in legacy code
-  organization: { type: String, required: true },
+  uac: { type: Boolean, default: false }, // UAC === uniform access / tri-campus.
+  organization: { type: String, required: true }, // === department in legacy code
   // Contacts - array of objects, can iterate over via client with Object.keys().forEach(k, i) {}
   contacts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Contact' }],
+  status: { type: String, default: 'In Review' },
+  asked: Number,
+  received: Number,
   /*
   Body contains the business case/details, de-coupled from the core doc so that searching proposals is more efficient.
   While it has its similarities, this is decoupled because Blocks are distinct entities we don't want associated with standard proposals. Coupling their subdocuments introduces undue complexity to the query process.
@@ -26,19 +27,15 @@ const BlockSchema = new mongoose.Schema({
   body: {
     overview: {
       abstract: { type: String, required: true },
-      objectives: { type: String, required: true }
+      objectives: [{ type: String, required: true }]
     },
     plan: {
       state: { type: String, required: true },
       strategy: { type: String, required: true },
       risk: { type: String, required: true }
     }
-  },
+  }
   //  Proposal status, differs from decisions in that this is "summary" data for table viewing.
-  status: { type: String, default: 'In Review' },
-  asked: Number,
-  received: Number,
-  decision: { type: mongoose.Schema.Types.ObjectId, ref: 'Decision' }
 
 })
 const Block = mongoose.model('Block', BlockSchema)
@@ -71,7 +68,10 @@ const dummyBlocks = (min) => {
           body: {
             overview: {
               abstract: faker.lorem.paragraph(),
-              objectives: faker.lorem.sentence()
+              objectives: [
+                faker.lorem.sentence(),
+                faker.lorem.sentence()
+              ]
             },
             plan: {
               state: faker.lorem.paragraph(),
@@ -81,8 +81,7 @@ const dummyBlocks = (min) => {
           },
           status: faker.company.bsAdjective(),
           asked: faker.random.number(),
-          received: faker.random.number(),
-          decision: new mongoose.Types.ObjectId()
+          received: faker.random.number()
         })
       }
         //  Create will push our fakes into the DB.

@@ -29,17 +29,18 @@ const ProposalSchema = new mongoose.Schema({
   // Body contains the Project Plan, de-coupled from the core doc so that searching proposals is more efficient.
   body: { type: mongoose.Schema.Types.ObjectId, ref: 'Project' },
   /*
+  Manifests are the items requested. The first in the array is the ORIGINAL.
+  the others are PARTIAL or revised manifests that reflect what is actually funded.
+  */
+  manifests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Manifest' }],
+  /*
   Amendments, AKA "supplementals", are revisions to the original propsal.
   These will be shown as "updates" or revisions to the proposal, but don't
   necessarily mean the entire proposal was re-done.
   It's usually just a blurb, plus decision. In rare instances there are multiple.
   */
   amendments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Amendment' }],
-  /*
-  Manifests are the items requested. The first in the array is the ORIGINAL.
-  the others are PARTIAL or revised manifests that reflect what is actually funded.
-  */
-  manifests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Manifest' }],
+  reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }],
   //  The decision contains details about the actual award, provisions, etc.
   //  NOTE: In the case of amendments, decisions will be changed to "pending review."
   //  We don't want edge cases where a proposal is viewable as approved, post-amendment.
@@ -96,11 +97,15 @@ const dummyProposals = (min) => {
             new mongoose.Types.ObjectId(),  // THIS IS RANDOM
             new mongoose.Types.ObjectId()  // THIS IS RANDOM
           ],
+          reviews: [
+            new mongoose.Types.ObjectId(),
+            new mongoose.Types.ObjectId()
+          ],
+          decision: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
           amendments: [
             new mongoose.Types.ObjectId()  // THIS IS RANDOM
           ],
           report: new mongoose.Types.ObjectId(),
-          decision: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
           comments: [
             new mongoose.Types.ObjectId(),  // THIS IS RANDOM
             new mongoose.Types.ObjectId()  // THIS IS RANDOM

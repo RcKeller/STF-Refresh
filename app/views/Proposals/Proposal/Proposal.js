@@ -80,12 +80,18 @@ class Proposal extends React.Component {
               ))}
             </Collapse>
             <section>
-              <h2>Project Overview</h2>
-              <p>{proposal.body.overview.abstract}</p>
-              <h3>Objectives</h3>
-              <p>{proposal.body.overview.objectives}</p>
-              <h3>Core Justification</h3>
-              <p>{proposal.body.overview.justification}</p>
+              <Row gutter={32}>
+                <Col className='gutter-row' xs={24} md={12}>
+                  <h2>Project Overview</h2>
+                  <p>{proposal.body.overview.abstract}</p>
+                </Col>
+                <Col className='gutter-row' xs={24} md={12}>
+                  <h3>Objectives</h3>
+                  <p>{proposal.body.overview.objectives}</p>
+                  <h3>Core Justification</h3>
+                  <p>{proposal.body.overview.justification}</p>
+                </Col>
+              </Row>
               <h2>Student Impact</h2>
               <Row gutter={32}>
                 <Col className='gutter-row' xs={24} md={8}>

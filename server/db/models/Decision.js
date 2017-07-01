@@ -12,11 +12,7 @@ const DecisionSchema = new mongoose.Schema({
   //  Final decision
   approved: { type: Boolean, required: true },
   //  If this decision is an award, it will have a grant amount and associated report.
-  grant: Number,
-  //  Decisions are linked to the reviews that factored into it.
-  reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }],
-  //  Reports due by the proposal next author for audit purposes.
-  report: { type: mongoose.Schema.Types.ObjectId, ref: 'Report' }
+  grant: Number
 })
 const Decision = mongoose.model('Decision', DecisionSchema)
 export default Decision
@@ -35,17 +31,12 @@ const dummyDecisions = (min) => {
       for (let i = 0; i < min; i++) {
         fakes[i] = new Decision({
           proposal: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
-          reviews: [
-            new mongoose.Types.ObjectId(),
-            new mongoose.Types.ObjectId()
-          ],
           amendment: new mongoose.Types.ObjectId(),  // THIS IS RANDOM,
           date: faker.date.recent(),
           author: new mongoose.Types.ObjectId(),  // THIS IS RANDOM,
           body: faker.lorem.paragraph(),
           approved: faker.random.boolean(),
-          grant: faker.random.number(),
-          report: new mongoose.Types.ObjectId()
+          grant: faker.random.number()
         })
       }
       //  Create will push our fakes into the DB.

@@ -3,20 +3,20 @@ import faker from 'faker'
 
 const ReviewSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
-  decision: { type: mongoose.Schema.Types.ObjectId, ref: 'Decision' },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  //  Committee memeber's overall score for the proposal. Would be nice to have between 0-100 as stretch goal.
-  score: Number,
+  proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
+  author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  //  Comments included with the ratings. Equivalent of "notes"
+  body: String,
   // Ratings are simple key-value stores, key is criteria, value is score.
   // This is because ratings are subjective, !== overall score, and volatile with business logic.
   ratings: [{
     prompt: String,
     score: Number
   }],
-  //  Comments included with the ratings. Equivalent of "notes"
-  body: String,
+  //  Committee memeber's overall score for the proposal. Would be nice to have between 0-100 as stretch goal.
+  score: Number,
   //  Pass or fail the proposal? This is separate, because we may pass things we don't agree with.
-  approve: Boolean
+  approved: Boolean
 })
 const Review = mongoose.model('Review', ReviewSchema)
 export default Review
@@ -41,11 +41,9 @@ const dummyReviews = (min) => {
       for (let i = 0; i < min; i++) {
         fakes[i] = new Review({
           date: faker.date.recent(),
-          decision: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
-          user: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
+          proposal: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
+          author: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
           body: faker.lorem.paragraph(),
-          score: faker.random.number(),
-          approve: faker.random.boolean(),
           ratings: [
             {
               prompt: faker.company.bsNoun(),
@@ -55,7 +53,9 @@ const dummyReviews = (min) => {
               prompt: faker.company.bsAdjective(),
               score: faker.random.number()
             }
-          ]
+          ],
+          score: faker.random.number(),
+          approved: faker.random.boolean()
         })
       }
       //  Create will push our fakes into the DB.
