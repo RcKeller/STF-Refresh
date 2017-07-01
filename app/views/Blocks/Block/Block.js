@@ -60,10 +60,11 @@ const query = (props) => ({
 )
 class Block extends React.Component {
   render ({ block, loading } = this.props) {
-    console.log(stub)
+    //  Add stub data to simulate joins as DB issues are resolved.
     if (block) {
-      block.contacts = dummyContacts
-      block.decision = dummyDecision
+      block.contacts = [stub.contact, stub.contact, stub.contact, stub.contact]
+      block.decision = stub.decision
+      console.log('Populated w/ stub data:', block)
     }
     return (
       <article className={styles['article']}>
@@ -87,6 +88,7 @@ class Block extends React.Component {
                 <p>{`ID: ${block.year}-${block.number}`}</p>
               </Col>
             </Row>
+            <h5><em>Contact Information</em></h5>
             <Collapse bordered={false} >
               {block.contacts.map((contact, i) => (
                 <Panel key={i} header={`${capitalize(contact.role)} Contact: ${contact.name}, ${contact.title}`}>

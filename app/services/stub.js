@@ -28,7 +28,7 @@ const contact = {
 
 const review = {
   date: Date.now,
-  decision,
+  decision: {}, // placeholder
   user,
   score: 80,
   ratings: [
@@ -46,8 +46,8 @@ const review = {
 }
 
 const report = {
-  date: Date.now
-  // proposal
+  date: Date.now,
+  proposal: {} // placeholder
 }
 
 const decision = {
@@ -107,7 +107,7 @@ const legacy = [
 ]
 
 const item = {
-  manifest,
+  manifest: {}, // stub
   title: 'item A',
   description: 'Need it because...',
   quantity: 5,
@@ -117,17 +117,21 @@ const item = {
 }
 
 const manifest = {
-  // proposal
+  proposal: {}, // placeholder
   items: [item, item],
   total: (250.00 * 2 * 10.1)
 }
 
 const amendment = {
-
+  proposal: {}, // placeholder
+  contact,
+  title: 'amendment title',
+  body: 'amendment body, revised ask'
 }
+
 const comment = {
   date: Date.now,
-  //proposal
+  proposal: {}, // placeholder
   user,
   title: 'Comment title',
   body: 'Really like this lab.'
@@ -143,6 +147,7 @@ export default {
   comment,
   proposal,
   project,
+  legacy,
   amendment,
   manifest,
   item,
