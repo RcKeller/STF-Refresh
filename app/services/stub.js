@@ -26,21 +26,6 @@ const contact = {
   mailbox: '30150'
 }
 
-const decision = {
-  date: Date.now,
-  body: 'Enjoy your money, etc.',
-  author: user,
-  approved: true,
-  grant: 100000,
-  reviews: [review, review],
-  report
-}
-
-const report = {
-  date: Date.now,
-  proposal
-}
-
 const review = {
   date: Date.now,
   decision,
@@ -59,6 +44,22 @@ const review = {
   body: 'I like this proposal because X, Y, Z',
   approve: true
 }
+
+const report = {
+  date: Date.now
+  // proposal
+}
+
+const decision = {
+  date: Date.now,
+  body: 'Enjoy your money, etc.',
+  author: user,
+  approved: true,
+  grant: 100000,
+  reviews: [review, review],
+  report
+}
+
 const project = {
   overview: {
     abstract: 'my abstract',
@@ -93,9 +94,10 @@ const project = {
     }
   }
 }
+
 const legacy = [
   {
-    title: 'Legacy Question 1'
+    title: 'Legacy Question 1',
     body: 'User response'
   },
   {
@@ -103,13 +105,52 @@ const legacy = [
     body: 'The retort'
   }
 ]
-const item = {}
-const manifest = {}
-const amendment = {}
-const comment = {}
 
+const item = {
+  manifest,
+  title: 'item A',
+  description: 'Need it because...',
+  quantity: 5,
+  price: 50.00,
+  tax: 10.1,
+  priority: 1
+}
+
+const manifest = {
+  // proposal
+  items: [item, item],
+  total: (250.00 * 2 * 10.1)
+}
+
+const amendment = {
+
+}
+const comment = {
+  date: Date.now,
+  //proposal
+  user,
+  title: 'Comment title',
+  body: 'Really like this lab.'
+}
+
+//  The following don't need stubs just yet. Typically THESE are the parents that need a stub.
 const block = {}
 const proposal = {}
+
+export default {
+  user,
+  contact,
+  comment,
+  proposal,
+  project,
+  amendment,
+  manifest,
+  item,
+  block,
+  review,
+  decision,
+  report
+}
 
 // const ENV = process.env.NODE_ENV
 // const API = (process.env.NODE_ENV === 'development'

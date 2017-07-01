@@ -5,7 +5,8 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { connectRequest, querySelectors } from 'redux-query'
 
-import api from '../../../services'
+import api, { stub } from '../../../services'
+// import stub from '../../../services/'
 
 import { Row, Col, Spin, Progress, Collapse, Card } from 'antd'
 const Panel = Collapse.Panel

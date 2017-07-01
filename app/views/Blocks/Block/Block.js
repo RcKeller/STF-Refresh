@@ -5,7 +5,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { connectRequest, querySelectors } from 'redux-query'
 
-import api from '../../../services'
+import api, { stub } from '../../../services'
 
 import { Row, Col, Spin, Progress, Collapse, Card } from 'antd'
 const Panel = Collapse.Panel
@@ -60,6 +60,7 @@ const query = (props) => ({
 )
 class Block extends React.Component {
   render ({ block, loading } = this.props) {
+    console.log(stub)
     if (block) {
       block.contacts = dummyContacts
       block.decision = dummyDecision

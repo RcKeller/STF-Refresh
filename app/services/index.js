@@ -11,3 +11,5 @@ export default api
 //  Other services
 export { default as environment } from './environment'
 export { default as authentication } from './authentication'
+//  Temporary service during DB migration
+export { default as stub } from './stub'
