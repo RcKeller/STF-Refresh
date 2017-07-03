@@ -7,7 +7,7 @@ import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
 
-import { Row, Col, Spin, Progress, Collapse } from 'antd'
+import { Row, Col, Spin, Progress, Collapse, Icon } from 'antd'
 const Panel = Collapse.Panel
 
 const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
@@ -67,7 +67,7 @@ class Proposal extends React.Component {
             <section>
               <Row gutter={32}>
                 <Col className='gutter-row' xs={24} md={12}>
-                  <h2>Project Overview</h2>
+                  <h1>Project Overview</h1>
                   <p>{proposal.body.overview.abstract}</p>
                 </Col>
                 <Col className='gutter-row' xs={24} md={12}>
@@ -77,7 +77,7 @@ class Proposal extends React.Component {
                   <p>{proposal.body.overview.justification}</p>
                 </Col>
               </Row>
-              <h2>Student Impact</h2>
+              <h2>Impact</h2>
               <Row gutter={32}>
                 <Col className='gutter-row' xs={24} md={8}>
                   <h5><em>Academic Experience</em></h5>
@@ -93,8 +93,24 @@ class Proposal extends React.Component {
                 </Col>
               </Row>
             </section>
+            <hr />
             <section>
-              <p>{JSON.stringify(proposal.body)}</p>
+              <h1>Project Plan</h1>
+              <h3>State Analysis</h3>
+              <p>How is student technology going to change?</p>
+              <Row gutter={32}>
+                <Col className='gutter-row' xs={24} md={11}>
+                  <h5><em>Current State</em></h5>
+                  <p>{proposal.body.plan.state.current}</p>
+                </Col>
+                <Col className='gutter-row' xs={24} md={2}>
+                  <Icon type='right' />
+                </Col>
+                <Col className='gutter-row' xs={24} md={11}>
+                  <h5><em>Future State</em></h5>
+                  <p>{proposal.body.plan.state.future}</p>
+                </Col>
+              </Row>
             </section>
             <section>
               <p>{JSON.stringify(proposal.amendments)}</p>
