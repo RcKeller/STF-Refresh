@@ -13,6 +13,18 @@ import { Spin, Table } from 'antd'
 import styles from './Blocks.css'
 // const renderTitle = (text, record) => <Link to={`/${record.number}`}>{record.title}</Link>
 
+const columns = [
+  { title: 'Year', dataIndex: 'year', key: 'year' },
+  { title: '#', dataIndex: 'number', key: 'number' },
+  { title: 'Title',
+    dataIndex: 'title',
+    key: 'title',
+    render: (text, record) => <Link to={`/blocks/${record.number}`}>{record.title}</Link>
+  },
+  { title: 'Organization', dataIndex: 'organization', key: 'organization' },
+  { title: 'Status', dataIndex: 'status', key: 'status' }
+]
+
 @compose(
   connect(state => ({
     blocks: state.entities.blocks,
@@ -21,26 +33,7 @@ import styles from './Blocks.css'
   connectRequest(() => api.getAll({ model: 'block' }))
 )
 class Blocks extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = {
-      columns: [
-        { title: 'Year', dataIndex: 'year', key: 'year' },
-        { title: '#', dataIndex: 'number', key: 'number' },
-        { title: 'Title',
-          dataIndex: 'title',
-          key: 'title',
-          render: (text, record) => <Link to={`/blocks/${record.number}`}>{record.title}</Link>
-        },
-        { title: 'Organization', dataIndex: 'organization', key: 'organization' },
-        { title: 'Status', dataIndex: 'status', key: 'status' }
-      ]
-    }
-  }
-  render (
-    { columns } = this.state,
-    { blocks, screen } = this.props
-  ) {
+  render ({ blocks, screen } = this.props) {
     return (
       <article className={styles['blocks']}>
         {!blocks

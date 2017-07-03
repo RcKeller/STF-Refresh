@@ -87,28 +87,28 @@ const dummyProposals = (min, ids) => {
           received: faker.random.number(),
 
           contacts: [
-            new mongoose.Types.ObjectId(),
-            new mongoose.Types.ObjectId(),
-            new mongoose.Types.ObjectId(),
-            new mongoose.Types.ObjectId()
+            ids.contact[i],
+            ids.contact[i],
+            ids.contact[i],
+            ids.contact[i]
           ],
-          body: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
+          body: ids.project[i],
           manifests: [
-            new mongoose.Types.ObjectId(),  // THIS IS RANDOM
-            new mongoose.Types.ObjectId()  // THIS IS RANDOM
+            ids.manifest[i],
+            ids.manifest[i]
           ],
           reviews: [
-            new mongoose.Types.ObjectId(),
-            new mongoose.Types.ObjectId()
+            ids.review[i],
+            ids.review[i]
           ],
-          decision: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
+          decision: ids.decision[i],
           amendments: [
-            new mongoose.Types.ObjectId()  // THIS IS RANDOM
+            ids.amendment[i]
           ],
-          report: new mongoose.Types.ObjectId(),
+          report: ids.report[i],
           comments: [
-            new mongoose.Types.ObjectId(),  // THIS IS RANDOM
-            new mongoose.Types.ObjectId()  // THIS IS RANDOM
+            ids.comment[i],
+            ids.comment[i]
           ]
         })
       }
