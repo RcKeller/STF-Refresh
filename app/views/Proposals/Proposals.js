@@ -8,7 +8,49 @@ import { connectRequest } from 'redux-query'
 //  Our API services
 import api from '../../services'
 
-import { Spin } from 'antd'
+import { Link } from 'react-router'
+import { Spin, Table, Progress, Badge } from 'antd'
+
+const columns = [
+  {
+    title: 'ID',
+    dataIndex: 'number',
+    key: 'number',
+    sorter: (a, b) => (a.year * a.number) - (b.year * b.number),
+    render: (text, record) => <span>{`${record.year}-${record.number}`}</span>,
+    fixed: 'left',
+    width: 90
+  },
+  {
+    title: 'Q',
+    dataIndex: 'quarter',
+    key: 'quarter',
+    render: (text) => <span>{text.substr(0, 2)}</span>,
+    width: 35
+  },
+  { title: 'Title',
+    dataIndex: 'title',
+    key: 'title',
+    render: (text, record) => <Link to={`/proposals/${record.year}/${record.number}`}>{record.title}</Link>
+  },
+  { title: 'Organization', dataIndex: 'organization', key: 'organization' },
+  {
+    title: 'Status',
+    dataIndex: 'status',
+    key: 'status',
+    render: (text) => <span><Badge status='success' />{text}</span>
+  },
+  { title: 'Asked', dataIndex: 'asked', key: 'asked' },
+  {
+    title: 'Received',
+    dataIndex: 'received',
+    key: 'received',
+    render: (text, record) => <Progress type='circle' width={60}
+      percent={parseInt(record.asked / record.received * 100)} />,
+    width: 85
+    // render: (text, record) => <Progress percent={parseInt(record.asked / record.received * 100)} status='active' />
+  }
+]
 
 //  Import modular CSS. Needs to run through JS because styles are hashed.
 import styles from './Proposals.css'
@@ -16,35 +58,26 @@ import styles from './Proposals.css'
 @compose(
   // Compose is a redux utility that runs an array of functions:
   //  Connect component to cached DB entities
-  connect((state, props) => ({ proposals: state.entities.proposals })),
+  connect((state, props) => ({
+    proposals: state.entities.proposals,
+    screen: state.screen
+  })),
   //  Execute necessary AJAX to load said entities
   connectRequest((props) => api.getAll({ model: 'proposal' }))
 )
 class Proposals extends React.Component {
   //  Shorthand assignment of variables when defining render
-  render ({ proposals } = this.props) {
+  render ({ proposals, screen } = this.props) {
     //  Return mapped content with proposal data. Demonstrates data usage.
     return (
       <article className={styles['article']}>
         {!proposals
           ? <Spin size='large' tip='Loading...' />
-          : <div>
-            <h1>Placeholder - Proposal Browsing</h1>
-            <p>
-              This page is a stub, but if you look at the codebase, you'll see how we leverage the MVC-Service model and redux-query to load and cache DB entities as this page loads.
-            </p>
-            <p>
-              You'll notice with debug tools that this data does not load until the component begins to load. Yet, the data persists, so we don't need to re-request said data. This reduces the AJAX necessary for our app.
-            </p>
-            <p>
-              Advantages: Data caching, not muddling the load/unload component methods, no need to create standalone redux logic for presentation components... It goes on. This makes our implementation effective and simple - we merely need to map redux to our API services.
-            </p>
-            <ul>
-              {proposals && proposals.map((e, i) => (
-                <li key={i}>{e.year}-{e.number} ({e.quarter}): {e.title}</li>
-              ))}
-            </ul>
-          </div>
+          : <Table dataSource={proposals} sort
+            size={screen.lessThan.medium ? 'small' : ''}
+            columns={screen.lessThan.medium ? columns.slice(0, 3) : columns}
+            title={() => <h1>STF Proposals</h1>}
+          />
         }
       </article>
     )
