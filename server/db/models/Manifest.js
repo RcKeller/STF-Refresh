@@ -16,7 +16,7 @@ export default Manifest
 /* *****
 FAKE DATA GENERATOR: Contact
 ***** */
-const dummyManifests = (min) => {
+const dummyManifests = (min, ids) => {
   //  Check the db for existing data satisfying min required
   Manifest.count().exec((err, count) => {
     if (err) {
@@ -26,10 +26,11 @@ const dummyManifests = (min) => {
       let fakes = []
       for (let i = 0; i < min; i++) {
         fakes[i] = new Manifest({
-          proposal: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
+          _id: ids.manifest[i],
+          proposal: ids.proposal[i],
           items: [
-            new mongoose.Types.ObjectId(),  // THIS IS RANDOM
-            new mongoose.Types.ObjectId()
+            ids.item[i],
+            ids.item[i]
           ],
           total: faker.random.number()
         })

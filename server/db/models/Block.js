@@ -44,7 +44,7 @@ export default Block
 /* *****
 FAKE DATA GENERATOR: Block
 ***** */
-const dummyBlocks = (min) => {
+const dummyBlocks = (min, ids) => {
   //  Check the db for existing data satisfying min required
   Block.count().exec((err, count) => {
     if (err) {
@@ -54,6 +54,7 @@ const dummyBlocks = (min) => {
       let fakes = []
       for (let i = 0; i < min; i++) {
         fakes[i] = new Block({
+          _id: ids.block[i],
           date: faker.date.recent(),
           year: 2017,
           number: faker.random.number(),
@@ -62,8 +63,9 @@ const dummyBlocks = (min) => {
           uac: faker.random.boolean(),
           organization: faker.commerce.department(),
           contacts: [
-            new mongoose.Types.ObjectId(),
-            new mongoose.Types.ObjectId()
+            ids.contact[i],
+            ids.contact[i]
+            //  Note: duplicates
           ],
           body: {
             overview: {

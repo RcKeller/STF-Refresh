@@ -35,5 +35,5 @@ export default function () {
   // dummyUsers()
 
   //  Create dummies for all RESTful models
-  restDummies.map((model) => model(min))
+  restDummies.map((model) => model(min, ids))
 }

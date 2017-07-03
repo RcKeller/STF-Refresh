@@ -21,7 +21,7 @@ export default Contact
 /* *****
 FAKE DATA GENERATOR: Contact
 ***** */
-const dummyContacts = (min) => {
+const dummyContacts = (min, ids) => {
   //  Check the db for existing data satisfying min required
   Contact.count().exec((err, count) => {
     if (err) {
@@ -31,7 +31,8 @@ const dummyContacts = (min) => {
       let fakes = []
       for (let i = 0; i < min; i++) {
         fakes[i] = new Contact({
-          proposal: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
+          _id: ids.contact[i],
+          proposal: ids.proposal[i],
           role: 'primary',
           netID: faker.internet.userName(),
           name: faker.name.findName(),

@@ -20,7 +20,7 @@ export default Decision
 /* *****
 FAKE DATA GENERATOR: Contact
 ***** */
-const dummyDecisions = (min) => {
+const dummyDecisions = (min, ids) => {
   //  Check the db for existing data satisfying min required
   Decision.count().exec((err, count) => {
     if (err) {
@@ -30,10 +30,10 @@ const dummyDecisions = (min) => {
       let fakes = []
       for (let i = 0; i < min; i++) {
         fakes[i] = new Decision({
-          proposal: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
-          amendment: new mongoose.Types.ObjectId(),  // THIS IS RANDOM,
+          _id: ids.decision[i],
           date: faker.date.recent(),
-          author: new mongoose.Types.ObjectId(),  // THIS IS RANDOM,
+          proposal: ids.proposal[i],
+          author: new mongoose.Types.ObjectId(),  // NOTE: user
           body: faker.lorem.paragraph(),
           approved: faker.random.boolean(),
           grant: faker.random.number()

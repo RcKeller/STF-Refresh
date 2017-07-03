@@ -15,7 +15,7 @@ export default Report
 /* *****
 FAKE DATA GENERATOR: Report
 ******/
-const dummyReports = (min) => {
+const dummyReports = (min, ids) => {
 //  Check the db for existing data satisfying min required
   Report.count().exec((err, count) => {
     if (err) {
@@ -25,6 +25,7 @@ const dummyReports = (min) => {
       let fakes = []
       for (let i = 0; i < min; i++) {
         fakes[i] = new Report({
+          _id: ids.report[i],
           date: faker.date.recent(),
           proposal: new mongoose.Types.ObjectId()
         })

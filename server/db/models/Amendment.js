@@ -15,7 +15,7 @@ export default Amendment
 /* *****
 FAKE DATA GENERATOR: Amendment
 ***** */
-const dummyAmendments = (min) => {
+const dummyAmendments = (min, ids) => {
   //  Check the db for existing data satisfying min required
   Amendment.count().exec((err, count) => {
     if (err) {
@@ -25,8 +25,9 @@ const dummyAmendments = (min) => {
       let fakes = []
       for (let i = 0; i < min; i++) {
         fakes[i] = new Amendment({
-          proposal: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
-          contact: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
+          _id: ids.amendment[i],
+          proposal: ids.proposal[i],
+          contact: ids.contact[i],
           title: faker.company.catchPhrase(),
           body: faker.lorem.paragraph()
         })

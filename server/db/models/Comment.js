@@ -16,7 +16,7 @@ export default Comment
 /* *****
 FAKE DATA GENERATOR: Comment
 ***** */
-const dummyComments = (min) => {
+const dummyComments = (min, ids) => {
   //  Check the db for existing data satisfying min required
   Comment.count().exec((err, count) => {
     if (err) {
@@ -26,9 +26,10 @@ const dummyComments = (min) => {
       let fakes = []
       for (let i = 0; i < min; i++) {
         fakes[i] = new Comment({
+          _id: ids.comment[i],
           date: faker.date.recent(),
-          user: new mongoose.Types.ObjectId(),
-          proposal: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
+          proposal: ids.proposal[i],
+          user: new mongoose.Types.ObjectId(),  // NOTE
           title: faker.company.catchPhrase(),
           body: faker.lorem.paragraph()
         })

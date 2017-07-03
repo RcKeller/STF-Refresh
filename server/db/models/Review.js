@@ -30,7 +30,7 @@ NOTE:
 /* *****
 FAKE DATA GENERATOR: Review
 ******/
-const dummyReviews = (min) => {
+const dummyReviews = (min, ids) => {
   //  Check the db for existing data satisfying min required
   Review.count().exec((err, count) => {
     if (err) {
@@ -40,6 +40,7 @@ const dummyReviews = (min) => {
       let fakes = []
       for (let i = 0; i < min; i++) {
         fakes[i] = new Review({
+          _id: ids.review[i],
           date: faker.date.recent(),
           proposal: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
           author: new mongoose.Types.ObjectId(),  // THIS IS RANDOM

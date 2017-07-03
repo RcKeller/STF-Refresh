@@ -18,6 +18,7 @@ const ProjectSchema = new mongoose.Schema({
   If that ever happens, implementing the relationship should be trivial.
   The overview contains high level details, the plan contains the actual strategy. These are separated so that the overview can be shown on weekly meeting dockets, and each part can be cut into components for rendering.
   */
+  proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
   overview: {
     abstract: { type: String, required: true },
     //  Objectives are key notes/bullet points. Not stored in array for consistency.
@@ -83,7 +84,7 @@ export default Project
 /* *****
 FAKE DATA GENERATOR: Contact
 ***** */
-const dummyProjects = (min) => {
+const dummyProjects = (min, ids) => {
   //  Check the db for existing data satisfying min required
   Project.count().exec((err, count) => {
     if (err) {
@@ -93,6 +94,8 @@ const dummyProjects = (min) => {
       let fakes = []
       for (let i = 0; i < min; i++) {
         fakes[i] = new Project({
+          _id: ids.project[i],
+          proposal: ids.proposal[i],
           overview: {
             abstract: faker.lorem.paragraph(),
             objectives: faker.lorem.paragraph(),

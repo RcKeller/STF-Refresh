@@ -61,7 +61,7 @@ export default Proposal
 /* *****
 FAKE DATA GENERATOR: Proposal
 ******/
-const dummyProposals = (min) => {
+const dummyProposals = (min, ids) => {
   //  Check the db for existing data satisfying min required
   Proposal.count().exec((err, count) => {
     if (err) {
@@ -71,7 +71,7 @@ const dummyProposals = (min) => {
       let fakes = []
       for (let i = 0; i < min; i++) {
         fakes[i] = new Proposal({
-
+          _id: ids.proposal[i],
           date: faker.date.recent(),
           year: 2017,
           number: faker.random.number(),

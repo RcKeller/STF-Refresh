@@ -22,7 +22,7 @@ export default Item
 /* *****
 FAKE DATA GENERATOR: Contact
 ***** */
-const dummyItems = (min) => {
+const dummyItems = (min, ids) => {
   //  Check the db for existing data satisfying min required
   Item.count().exec((err, count) => {
     if (err) {
@@ -32,7 +32,8 @@ const dummyItems = (min) => {
       let fakes = []
       for (let i = 0; i < min; i++) {
         fakes[i] = new Item({
-          manifest: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
+          _id: ids.item[i],
+          manifest: ids.manifest[i],
           title: faker.company.bsNoun(),
           description: faker.lorem.paragraph(),
           quantity: faker.random.number(),
