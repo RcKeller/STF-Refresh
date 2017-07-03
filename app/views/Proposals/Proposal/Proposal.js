@@ -5,7 +5,7 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
-import api, { stub } from '../../../services'
+import api from '../../../services'
 
 import { Row, Col, Spin, Progress, Collapse } from 'antd'
 const Panel = Collapse.Panel
@@ -26,17 +26,6 @@ import styles from './Proposal.css'
 )
 class Proposal extends React.Component {
   render ({ proposal } = this.props) {
-    //  Add stub data to simulate joins as DB issues are resolved.
-    if (proposal) {
-      proposal.contacts = [stub.contact, stub.contact, stub.contact, stub.contact]
-      proposal.body = stub.project
-      proposal.manifests = [stub.manifest, stub.manifest]
-      proposal.amendments = [stub.amendment]
-      proposal.report = stub.report
-      proposal.decision = stub.decision
-      proposal.comments = [stub.comment, stub.comment]
-      console.log('Populated w/ stub data:', proposal)
-    }
     return (
       <article className={styles['article']}>
         {!proposal

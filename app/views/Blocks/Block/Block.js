@@ -3,9 +3,9 @@ import PropTypes from 'prop-types'
 
 import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { connectRequest, querySelectors } from 'redux-query'
+import { connectRequest } from 'redux-query'
 
-import api, { stub } from '../../../services'
+import api from '../../../services'
 
 import { Row, Col, Spin, Progress, Collapse } from 'antd'
 const Panel = Collapse.Panel
@@ -13,29 +13,19 @@ const Panel = Collapse.Panel
 const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
 
 import styles from './block.css'
-const query = (props) => ({
-  model: 'block',
-  query: { number: props.params.number },
-  join: ['contacts', 'decision']
-})
 @compose(
-  connect((state, props) => ({
-    block: state.entities.block,
-    loading: querySelectors.isPending(state.queries, api.get(query(props)))
-  })),
-  connectRequest((props) => api.get(query(props)))
+  connect((state, props) => ({ block: state.entities.block })),
+  connectRequest((props) => api.get({
+    model: 'block',
+    query: { number: props.params.number },
+    join: ['contacts', 'decision']
+  }))
 )
 class Block extends React.Component {
-  render ({ block, loading } = this.props) {
-    //  Add stub data to simulate joins as DB issues are resolved.
-    if (block) {
-      block.contacts = [stub.contact, stub.contact, stub.contact, stub.contact]
-      block.decision = stub.decision
-      console.log('Populated w/ stub data:', block)
-    }
+  render ({ block } = this.props) {
     return (
       <article className={styles['article']}>
-        {loading || !block
+        {!block
           ? <Spin size='large' tip='Loading...' />
           : <div>
             <Row type='flex' justify='space-between'>

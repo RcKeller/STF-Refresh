@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 import api from '../../services'
 
-import { Table } from 'antd'
+import { Spin, Table } from 'antd'
 
 import styles from './Blocks.css'
 @compose(
@@ -35,16 +35,21 @@ class Blocks extends React.Component {
   ) {
     return (
       <article className={styles['blocks']}>
-        <Table dataSource={blocks}
-          sort
-          size={
-            screen.lessThan.medium ? 'small' : ''
-          }
-          columns={
-            screen.lessThan.medium ? columns.slice(1, 3) : columns
-          }
-          title={() => <h1>Continuous Funding Blocks</h1>}
-        />
+        {!blocks
+          ? <Spin size='large' tip='Loading...' />
+          : <div>
+            <Table dataSource={blocks}
+              sort
+              size={
+                screen.lessThan.medium ? 'small' : ''
+              }
+              columns={
+                screen.lessThan.medium ? columns.slice(1, 3) : columns
+              }
+              title={() => <h1>Continuous Funding Blocks</h1>}
+            />
+          </div>
+        }
       </article>
     )
   }
