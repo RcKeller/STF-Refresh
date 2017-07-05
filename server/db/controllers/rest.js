@@ -1,30 +1,29 @@
 import { Router } from 'express'
 import pluralize from 'pluralize'
 /*
-Generic CRUD controller
-http://rvcode.com/javascript/2016/01/02/generic-crud-controller-with-mongoose-and-express.html
-*/
+CORE RESTful CONTROLLER:
+Every model adheres to this interface as a baseline.
+After extending, each controller may have certain overrides
+(saving subdocuments, server-side business logic, etc)
 
-/**
-  Generic controller that provides CRUD operations for a given Mongoose model
+http://rvcode.com/javascript/2016/01/02/generic-crud-controller-with-mongoose-and-express.html
 */
 export default class REST {
   /**
     @param model Mongoose model
     @param key primary key of the model that will be used for searching, removing
-    and reading
+    and geting. This does NOT have to always be _id
   */
   constructor (model, key) {
     this.model = model
     this.modelName = model.modelName.toLowerCase()
     this.key = key
+    console.log(`REST: Instantiated controller: ${this.modelName} - Key: ${this.key}`)
   }
 
-  /**
-  Returns a function that will write the result as a JSON to the response
-  */
+  // Returns a function that will write the result as a JSON to the response
   ok (res) {
-    return (data) => { res.json(data) }
+    return (data) => res.json(data)
   }
 
   /**
@@ -36,23 +35,13 @@ export default class REST {
   Unknown error - 500 Internal server error
   */
   fail (res) {
-    return (error) => {
-      console.log(error)
-      res.sendStatus(404).end()
-    }
+    return (error) => res.sendStatus(404).end() && console.warn(error)
   }
 
-  create (data) {
-    return this.model
-      .create(data)
-      .then((modelInstance) => {
-        var response = {}
-        response[this.modelName] = modelInstance
-        return response
-      })
-  }
-
-  read (id) {
+  /* *****
+    GET (All): List all models
+  ***** */
+  get (id) {
     var filter = {}
     filter[this.key] = id
 
@@ -65,16 +54,32 @@ export default class REST {
     })
   }
 
-  list () {
+  getAll () {
     return this.model
-      .find({})
-      .then((modelInstances) => {
+    .find({})
+    .then((modelInstances) => {
+      var response = {}
+      response[pluralize(this.modelName)] = modelInstances
+      return response
+    })
+  }
+
+  /* *****
+    POST: Add a model
+  ***** */
+  post (data) {
+    return this.model
+      .create(data)
+      .then((modelInstance) => {
         var response = {}
-        response[pluralize(this.modelName)] = modelInstances
+        response[this.modelName] = modelInstance
         return response
       })
   }
 
+  /* *****
+    DELETE: Remove a model
+  ***** */
   delete (id) {
     const filter = {}
     filter[this.key] = id
@@ -86,9 +91,11 @@ export default class REST {
       })
   }
 
-  /**
-   */
-  update (id, data) {
+  /* *****
+    PUT: Update a model
+    (formerly patch. On the fence about changing this).
+  ***** */
+  put (id, data) {
     var filter = {}
     filter[this.key] = id
 
@@ -110,33 +117,40 @@ export default class REST {
       })
   }
 
+  /*
+  INIT ROUTES
+  Once initialized, you can use() your model directly after construction, e.g.:
+  app.use('/v1/blocks', new controllers.Blocks().route())
+  */
   route () {
     const router = new Router()
 
     router.get('/', (req, res) => {
       this
-        .list()
+        .getAll()
         .then(this.ok(res))
         .then(null, this.fail(res))
     })
 
     router.get('/:key', (req, res) => {
       this
-      .read(req.params.key)
+      .get(req.params.key)
       .then(this.ok(res))
       .then(null, this.fail(res))
     })
 
     router.put('/:key', (req, res) => {
       this
-      .update(req.params.key, req.body)
+      .put(req.params.key, req.body)
       .then(this.ok(res))
       .then(null, this.fail(res))
     })
 
+    //  TODO: Should we add a patch method?
+
     router.post('/', (req, res) => {
       this
-        .create(req.body)
+        .post(req.body)
         .then(this.ok(res))
         .then(null, this.fail(res))
     })

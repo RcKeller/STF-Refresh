@@ -1,29 +1,19 @@
-import express from 'express'
-import restify from 'express-restify-mongoose'
 import passport from 'passport'
-import db from '../db'
 import config from 'config'
-/*
-RESTful MODELS (sans-controller)
-Controllers are automatically mapped using express-restify-mongoose
-*/
-// import { restModels } from '../db/models' //  Models for REST routes
-/*
-CUSTOM CONTROLLERS:
-Bespoke, non-RESTful routes for things like authN.
-*/
-const users = db.controllers && db.controllers.users
-import Blocks from '../db/controllers/blocks'
+import db from '../db'
+//  Truthiness check - doesn't proceed until this resolves.
+const controllers = db.controllers
+const version = config.get('version')
 
 //  GENERATE ROUTES
 export default (app) => {
-  console.warn(typeof Blocks)
-  app.use('/v1/blocks', new Blocks().route())
-  // app.use(rest) && console.log(`REST: API live for all ${restModels.length} core models.`)
+  //  Instantiate REST API.
+  app.use(`/${version}/blocks`, new controllers.Blocks().route())
+  console.log(`REST: API live for all ${Object.keys(controllers).length - 1} core models.`)
 
   // USER PROFILE ROUTES
-  if (users) {
-    app.delete('/sessions', users.logout)
+  if (controllers.Users) {
+    app.delete('/sessions', controllers.Users.logout)
   } else { console.warn('Error: DB unable to handle user routes.') }
   //  PRODUCTION AUTH
   if (db.passport && config.has('uw')) {
