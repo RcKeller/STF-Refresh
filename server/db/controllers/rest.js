@@ -110,6 +110,7 @@ export default class REST {
     const router = new Router()
 
     router.get('/', (req, res) => {
+      console.log(req) &&
       this
         .getAll()
         .then(this.ok(res))
