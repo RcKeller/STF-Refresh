@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import autoref from 'mongoose-autorefs'
 import faker from 'faker'
 
 const AmendmentSchema = new mongoose.Schema({
@@ -9,6 +10,10 @@ const AmendmentSchema = new mongoose.Schema({
   //  We want these BRIEF. Very BRIEF. Thus, no extensive plan, etc. This ends up as a headnote for proposals.
   body: { type: String, require: true }
 })
+AmendmentSchema.plugin(autoref, [
+  'proposal.amendments',
+  'contact.amendment'
+])
 const Amendment = mongoose.model('Amendment', AmendmentSchema)
 export default Amendment
 

@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import autoref from 'mongoose-autorefs'
 import faker from 'faker'
 
 const BlockSchema = new mongoose.Schema({
@@ -38,6 +39,7 @@ const BlockSchema = new mongoose.Schema({
   //  Proposal status, differs from decisions in that this is "summary" data for table viewing.
 
 })
+BlockSchema.plugin(autoref, ['contacts.block'])
 const Block = mongoose.model('Block', BlockSchema)
 export default Block
 

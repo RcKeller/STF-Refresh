@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import autoref from 'mongoose-autorefs'
 import faker from 'faker'
 
 const ManifestSchema = new mongoose.Schema({
@@ -10,6 +11,7 @@ const ManifestSchema = new mongoose.Schema({
   // Total cost, should be calculated dynamically.
   total: { type: Number, required: true, default: 0 }
 })
+ManifestSchema.plugin(autoref, ['items.manifest'])
 const Manifest = mongoose.model('Manifest', ManifestSchema)
 export default Manifest
 

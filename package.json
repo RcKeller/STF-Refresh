@@ -91,6 +91,7 @@
     "lorem-ipsum": "^1.0.4",
     "method-override": "^2.3.8",
     "mongoose": "^4.9.3",
+    "mongoose-autorefs": "^1.0.5",
     "morgan": "^1.8.2",
     "npm-install-webpack2-plugin": "^4.1.0",
     "passport": "^0.3.2",

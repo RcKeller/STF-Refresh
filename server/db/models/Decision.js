@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import autoref from 'mongoose-autorefs'
 import faker from 'faker'
 
 const DecisionSchema = new mongoose.Schema({
@@ -14,6 +15,7 @@ const DecisionSchema = new mongoose.Schema({
   //  If this decision is an award, it will have a grant amount and associated report.
   grant: Number
 })
+DecisionSchema.plugin(autoref, ['proposal.decision'])
 const Decision = mongoose.model('Decision', DecisionSchema)
 export default Decision
 

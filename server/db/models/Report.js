@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import autoref from 'mongoose-autorefs'
 import faker from 'faker'
 
 const ReportSchema = new mongoose.Schema({
@@ -9,6 +10,7 @@ const ReportSchema = new mongoose.Schema({
   This should be coupled either with a separate audit document, or that data can be kept inside.
   */
 })
+ReportSchema.plugin(autoref, ['proposal.report'])
 const Report = mongoose.model('Report', ReportSchema)
 export default Report
 

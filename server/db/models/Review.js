@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import autoref from 'mongoose-autorefs'
 import faker from 'faker'
 
 const ReviewSchema = new mongoose.Schema({
@@ -18,6 +19,7 @@ const ReviewSchema = new mongoose.Schema({
   //  Pass or fail the proposal? This is separate, because we may pass things we don't agree with.
   approved: Boolean
 })
+ReviewSchema.plugin(autoref, ['proposal.reviews'])
 const Review = mongoose.model('Review', ReviewSchema)
 export default Review
 /*

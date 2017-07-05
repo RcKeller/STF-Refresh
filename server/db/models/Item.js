@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import autoref from 'mongoose-autorefs'
 import faker from 'faker'
 
 const ItemSchema = new mongoose.Schema({
@@ -16,6 +17,7 @@ const ItemSchema = new mongoose.Schema({
   //  Tad confusing, but this is a constant question for proposers.
   priority: { type: Number, min: 0 }
 })
+ItemSchema.plugin(autoref, ['manifest.items'])
 const Item = mongoose.model('Item', ItemSchema)
 export default Item
 

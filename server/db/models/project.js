@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import autoref from 'mongoose-autorefs'
 import faker from 'faker'
 
 /*
@@ -78,6 +79,7 @@ const ProjectSchema = new mongoose.Schema({
     body: { type: String, required: true }
   }]
 })
+ProjectSchema.plugin(autoref, ['proposal.body'])
 const Project = mongoose.model('Project', ProjectSchema)
 export default Project
 

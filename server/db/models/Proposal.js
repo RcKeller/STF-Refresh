@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import autoref from 'mongoose-autorefs'
 import faker from 'faker'
 
 const ProposalSchema = new mongoose.Schema({
@@ -54,7 +55,19 @@ const ProposalSchema = new mongoose.Schema({
   //  Edit: One proposal, one decision, one report.
   report: { type: mongoose.Schema.Types.ObjectId, ref: 'Report' }
 })
-
+/*
+Stynax: <parent-to-child prop>.<child-to-parent prop>
+*/
+ProposalSchema.plugin(autoref, [
+  'contacts.proposal',
+  'body.proposal',
+  'maniefests.proposal',
+  'amendments.proposal',
+  'reviews.proposal',
+  'decision.proposal',
+  'comments.proposal',
+  'report.proposal'
+])
 const Proposal = mongoose.model('Proposal', ProposalSchema)
 export default Proposal
 

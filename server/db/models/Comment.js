@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import autoref from 'mongoose-autorefs'
 import faker from 'faker'
 
 const CommentSchema = new mongoose.Schema({
@@ -8,8 +9,11 @@ const CommentSchema = new mongoose.Schema({
   //  Default titles since this is a new feature
   title: { type: String, required: true, default: '' },
   body: { type: String, required: true }
-
 })
+CommentSchema.plugin(autoref, [
+  'proposal.comments'
+  //  We don't track user comments
+])
 const Comment = mongoose.model('Comment', CommentSchema)
 export default Comment
 

@@ -1,9 +1,13 @@
 import mongoose from 'mongoose'
+import autoref from 'mongoose-autorefs'
 import faker from 'faker'
 
 const ContactSchema = new mongoose.Schema({
   // Contact info for associated proposal
+  //  NOTE: Can be either a proposal, amendment or block. Be careful if reverse populating.
   proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
+  amendment: { type: mongoose.Schema.Types.ObjectId, ref: 'Amendment' },
+  block: { type: mongoose.Schema.Types.ObjectId, ref: 'Block' },
   //  Role is the person's association - Primary (contact), Budget, official (dean), Student
   role: { type: String, required: true },
   name: { type: String, required: true },
@@ -15,6 +19,11 @@ const ContactSchema = new mongoose.Schema({
   //  Have they signed the proposal?
   signature: { type: Boolean, default: false }
 })
+ContactSchema.plugin(autoref, [
+  'proposal.contacts',
+  'amendment.contacts',
+  'block.contacts'
+])
 const Contact = mongoose.model('Contact', ContactSchema)
 export default Contact
 
