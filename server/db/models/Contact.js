@@ -25,7 +25,6 @@ ContactSchema.plugin(autoref, [
   'block.contacts'
 ])
 const Contact = mongoose.model('Contact', ContactSchema)
-export default Contact
 
 /* *****
 FAKE DATA GENERATOR: Contact
@@ -58,4 +57,5 @@ const dummyContacts = (min, ids) => {
     }
   })
 }
-export { dummyContacts }
+export default Contact
+export { ContactSchema, dummyContacts }

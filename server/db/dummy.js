@@ -29,7 +29,7 @@ export default function () {
       ids[key].push(new mongoose.Types.ObjectId())
     }
   })
-  console.log(ids)
+  // console.log(ids)
 
   //  BUG: Using these accounts makes auth fail. Unsure of cause.
   // dummyUsers()

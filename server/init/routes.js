@@ -23,7 +23,11 @@ export default (app) => {
   We have full query capabilities for all these APIs. Can accept query params and process them accordingly.
   */
   //  Set defaults (removing /api prefix, setting /version)
-  restify.defaults({ prefix: '', version: `/${config.get('version')}` })
+  restify.defaults({
+    prefix: '',
+    version: `/${config.get('version')}`
+  })
+  // https://stackoverflow.com/questions/41278594/how-to-save-array-of-inputs-to-a-child-schema-in-a-nested-mongoose-schema
   //  Initialize a router, map every core model's restify routes.
   const rest = express.Router()
   restModels.map((model) => restify.serve(rest, model))
