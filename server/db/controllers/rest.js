@@ -40,19 +40,20 @@ export default class REST {
   /* *****
     GET (All): List all models
   ***** */
-  get (id) {
+  getAll (query) {
+    return this.model
+    .find({})
+    .then((modelInstances) => modelInstances)
+  }
+  get (id, query) {
     let filter = {}
     filter[this.key] = id
+    let join = query.join.replace(/,/g, ' ')
 
     return this.model
       .findOne(filter)
+      .populate(join)
       .then((modelInstance) => modelInstance)
-  }
-
-  getAll () {
-    return this.model
-      .find({})
-      .then((modelInstances) => modelInstances)
   }
 
   /* *****
@@ -110,16 +111,15 @@ export default class REST {
     const router = new Router()
 
     router.get('/', (req, res) => {
-      console.log(req) &&
       this
-        .getAll()
+        .getAll(req.query)
         .then(this.ok(res))
         .then(null, this.fail(res))
     })
 
     router.get('/:key', (req, res) => {
       this
-        .get(req.params.key)
+        .get(req.params.key, req.query)
         .then(this.ok(res))
         .then(null, this.fail(res))
     })
