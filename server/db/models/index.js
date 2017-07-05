@@ -25,23 +25,23 @@ export default function loadModels () {
 RESTful MODELS (and their dummy data generators)
 For express-restify-mongoose
 */
-import contact, { dummyContacts } from './contact'
-import proposal, { dummyProposals } from './proposal'
-import project, { dummyProjects } from './project'
-import amendment, { dummyAmendments } from './amendment'
-import manifest, { dummyManifests } from './manifest'
-import item, { dummyItems } from './item'
-import block, { dummyBlocks } from './block'
-import review, { dummyReviews } from './review'
-import decision, { dummyDecisions } from './decision'
-import report, { dummyReports } from './report'
-import comment, { dummyComments } from './comment'
+import Contact, { dummyContacts } from './contact'
+import Proposal, { dummyProposals } from './proposal'
+import Project, { dummyProjects } from './project'
+import Amendment, { dummyAmendments } from './amendment'
+import Manifest, { dummyManifests } from './manifest'
+import Item, { dummyItems } from './item'
+import Block, { dummyBlocks } from './block'
+import Review, { dummyReviews } from './review'
+import Decision, { dummyDecisions } from './decision'
+import Report, { dummyReports } from './report'
+import Comment, { dummyComments } from './comment'
 //  Note that users are not here, that's bespoke.
-export const restModels = [
-  contact, comment,
-  proposal, project, amendment, manifest, item, block,
-  review, decision, report
-]
+export {
+  Contact, Comment,
+  Proposal, Project, Amendment, Manifest, Item, Block,
+  Review, Decision, Report
+}
 export const restDummies = [
   dummyContacts, dummyComments,
   dummyProposals, dummyProjects, dummyAmendments, dummyManifests, dummyItems, dummyBlocks,

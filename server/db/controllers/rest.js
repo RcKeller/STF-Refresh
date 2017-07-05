@@ -42,26 +42,18 @@ export default class REST {
     GET (All): List all models
   ***** */
   get (id) {
-    var filter = {}
+    let filter = {}
     filter[this.key] = id
 
     return this.model
-    .findOne(filter)
-    .then((modelInstance) => {
-      var response = {}
-      response[this.modelName] = modelInstance
-      return response
-    })
+      .findOne(filter)
+      .then((modelInstance) => modelInstance)
   }
 
   getAll () {
     return this.model
-    .find({})
-    .then((modelInstances) => {
-      var response = {}
-      response[pluralize(this.modelName)] = modelInstances
-      return response
-    })
+      .find({})
+      .then((modelInstances) => modelInstances)
   }
 
   /* *****
@@ -70,11 +62,7 @@ export default class REST {
   post (data) {
     return this.model
       .create(data)
-      .then((modelInstance) => {
-        var response = {}
-        response[this.modelName] = modelInstance
-        return response
-      })
+      .then((modelInstance) => modelInstance)
   }
 
   /* *****
@@ -86,9 +74,10 @@ export default class REST {
 
     return this.model
       .remove(filter)
-      .then(() => {
-        return {}
-      })
+      .then(() => {})
+      // .then(() => {
+      //   return {}
+      // })
   }
 
   /* *****
@@ -110,11 +99,7 @@ export default class REST {
 
         return modelInstance.save()
       })
-      .then((modelInstance) => {
-        var response = {}
-        response[this.modelName] = modelInstance
-        return response
-      })
+      .then((modelInstance) => modelInstance)
   }
 
   /*
@@ -134,16 +119,16 @@ export default class REST {
 
     router.get('/:key', (req, res) => {
       this
-      .get(req.params.key)
-      .then(this.ok(res))
-      .then(null, this.fail(res))
+        .get(req.params.key)
+        .then(this.ok(res))
+        .then(null, this.fail(res))
     })
 
     router.put('/:key', (req, res) => {
       this
-      .put(req.params.key, req.body)
-      .then(this.ok(res))
-      .then(null, this.fail(res))
+        .put(req.params.key, req.body)
+        .then(this.ok(res))
+        .then(null, this.fail(res))
     })
 
     //  TODO: Should we add a patch method?
