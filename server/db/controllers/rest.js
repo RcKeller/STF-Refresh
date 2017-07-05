@@ -1,5 +1,4 @@
 import { Router } from 'express'
-import pluralize from 'pluralize'
 /*
 CORE RESTful CONTROLLER:
 Every model adheres to this interface as a baseline.

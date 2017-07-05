@@ -8,7 +8,7 @@ const version = config.get('version')
 //  GENERATE ROUTES
 export default (app) => {
   //  Instantiate REST API.
-  app.use(`/${version}/blocks`, new controllers.Blocks().route())
+  app.use(`/${version}/block`, new controllers.Blocks().route())
   console.log(`REST: API live for all ${Object.keys(controllers).length - 1} core models.`)
 
   // USER PROFILE ROUTES
