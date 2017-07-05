@@ -5,7 +5,7 @@ import { createLogger } from 'redux-logger'
 //  Redux query needs selectors as args:  https://amplitude.github.io/redux-query/
 import { queryMiddleware } from 'redux-query'
 export const getQueries = (state) => state.queries
-export const getEntities = (state) => state.entities
+export const getEntities = (state) => state.db
 import { responsiveStoreEnhancer } from 'redux-responsive'
 
 import rootReducer from './reducers'

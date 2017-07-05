@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Row, Col, Form, Input, Select } from 'antd'
+import { Row, Col, Form, Input } from 'antd'
 const FormItem = Form.Item
 
 const impactTypes = [

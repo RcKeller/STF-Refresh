@@ -2,13 +2,25 @@ import passport from 'passport'
 import config from 'config'
 import db from '../db'
 //  Truthiness check - doesn't proceed until this resolves.
-const controllers = db.controllers
 const version = config.get('version')
+const controllers = db.controllers
 
 //  GENERATE ROUTES
 export default (app) => {
-  //  Instantiate REST API.
-  app.use(`/${version}/block`, new controllers.Blocks().route())
+  /*
+  RESTful API
+  */
+  app.use(`/${version}/contacts`, new controllers.Contacts().route())
+  app.use(`/${version}/proposals`, new controllers.Proposals().route())
+  app.use(`/${version}/projects`, new controllers.Projects().route())
+  app.use(`/${version}/amendments`, new controllers.Amendments().route())
+  app.use(`/${version}/manifests`, new controllers.Manifests().route())
+  app.use(`/${version}/items`, new controllers.Items().route())
+  app.use(`/${version}/blocks`, new controllers.Blocks().route())
+  app.use(`/${version}/reviews`, new controllers.Reviews().route())
+  app.use(`/${version}/decisions`, new controllers.Decisions().route())
+  app.use(`/${version}/reports`, new controllers.Reports().route())
+  app.use(`/${version}/comments`, new controllers.Comments().route())
   console.log(`REST: API live for all ${Object.keys(controllers).length - 1} core models.`)
 
   // USER PROFILE ROUTES

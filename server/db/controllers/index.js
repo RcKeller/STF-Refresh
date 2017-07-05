@@ -1,12 +1,28 @@
 import Users from './users'
+import Contacts from './contacts'
+import Proposals from './proposals'
+import Projects from './projects'
+import Amendments from './amendments'
+import Manifests from './manifests'
+import Items from './items'
 import Blocks from './blocks'
-/*
-This API automatically generates its own REST routes, sans controllers
-See the implementation at routes.js
-*/
+import Reviews from './reviews'
+import Decisions from './decisions'
+import Reports from './reports'
+import Comments from './comments'
+
 const controllers = {
-  //  Auth and User data
   Users,
-  Blocks
+  Contacts,
+  Comments,
+  Proposals,
+  Projects,
+  Amendments,
+  Manifests,
+  Items,
+  Blocks,
+  Reviews,
+  Decisions,
+  Reports
 }
 export default controllers

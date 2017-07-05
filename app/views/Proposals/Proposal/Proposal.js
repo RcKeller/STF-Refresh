@@ -14,9 +14,9 @@ const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
 
 import styles from './Proposal.css'
 @compose(
-  connect(state => ({ proposal: state.entities.proposal })),
+  connect(state => ({ proposal: state.db.proposal })),
   connectRequest(props => api.get({
-    model: 'proposal',
+    model: 'proposals',
     query: {
       year: props.params.year,
       number: props.params.number

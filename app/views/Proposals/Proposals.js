@@ -59,11 +59,11 @@ import styles from './Proposals.css'
   // Compose is a redux utility that runs an array of functions:
   //  Connect component to cached DB entities
   connect((state, props) => ({
-    proposals: state.entities.proposals,
+    proposals: state.db.proposals,
     screen: state.screen
   })),
   //  Execute necessary AJAX to load said entities
-  connectRequest((props) => api.getAll({ model: 'proposal' }))
+  connectRequest((props) => api.getAll({ model: 'proposals' }))
 )
 class Proposals extends React.Component {
   //  Shorthand assignment of variables when defining render

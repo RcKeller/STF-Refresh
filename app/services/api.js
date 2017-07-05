@@ -47,10 +47,10 @@ const adapt = (args) => {
   let url = `${API}/${version}/${args.model}${args.id ? `/${args.id}` : ''}`
   //  Operator to prefix query string for joins, queries, ID specification etc
   let operator = '?'
-  // if (args.query) {
-  //   url = `${url}${operator}query=${JSON.stringify(args.query)}`
-  //   operator = '&'
-  // }
+  if (args.query) {
+    url = `${url}${operator}query=${JSON.stringify(args.query)}`
+    operator = '&'
+  }
   if (args.join) {
     // const joins = args.join.join(',')
     // EDIT: Not necessary with the new API. It just comes across as an array.
@@ -60,6 +60,11 @@ const adapt = (args) => {
   return url
 }
 
+//  Simple selector utils for handling plurality.
+//  Args.model is the model name in plural tense. Endpoints are plural
+const models = (args) => args.model
+const model = (args) => args.model.slice(0, -1)
+
 /* *****
 GET ALL
 ex: api.getAll('proposal', { populate: 'contacts,decision' })
@@ -67,8 +72,8 @@ ex: api.getAll('proposal', { populate: 'contacts,decision' })
 const getAll = (args) => ({
   url: adapt(args),
   options: { method: 'GET' },
-  transform: body => ({ [`${args.model}s`]: body }),
-  update: { [`${args.model}s`]: (prev, next) => next }
+  transform: body => ({ [`${models(args)}`]: body }),
+  update: { [`${models(args)}`]: (prev, next) => next }
 })
 
 /* *****
@@ -78,9 +83,9 @@ ex: api.get('proposal', '594b49998dabd50e2c71762d')
 const get = (args) => ({
   url: adapt(args),
   options: { method: 'GET' },
-  transform: body => ({ [`${args.model}`]: body }),
+  transform: body => ({ [`${model(args)}`]: body }),
   //  This is for a SINGLE document. Return first element if array received.
-  update: { [`${args.model}`]: (prev, next) => next[0] || next }
+  update: { [`${model(args)}`]: (prev, next) => next[0] || next }
 })
 
 /* *****
@@ -91,9 +96,9 @@ ex: api.post('report', {})
 const post = (args, body) => mutateAsync({
   url: adapt(args),
   options: { method: 'POST' },
-  transform: body => ({ [`${args.model}`]: body }),
+  transform: body => ({ [`${model(args)}`]: body }),
   body,
-  update: { [`${args.model}`]: (prev, next) => next }
+  update: { [`${model(args)}`]: (prev, next) => next }
 })
 
 /* *****
@@ -104,9 +109,9 @@ ex: api.put('report', '594b49998dabd50e2c7176bf',
 const put = (args, body) => mutateAsync({
   url: adapt(args),
   options: { method: 'PUT' },
-  transform: body => ({ [`${args.model}`]: body }),
+  transform: body => ({ [`${model(args)}`]: body }),
   body,
-  update: { [`${args.model}`]: (prev, next) => next }
+  update: { [`${model(args)}`]: (prev, next) => next }
 })
 
 /* *****
@@ -117,9 +122,9 @@ ex: api.put('report', '594b49998dabd50e2c7176bf',
 const patch = (args, body) => mutateAsync({
   url: adapt(args),
   options: { method: 'PATCH' },
-  transform: body => ({ [`${args.model}`]: body }),
+  transform: body => ({ [`${model(args)}`]: body }),
   body,
-  update: { [`${args.model}`]: (prev, next) => next }
+  update: { [`${model(args)}`]: (prev, next) => next }
 })
 
 /* *****
@@ -130,8 +135,8 @@ note: The 'delete' namespace is a JS keyword.
 const remove = (args) => mutateAsync({
   url: adapt(args),
   options: { method: 'DELETE' },
-  transform: body => ({ [`${args.model}`]: body }),
-  update: { [`${args.model}`]: (prev, next) => next }
+  transform: body => ({ [`${model(args)}`]: body }),
+  update: { [`${model(args)}`]: (prev, next) => next }
 })
 
 export default {
