@@ -1,70 +1,153 @@
-import _ from 'lodash'
-import Block from '../models/block'
+import { Router } from 'express'
+import pluralize from 'pluralize'
+/*
+Generic CRUD controller
+http://rvcode.com/javascript/2016/01/02/generic-crud-controller-with-mongoose-and-express.html
+*/
 
-/* *****
-  GET (All): List all models
-***** */
-// export function getAll (req, res) {
-//   Block.find({}).exec((err, Blocks) => {
-//     if (err) { return res.status(500).send('Server error retrieving all Block documents') }
-//     return res.json(Blocks)
-//   })
-// }
+/**
+  Generic controller that provides CRUD operations for a given Mongoose model
+*/
+export default class REST {
+  /**
+    @param model Mongoose model
+    @param key primary key of the model that will be used for searching, removing
+    and reading
+  */
+  constructor (model, key) {
+    this.model = model
+    this.modelName = model.modelName.toLowerCase()
+    this.key = key
+  }
 
-export const getAll = (model) => function getAll (req, res) {
-  model.find({}).exec((err, Blocks) => {
-    if (err) { return res.status(500).send('Server error retrieving all documents') }
-    return res.json(Blocks)
-  })
-}
+  /**
+  Returns a function that will write the result as a JSON to the response
+  */
+  ok (res) {
+    return (data) => { res.json(data) }
+  }
 
-export function get (req, res) {
-  Block.findById(req.params.id).exec((err, Blocks) => {
-    if (err) { return res.status(500).send('Server error retrieving all Block documents') }
-    return res.json(Blocks)
-  })
-}
+  /**
+  Depending on the error type, will perform the following:
 
-/* *****
-  POST: Add a model
-***** */
-export function post (req, res) {
-  Block.create(req.body, (err) => {
-    if (err) { return res.status(400).send(err) }
-    return res.status(200).send('OK')
-  })
-}
+  Object was not found - 404 Not Found
+  Invalid or missing input parameter - 400 Bad request
+  Not enough privileges - 401 Unauthorized
+  Unknown error - 500 Internal server error
+  */
+  fail (res) {
+    return (error) => {
+      console.log(error)
+      res.sendStatus(404).end()
+    }
+  }
 
-/* *****
-  PATCH: Update a model
-***** */
-export function patch (req, res) {
-  const query = { id: req.params.id }
-  const omitKeys = ['id', '_id', '_v']
-  const data = _.omit(req.body, omitKeys)
+  create (data) {
+    return this.model
+      .create(data)
+      .then((modelInstance) => {
+        var response = {}
+        response[this.modelName] = modelInstance
+        return response
+      })
+  }
 
-  Block.findOneAndUpdate(query, data, (err) => {
-    if (err) { return res.status(500).send('Server error saving Block') }
-    return res.status(200).send('Updated successfully')
-  })
-}
+  read (id) {
+    var filter = {}
+    filter[this.key] = id
 
-/* *****
-  DELETE: Remove a Block
-  (delete is a keyword, substituting w/ "remove")
-***** */
-export function remove (req, res) {
-  const query = { id: req.params.id }
-  Block.findOneAndRemove(query, (err) => {
-    if (err) { return res.status(500).send('Server error deleting Block') }
-    return res.status(200).send('Removed Successfully')
-  })
-}
+    return this.model
+    .findOne(filter)
+    .then((modelInstance) => {
+      var response = {}
+      response[this.modelName] = modelInstance
+      return response
+    })
+  }
 
-export default {
-  getAll,
-  get,
-  post,
-  patch,
-  remove
+  list () {
+    return this.model
+      .find({})
+      .then((modelInstances) => {
+        var response = {}
+        response[pluralize(this.modelName)] = modelInstances
+        return response
+      })
+  }
+
+  delete (id) {
+    const filter = {}
+    filter[this.key] = id
+
+    return this.model
+      .remove(filter)
+      .then(() => {
+        return {}
+      })
+  }
+
+  /**
+   */
+  update (id, data) {
+    var filter = {}
+    filter[this.key] = id
+
+    return this.model
+      .findOne(filter)
+      .then((modelInstance) => {
+        for (var attribute in data) {
+          if (data.hasOwnProperty(attribute) && attribute !== this.key && attribute !== '_id') {
+            modelInstance[attribute] = data[attribute]
+          }
+        }
+
+        return modelInstance.save()
+      })
+      .then((modelInstance) => {
+        var response = {}
+        response[this.modelName] = modelInstance
+        return response
+      })
+  }
+
+  route () {
+    const router = new Router()
+
+    router.get('/', (req, res) => {
+      this
+        .list()
+        .then(this.ok(res))
+        .then(null, this.fail(res))
+    })
+
+    router.post('/', (req, res) => {
+      this
+        .create(req.body)
+        .then(this.ok(res))
+        .then(null, this.fail(res))
+    })
+
+    router.get('/:key', (req, res) => {
+      this
+        .read(req.params.key)
+        .then(this.ok(res))
+        .then(null, this.fail(res))
+    })
+
+    router.put('/:key', (req, res) => {
+      this
+        .update(req.params.key, req.body)
+        .then(this.ok(res))
+        .then(null, this.fail(res))
+    })
+
+    router.delete('/:key', (req, res) => {
+      this
+        .delete(req.params.key)
+        .then(this.ok(res))
+        .then(null, this.fail(res))
+    })
+
+    return router
+  }
 }
