@@ -120,23 +120,23 @@ export default class REST {
         .then(null, this.fail(res))
     })
 
-    router.post('/', (req, res) => {
-      this
-        .create(req.body)
-        .then(this.ok(res))
-        .then(null, this.fail(res))
-    })
-
     router.get('/:key', (req, res) => {
       this
-        .read(req.params.key)
-        .then(this.ok(res))
-        .then(null, this.fail(res))
+      .read(req.params.key)
+      .then(this.ok(res))
+      .then(null, this.fail(res))
     })
 
     router.put('/:key', (req, res) => {
       this
-        .update(req.params.key, req.body)
+      .update(req.params.key, req.body)
+      .then(this.ok(res))
+      .then(null, this.fail(res))
+    })
+
+    router.post('/', (req, res) => {
+      this
+        .create(req.body)
         .then(this.ok(res))
         .then(null, this.fail(res))
     })

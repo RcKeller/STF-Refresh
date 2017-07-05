@@ -7,32 +7,19 @@ import config from 'config'
 RESTful MODELS (sans-controller)
 Controllers are automatically mapped using express-restify-mongoose
 */
-import { restModels } from '../db/models' //  Models for REST routes
+// import { restModels } from '../db/models' //  Models for REST routes
 /*
 CUSTOM CONTROLLERS:
 Bespoke, non-RESTful routes for things like authN.
 */
 const users = db.controllers && db.controllers.users
+import Blocks from '../db/controllers/blocks'
 
 //  GENERATE ROUTES
 export default (app) => {
-  /*
-  CORE REST API:
-  https://florianholzapfel.github.io/express-restify-mongoose/
-  Routes are generated for our core models per RESTful standards.
-  We have full query capabilities for all these APIs. Can accept query params and process them accordingly.
-  */
-  //  Set defaults (removing /api prefix, setting /version)
-  restify.defaults({
-    prefix: '',
-    version: `/${config.get('version')}`
-  })
-  // https://stackoverflow.com/questions/41278594/how-to-save-array-of-inputs-to-a-child-schema-in-a-nested-mongoose-schema
-  //  Initialize a router, map every core model's restify routes.
-  const rest = express.Router()
-  restModels.map((model) => restify.serve(rest, model))
-  //  Now, we use the router!
-  app.use(rest) && console.log(`REST: API live for all ${restModels.length} core models.`)
+  console.warn(typeof Blocks)
+  app.use('/v1/blocks', new Blocks().route())
+  // app.use(rest) && console.log(`REST: API live for all ${restModels.length} core models.`)
 
   // USER PROFILE ROUTES
   if (users) {
