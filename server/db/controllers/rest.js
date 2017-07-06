@@ -28,51 +28,52 @@ export default class REST {
   }
 
   /**
-  Depending on the error type, will perform the following:
-
-  Object was not found - 404 Not Found
-  Invalid or missing input parameter - 400 Bad request
-  Not enough privileges - 401 Unauthorized
-  Unknown error - 500 Internal server error
+  Error handler
   */
   fail (res) {
     return (error) => res.sendStatus(error.status || 404).end()
   }
 
+  /*
+  QUERY HANDLER:
+  Manages population, selects, sorts etc
+  Does NOT handle find() related queries
+  */
+  queryHandler (model, query) {
+    // JOIN aka populate, e.g. join=comments,reviews
+    if (query.join) model = model.populate(query.join.split(',').join(' '))
+    // SELECT, gathering specific fields e.g. select=name
+    if (query.select) model = model.select(query.select.split(',').join(' '))
+    return model
+  }
+
   /* *****
     GET (All): List all models
+    https://stackoverflow.com/questions/33455507/javascript-conditionally-call-a-function
   ***** */
   getAll (query) {
-    //  QUERY CASE: join (populate in mongo)
-    if (query.join) {
-      console.log(query.join.split(',').join(' '))
-      return this.model
-        .find({})
-        .populate(query.join.split(',').join(' '))
-        .then((modelInstances) => modelInstances)
-    }
-    return this.model
-      .find({})
-      .then((modelInstances) => modelInstances)
+    let model = this.model
+    //  Core query, e.g. where={"year":"2017"}. Else, get all
+    !query.where
+    ? model = model.find({})
+    : model = model.find(JSON.parse(query.where))
+    model = this.queryHandler(model, query)
+    return model.then((modelInstances) => modelInstances)
   }
-  get (id, query) {
-    let filter = {}
-    filter[this.key] = id
-    // let join = query.join.replace(/,/g, ' ')
 
-    return this.model
-      .findOne(filter)
-      // .populate(join)
-      .then((modelInstance) => modelInstance)
+  get (id, query) {
+    let model = this.model.findOne({ [this.key]: id })
+    model = this.queryHandler(model, query)
+    return model.then((modelInstance) => modelInstance)
   }
 
   /* *****
     POST: Add a model
   ***** */
   post (data, query) {
-    return this.model
-      .create(data)
-      .then((modelInstance) => modelInstance)
+    let model = this.model.create(data)
+    //  TODO: Any middleware needed?
+    return model.then((modelInstance) => modelInstance)
   }
 
   /* *****
@@ -80,17 +81,14 @@ export default class REST {
     (formerly patch. On the fence about changing this).
   ***** */
   put (id, data, query) {
-    const filter = { [this.key]: id }
-
-    return this.model
-      .findOne(filter)
+    let model = this.model.findOne({ [this.key]: id })
+    return model
       .then((modelInstance) => {
         for (var attribute in data) {
           if (data.hasOwnProperty(attribute) && attribute !== this.key && attribute !== '_id') {
             modelInstance[attribute] = data[attribute]
           }
         }
-
         return modelInstance.save()
       })
       .then((modelInstance) => modelInstance)
@@ -100,10 +98,9 @@ export default class REST {
   DELETE: Remove a model
   ***** */
   delete (id, query) {
-    const filter = { [this.key]: id }
     return this.model
-    .remove(filter)
-    .then(() => {})
+      .remove({ [this.key]: id })
+      .then(() => {})
   }
 
   /*
