@@ -63,7 +63,7 @@ import styles from './Proposals.css'
     screen: state.screen
   })),
   //  Execute necessary AJAX to load said entities
-  connectRequest((props) => api.getAll({ model: 'proposals' }))
+  connectRequest((props) => api.getAll('proposals'))
 )
 class Proposals extends React.Component {
   //  Shorthand assignment of variables when defining render

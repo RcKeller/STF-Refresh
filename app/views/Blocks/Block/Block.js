@@ -15,9 +15,7 @@ const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
 import styles from './block.css'
 @compose(
   connect((state, props) => ({ block: state.db.block })),
-  connectRequest((props) => api.get({
-    model: 'blocks',
-    // id: false,
+  connectRequest((props) => api.get('blocks', {
     where: { number: props.params.number },
     join: ['contacts', 'decision']
   }))

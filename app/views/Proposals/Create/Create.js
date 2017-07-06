@@ -32,8 +32,7 @@ import styles from './Create.css'
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
   //  TODO: This ID is placeholder. Get from props.
-  connectRequest((props) => api.get({
-    model: 'proposals',
+  connectRequest((props) => api.get('proposals', {
     id: props.params.id,
     join: ['body', 'decision', 'contacts', 'manifests', 'reports', 'amendments', 'comments']
   }))

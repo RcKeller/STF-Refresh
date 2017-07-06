@@ -15,7 +15,7 @@ B) Providing the proper redux-query configs
     .then((res) => ...)
   options: Specifies method (defaults as post)
   transform: Assigns responses to readable props
-  body: Body of the query, spread out your extra args
+  body: Body of the query, spread out your extra options
   update: Use the prev and next state to update redux store
 
   There's a lot of ES6 magic being used to ensure these are readable and efficient, but the syntax may not be familiar. String literals are being used to dynamically assign the keys of objects, the spread operator is being used to destructure objects being utilized in a query's body, etc.
@@ -36,54 +36,54 @@ Query string adapter
 NOTE: This is a temp solution while we work on the DB migration.
 input:
 {
-  query: { number: props.args.number },
+  query: { number: props.options.number },
   join: ['contacts']
 }
 output:
 ...v1/block?query={"number":"70692"}&populate={"path":"contacts"}
 */
-const adapt = (args) => {
+const url = (model, options = {}) => {
   //  Base URL, e.g. ...host/v1/proposal/:id
-  let url = `${API}/${version}/${args.model}/${args.id ? args.id : ''}`
+  let url = `${API}/${version}/${model}/${options.id ? options.id : ''}`
   //  Operator to prefix query string for joins, queries, ID specification etc
   let operator = '?'
-  if (args.where) {
-    url = `${url}${operator}where=${JSON.stringify(args.where)}`
+  if (options.where) {
+    url = `${url}${operator}where=${JSON.stringify(options.where)}`
     operator = '&'
   }
-  if (args.join) {
-    url = `${url}${operator}join=${args.join}`
+  if (options.join) {
+    url = `${url}${operator}join=${options.join}`
     operator = '&'
   }
   return url
 }
 
 //  Simple selector utils for handling plurality.
-//  Args.model is the model name in plural tense. Endpoints are plural
-const models = (args) => args.model
-const model = (args) => args.model.slice(0, -1)
+//  options.model is the model name in plural tense. Endpoints are plural
+// const multiple = (model) => options.model
+// const single = (model) => options.model.slice(0, -1)
 
 /* *****
 GET ALL
 ex: api.getAll('proposal', { populate: 'contacts,decision' })
 ***** */
-const getAll = (args) => ({
-  url: adapt(args),
+const getAll = (model, options) => ({
+  url: url(model, options),
   options: { method: 'GET' },
-  transform: body => ({ [`${models(args)}`]: body }),
-  update: { [`${models(args)}`]: (prev, next) => next }
+  transform: body => ({ [model]: body }),
+  update: { [model]: (prev, next) => next }
 })
 
 /* *****
 GET ONE
 ex: api.get('proposal', '594b49998dabd50e2c71762d')
 ***** */
-const get = (args) => ({
-  url: adapt(args),
+const get = (model, options) => ({
+  url: url(model, options),
   options: { method: 'GET' },
-  transform: body => ({ [`${model(args)}`]: body }),
+  transform: body => ({ [model.slice(0, -1)]: body }),
   //  This is for a SINGLE document. Return first element if array received.
-  update: { [`${model(args)}`]: (prev, next) => Array.isArray(next) ? next[0] : next }
+  update: { [model.slice(0, -1)]: (prev, next) => Array.isArray(next) ? next[0] : next }
 })
 
 /* *****
@@ -91,12 +91,12 @@ CREATE: POST
 Pass the object in as the body arg
 ex: api.post('report', {})
 ***** */
-const post = (args, body) => mutateAsync({
-  url: adapt(args),
+const post = (model, body, options) => mutateAsync({
+  url: url(model, options),
   options: { method: 'POST' },
-  transform: body => ({ [`${model(args)}`]: body }),
+  transform: body => ({ [model.slice(0, -1)]: body }),
   body,
-  update: { [`${model(args)}`]: (prev, next) => Array.isArray(next) ? next[0] : next }
+  update: { [model.slice(0, -1)]: (prev, next) => Array.isArray(next) ? next[0] : next }
 })
 
 /* *****
@@ -104,12 +104,12 @@ UPDATE: PUT
 ex: api.put('report', '594b49998dabd50e2c7176bf',
 { date: "2000-06-21T07:15:10.746Z" })
 ***** */
-const put = (args, body) => mutateAsync({
-  url: adapt(args),
+const put = (model, body, options) => mutateAsync({
+  url: url(model, options),
   options: { method: 'PUT' },
-  transform: body => ({ [`${model(args)}`]: body }),
+  transform: body => ({ [model.slice(0, -1)]: body }),
   body,
-  update: { [`${model(args)}`]: (prev, next) => Array.isArray(next) ? next[0] : next }
+  update: { [model.slice(0, -1)]: (prev, next) => Array.isArray(next) ? next[0] : next }
 })
 
 /* *****
@@ -117,12 +117,12 @@ UPDATE: PATCH
 ex: api.put('report', '594b49998dabd50e2c7176bf',
 { date: "2000-06-21T07:15:10.746Z" })
 ***** */
-const patch = (args, body) => mutateAsync({
-  url: adapt(args),
+const patch = (model, body, options) => mutateAsync({
+  url: url(model, options),
   options: { method: 'PATCH' },
-  transform: body => ({ [`${model(args)}`]: body }),
+  transform: body => ({ [model.slice(0, -1)]: body }),
   body,
-  update: { [`${model(args)}`]: (prev, next) => Array.isArray(next) ? next[0] : next }
+  update: { [model.slice(0, -1)]: (prev, next) => Array.isArray(next) ? next[0] : next }
 })
 
 /* *****
@@ -130,11 +130,11 @@ DELETE
 ex: api.remove('report', '594b49998dabd50e2c7176bf')
 note: The 'delete' namespace is a JS keyword.
 ***** */
-const remove = (args) => mutateAsync({
-  url: adapt(args),
+const remove = (model, options) => mutateAsync({
+  url: url(options),
   options: { method: 'DELETE' },
-  transform: body => ({ [`${model(args)}`]: body }),
-  update: { [`${model(args)}`]: (prev, next) => Array.isArray(next) ? next[0] : next }
+  transform: body => ({ [model.slice(0, -1)]: body }),
+  update: { [model.slice(0, -1)]: (prev, next) => Array.isArray(next) ? next[0] : next }
 })
 
 export default {
@@ -168,7 +168,7 @@ OR (updated example):
   connect((state, props) => ({ block: state.entities.block })),
   connectRequest((props) => api.get({
     model: 'block',
-    query: { number: props.args.number, year: "2017" },
+    query: { number: props.options.number, year: "2017" },
     join: ['contacts']
   }))
 )
