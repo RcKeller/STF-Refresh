@@ -15,9 +15,8 @@ export default class REST {
   */
   constructor (model, key) {
     this.model = model
-    this.modelName = model.modelName.toLowerCase()
     this.key = key
-    console.log(`REST: Instantiated controller: ${this.modelName} - Key: ${this.key}`)
+    console.log(`REST: Instantiated controller: ${model.modelName.toLowerCase()}s by ${this.key}`)
   }
 
   // Returns a function that will write the result as a JSON to the response
@@ -40,19 +39,30 @@ export default class REST {
   /* *****
     GET (All): List all models
   ***** */
-  getAll (query) {
+  getAll (req) {
+    //  Handle queries
+    if (req.query) {
+      //  Populate (or 'join'): http://mongoosejs.com/docs/populate.html
+      if (req.query.join) {
+        console.log(req.query.join.split(',').join(' '))
+        return this.model
+          .find({})
+          .populate(req.query.join.split(',').join(' '))
+          .then((modelInstances) => modelInstances)
+      }
+    }
     return this.model
-    .find({})
-    .then((modelInstances) => modelInstances)
+      .find({})
+      .then((modelInstances) => modelInstances)
   }
   get (id, query) {
     let filter = {}
     filter[this.key] = id
-    let join = query.join.replace(/,/g, ' ')
+    // let join = query.join.replace(/,/g, ' ')
 
     return this.model
       .findOne(filter)
-      .populate(join)
+      // .populate(join)
       .then((modelInstance) => modelInstance)
   }
 
@@ -112,7 +122,7 @@ export default class REST {
 
     router.get('/', (req, res) => {
       this
-        .getAll(req.query)
+        .getAll(req)
         .then(this.ok(res))
         .then(null, this.fail(res))
     })
