@@ -53,7 +53,7 @@ export default class REST {
   ***** */
   getAll (query) {
     let model = this.model
-    //  Core query, e.g. where={"year":"2017"}. Else, get all
+    //  Get all, unless "where" query, e.g. where={"year":"2017"}
     !query.where
     ? model = model.find({})
     : model = model.find(JSON.parse(query.where))
@@ -62,7 +62,11 @@ export default class REST {
   }
 
   get (id, query) {
-    let model = this.model.findOne({ [this.key]: id })
+    let model = this.model
+    //  Find by key, unless "where" query, e.g. where={"year":"2017"}
+    !query.where
+    ? model = model.findOne({ [this.key]: id })
+    : model = model.findOne(JSON.parse(query.where))
     model = this.queryHandler(model, query)
     return model.then((modelInstance) => modelInstance)
   }
