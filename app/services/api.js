@@ -79,11 +79,11 @@ GET ONE
 ex: api.get('proposal', '594b49998dabd50e2c71762d')
 ***** */
 const get = (args) => ({
-  url: adapt(args.id ? args : Object.assign(args, { id: 'undefined' })),
+  url: adapt(args),
   options: { method: 'GET' },
   transform: body => ({ [`${model(args)}`]: body }),
   //  This is for a SINGLE document. Return first element if array received.
-  update: { [`${model(args)}`]: (prev, next) => next }
+  update: { [`${model(args)}`]: (prev, next) => Array.isArray(next) ? next[0] : next }
 })
 
 /* *****
@@ -96,7 +96,7 @@ const post = (args, body) => mutateAsync({
   options: { method: 'POST' },
   transform: body => ({ [`${model(args)}`]: body }),
   body,
-  update: { [`${model(args)}`]: (prev, next) => next }
+  update: { [`${model(args)}`]: (prev, next) => Array.isArray(next) ? next[0] : next }
 })
 
 /* *****
@@ -109,7 +109,7 @@ const put = (args, body) => mutateAsync({
   options: { method: 'PUT' },
   transform: body => ({ [`${model(args)}`]: body }),
   body,
-  update: { [`${model(args)}`]: (prev, next) => next }
+  update: { [`${model(args)}`]: (prev, next) => Array.isArray(next) ? next[0] : next }
 })
 
 /* *****
@@ -122,7 +122,7 @@ const patch = (args, body) => mutateAsync({
   options: { method: 'PATCH' },
   transform: body => ({ [`${model(args)}`]: body }),
   body,
-  update: { [`${model(args)}`]: (prev, next) => next }
+  update: { [`${model(args)}`]: (prev, next) => Array.isArray(next) ? next[0] : next }
 })
 
 /* *****
@@ -134,7 +134,7 @@ const remove = (args) => mutateAsync({
   url: adapt(args),
   options: { method: 'DELETE' },
   transform: body => ({ [`${model(args)}`]: body }),
-  update: { [`${model(args)}`]: (prev, next) => next }
+  update: { [`${model(args)}`]: (prev, next) => Array.isArray(next) ? next[0] : next }
 })
 
 export default {
