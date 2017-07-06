@@ -10,17 +10,17 @@ export default (app) => {
   /*
   RESTful API
   */
-  app.use(`/${version}/contacts`, new controllers.Contacts().route())
-  app.use(`/${version}/proposals`, new controllers.Proposals().route())
-  app.use(`/${version}/projects`, new controllers.Projects().route())
-  app.use(`/${version}/amendments`, new controllers.Amendments().route())
-  app.use(`/${version}/manifests`, new controllers.Manifests().route())
-  app.use(`/${version}/items`, new controllers.Items().route())
-  app.use(`/${version}/blocks`, new controllers.Blocks().route())
-  app.use(`/${version}/reviews`, new controllers.Reviews().route())
-  app.use(`/${version}/decisions`, new controllers.Decisions().route())
-  app.use(`/${version}/reports`, new controllers.Reports().route())
-  app.use(`/${version}/comments`, new controllers.Comments().route())
+  app.use(`/${version}/contacts`, new controllers.Contacts().api())
+  app.use(`/${version}/proposals`, new controllers.Proposals().api())
+  app.use(`/${version}/projects`, new controllers.Projects().api())
+  app.use(`/${version}/amendments`, new controllers.Amendments().api())
+  app.use(`/${version}/manifests`, new controllers.Manifests().api())
+  app.use(`/${version}/items`, new controllers.Items().api())
+  app.use(`/${version}/blocks`, new controllers.Blocks().api())
+  app.use(`/${version}/reviews`, new controllers.Reviews().api())
+  app.use(`/${version}/decisions`, new controllers.Decisions().api())
+  app.use(`/${version}/reports`, new controllers.Reports().api())
+  app.use(`/${version}/comments`, new controllers.Comments().api())
   console.log(`REST: API live for all ${Object.keys(controllers).length - 1} core models.`)
 
   // USER PROFILE ROUTES

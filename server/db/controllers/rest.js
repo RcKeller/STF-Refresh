@@ -1,4 +1,7 @@
 import { Router } from 'express'
+import config from 'config'
+const env = config.get('env')
+
 /*
 CORE RESTful CONTROLLER:
 Every model adheres to this interface as a baseline.
@@ -16,7 +19,7 @@ export default class REST {
   constructor (model, key) {
     this.model = model
     this.key = key
-    console.log(`REST: Instantiated controller: ${model.modelName.toLowerCase()}s by ${this.key}`)
+    console.log(`REST: Instantiated controller: ${model.modelName.toLowerCase()}s, keyed by ${this.key}`)
   }
 
   // Returns a function that will write the result as a JSON to the response
@@ -33,23 +36,20 @@ export default class REST {
   Unknown error - 500 Internal server error
   */
   fail (res) {
-    return (error) => res.sendStatus(404).end() && console.warn(error)
+    return (error) => res.sendStatus(error.status || 404).end()
   }
 
   /* *****
     GET (All): List all models
   ***** */
-  getAll (req) {
-    //  Handle queries
-    if (req.query) {
-      //  Populate (or 'join'): http://mongoosejs.com/docs/populate.html
-      if (req.query.join) {
-        console.log(req.query.join.split(',').join(' '))
-        return this.model
-          .find({})
-          .populate(req.query.join.split(',').join(' '))
-          .then((modelInstances) => modelInstances)
-      }
+  getAll (query) {
+    //  QUERY CASE: join (populate in mongo)
+    if (query.join) {
+      console.log(query.join.split(',').join(' '))
+      return this.model
+        .find({})
+        .populate(query.join.split(',').join(' '))
+        .then((modelInstances) => modelInstances)
     }
     return this.model
       .find({})
@@ -69,34 +69,18 @@ export default class REST {
   /* *****
     POST: Add a model
   ***** */
-  post (data) {
+  post (data, query) {
     return this.model
       .create(data)
       .then((modelInstance) => modelInstance)
   }
 
   /* *****
-    DELETE: Remove a model
-  ***** */
-  delete (id) {
-    const filter = {}
-    filter[this.key] = id
-
-    return this.model
-      .remove(filter)
-      .then(() => {})
-      // .then(() => {
-      //   return {}
-      // })
-  }
-
-  /* *****
     PUT: Update a model
     (formerly patch. On the fence about changing this).
   ***** */
-  put (id, data) {
-    var filter = {}
-    filter[this.key] = id
+  put (id, data, query) {
+    const filter = { [this.key]: id }
 
     return this.model
       .findOne(filter)
@@ -112,17 +96,27 @@ export default class REST {
       .then((modelInstance) => modelInstance)
   }
 
+  /* *****
+  DELETE: Remove a model
+  ***** */
+  delete (id, query) {
+    const filter = { [this.key]: id }
+    return this.model
+    .remove(filter)
+    .then(() => {})
+  }
+
   /*
   INIT ROUTES
   Once initialized, you can use() your model directly after construction, e.g.:
   app.use('/v1/blocks', new controllers.Blocks().route())
   */
-  route () {
+  api () {
     const router = new Router()
 
     router.get('/', (req, res) => {
       this
-        .getAll(req)
+        .getAll(req.query)
         .then(this.ok(res))
         .then(null, this.fail(res))
     })
@@ -134,25 +128,25 @@ export default class REST {
         .then(null, this.fail(res))
     })
 
-    router.put('/:key', (req, res) => {
+    router.post('/', (req, res) => {
       this
-        .put(req.params.key, req.body)
+        .post(req.body, req.query)
         .then(this.ok(res))
         .then(null, this.fail(res))
+    })
+
+    router.put('/:key', (req, res) => {
+      this
+      .put(req.params.key, req.body, req.query)
+      .then(this.ok(res))
+      .then(null, this.fail(res))
     })
 
     //  TODO: Should we add a patch method?
 
-    router.post('/', (req, res) => {
-      this
-        .post(req.body)
-        .then(this.ok(res))
-        .then(null, this.fail(res))
-    })
-
     router.delete('/:key', (req, res) => {
       this
-        .delete(req.params.key)
+        .delete(req.params.key, req.query)
         .then(this.ok(res))
         .then(null, this.fail(res))
     })
