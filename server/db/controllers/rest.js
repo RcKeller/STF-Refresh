@@ -58,7 +58,7 @@ export default class REST {
     ? model = model.find({})
     : model = model.find(JSON.parse(query.where))
     model = this.queryHandler(model, query)
-    return model.then((modelInstances) => modelInstances)
+    return model.then((modelInstances = []) => modelInstances)
   }
 
   get (id, query) {
@@ -68,7 +68,7 @@ export default class REST {
     ? model = model.findOne({ [this.key]: id })
     : model = model.findOne(JSON.parse(query.where))
     model = this.queryHandler(model, query)
-    return model.then((modelInstance) => modelInstance)
+    return model.then((modelInstance = {}) => modelInstance)
   }
 
   /* *****
@@ -77,7 +77,7 @@ export default class REST {
   post (data, query) {
     let model = this.model.create(data)
     //  TODO: Any middleware needed?
-    return model.then((modelInstance) => modelInstance)
+    return model.then((modelInstance = {}) => modelInstance)
   }
 
   /* *****
@@ -95,7 +95,7 @@ export default class REST {
         }
         return modelInstance.save()
       })
-      .then((modelInstance) => modelInstance)
+      .then((modelInstance = {}) => modelInstance)
   }
 
   /* *****

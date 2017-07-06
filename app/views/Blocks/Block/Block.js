@@ -17,7 +17,7 @@ import styles from './block.css'
   connect((state, props) => ({ block: state.db.block })),
   connectRequest((props) => api.get({
     model: 'blocks',
-    query: { number: props.params.number },
+    where: { number: props.params.number },
     join: ['contacts', 'decision']
   }))
 )
