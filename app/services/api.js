@@ -44,17 +44,15 @@ output:
 */
 const adapt = (args) => {
   //  Base URL, e.g. ...host/v1/proposal/:id
-  let url = `${API}/${version}/${args.model}${args.id ? `/${args.id}` : ''}`
+  let url = `${API}/${version}/${args.model}/${args.id ? args.id : ''}`
   //  Operator to prefix query string for joins, queries, ID specification etc
   let operator = '?'
-  if (args.query) {
-    url = `${url}${operator}query=${JSON.stringify(args.query)}`
+  if (args.where) {
+    url = `${url}${operator}where=${JSON.stringify(args.where)}`
     operator = '&'
   }
   if (args.join) {
-    // const joins = args.join.join(',')
-    // EDIT: Not necessary with the new API. It just comes across as an array.
-    url = `${url}${operator}populate=${args.join}`
+    url = `${url}${operator}join=${args.join}`
     operator = '&'
   }
   return url
@@ -81,7 +79,7 @@ GET ONE
 ex: api.get('proposal', '594b49998dabd50e2c71762d')
 ***** */
 const get = (args) => ({
-  url: adapt(args),
+  url: adapt(args.id ? args : Object.assign(args, { id: 'undefined' })),
   options: { method: 'GET' },
   transform: body => ({ [`${model(args)}`]: body }),
   //  This is for a SINGLE document. Return first element if array received.
