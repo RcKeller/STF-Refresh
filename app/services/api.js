@@ -85,7 +85,7 @@ const get = (args) => ({
   options: { method: 'GET' },
   transform: body => ({ [`${model(args)}`]: body }),
   //  This is for a SINGLE document. Return first element if array received.
-  update: { [`${model(args)}`]: (prev, next) => next[0] || next }
+  update: { [`${model(args)}`]: (prev, next) => next }
 })
 
 /* *****

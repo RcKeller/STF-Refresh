@@ -110,7 +110,7 @@ export default class REST {
   /*
   INIT ROUTES
   Once initialized, you can use() your model directly after construction, e.g.:
-  app.use('/v1/blocks', new controllers.Blocks().route())
+  app.use('/v1/blocks', new controllers.Blocks().api())
   */
   api () {
     const router = new Router()
@@ -122,6 +122,10 @@ export default class REST {
         .then(null, this.fail(res))
     })
 
+    /*
+    NOTE: You won't always have an ID. If so, use ?where={conditions} instead:
+    .../v1/proposals/null?where={%22year%22:%222017%22}
+    */
     router.get('/:key', (req, res) => {
       this
         .get(req.params.key, req.query)
