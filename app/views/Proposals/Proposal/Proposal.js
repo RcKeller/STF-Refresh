@@ -7,15 +7,12 @@ import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
 
-import { Row, Col, Spin, Progress, Collapse, Icon, Tabs } from 'antd'
-const Panel = Collapse.Panel
+import { Spin, Tabs } from 'antd'
 const TabPane = Tabs.TabPane
 
 import Head from './Head/Head'
 import Overview from './Overview/Overview'
 import Body from './Body/Body'
-
-const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
 
 import styles from './Proposal.css'
 @compose(
@@ -33,7 +30,6 @@ import styles from './Proposal.css'
 )
 class Proposal extends React.Component {
   render ({ proposal, screen } = this.props) {
-    //  className={styles['article']}
     return (
       <article className={styles['article']} >
         {!proposal
@@ -48,8 +44,25 @@ class Proposal extends React.Component {
               <hr />
               <Body />
             </TabPane>
-            <TabPane tab='Test' key='2'>
-              <p>Test</p>
+            <TabPane tab='Report' key='2'>
+              <p>Report</p>
+              <br />
+              <p>Amendment submissions probably go here as a footnote.</p>
+            </TabPane>
+            <TabPane tab='Reviews' key='3'>
+              <p>Reviews</p>
+              <br />
+              <p>Amendment submissions probably go here as a footnote.</p>
+            </TabPane>
+            <TabPane tab='Update' key='4'>
+              <p>Update</p>
+              <br />
+              <p>User & admin tools - update contacts, withdraw, etc</p>
+            </TabPane>
+            <TabPane tab='Admin' key='5'>
+              <p>Admin</p>
+              <br />
+              <p>Admin-only Tools. Withdraw, change</p>
             </TabPane>
           </Tabs>
         }
