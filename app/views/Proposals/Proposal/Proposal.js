@@ -10,9 +10,15 @@ import api from '../../../services'
 import { Spin, Tabs } from 'antd'
 const TabPane = Tabs.TabPane
 
+//  Proposal components
 import Head from './Head/Head'
 import Overview from './Overview/Overview'
 import Body from './Body/Body'
+//  Reports
+import Report from './Report/Report'
+//  Reviews
+import Reviews from './Reviews/Reviews'
+//  Editors for contacts and admins
 
 import styles from './Proposal.css'
 @compose(
@@ -25,7 +31,7 @@ import styles from './Proposal.css'
       year: props.params.year,
       number: props.params.number
     },
-    join: ['body', 'decision', 'contacts', 'manifests', 'report', 'amendments', 'comments']
+    join: ['contacts', 'decision', 'body', 'manifests', 'comments', 'amendments', 'report', 'reviews']
   }))
 )
 class Proposal extends React.Component {
@@ -35,7 +41,7 @@ class Proposal extends React.Component {
         {!proposal
           ? <Spin size='large' tip='Loading...' />
           : <Tabs className='tab-container' type='card' >
-            <TabPane className={styles['tab-pane']} tab='Proposal' key='1'>
+            <TabPane tab='Proposal' key='1' className={styles['tab-pane']}>
               <h1>{proposal.title}</h1>
               <h3>For {proposal.organization}</h3>
               <h6>{`ID: ${proposal.year}-${proposal.number}`}</h6>
@@ -44,25 +50,21 @@ class Proposal extends React.Component {
               <hr />
               <Body />
             </TabPane>
-            <TabPane tab='Report' key='2'>
-              <p>Report</p>
-              <br />
-              <p>Amendment submissions probably go here as a footnote.</p>
+            <TabPane tab='Report' key='2' className={styles['tab-pane']}>
+              <Report />
             </TabPane>
-            <TabPane tab='Reviews' key='3'>
-              <p>Reviews</p>
-              <br />
-              <p>Amendment submissions probably go here as a footnote.</p>
-            </TabPane>
-            <TabPane tab='Update' key='4'>
+            <TabPane tab='Update' key='3' className={styles['tab-pane']}>
               <p>Update</p>
               <br />
               <p>User & admin tools - update contacts, withdraw, etc</p>
             </TabPane>
-            <TabPane tab='Admin' key='5'>
+            <TabPane tab='Admin' key='4' className={styles['tab-pane']}>
               <p>Admin</p>
               <br />
               <p>Admin-only Tools. Withdraw, change</p>
+            </TabPane>
+            <TabPane tab='Reviews' key='5' className={styles['tab-pane']}>
+              <Reviews />
             </TabPane>
           </Tabs>
         }

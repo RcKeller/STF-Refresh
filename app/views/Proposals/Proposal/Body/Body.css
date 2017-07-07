@@ -1,10 +1,13 @@
 @import '../../../../css/colors';
 
 .arrow {
-  text-align: center;
-  font-size: 32px;
-  color: var(--gold, gold);
-  padding: 16px 0;
   display: block !important;
   margin: auto;
+  text-align: center;
+  font-size: 28px;
+  color: var(--gold, gold);
+  padding: 0;
+  @media (min-width: 992px) {
+    padding: 16px 0;
+  }
 }

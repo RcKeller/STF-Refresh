@@ -38,7 +38,7 @@ const columns = [
     title: 'Status',
     dataIndex: 'status',
     key: 'status',
-    render: (text) => <span><Badge status='success' />{text}</span>
+    render: (text) => <Badge status='success' text={text} />
   },
   { title: 'Asked', dataIndex: 'asked', key: 'asked' },
   {

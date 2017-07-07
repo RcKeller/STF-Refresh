@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
-import { Row, Col, Progress, Collapse } from 'antd'
+import { Row, Col, Progress, Collapse, Alert } from 'antd'
 const Panel = Collapse.Panel
 
 const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
@@ -38,19 +38,23 @@ class Head extends React.Component {
           </Collapse>
         </Col>
         <Col className='gutter-row' xs={24} md={12}>
-          <h5>Status: {status}</h5>
-          {decision &&
-            <Progress type='circle' width={80}
-              status={decision ? (decision.approved ? 'success' : 'exception') : 'active'}
-              percent={100}
-            />
-          }
+          <Alert type='info' showIcon
+            message={`Status: ${status}`}
+            description='Lorem Ipsum'
+          />
         </Col>
       </Row>
     )
   }
 }
-
+/*
+{decision &&
+  <Progress type='circle' width={80}
+    status={decision ? (decision.approved ? 'success' : 'exception') : 'active'}
+    percent={100}
+  />
+}
+*/
 Head.propTypes = {
   contacts: PropTypes.object,
   status: PropTypes.string,
