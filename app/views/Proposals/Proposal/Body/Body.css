@@ -1,0 +1,10 @@
+@import '../../../../css/colors';
+
+.arrow {
+  text-align: center;
+  font-size: 32px;
+  color: var(--gold, gold);
+  padding: 16px 0;
+  display: block !important;
+  margin: auto;
+}
