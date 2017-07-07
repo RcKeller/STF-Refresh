@@ -98,6 +98,13 @@ export default class REST {
       .then((modelInstance = {}) => modelInstance)
   }
 
+  patch (id, data, query) {
+    let model = this.model
+    return model
+      .findOneAndUpdate({ [this.key]: id }, data)
+      .then((modelInstance = {}) => modelInstance)
+  }
+
   /* *****
   DELETE: Remove a model
   ***** */
@@ -143,6 +150,13 @@ export default class REST {
     router.put('/:key', (req, res) => {
       this
       .put(req.params.key, req.body, req.query)
+      .then(this.ok(res))
+      .then(null, this.fail(res))
+    })
+
+    router.patch('/:key', (req, res) => {
+      this
+      .put(req.params.key, req.body)
       .then(this.ok(res))
       .then(null, this.fail(res))
     })

@@ -1,5 +1,36 @@
 @import '../../../css/layout';
+@import '../../../css/colors';
 
 .article {
   @apply --page;
+  margin: 24px 0 0 0;
+  padding: 0;
+  @media (min-width: 992px) {
+    margin: 24px 48px;
+    padding: 0;
+  }
+  background-color: inherit;
+  /*background-color: inherit;*/
+}
+
+.tab-pane {
+  padding: 8px;
+  background: #fff;
+  @media (min-width: 992px) {
+    padding: 24px;
+  }
+  border-radius: 0 4px 4px 4px;
+}
+
+.centered {
+  text-align: center;
+}
+
+.arrow {
+  text-align: center;
+  font-size: 32px;
+  color: var(--gold, gold);
+  padding: 16px 0;
+  display: block !important;
+  margin: auto;
 }
