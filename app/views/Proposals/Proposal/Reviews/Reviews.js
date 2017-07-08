@@ -38,7 +38,7 @@ class Review extends React.Component {
               <span>
                 <p>{r.body}</p>
                 <Collapse bordered={false} style={{background: 'inherit'}}>
-                  <Panel style={{border: 'none'}} header={<h6>Overall Score: {r.score}</h6>}>
+                  <Panel style={{border: 'none'}} header={<h6>Overall Score: {r.score}%</h6>}>
                     <em>{r.ratings[0].prompt}</em>
                     <Progress percent={r.ratings[0].score} />
                   </Panel>
