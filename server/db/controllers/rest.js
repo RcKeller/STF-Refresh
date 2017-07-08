@@ -99,6 +99,8 @@ export default class REST {
   }
 
   patch (id, data, query) {
+    //  https://codexample.org/questions/306428/mongodb-mongoose-subdocuments-created-twice.c
+    //  https://github.com/linnovate/mean/issues/511
     let model = this.model
     return model
       .findOneAndUpdate({ [this.key]: id }, data)
@@ -121,48 +123,40 @@ export default class REST {
   */
   api () {
     const router = new Router()
-
+    //  READ
     router.get('/', (req, res) => {
       this
         .getAll(req.query)
         .then(this.ok(res))
         .then(null, this.fail(res))
     })
-
-    /*
-    NOTE: You won't always have an ID. If so, use ?where={conditions} instead:
-    .../v1/proposals/null?where={%22year%22:%222017%22}
-    */
     router.get('/:key', (req, res) => {
       this
         .get(req.params.key, req.query)
         .then(this.ok(res))
         .then(null, this.fail(res))
     })
-
+    //  CREATE
     router.post('/', (req, res) => {
       this
         .post(req.body, req.query)
         .then(this.ok(res))
         .then(null, this.fail(res))
     })
-
+    //  UPDATE
     router.put('/:key', (req, res) => {
       this
-      .put(req.params.key, req.body, req.query)
-      .then(this.ok(res))
-      .then(null, this.fail(res))
+        .put(req.params.key, req.body, req.query)
+        .then(this.ok(res))
+        .then(null, this.fail(res))
     })
-
     router.patch('/:key', (req, res) => {
       this
-      .put(req.params.key, req.body)
-      .then(this.ok(res))
-      .then(null, this.fail(res))
+        .put(req.params.key, req.body)  // query?
+        .then(this.ok(res))
+        .then(null, this.fail(res))
     })
-
-    //  TODO: Should we add a patch method?
-
+    //  DELETE
     router.delete('/:key', (req, res) => {
       this
         .delete(req.params.key, req.query)

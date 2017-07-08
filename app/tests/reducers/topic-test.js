@@ -1,5 +1,4 @@
 import expect from 'expect'
-import md5 from 'spark-md5'
 import reducer from '../../reducers/topic'
 import * as types from '../../types'
 
@@ -19,7 +18,7 @@ describe('Topics reducer', () => {
   function createData () {
     return {
       text: createTopic(),
-      id: md5.hash(createTopic()),
+      id: s,  //  md5 placeholder, removed excess package
       count: Math.floor(Math.random() * 100)
     }
   }
