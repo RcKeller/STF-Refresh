@@ -77,6 +77,7 @@ class Proposals extends React.Component {
             size={screen.lessThan.medium ? 'small' : ''}
             columns={screen.lessThan.medium ? columns.slice(0, 3) : columns}
             title={() => <h1>STF Proposals</h1>}
+            footer={() => 'Your proposals here'}
           />
         }
       </article>

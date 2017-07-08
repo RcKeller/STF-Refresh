@@ -16,9 +16,8 @@ const Nav = ({ router }) => (
   >
     <SubMenu key='sub1' title={<span><Icon type='solution' /><span>Proposals</span></span>}>
       <ItemGroup key='g1' title='Browse'>
-        <Item key='/proposals'>All Proposals</Item>
-        <Item key='/proposals/myproposals'>My Proposals</Item>
-        <Item key='/blocks'>Funding Blocks</Item>
+        <Item key='/proposals'>Proposals</Item>
+        <Item key='/blocks'>Block Funding</Item>
       </ItemGroup>
       <ItemGroup key='g2' title='Submit'>
         <Item key='/create'>Proposal</Item>

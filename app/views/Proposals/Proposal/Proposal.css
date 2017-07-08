@@ -1,7 +1,7 @@
 @import '../../../css/layout';
 @import '../../../css/colors';
 
-.article {
+.tabbed-article {
   @apply --page;
   margin: 24px 0 0 0;
   padding: 0;
