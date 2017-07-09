@@ -9,6 +9,31 @@
 
 This is a full refresh of the technology behind uwstf.org. Built using modern best practices, automated testing and the intent of being run as a containerized, isolated process, this introduces a code base built-to-last and should put an end to churn in technologies and databases.
 
+# Technical Overview
+
+#### Built for Continuity
+We don't want a scenario where there's patchwork, legacy databases being joined on every query, or we get trapped in a version lock. This is built using technologies and design patterns that have significant traction so that this site is built-to-last:
+- [ES6 Javascript](http://stateofjs.com/2016/flavors/) (the 2015 flavor of js) is being used as well as ES7 (future features)
+- Webpack is used for [bundling](http://stateofjs.com/2016/buildtools/), pretty standard. Basically, it compresses our files, runs fancy local servers, and translates new code into old code IE can run. We use some plugins
+- Node and Express are our server and API - they are established and allow us to reuse auth code from UW repositories.
+- React.js is our [front-end framework](http://stateofjs.com/2016/frontend/) (and is used by the server to push auth/metadata).
+  - It is very similar to Vue.js, but is more stable, documented, and introduces more possibilities. UW has courses in this too. Vue is really cool and simpler, but is also only maintained by a lone guy in China and has a more international presence.
+- Redux is used for [state management](http://stateofjs.com/2016/statemanagement/) and is a gold standard. You can use it to log every state change and function call.
+- CSS Modules are being used for [style](http://stateofjs.com/2016/css/). It's just standard CSS, but it's scoped per-component, so I can declare the same class names in different pages and not have conflicts. It's great and there's no buy-in or preprocessing.
+- MongoDB is our database. It is JSON based, easy to scale, and congruent with the kind of candidates UW produces (big data emphasis).
+- I remain unopinionated about DB's right now, but currently I've got MongoDB in place.
+- Enzyme is used for [testing](http://stateofjs.com/2016/testing/). Backed by AirBNB and most of the react community, it's a solid choice.
+
+There are links to the "State of JavaScript", a study from a few months ago on the web development world. Regarding [features](http://stateofjs.com/2016/features/), we have the following:
+- Server Side Rendering
+- Code Splitting (Universal React)
+- Optimistic Updates (React)
+- Hot Reloading (Webpack)
+- Time Travel Debugging (Redux Devtools)
+
+I've got a manifest of all technologies in use (equivocal to `wtf.txt`) in STACK.md. It has the real "technical" operational notes. Your `package.json` has a less readable manifest, and `yarn.lock` is a running log of all updates and changes for finding which changes are breaking.
+
+---
 
 # Refresh Roadmap
 
@@ -127,30 +152,6 @@ These are unrelated to the task at hand and will be handled on non-billable time
 - [] Develop an unopinionated UW component library
 - [] Create a shib-enabled MERN stack boilerplate for UW webapps
 - [] Consider making route GET requests open to the public
-
-# Technical Overview
-
-#### Built for Continuity
-We don't want a scenario where there's patchwork, legacy databases being joined on every query, or we get trapped in a version lock. This is built using technologies and design patterns that have significant traction so that this site is built-to-last:
-- [ES6 Javascript](http://stateofjs.com/2016/flavors/) (the 2015 flavor of js) is being used as well as ES7 (future features)
-- Webpack is used for [bundling](http://stateofjs.com/2016/buildtools/), pretty standard. Basically, it compresses our files, runs fancy local servers, and translates new code into old code IE can run. We use some plugins
-- Node and Express are our server and API - they are established and allow us to reuse auth code from UW repositories.
-- React.js is our [front-end framework](http://stateofjs.com/2016/frontend/) (and is used by the server to push auth/metadata).
-  - It is very similar to Vue.js, but is more stable, documented, and introduces more possibilities. UW has courses in this too. Vue is really cool and simpler, but is also only maintained by a lone guy in China and has a more international presence.
-- Redux is used for [state management](http://stateofjs.com/2016/statemanagement/) and is a gold standard. You can use it to log every state change and function call.
-- CSS Modules are being used for [style](http://stateofjs.com/2016/css/). It's just standard CSS, but it's scoped per-component, so I can declare the same class names in different pages and not have conflicts. It's great and there's no buy-in or preprocessing.
-- MongoDB is our database. It is JSON based, easy to scale, and congruent with the kind of candidates UW produces (big data emphasis).
-- I remain unopinionated about DB's right now, but currently I've got MongoDB in place.
-- Enzyme is used for [testing](http://stateofjs.com/2016/testing/). Backed by AirBNB and most of the react community, it's a solid choice.
-
-There are links to the "State of JavaScript", a study from a few months ago on the web development world. Regarding [features](http://stateofjs.com/2016/features/), we have the following:
-- Server Side Rendering
-- Code Splitting (Universal React)
-- Optimistic Updates (React)
-- Hot Reloading (Webpack)
-- Time Travel Debugging (Redux Devtools)
-
-I've got a manifest of all technologies in use (equivocal to `wtf.txt`) in STACK.md. It has the real "technical" operational notes. Your `package.json` has a less readable manifest, and `yarn.lock` is a running log of all updates and changes for finding which changes are breaking.
 
 ---
 
