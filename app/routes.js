@@ -1,17 +1,27 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
-import {
-  //  Core components
-  Template, FrontPage,
-  //  Static Pages
-  FAQ, About, Contact,
-  //  Dynamic pages
-  Create, Agreement,
-  Proposals, Proposal,
-  Blocks, Block,
-  Documents,
-  Calendar, Events
-} from './views'
+
+import Template from './views/Template/Template'
+/*
+CODE SPLITTING:
+This weird hackery is the most clean way to split components into different JS
+files that are loaded async. Router does not officially support this.
+Please note, migration to v4 is a BREAKING change.
+https://github.com/reactGo/reactGo/pull/841/files
+*/
+const SplitFrontPage = (l, c) => require.ensure([], () => c(null, require('./views/FrontPage/FrontPage').default))
+const SplitFAQ = (l, c) => require.ensure([], () => c(null, require('./views/FAQ/FAQ').default))
+const SplitAbout = (l, c) => require.ensure([], () => c(null, require('./views/About/About').default))
+const SplitContact = (l, c) => require.ensure([], () => c(null, require('./views/Contact/Contact').default))
+const SplitCreate = (l, c) => require.ensure([], () => c(null, require('./views/Proposals/Create/Create').default))
+const SplitAgreement = (l, c) => require.ensure([], () => c(null, require('./views/Proposals/Create/Agreement/Agreement').default))
+const SplitProposals = (l, c) => require.ensure([], () => c(null, require('./views/Proposals/Proposals').default))
+const SplitProposal = (l, c) => require.ensure([], () => c(null, require('./views/Proposals/Proposal/Proposal').default))
+const SplitBlocks = (l, c) => require.ensure([], () => c(null, require('./views/Blocks/Blocks').default))
+const SplitBlock = (l, c) => require.ensure([], () => c(null, require('./views/Blocks/Block/Block').default))
+const SplitCalendar = (l, c) => require.ensure([], () => c(null, require('./views/Calendar/Calendar').default))
+const SplitEvents = (l, c) => require.ensure([], () => c(null, require('./views/Calendar/Events/Events').default))
+
 /*
  * @param {Redux Store}
  * We require store as an argument here because we wish to get
@@ -19,7 +29,7 @@ import {
  */
 export default (store) => {
   const requireAuth = (nextState, replace, callback) => {
-    const { user: { authenticated }} = store.getState()
+    const { user: { authenticated } } = store.getState()
     if (!authenticated) {
       window.location = '/auth/google'
       replace({
@@ -31,70 +41,42 @@ export default (store) => {
     callback()
   }
 
-  const redirectAuth = (nextState, replace, callback) => {
-    const { user: { authenticated }} = store.getState()
-    if (authenticated) {
-      replace({
-        pathname: '/'
-      })
-    }
-    callback()
-  }
+  // const redirectAuth = (nextState, replace, callback) => {
+  //   const { user: { authenticated } } = store.getState()
+  //   if (authenticated) {
+  //     replace({
+  //       pathname: '/'
+  //     })
+  //   }
+  //   callback()
+  // }
   return (
     <Route path='/' breadcrumbName='Home' component={Template} >
-      <IndexRoute component={FrontPage} />
+      <IndexRoute getComponent={SplitFrontPage} />
 
-      <Route path='/faq' breadcrumbName='F.A.Q.' component={FAQ} />
-      <Route path='/about' breadcrumbName='About' component={About} />
-      <Route path='/contact' breadcrumbName='Contact Us' component={Contact} />
+      <Route path='/faq' breadcrumbName='F.A.Q.' getComponent={SplitFAQ} />
+      <Route path='/about' breadcrumbName='About' getComponent={SplitAbout} />
+      <Route path='/contact' breadcrumbName='Contact Us' getComponent={SplitContact} />
 
-      <Route path='/proposals' breadcrumbName='Proposals' component={Proposals} />
-      <Route path='/proposals/:year/:number' breadcrumbName='View Proposal' component={Proposal} />
-      <Route path='/blocks' breadcrumbName='Blocks' component={Blocks} />
+      <Route path='/proposals' breadcrumbName='Proposals' getComponent={SplitProposals} />
+      <Route path='/proposals/:year/:number' breadcrumbName='View Proposal' getComponent={SplitProposal} />
+      <Route path='/blocks' breadcrumbName='Blocks' getComponent={SplitBlocks} />
       <Route path='/blocks/:number'
-        breadcrumbName='Block' component={Block}
+        breadcrumbName='Block' getComponent={SplitBlock}
       />
 
       <Route path='/create'
         onEnter={requireAuth}
-        breadcrumbName='Create Proposal' component={Agreement}
+        breadcrumbName='Create Proposal' getComponent={SplitAgreement}
       />
       <Route path='/create/:id'
         onEnter={requireAuth}
-        breadcrumbName='Proposal Agreement' component={Create}
-      />
-      <Route path='/amend'
-        // onEnter={requireAuth}
-        breadcrumbName='Proposal Agreement' component={<div>Amend</div>}
-      />
-      <Route path='/amend/:id'
-        // onEnter={requireAuth}
-        breadcrumbName='Proposal Agreement' component={<div>Amend an ID</div>}
+        breadcrumbName='Proposal Agreement' getComponent={SplitCreate}
       />
 
-      <Route path='/documents' breadcrumbName='Documents' component={Documents} />
+      <Route path='/calendar' breadcrumbName='Calendar' getComponent={SplitCalendar} />
+      <Route path='/calendar/events' breadcrumbName='Events' getComponent={SplitEvents} />
 
-      <Route path='/calendar' breadcrumbName='Calendar' component={Calendar} />
-      <Route path='/calendar/events' breadcrumbName='Events' component={Events} />
-
-      <Route path='/docket' breadcrumbName='Calendar' component={<div>Weekly meeting docket, with voting for admins.</div>} />
-      <Route path='/admin' breadcrumbName='Calendar' component={<div>Admin Panel</div>} />
     </Route>
   )
 }
-/*
-TODO:
-/docket/:id
-/documents
-/calendar
-/calendar/events
-/
-*/
-/*
-Example routes w/ Auth:
-
-<IndexRoute component={Vote} fetchData={fetchVoteData} />
-<Route path="login" component={LoginOrRegister} onEnter={redirectAuth} />
-<Route path="dashboard" component={Dashboard} onEnter={requireAuth} />
-<Route path="about" component={About} />
-*/

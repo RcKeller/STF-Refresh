@@ -1,6 +1,13 @@
 import config from 'config'
+let manifest = {'common.js': 'common.js', 'vendor.js': 'vendor.js', 'app.js': 'app.js'}
 
-const createAppScript = () => '<script type="text/javascript" charset="utf-8" src="/assets/app.js"></script>'
+const createAppScript = () => {
+  return `
+    <script src="/assets/${manifest['common.js']}"></script>
+    <script src="/assets/${manifest['vendor.js']}"></script>
+    <script src="/assets/${manifest['app.js']}"></script>
+  `
+}
 
 const createTrackingScript = () => config.has('analytics.google') ? createAnalyticsSnippet(config.get('analytics.google')) : ''
 

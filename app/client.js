@@ -1,7 +1,7 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { Router, browserHistory } from 'react-router'
+import { Router, browserHistory, match } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import createRoutes from './routes'
 import configureStore from './store'
@@ -30,13 +30,14 @@ function onUpdate () {
 
 // Router converts <Route> element hierarchy to a route config:
 // Read more https://github.com/rackt/react-router/blob/latest/docs/Glossary.md#routeconfig
-render(
-  <Provider store={store}>
-    <Router history={history} onUpdate={onUpdate}>
-      {routes}
-    </Router>
-  </Provider>, document.getElementById('app')
-)
+match({routes, history}, (error, redirectLocation, renderProps) => {
+  error && console.warn(error)  // BUG: errors were not handled by match
+  render(
+    <Provider store={store}>
+      <Router {...renderProps} onUpdate={onUpdate} />
+    </Provider>, document.getElementById('app')
+  )
+})
 
 //  Apply antd styles
 import './css/theme.less'
