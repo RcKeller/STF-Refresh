@@ -41,12 +41,15 @@ module.exports = (env = {}) => {
   const prodBrowserRender = {
     devtool: 'cheap-module-source-map',
     context: PATHS.app,
-    entry: { app: ['./client'] },
+    entry: {
+      app: ['./client'],
+      vendor: ['react', 'react-dom', 'react-router', 'redux', 'react-router-redux', 'react-helmet']
+    },
     node,
     output: {
       path: PATHS.assets,
       filename: '[chunkhash].js',
-      chunkFilename: '[name].[chunkhash:6].js', // for code splitting. will work without but useful to set
+      chunkFilename: '[name].[chunkhash].chunk.js', // for code splitting. will work without but useful to set
       publicPath: PATHS.public
     },
     module: { rules: rules({ production: true, browser: true }) },
@@ -57,7 +60,10 @@ module.exports = (env = {}) => {
   const devBrowserRender = {
     devtool: 'eval',
     context: PATHS.app,
-    entry: { app: ['./client', hotMiddlewareScript] },
+    entry: {
+      app: ['./client', hotMiddlewareScript],
+      vendor: ['react', 'react-dom', 'react-router', 'redux', 'react-router-redux', 'react-helmet']
+    },
     node,
     output: {
       path: PATHS.assets,
