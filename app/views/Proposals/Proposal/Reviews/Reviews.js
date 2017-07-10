@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
-import { Alert } from 'antd'
+import { Row, Col, Alert } from 'antd'
 
 import Review from './Review/Review'
 // import styles from './Body.css'
@@ -30,11 +30,14 @@ class Reviews extends React.Component {
             />
           : <em>No decision has been issued</em>
         }
-        <hr />
         <h2>Reviews & Metrics</h2>
-        {reviews && reviews.map((r, i) =>
-          <Review key={i} index={i} />
-        )}
+        <Row gutter={32}>
+          {reviews && reviews.map((r, i) =>
+            <Col key={i} className='gutter-row' xs={24} md={12} xl={8} >
+              <Review index={i} />
+            </Col>
+          )}
+        </Row>
       </section>
     )
   }
