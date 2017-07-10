@@ -5,7 +5,7 @@ import faker from 'faker'
 const ItemSchema = new mongoose.Schema({
   //  Items are tied to manifests, tied to proposals.
   manifest: { type: mongoose.Schema.Types.ObjectId, ref: 'Manifest' },
-  title: { type: String, required: true },
+  name: { type: String, required: true },
   // Description will contain the old "justification" element at the end,
   description: String,
   quantity: { type: Number, required: true, default: 1, min: 1 },
@@ -36,7 +36,7 @@ const dummyItems = (min, ids) => {
         fakes[i] = new Item({
           _id: ids.item[i],
           manifest: ids.manifest[i],
-          title: faker.company.bsNoun(),
+          name: faker.company.bsNoun(),
           description: faker.lorem.paragraph(),
           quantity: faker.random.number(),
           price: faker.random.number(),

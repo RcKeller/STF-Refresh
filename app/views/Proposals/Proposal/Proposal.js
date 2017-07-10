@@ -22,10 +22,7 @@ import Settings from './Settings/Settings'
 
 import styles from './Proposal.css'
 @compose(
-  connect(state => ({
-    proposal: state.db.proposal,
-    screen: state.screen
-  })),
+  connect(state => ({ proposal: state.db.proposal })),
   connectRequest(props => api.get('proposals', {
     where: {
       year: props.params.year,
@@ -35,7 +32,7 @@ import styles from './Proposal.css'
   }))
 )
 class Proposal extends React.Component {
-  render ({ proposal, screen } = this.props) {
+  render ({ proposal } = this.props) {
     return (
       <article className={styles['tabbed-article']} >
         {!proposal

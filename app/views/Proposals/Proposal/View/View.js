@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 import Head from './Head/Head'
 import Overview from './Overview/Overview'
 import Body from './Body/Body'
+import Manifests from './Manifests/Manifests'
 
 // import styles from './Proposal.css'
 @connect(state => ({
@@ -28,6 +29,8 @@ class View extends React.Component {
         <Overview />
         <hr />
         <Body />
+        <hr />
+        <Manifests />
       </div>
     )
   }
