@@ -31,12 +31,11 @@ const meta = [
   { name: 'apple-mobile-web-app-status-bar-style', content: 'black' },
   { name: 'apple-mobile-web-app-title', content: 'UW STF' }
 ]
-const link = [
-  // Add to homescreen for Chrome on Android
-  { rel: 'icon', href: favicon }
-]
+// Add to homescreen for Chrome on Android
+const link = [{ rel: 'icon', href: favicon }]
 
-import { Layout, Icon, Breadcrumb } from 'antd'
+import { LocaleProvider, Layout, Icon, Breadcrumb } from 'antd'
+import enUS from 'antd/lib/locale-provider/en_US'
 const { Sider, Header, Content } = Layout
 
 // import Header from './Header/Header'
@@ -59,7 +58,6 @@ function breadcrumbRenderFix (route, params, routes, paths) {
     : <Link to={path || '/'}>{route.breadcrumbName}</Link>
 }
 
-
 @connect(state => ({
   // user: state.user
   screen: state.screen
@@ -69,7 +67,7 @@ class Template extends React.Component {
     super(props)
     this.state = { collapsed: true }
   }
-  componentDidMount() {
+  componentDidMount () {
     if (this.props.screen.greaterThan.medium) {
       this.toggle()
     }
@@ -79,41 +77,43 @@ class Template extends React.Component {
   render ({ children, router, routes, user, screen } = this.props) {
     // React-router is separated from redux store - too heavy to persist.
     return (
-      <Layout className={styles['template']}>
-        <Helmet
-          title='UW Student Tech Fee'
-          titleTemplate='%s - Student Tech Fee'
-          meta={meta} link={link}
-        />
-        <Sider trigger={null}
-          collapsible collapsed={this.state.collapsed}
-          breakpoint='md'
-          width={240} collapsedWidth='0'
-        >
-          <Login router={router} />
-          <Nav router={router} />
-        </Sider>
-        <Layout className={styles['body']}>
-          <Header>
-            <Icon className='trigger'
-              type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-              onClick={this.toggle}
-            />
-            <Link to='/'>
-              <img src={stf} height={50} className={styles['logo']} />
-            </Link>
-          </Header>
-          <Content>
-            {routes[1].path &&
-              <Breadcrumb
-                className={styles['breadcrumb']}
-                routes={routes} itemRender={breadcrumbRenderFix}
+      <LocaleProvider locale={enUS}>
+        <Layout className={styles['template']}>
+          <Helmet
+            title='UW Student Tech Fee'
+            titleTemplate='%s - Student Tech Fee'
+            meta={meta} link={link}
+          />
+          <Sider trigger={null}
+            collapsible collapsed={this.state.collapsed}
+            breakpoint='md'
+            width={240} collapsedWidth='0'
+          >
+            <Login router={router} />
+            <Nav router={router} />
+          </Sider>
+          <Layout className={styles['body']}>
+            <Header>
+              <Icon className='trigger'
+                type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
+                onClick={this.toggle}
               />
-            }
-            {children}
-          </Content>
+              <Link to='/'>
+                <img src={stf} height={50} className={styles['logo']} />
+              </Link>
+            </Header>
+            <Content>
+              {routes[1].path &&
+                <Breadcrumb
+                  className={styles['breadcrumb']}
+                  routes={routes} itemRender={breadcrumbRenderFix}
+                />
+              }
+              {children}
+            </Content>
+          </Layout>
         </Layout>
-      </Layout>
+      </LocaleProvider>
     )
   }
 }
@@ -121,6 +121,7 @@ Template.propTypes = {
   children: PropTypes.object.isRequired,
   router: PropTypes.object.isRequired,
   routes: PropTypes.array.isRequired,
+  screen: PropTypes.object,
   user: PropTypes.object  // Async
 }
 export default Template

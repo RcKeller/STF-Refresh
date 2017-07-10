@@ -18,7 +18,6 @@ const columns = [
     key: 'number',
     sorter: (a, b) => (a.year * a.number) - (b.year * b.number),
     render: (text, record) => <span>{`${record.year}-${record.number}`}</span>,
-    fixed: 'left',
     width: 90
   },
   {
@@ -26,7 +25,14 @@ const columns = [
     dataIndex: 'quarter',
     key: 'quarter',
     render: (text) => <span>{text.substr(0, 2)}</span>,
-    width: 35
+    filters: [
+      { text: 'Autumn', value: 'Au' },
+      { text: 'Fall', value: 'Fa' },
+      { text: 'Spring', value: 'Sp' },
+      { text: 'Summer', value: 'Su' }
+    ],
+    onFilter: (value, record) => record.quarter.indexOf(value) === 0,
+    width: 50
   },
   { title: 'Title',
     dataIndex: 'title',
@@ -35,19 +41,31 @@ const columns = [
   },
   { title: 'Organization', dataIndex: 'organization', key: 'organization' },
   {
+    title: 'Category',
+    dataIndex: 'category',
+    key: 'category',
+    width: 150
+  },
+  {
     title: 'Status',
     dataIndex: 'status',
     key: 'status',
     render: (text) => <Badge status='success' text={text} />
   },
-  { title: 'Asked', dataIndex: 'asked', key: 'asked' },
+  {
+    title: 'Asked',
+    dataIndex: 'asked',
+    key: 'asked',
+    sorter: (a, b) => (a.asked) - (b.asked)
+  },
   {
     title: 'Received',
     dataIndex: 'received',
     key: 'received',
-    render: (text, record) => <Progress type='circle' width={60}
+    render: (text, record) => <Progress type='circle' width={70}
       percent={parseInt(record.asked / record.received * 100)} />,
-    width: 85
+    sorter: (a, b) => (a.asked / a.received * 100) - (b.asked / b.received * 100),
+    width: 100
     // render: (text, record) => <Progress percent={parseInt(record.asked / record.received * 100)} status='active' />
   }
 ]
