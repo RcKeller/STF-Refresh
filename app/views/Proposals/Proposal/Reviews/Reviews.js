@@ -24,7 +24,7 @@ class Reviews extends React.Component {
             message={`Proposal ${decision.approved ? 'Approved' : 'Rejected'} | ${decision.date}`}
             description={
               <span>
-                <h6>Author: {decision.author}</h6>
+                <h6>Author: {decision.author.name}</h6>
                 <p>{decision.body}</p>
               </span>
             }
@@ -35,22 +35,6 @@ class Reviews extends React.Component {
         <h2>Reviews & Metrics</h2>
         {reviews && reviews.map((r, i) =>
           <Review key={i} index={i} />
-        )}
-        {reviews && reviews.map((r, i) =>
-          <Alert type={r.approved ? 'success' : 'error'} showIcon banner
-            message={`${r.author}: ${decision.approved ? 'Approved' : 'Rejected'} | ${r.date}`}
-            description={
-              <span>
-                <p>{r.body}</p>
-                <Collapse bordered={false} style={{background: 'inherit'}}>
-                  <Panel style={{border: 'none'}} header={<h6>Overall Score: {r.score}%</h6>}>
-                    <em>{r.ratings[0].prompt}</em>
-                    <Progress percent={r.ratings[0].score} />
-                  </Panel>
-                </Collapse>
-              </span>
-            }
-          />
         )}
       </section>
     )

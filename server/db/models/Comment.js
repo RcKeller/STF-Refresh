@@ -33,7 +33,7 @@ const dummyComments = (min, ids) => {
           _id: ids.comment[i],
           date: faker.date.recent(),
           proposal: ids.proposal[i],
-          user: new mongoose.Types.ObjectId(),  // NOTE
+          user: ids.user[i],
           title: faker.company.catchPhrase(),
           body: faker.lorem.paragraph()
         })

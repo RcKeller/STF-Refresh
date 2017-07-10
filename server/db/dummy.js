@@ -1,7 +1,6 @@
 import mongoose from 'mongoose'
 import config from 'config'
 
-// import { dummyUsers } from './models/user'
 import { restDummies } from './models'
 
 export default function () {
@@ -21,7 +20,8 @@ export default function () {
     block: [],
     review: [],
     decision: [],
-    report: []
+    report: [],
+    user: []
     //  User?
   }
   Object.keys(ids).forEach((key) => {
@@ -29,11 +29,6 @@ export default function () {
       ids[key].push(new mongoose.Types.ObjectId())
     }
   })
-  // console.log(ids)
-
-  //  BUG: Using these accounts makes auth fail. Unsure of cause.
-  // dummyUsers()
-
   //  Create dummies for all RESTful models
   restDummies.map((model) => model(min, ids))
 }

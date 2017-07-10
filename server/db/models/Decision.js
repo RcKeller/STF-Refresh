@@ -37,7 +37,7 @@ const dummyDecisions = (min, ids) => {
           _id: ids.decision[i],
           date: faker.date.recent(),
           proposal: ids.proposal[i],
-          author: new mongoose.Types.ObjectId(),  // NOTE: user
+          author: ids.user[i],
           body: faker.lorem.paragraph(),
           approved: faker.random.boolean(),
           grant: faker.random.number()

@@ -18,7 +18,7 @@ class Review extends React.Component {
   render ({ date, author, body, approved, score, ratings } = this.props) {
     return (
       <Alert type={approved ? 'success' : 'error'} showIcon banner
-        message={`${author}: ${approved ? 'Approved' : 'Rejected'} | ${date}`}
+        message={`${author.name}: ${approved ? 'Approved' : 'Rejected'} | ${date}`}
         description={
           <span>
             <p>{body}</p>

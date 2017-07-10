@@ -29,7 +29,7 @@ const dummyReports = (min, ids) => {
         fakes[i] = new Report({
           _id: ids.report[i],
           date: faker.date.recent(),
-          proposal: new mongoose.Types.ObjectId()
+          proposal: ids.proposal[i]
         })
       }
     //  Create will push our fakes into the DB.

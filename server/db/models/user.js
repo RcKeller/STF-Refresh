@@ -3,6 +3,8 @@
  * Code modified from https://github.com/sahat/hackathon-starter
  */
 import mongoose from 'mongoose'
+import faker from 'faker'
+
 const UserSchema = new mongoose.Schema({
   name: { type: String, default: '' },
   netID: { type: String, unique: true, lowercase: true },
@@ -31,36 +33,28 @@ export default User
 
 /* *****
 FAKE DATA GENERATOR: User
-NOTE: This is totally custom. It gives accounts the devs can control different authZ levels.
 ******/
-const dummyUsers = (min) => {
+const dummyUsers = (min, ids) => {
   //  Check the db for existing data satisfying min required
-  const admin = new User({
-    name: 'Ryan Keller',
-    netID: 'rykeller',
-    email: 'rykeller@uw.edu',
-    committee: {
-      spectator: true,
-      member: true,
-      admin: true
-    }
-  })
-  const general = new User({
-    name: 'John Doe',
-    netID: 'stfcweb',
-    email: 'stfcweb@uw.edu',
-    committee: {
-      spectator: false,
-      member: false,
-      admin: false
-    }
-  })
-  //  Create will push our fakes into the DB.
-  User.create([admin, general], (error) => {
-    if (!error) {
-      console.log(`SEED: Created admin and student account authZ`)
-      console.log(`rykeller: Spectator, Member & Admin`)
-      console.log(`stfcweb: General public`)
+  User.count().exec((err, count) => {
+    if (err) {
+      console.warn(`Unable to count Decision schema: ${err}`)
+    } else if (count < min) {
+      //  If it didn't, inject dummies.
+      let fakes = []
+      for (let i = 0; i < min; i++) {
+        fakes[i] = new User({
+          _id: ids.user[i],
+          name: faker.name.findName(),
+          netID: faker.internet.userName(),
+          email: faker.internet.email(),
+          committee: {}
+        })
+      }
+      //  Create will push our fakes into the DB.
+      User.create(fakes, (error) => {
+        if (!error) { console.log(`SEED: Created fake User (${fakes.length})`) }
+      })
     }
   })
 }

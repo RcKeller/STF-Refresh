@@ -25,6 +25,8 @@ export default function loadModels () {
 RESTful MODELS (and their dummy data generators)
 For express-restify-mongoose
 */
+
+import User, { dummyUsers } from './user'
 import Contact, { dummyContacts } from './contact'
 import Proposal, { dummyProposals } from './proposal'
 import Project, { dummyProjects } from './project'
@@ -38,12 +40,12 @@ import Report, { dummyReports } from './report'
 import Comment, { dummyComments } from './comment'
 //  Note that users are not here, that's bespoke.
 export {
-  Contact, Comment,
+  User, Contact, Comment,
   Proposal, Project, Amendment, Manifest, Item, Block,
   Review, Decision, Report
 }
 export const restDummies = [
-  dummyContacts, dummyComments,
+  dummyUsers, dummyContacts, dummyComments,
   dummyProposals, dummyProjects, dummyAmendments, dummyManifests, dummyItems, dummyBlocks,
   dummyReviews, dummyDecisions, dummyReports
 ]

@@ -46,8 +46,8 @@ const dummyReviews = (min, ids) => {
         fakes[i] = new Review({
           _id: ids.review[i],
           date: faker.date.recent(),
-          proposal: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
-          author: new mongoose.Types.ObjectId(),  // THIS IS RANDOM
+          proposal: ids.proposal[i],
+          author: ids.user[i],
           body: faker.lorem.paragraph(),
           ratings: [
             {
