@@ -2,50 +2,53 @@ import React from 'react'
 
 import { Menu, Icon, Alert } from 'antd'
 const SubMenu = Menu.SubMenu
-const ItemGroup = Menu.ItemGroup
+// const ItemGroup = Menu.ItemGroup
 const Item = Menu.Item
 
 const keyserver = 'http://itconnect.uw.edu/wares/acquiring-software-and-hardware/keyserver-help-for-it-staff/'
 
 import styles from './Nav.css'
-const Nav = ({ router }) => (
-  <Menu mode='inline' theme='dark'
-    defaultSelectedKeys={['1']}
-    selectedKeys={[router.location.pathname]}
-    onClick={(i) => i.key && router.push(i.key)}
-  >
-    <SubMenu key='sub1' title={<span><Icon type='solution' /><span>Proposals</span></span>}>
-      <ItemGroup key='g1' title='Browse'>
-        <Item key='/proposals'>Proposals</Item>
-        <Item key='/blocks'>Block Funding</Item>
-      </ItemGroup>
-      <ItemGroup key='g2' title='Submit'>
-        <Item key='/create'>Proposal</Item>
-      </ItemGroup>
-    </SubMenu>
-    <SubMenu key='sub2' title={<span><Icon type='file' /><span>Documents</span></span>}>
-      <Item key='/documents'>Commitee Docs</Item>
-      <Item key='/docs/Current Request for Proposals.pdf' >Request for Proposals</Item>
-      <Item key=''>
-        <a href={keyserver} target='_blank'>License Keyserver</a>
-      </Item>
-    </SubMenu>
-    <SubMenu key='sub3' title={<span><Icon type='team' /><span>About</span></span>}>
-      <Item key='/about'>The Committee</Item>
-      <Item key='/contact'>Contact Us</Item>
-    </SubMenu>
-    <Item key='/faq'>
-      <Icon type='question' /><span className='nav-text'>FAQ</span>
-    </Item>
-    <SubMenu key='sub4' title={<span><Icon type='calendar' /><span>Calendar</span></span>}>
-      <Item key='/calendar'>Schedule</Item>
-      <Item key='/events'>Upcoming Events</Item>
-    </SubMenu>
-    <Alert type='info' banner showIcon
-      className={styles['event']}
-      message='Meetings'
-      description={<span>Every Monday<br />3:30 - 5:30PM<br />HUB 305</span>}
-    />
-  </Menu>
-)
+// const Nav = ({ router }) => (
+class Nav extends React.Component {
+  render ({ router } = this.props) {
+    return (
+      <Menu mode='inline' theme='dark'
+        defaultSelectedKeys={['1']}
+        selectedKeys={[router.location.pathname]}
+        onClick={(i) => i.key && router.push(i.key)}
+      >
+        <Item key='/proposals'>
+          <Icon type='solution' /><span className='nav-text'>Proposals</span>
+        </Item>
+        <Item key='/blocks'>
+          <Icon type='desktop' /><span className='nav-text'>Block Funding</span>
+        </Item>
+        <SubMenu key='sub1' title={<span><Icon type='file' /><span>Documents</span></span>}>
+          <Item key='/documents'>Commitee Docs</Item>
+          <Item key='/docs/Current Request for Proposals.pdf' >Request for Proposals</Item>
+          <Item key=''>
+            <a href={keyserver} target='_blank'>License Keyserver</a>
+          </Item>
+        </SubMenu>
+        <Item key='/faq'>
+          <Icon type='question-circle-o' /><span className='nav-text'>F.A.Q.</span>
+        </Item>
+        <Item key='/about'>
+          <Icon type='info-circle-o' /><span className='nav-text'>About</span>
+        </Item>
+        <Item key='/contact'>
+          <Icon type='team' /><span className='nav-text'>Contact Us</span>
+        </Item>
+        <Item key='/calendar'>
+          <Icon type='calendar' /><span className='nav-text'>Calendar</span>
+        </Item>
+        <Alert type='info' banner showIcon
+          className={styles['event']}
+          message='Meetings'
+          description={<span>Every Monday<br />3:30 - 5:30PM<br />HUB 305</span>}
+        />
+      </Menu>
+    )
+  }
+}
 export default Nav
