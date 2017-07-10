@@ -4352,6 +4352,10 @@ mongodb@2.2.25, "mongodb@>= 1.2.0 <3.0.0":
     mongodb-core "2.1.9"
     readable-stream "2.1.5"
 
+mongoose-autopopulate@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/mongoose-autopopulate/-/mongoose-autopopulate-0.5.0.tgz#c5595256c061754e146a55cd40dcbba3fc7d5abf"
+
 mongoose-autorefs@^1.0.5:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/mongoose-autorefs/-/mongoose-autorefs-1.0.5.tgz#68d3d8eba1c1349d6b31e5e7bdb13f95c88ebd2a"

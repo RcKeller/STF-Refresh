@@ -1,11 +1,12 @@
 import mongoose from 'mongoose'
 import autoref from 'mongoose-autorefs'
+import autopopulate from 'mongoose-autopopulate'
 import faker from 'faker'
 
 const ReviewSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
   proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
-  author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', autopopulate: true },
   //  Comments included with the ratings. Equivalent of "notes"
   body: String,
   // Ratings are simple key-value stores, key is criteria, value is score.
@@ -20,6 +21,7 @@ const ReviewSchema = new mongoose.Schema({
   approved: Boolean
 })
 ReviewSchema.plugin(autoref, ['proposal.reviews'])
+ReviewSchema.plugin(autopopulate)
 const Review = mongoose.model('Review', ReviewSchema)
 export default Review
 /*

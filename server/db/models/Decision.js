@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import autoref from 'mongoose-autorefs'
+import autopopulate from 'mongoose-autopopulate'
 import faker from 'faker'
 
 const DecisionSchema = new mongoose.Schema({
@@ -7,7 +8,7 @@ const DecisionSchema = new mongoose.Schema({
   //  A decision for a proposal. Gets revised in case of amendments.
   proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
   //  Author, typically the chair or proposal officer
-  author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', autopopulate: true },
   //  Optional description that comes with the decision. "We liked..."
   body: String,
   //  Final decision
@@ -16,6 +17,7 @@ const DecisionSchema = new mongoose.Schema({
   grant: Number
 })
 DecisionSchema.plugin(autoref, ['proposal.decision'])
+DecisionSchema.plugin(autopopulate)
 const Decision = mongoose.model('Decision', DecisionSchema)
 export default Decision
 
