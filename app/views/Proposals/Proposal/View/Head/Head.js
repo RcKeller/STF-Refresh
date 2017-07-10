@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
-import { Row, Col, Progress, Collapse, Alert } from 'antd'
+import { Row, Col, Collapse, Alert } from 'antd'
 const Panel = Collapse.Panel
 
 const capitalize = (word) => word[0].toUpperCase() + word.substr(1)

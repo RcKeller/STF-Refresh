@@ -34,3 +34,9 @@
   display: block !important;
   margin: auto;
 }
+
+.badge {
+  color: '#FFF !important';
+  background-color: '#87d068';
+  font-size: 10px;
+}

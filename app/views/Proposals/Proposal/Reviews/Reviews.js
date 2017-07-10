@@ -3,8 +3,7 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
-import { Alert, Collapse, Progress } from 'antd'
-const Panel = Collapse.Panel
+import { Alert } from 'antd'
 
 import Review from './Review/Review'
 // import styles from './Body.css'
