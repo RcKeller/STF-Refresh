@@ -1,11 +1,12 @@
 import mongoose from 'mongoose'
 import autoref from 'mongoose-autorefs'
+import autopopulate from 'mongoose-autopopulate'
 import faker from 'faker'
 
 const AmendmentSchema = new mongoose.Schema({
   proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
   //  We only need one contact for an amendment. Let's not make it a heavily involved process.
-  contact: { type: mongoose.Schema.Types.ObjectId, ref: 'Contact' },
+  contact: { type: mongoose.Schema.Types.ObjectId, ref: 'Contact', autopopulate: true },
   title: { type: String, require: true },
   //  We want these BRIEF. Very BRIEF. Thus, no extensive plan, etc. This ends up as a headnote for proposals.
   body: { type: String, require: true }
@@ -14,6 +15,7 @@ AmendmentSchema.plugin(autoref, [
   'proposal.amendments',
   'contact.amendment'
 ])
+AmendmentSchema.plugin(autopopulate)
 const Amendment = mongoose.model('Amendment', AmendmentSchema)
 export default Amendment
 

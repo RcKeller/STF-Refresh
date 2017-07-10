@@ -1,19 +1,21 @@
 import mongoose from 'mongoose'
 import autoref from 'mongoose-autorefs'
+import autopopulate from 'mongoose-autopopulate'
 import faker from 'faker'
 
 const CommentSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
   proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', autopopulate: true },
   //  Default titles since this is a new feature
   title: { type: String, required: true, default: '' },
   body: { type: String, required: true }
 })
 CommentSchema.plugin(autoref, [
   'proposal.comments'
-  //  We don't track user comments
+  //  We don't track comments per user
 ])
+CommentSchema.plugin(autopopulate)
 const Comment = mongoose.model('Comment', CommentSchema)
 export default Comment
 

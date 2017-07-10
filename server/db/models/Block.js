@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import autoref from 'mongoose-autorefs'
+import autopopulate from 'mongoose-autopopulate'
 import faker from 'faker'
 
 const BlockSchema = new mongoose.Schema({
@@ -16,7 +17,7 @@ const BlockSchema = new mongoose.Schema({
   uac: { type: Boolean, default: false }, // UAC === uniform access / tri-campus.
   organization: { type: String, required: true }, // === department in legacy code
   // Contacts - array of objects, can iterate over via client with Object.keys().forEach(k, i) {}
-  contacts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Contact' }],
+  contacts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Contact', autopopulate: true }],
   status: { type: String, default: 'In Review' },
   asked: Number,
   received: Number,
@@ -39,6 +40,7 @@ const BlockSchema = new mongoose.Schema({
   //  Proposal status, differs from decisions in that this is "summary" data for table viewing.
 })
 BlockSchema.plugin(autoref, ['contacts.block'])
+BlockSchema.plugin(autopopulate)
 const Block = mongoose.model('Block', BlockSchema)
 export default Block
 

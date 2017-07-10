@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import autoref from 'mongoose-autorefs'
+import autopopulate from 'mongoose-autopopulate'
 import faker from 'faker'
 
 const ManifestSchema = new mongoose.Schema({
@@ -7,11 +8,12 @@ const ManifestSchema = new mongoose.Schema({
   proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
   // Is this the initial proposition? If not, it's a "partial" manifest for what was actually funded.
   // Items in the manifest.
-  items: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item' }],
+  items: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item', autopopulate: true }],
   // Total cost, should be calculated dynamically.
   total: { type: Number, required: true, default: 0 }
 })
 ManifestSchema.plugin(autoref, ['items.manifest'])
+ManifestSchema.plugin(autopopulate)
 const Manifest = mongoose.model('Manifest', ManifestSchema)
 export default Manifest
 
