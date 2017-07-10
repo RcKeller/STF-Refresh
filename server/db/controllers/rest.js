@@ -1,6 +1,4 @@
 import { Router } from 'express'
-import config from 'config'
-const env = config.get('env')
 
 /*
 CORE RESTful CONTROLLER:

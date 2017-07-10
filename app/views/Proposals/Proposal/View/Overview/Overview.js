@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import { Row, Col } from 'antd'
-// import styles from './Body.css'
 @connect(state => ({ overview: state.db.proposal.body.overview }))
 class Overview extends React.Component {
   render ({ overview } = this.props) {

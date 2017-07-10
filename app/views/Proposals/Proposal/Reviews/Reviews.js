@@ -5,13 +5,15 @@ import { connect } from 'react-redux'
 
 import { Alert, Collapse, Progress } from 'antd'
 const Panel = Collapse.Panel
+
+import Review from './Review/Review'
 // import styles from './Body.css'
 @connect(state => ({
   status: state.db.proposal.status,
   decision: state.db.proposal.decision,
   reviews: state.db.proposal.reviews
 }))
-class Review extends React.Component {
+class Reviews extends React.Component {
   render ({ status, decision, reviews } = this.props) {
     return (
       <section>
@@ -31,6 +33,9 @@ class Review extends React.Component {
         }
         <hr />
         <h2>Reviews & Metrics</h2>
+        {reviews && reviews.map((r, i) =>
+          <Review key={i} index={i} />
+        )}
         {reviews && reviews.map((r, i) =>
           <Alert type={r.approved ? 'success' : 'error'} showIcon banner
             message={`${r.author}: ${decision.approved ? 'Approved' : 'Rejected'} | ${r.date}`}
@@ -52,7 +57,7 @@ class Review extends React.Component {
   }
 }
 
-Review.propTypes = {
+Reviews.propTypes = {
   reviews: PropTypes.object
 }
-export default Review
+export default Reviews
