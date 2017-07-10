@@ -3,14 +3,15 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
-import { Table } from 'antd'
+import { Table, Alert, Select } from 'antd'
+const Option = Select.Option
 
 const columns = [
   {
     title: 'Priority',
     dataIndex: 'priority',
     key: 'priority',
-    // sorter: (a, b) => (a.priority) - (b.priority),
+    sorter: (a, b) => (a.priority) - (b.priority),
     width: 90
   },
   {
@@ -22,12 +23,9 @@ const columns = [
     dataIndex: 'price',
     key: 'price',
     render: (text, record) => <span>{`${record.price} x ${record.tax}`}</span>,
+    sorter: (a, b) => (a.price * a.tax) - (b.price * b.tax),
     width: 120
   },
-  // { title: 'Tax',
-  //   dataIndex: 'tax',
-  //   key: 'tax'
-  // },
   { title: 'Quantity',
     dataIndex: 'quantity',
     key: 'quantity',
@@ -42,23 +40,46 @@ const expandedRowRender = record => <p><h6>Description: </h6>{record.description
   screen: state.screen
 }))
 class Manifests extends React.Component {
-  // constructor()
-  render ({ manifests, screen } = this.props) {
-    // mostRecentIndex = manifests.length - 1
+  constructor (props) {
+    super(props)
+    this.state = { index: props.manifests.length - 1 }
+  }
+  handleChange (value) {
+    this.setState({ index: value })
+  }
+
+  render (
+    { manifests, screen } = this.props,
+    { index } = this.state
+  ) {
     return (
-      <Table dataSource={manifests[manifests.length - 1].items} sort
-        size={screen.lessThan.medium ? 'small' : 'middle'}
-        columns={screen.lessThan.medium ? columns.slice(1, 4) : columns}
-        rowKey={record => record._id}
-        //  The above will throw an error if using faker data, since duplicates are involved.
-        title={() => (
-          <h1>
-            Manifests
-          </h1>
-        )}
-        footer={() => 'Your proposals here'}
-        expandedRowRender={expandedRowRender}
-      />
+      <div>
+        <h1>Proposal Budget</h1>
+        {manifests.length > 1 &&
+          <Alert type='info' showIcon
+            message='Multiple Manifests'
+            description='This proposal has multiple manifests as a result of partial awards or amendments. Use the dropdown below to browse through them all.'
+          />
+        }
+        <Table dataSource={manifests[index].items} sort
+          size={screen.lessThan.medium ? 'small' : 'middle'}
+          columns={screen.lessThan.medium ? columns.slice(1, 4) : columns}
+          rowKey={record => record._id}
+          //  The above will throw an error if using faker data, since duplicates are involved.
+          title={() => (
+            <Select size='large' style={{ width: '100%' }}
+              defaultValue={manifests.length - 1}
+              onChange={(value) => this.handleChange(value)}
+            >
+              {manifests.map((m, i) =>
+                <Option value={i}>{m.title}</Option>
+              )}
+            </Select>
+          )}
+          expandedRowRender={expandedRowRender}
+          pagination={false}
+        />
+      </div>
     )
   }
 }
