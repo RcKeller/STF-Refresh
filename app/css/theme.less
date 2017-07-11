@@ -22,41 +22,63 @@ ANT Design theme overrides
 */
 
 @primary-color            : @purple;
-@highlight-color          : @gold;
-@normal-color             : @light-gray;
 // @info-color             : #ecf6fd;
 // @success-color          : @green-6;
 // @error-color            : @red-6;
+@highlight-color          : @gold;
 // @warning-color          : @yellow-6;
+@normal-color             : @light-gray;
 
-// @font-family: 'Roboto', Helvetica, Arial, sans-serif;
+// Color used by default to control hover and active backgrounds and for
+// alert info backgrounds.
+@primary-1: color(~`colorPalette("@{primary-color}", 1)`);
+@primary-2: color(~`colorPalette("@{primary-color}", 2)`);
+@primary-3: color(~`colorPalette("@{primary-color}", 3)`);
+@primary-4: color(~`colorPalette("@{primary-color}", 4)`);
+// Color used to control the text color in many active and hover states.
+@primary-5: color(~`colorPalette("@{primary-color}", 5)`);
+@primary-6: @primary-color;
+// Color used to control the text color of active buttons.
+@primary-7: color(~`colorPalette("@{primary-color}", 7)`);
+
+@secondary-color          : @gold;
+@secondary-1: color(~`colorPalette("@{secondary-color}", 1)`);
+@secondary-2: color(~`colorPalette("@{secondary-color}", 2)`);
+@secondary-3: color(~`colorPalette("@{secondary-color}", 3)`);
+@secondary-4: color(~`colorPalette("@{secondary-color}", 4)`);
+// Color used to control the text color in many active and hover states.
+@secondary-5: color(~`colorPalette("@{secondary-color}", 5)`);
+@secondary-6: @primary-color;
+// Color used to control the text color of active buttons.
+@secondary-7: color(~`colorPalette("@{secondary-color}", 7)`);
+
+
 @font-family              : "Open Sans", sans-serif;
 @font-size-base           : 16px;
-// @line-height-base         : 1.3;
-@line-height-base         : 1.5;
+// @line-height-base         : 1.5;
 @heading-color            : @purple;
 @heading-color-dark       : @metallic-gold;
 // The background colors for active and hover states for things like
 // list items or table cells.
-@item-active-bg         : @gold;
-@item-hover-bg          : @metallic-gold;
+@item-active-bg         : @primary-1;
+@item-hover-bg          : @secondary-1;
 
-@link-color             : @purple;
-@link-hover-color       : @metallic-gold;
-@link-active-color      : @gold;
-@link-hover-decoration  : none;
+@link-hover-color       : @secondary-5;
 
-// @layout-header-height     : 80px;
 @layout-header-height     : 60px;
 @layout-header-padding    : 0 16px;
-// @layout-header-padding    : 0;
-// @layout-header-background : @purple;
-@layout-header-background : white;
-@layout-sider-background  : @dark-gray;
+@layout-header-background : @primary-color;
+
+@layout-sider-background  : white;
+
 @layout-body-background   : @light-gray;
 
-@menu-dark-bg             : @dark-gray;
-@menu-dark-submenu-bg     : fade(@light-gray, 5%);
+// .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
+//     background-color: #f1eff5;
+// }
+
+// @menu-dark-bg             : @dark-gray;
+// @menu-dark-submenu-bg     : fade(@light-gray, 5%);
 
 //  Fix overflow on collapses
 .ant-collapse-header {
@@ -83,4 +105,14 @@ ANT Design theme overrides
 .ant-badge-count p {
   color: #FFF !important;
   font-size: 14px !important;
+}
+
+// Slick Carousel
+.ant-carousel .slick-slide {
+  text-align: center;
+  height: 300px;
+  // line-height: 160px;
+  background: #364d79;
+  color: #fff;
+  overflow: hidden;
 }

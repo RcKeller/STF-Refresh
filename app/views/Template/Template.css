@@ -34,13 +34,3 @@
 .body {
   @apply --body;
 }
-
-
-/*.ant-menu {
-  background-color: inherit !important;
-}*/
-
-:global .ant-layout-sider-zero-width-trigger {
-  /*top: 90px !important;*/
-  /*top: 94px !important;*/
-}

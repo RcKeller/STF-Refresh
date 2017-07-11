@@ -94,7 +94,7 @@ class Template extends React.Component {
           </Sider>
           <Layout className={styles['body']}>
             <Header>
-              <Icon className='trigger'
+              <Icon className='trigger' style={{fontSize: 32, lineHeight: 'inherit', color: 'white'}}
                 type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
                 onClick={this.toggle}
               />

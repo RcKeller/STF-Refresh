@@ -8,11 +8,10 @@ const Item = Menu.Item
 const keyserver = 'http://itconnect.uw.edu/wares/acquiring-software-and-hardware/keyserver-help-for-it-staff/'
 
 import styles from './Nav.css'
-// const Nav = ({ router }) => (
 class Nav extends React.Component {
   render ({ router } = this.props) {
     return (
-      <Menu mode='inline' theme='dark'
+      <Menu mode='inline'
         defaultSelectedKeys={['1']}
         selectedKeys={[router.location.pathname]}
         onClick={(i) => i.key && router.push(i.key)}
@@ -23,13 +22,7 @@ class Nav extends React.Component {
         <Item key='/blocks'>
           <Icon type='desktop' /><span className='nav-text'>Block Funding</span>
         </Item>
-        <SubMenu key='sub1' title={<span><Icon type='file' /><span>Documents</span></span>}>
-          <Item key='/documents'>Commitee Docs</Item>
-          <Item key='/docs/Current Request for Proposals.pdf' >Request for Proposals</Item>
-          <Item key=''>
-            <a href={keyserver} target='_blank'>License Keyserver</a>
-          </Item>
-        </SubMenu>
+
         <Item key='/faq'>
           <Icon type='question-circle-o' /><span className='nav-text'>F.A.Q.</span>
         </Item>
@@ -42,6 +35,13 @@ class Nav extends React.Component {
         <Item key='/calendar'>
           <Icon type='calendar' /><span className='nav-text'>Calendar</span>
         </Item>
+        <SubMenu key='sub1' title={<span><Icon type='file' /><span>Documents</span></span>}>
+          <Item key='/documents'>Commitee Docs</Item>
+          <Item key='/docs/Current Request for Proposals.pdf' >Request for Proposals</Item>
+          <Item key=''>
+            <a href={keyserver} target='_blank'>License Keyserver</a>
+          </Item>
+        </SubMenu>
         <Alert type='info' banner showIcon
           className={styles['event']}
           message='Meetings'

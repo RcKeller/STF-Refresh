@@ -54,7 +54,7 @@ export default (store) => {
   return (
     <Route path='/' breadcrumbName='Home' component={Template} >
       <IndexRoute getComponent={SplitFrontPage} />
-      <Route path='*' breadcrumbName='404 - Page Not Found' getComponent={SplitNotFound} />
+      {/* <Route path='*' breadcrumbName='404 - Page Not Found' getComponent={SplitNotFound} /> */}
 
       <Route path='/faq' breadcrumbName='F.A.Q.' getComponent={SplitFAQ} />
       <Route path='/about' breadcrumbName='About' getComponent={SplitAbout} />

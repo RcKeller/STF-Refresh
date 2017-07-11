@@ -1,11 +1,17 @@
 import React from 'react'
 
-import { Row, Col, Card, Alert, Timeline } from 'antd'
+import { Row, Col, Card, Alert, Timeline, Carousel } from 'antd'
 const Item = Timeline.Item
 
 import styles from './FrontPage.css'
 const FrontPage = () => (
   <article className={styles['frontpage']}>
+    <Carousel effect='fade'>
+      <div><h3>1</h3></div>
+      <div><h3>2</h3></div>
+      <div><h3>3</h3></div>
+      <div><h3>4</h3></div>
+    </Carousel>
     <Row gutter={16}>
       <Col className='gutter-row' xs={24}>
         <h1>About the STF Committee</h1>
