@@ -55,30 +55,38 @@ ANT Design theme overrides
 
 @font-family              : "Open Sans", sans-serif;
 @font-size-base           : 16px;
-// @line-height-base         : 1.5;
+
 @heading-color            : @purple;
 @heading-color-dark       : @metallic-gold;
 // The background colors for active and hover states for things like
 // list items or table cells.
 @item-active-bg         : @primary-1;
 @item-hover-bg          : @secondary-1;
-
-@link-hover-color       : @secondary-5;
+@link-hover-color       : @metallic-gold;
 
 @layout-header-height     : 60px;
 @layout-header-padding    : 0 16px;
 @layout-header-background : @primary-color;
-
 @layout-sider-background  : white;
-
 @layout-body-background   : @light-gray;
 
-// .ant-menu:not(.ant-menu-horizontal) .ant-menu-item-selected {
-//     background-color: #f1eff5;
-// }
+@outline-color          : @secondary-color;
 
-// @menu-dark-bg             : @dark-gray;
-// @menu-dark-submenu-bg     : fade(@light-gray, 5%);
+@background-color-base  : @secondary-1;
+@background-color-active: @primary-1;
+
+@table-header-bg: @secondary-1;
+
+@back-top-color: @metallic-gold;
+
+@avatar-bg: @metallic-gold;
+
+@rate-star-color: @metallic-gold;
+@rate-star-bg: @primary-1;
+
+.ant-menu-inline .ant-menu-item:after, .ant-menu-vertical .ant-menu-item:after {
+    border-right: 3px solid @metallic-gold;
+}
 
 //  Fix overflow on collapses
 .ant-collapse-header {
@@ -109,10 +117,12 @@ ANT Design theme overrides
 
 // Slick Carousel
 .ant-carousel .slick-slide {
-  text-align: center;
-  height: 300px;
-  // line-height: 160px;
-  background: #364d79;
-  color: #fff;
+  width: 100%;
+  height: 600px;
+  line-height: 160px;
   overflow: hidden;
+  text-align: center;
+  color: white;
+  background: @metallic-gold;
+  border-radius: 4px 4px 0 0;
 }

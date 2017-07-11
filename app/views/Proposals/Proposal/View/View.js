@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 import Head from './Head/Head'
 import Overview from './Overview/Overview'
 import Body from './Body/Body'
+import Legacy from './Legacy/Legacy'
 import Manifests from './Manifests/Manifests'
 
 // import styles from './Proposal.css'
@@ -27,9 +28,8 @@ class View extends React.Component {
         <h6>{`ID: ${year}-${number}`}</h6>
         <Head />
         <Overview />
-        <hr />
         <Body />
-        <hr />
+        <Legacy />
         <Manifests />
       </div>
     )

@@ -1,5 +1,9 @@
 @import '../../css/layout';
 
-.frontpage {
-  @apply --page;
+.page {
+  @apply --page-margin;
+}
+
+.page-content {
+  @appy --page-padding;
 }

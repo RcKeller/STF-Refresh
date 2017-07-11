@@ -18,5 +18,19 @@
       padding: 24px;
     }
   }
+  --page-margin {
+    margin: 24px 0 0 0;
+    background: #fff;
+    border-radius: 4px;
+    @media (min-width: 992px) {
+      margin: 24px 48px;
+    }
+  }
+  --page-padding {
+    padding: 8px;
+    @media (min-width: 992px) {
+      padding: 24px;
+    }
+  }
 
 }

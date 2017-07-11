@@ -7,7 +7,6 @@ import { Row, Col, Icon } from 'antd'
 
 import styles from './Body.css'
 @connect(state => ({
-  legacy: state.db.proposal.body.legacy,
   plan: state.db.proposal.body.plan,
   screen: state.screen
 }))
@@ -102,6 +101,7 @@ class Body extends React.Component {
 }
 
 Body.propTypes = {
-  body: PropTypes.object
+  body: PropTypes.object,
+  screen: PropTypes.object
 }
 export default Body
