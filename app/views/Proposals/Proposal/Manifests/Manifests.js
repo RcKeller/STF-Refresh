@@ -54,7 +54,7 @@ class Manifests extends React.Component {
   ) {
     return (
       <div>
-        <h1>Proposal Budget</h1>
+        <h1>Budget & Manifest</h1>
         {manifests.length > 1 &&
           <Alert type='info' showIcon
             message='Multiple Manifests'

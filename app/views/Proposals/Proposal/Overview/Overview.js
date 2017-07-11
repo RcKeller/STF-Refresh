@@ -3,15 +3,40 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
-import { Row, Col } from 'antd'
-@connect(state => ({ overview: state.db.proposal.body.overview }))
+import { Row, Col, Alert } from 'antd'
+
+@connect(state => ({
+  overview: state.db.proposal.body.overview,
+  decision: state.db.proposal.decision,
+  amendments: state.db.proposal.amendments
+}))
 class Overview extends React.Component {
-  render ({ overview } = this.props) {
+  render ({ overview, decision, amendments } = this.props) {
     return (
       <section>
+        {decision &&
+          <Alert type={decision.approved ? 'success' : 'error'} showIcon banner
+            message={`Proposal ${decision.approved ? 'Approved' : 'Rejected'}`}
+            description={<span>
+              <h6>Author: {decision.author.name} | {decision.date}</h6>
+              <p>{decision.body}</p>
+            </span>}
+          />
+        }
+        {amendments && amendments.map((a, i) =>
+          <Alert key={i} type={a.approved ? 'info' : 'error'} banner
+            message={`Request for Supplemental Funding by ${a.contact.name} | DATE MISSING | (${i})`}
+            description={
+              <span>
+                <h6>{a.title}</h6>
+                <p>{a.body}</p>
+              </span>
+            }
+            />
+        )}
         <Row gutter={32}>
           <Col className='gutter-row' xs={24} md={12}>
-            <h1>Project Overview</h1>
+            <h1>Overview</h1>
             <p>{overview.abstract}</p>
           </Col>
           <Col className='gutter-row' xs={24} md={12}>
@@ -42,6 +67,8 @@ class Overview extends React.Component {
 }
 
 Overview.propTypes = {
-  overview: PropTypes.object
+  overview: PropTypes.object,
+  decision: PropTypes.object,
+  amendments: PropTypes.object
 }
 export default Overview

@@ -11,7 +11,12 @@ import { Spin, Tabs, Badge } from 'antd'
 const TabPane = Tabs.TabPane
 
 //  Public view
-import View from './View/View'
+import Head from './Head/Head'
+import Overview from './Overview/Overview'
+import Body from './Body/Body'
+import Legacy from './Legacy/Legacy'
+import Manifests from './Manifests/Manifests'
+
 import Endorsements from './Endorsements/Endorsements'
 //  Contact view
 import Report from './Report/Report'
@@ -48,7 +53,12 @@ class Proposal extends React.Component {
           ? <Spin size='large' tip='Loading...' />
           : <Tabs className='tab-container' type='card' >
             <TabPane tab='Proposal' key='1' className={styles['tab-pane']}>
-              <View />
+              <Head />
+              {/* {!proposal.body.legacy ? <div><Overview /><Body /></div> : <Legacy />} */}
+              <Overview />
+              <Body />
+              <Legacy />
+              <Manifests />
             </TabPane>
             <TabPane tab={<Badge dot style={style.badge}>
               <span style={{paddingRight: 4}}>Endorsements </span>

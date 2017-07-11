@@ -20,10 +20,10 @@ class Reviews extends React.Component {
         <h6>For internal use only.</h6>
         {decision
           ? <Alert type={decision.approved ? 'success' : 'error'} showIcon
-            message={`Proposal ${decision.approved ? 'Approved' : 'Rejected'} | ${decision.date}`}
+            message={`Proposal ${decision.approved ? 'Approved' : 'Rejected'}`}
             description={
               <span>
-                <h6>Author: {decision.author.name}</h6>
+                <h6>Author: {decision.author.name} | {decision.date}</h6>
                 <p>{decision.body}</p>
               </span>
             }
