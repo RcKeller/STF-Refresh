@@ -17,6 +17,7 @@ export default function render (req, res) {
   // AuthZ data if user is initialized.
   if (user.authenticated && req.user) {
     Object.assign(user, {
+      _id: req.user._id,
       name: req.user.name,
       netID: req.user.netID,
       email: req.user.email

@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
+import { mutateAsync } from 'redux-query'
 
 import { Form, Input, Button, message } from 'antd'
 const FormItem = Form.Item
@@ -22,24 +23,19 @@ class Endorse extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault()
     let { user, parent, form } = this.props
+    console.log(user, parent, form, api)
     form.validateFields((err, values) => {
-      console.log('SUBMITTING', err, values)
-      console.log(user, parent)
-      console.log(api)
+      console.log(err, values)
       if (!err) {
-        console.log('NO ERR')
-        try {
-          api.post('comments', {
-            proposal: parent,
-            user: user._id,
-            title: 'I messed up',
-            body: values.comment
-          })
-          message.success('Draft updated!')
-        } catch (err) {
-          message.error('An error occured - Draft failed to update')
-          console.warn(err)
+        let body = {
+          proposal: parent,
+          user: user._id,
+          title: 'I messed up',
+          body: values.comment.body
         }
+        api.get('comments')
+        mutateAsync(api.post('comments', body))
+        message.success('Draft updated!')
       }
     })
   }
@@ -53,8 +49,8 @@ class Endorse extends React.Component {
           <div>
             <h1>Endorse this proposal!</h1>
             <Form onSubmit={this.handleSubmit}>
-              <FormItem {...layout} hasFeedback={feedback(form, 'comment')} help={help(form, 'comment')} >
-                {form.getFieldDecorator('comment', rules.required)(
+              <FormItem {...layout} hasFeedback={feedback(form, 'comment.body')} help={help(form, 'comment.body')} >
+                {form.getFieldDecorator('comment.body', rules.required)(
                   <Input type='textarea' rows={6} />
                 )}
               </FormItem>
