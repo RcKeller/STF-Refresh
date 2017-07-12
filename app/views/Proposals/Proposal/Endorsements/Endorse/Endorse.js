@@ -7,10 +7,11 @@ import { Form, Input, Button, message } from 'antd'
 const FormItem = Form.Item
 
 import { layout, feedback, help, rules, disableSubmit } from '../../../../../util/form'
+import api from '../../../../../services'
 
 // import styles from './Body.css'
 @connect(state => ({
-  proposalID: state.db.proposal._id,
+  parent: state.db.proposal._id,
   comments: state.db.proposal.comments,
   user: state.user,
   screen: state.screen
@@ -20,16 +21,32 @@ class Endorse extends React.Component {
   componentDidMount () { this.props.form.validateFields() }
   handleSubmit = (e) => {
     e.preventDefault()
-    let { form, proposalID, user } = this.props
+    let { user, parent, form } = this.props
     form.validateFields((err, values) => {
-      console.log('SUBMITTING', err, values, proposalID, user)
+      console.log('SUBMITTING', err, values)
+      console.log(user, parent)
+      console.log(api)
+      if (!err) {
+        console.log('NO ERR')
+        try {
+          api.post('comments', {
+            proposal: parent,
+            user: user._id,
+            title: 'I messed up',
+            body: values.comment
+          })
+          message.success('Draft updated!')
+        } catch (err) {
+          message.error('An error occured - Draft failed to update')
+          console.warn(err)
+        }
+      }
     })
   }
   render (
     { comments, user, screen, form } = this.props,
     { handleSubmit } = this
   ) {
-    console.log(rules)
     return (
       <div>
         {user &&
@@ -43,8 +60,7 @@ class Endorse extends React.Component {
               </FormItem>
               <FormItem>
                 <Button size='large' type='primary'
-                  htmlType='submit'
-                  disabled={disableSubmit(form)}
+                  htmlType='submit' disabled={disableSubmit(form)}
                 >Update</Button>
               </FormItem>
             </Form>
@@ -54,18 +70,12 @@ class Endorse extends React.Component {
     )
   }
 }
-/*
-<Row gutter={32}>
-  <Col className='gutter-row' xs={24} md={12}>
-    <p>Testing Endorsements</p>
-  </Col>
-</Row>
-*/
+
 Endorse.propTypes = {
   comments: PropTypes.object,
   user: PropTypes.object,
   form: PropTypes.object,
-  proposalID: PropTypes.string
+  parent: PropTypes.string
 }
 const EndorseForm = Form.create()(Endorse)
 export default EndorseForm

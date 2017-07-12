@@ -68,11 +68,11 @@ class Manifests extends React.Component {
           //  The above will throw an error if using faker data, since duplicates are involved.
           title={() => (
             <Select size='large' style={{ width: '100%' }}
-              defaultValue={manifests.length - 1}
+              defaultValue={(manifests.length - 1).toString()}
               onChange={(value) => this.handleChange(value)}
             >
               {manifests.map((m, i) =>
-                <Option value={i}>{m.title}</Option>
+                <Option value={i.toString()}>{m.title}</Option>
               )}
             </Select>
           )}

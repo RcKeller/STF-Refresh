@@ -16,7 +16,7 @@ class Legacy extends React.Component {
           description='Our proposal process has changed significantly since Summer 2017. This is an older proposal that is not representative of our current intake process. To learn more about the current process, click here.'
         />
         {legacy.map((e, i) =>
-          <div>
+          <div key={i}>
             <h5><em>{e.title}</em></h5>
             <p>{e.body}</p>
           </div>
