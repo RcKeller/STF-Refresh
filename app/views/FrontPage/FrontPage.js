@@ -10,7 +10,9 @@ class FrontPage extends React.Component {
     this.state = { loaded: false }
   }
   componentDidMount () {
-    setTimeout(() => this.setState({ loaded: true }), 3)
+    //  BUG: The nav must slide out first in order for size to properly calculate.
+    //  This timeout is a temp fix.
+    setTimeout(() => this.setState({ loaded: true }), 250)
   }
   render ({ loaded } = this.state) {
     return (

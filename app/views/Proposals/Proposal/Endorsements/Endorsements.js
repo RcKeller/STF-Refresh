@@ -3,15 +3,19 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
-import { Row, Col, Card, Avatar } from 'antd'
+import { Row, Col, Card } from 'antd'
+
+import Endorse from './Endorse/Endorse'
 
 // import styles from './Body.css'
 @connect(state => ({
+  proposalID: state.db.proposal._id,
   comments: state.db.proposal.comments,
+  user: state.user,
   screen: state.screen
 }))
 class Endorsements extends React.Component {
-  render ({ comments, screen } = this.props) {
+  render ({ comments, user } = this.props) {
     return (
       <div>
         <Row gutter={32}>
@@ -26,19 +30,13 @@ class Endorsements extends React.Component {
             </Col>
           )}
         </Row>
+        <Endorse />
       </div>
     )
   }
 }
-/*
-<Row gutter={32}>
-  <Col className='gutter-row' xs={24} md={12}>
-    <p>Testing Endorsements</p>
-  </Col>
-</Row>
-*/
+
 Endorsements.propTypes = {
-  comments: PropTypes.object,
-  screen: PropTypes.object
+  comments: PropTypes.object
 }
 export default Endorsements
