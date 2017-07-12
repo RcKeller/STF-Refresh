@@ -43,7 +43,6 @@ output:
 ...v1/block?query={"number":"70692"}&populate={"path":"contacts"}
 */
 const url = (model, options = {}) => {
-  console.log('MODEL/OPS', model, options)
   //  Base URL, e.g. ...host/v1/proposal/:id
   let url = `${API}/${version}/${model}/${options.id ? options.id : ''}`
   //  Operator to prefix query string for joins, queries, ID specification etc
@@ -56,7 +55,6 @@ const url = (model, options = {}) => {
     url = `${url}${operator}join=${options.join}`
     operator = '&'
   }
-  console.log('RETURNING URL', url)
   return url
 }
 

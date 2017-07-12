@@ -23,20 +23,17 @@ class Endorse extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault()
     let { user, parent, form } = this.props
-    console.log(user, parent, form, api)
-    form.validateFields((err, values) => {
+    form.validateFields(function (err, values) {
+      console.log(err, values)
       if (!err) {
-        try {
-          api.post('comments', {
-            proposal: parent,
-            user: user._id,
-            title: 'I messed up',
-            body: values.comment.body
-          })
-          message.success('Draft updated!')
-        } catch (err) {
-          console.warn(err)
-        }
+        api.post('comments', {
+          proposal: parent,
+          user: user._id,
+          title: 'I messed up',
+          body: 'TEST'
+          // body: values.comment.body
+        }, {})
+        message.success('Draft updated!')
       }
     })
   }
