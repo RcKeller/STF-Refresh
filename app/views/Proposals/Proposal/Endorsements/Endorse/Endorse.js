@@ -6,16 +6,7 @@ import { connect } from 'react-redux'
 import { Form, Input, Button, message } from 'antd'
 const FormItem = Form.Item
 
-// function hasErrors (fields) {
-//   return Object.keys(fields).some(field => fields[field])
-// }
-
-const hasErrors = (fields) => Object.keys(fields).some(field => fields[field])
-
-const layout = {
-  labelCol: { xs: { span: 24 }, sm: { span: 6 } },
-  wrapperCol: { xs: { span: 24 }, sm: { span: 14 } }
-}
+import { layout, feedback, help, rules, disableSubmit } from '../../../../../util/form'
 
 // import styles from './Body.css'
 @connect(state => ({
@@ -35,30 +26,25 @@ class Endorse extends React.Component {
     })
   }
   render (
-    { comments, user, screen, getFieldsError, form } = this.props,
+    { comments, user, screen, form } = this.props,
     { handleSubmit } = this
   ) {
-    const feedback = (field) => form.isFieldTouched(field)
-    const help = (field) => (form.isFieldTouched(field) && form.getFieldError(field)) || ''
+    console.log(rules)
     return (
       <div>
         {user &&
           <div>
             <h1>Endorse this proposal!</h1>
             <Form onSubmit={this.handleSubmit}>
-              <FormItem {...layout}
-                hasFeedback={feedback('comment')} help={help('body.overview.abstract')}
-              >
-                {form.getFieldDecorator('comment', {
-                  rules: [{ required: true, message: 'Required.' }]
-                })(
+              <FormItem {...layout} hasFeedback={feedback(form, 'comment')} help={help(form, 'comment')} >
+                {form.getFieldDecorator('comment', rules.required)(
                   <Input type='textarea' rows={6} />
                 )}
               </FormItem>
               <FormItem>
                 <Button size='large' type='primary'
                   htmlType='submit'
-                  disabled={hasErrors(form.getFieldsError())}
+                  disabled={disableSubmit(form)}
                 >Update</Button>
               </FormItem>
             </Form>

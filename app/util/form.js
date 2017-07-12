@@ -1,3 +1,34 @@
+/*
+ANTD / RC-FORM UTILS
+Ant uses a very cumbersome controlled form wrapper. To use it, you have to do the following:
+1. Use the appropriate form wrapper on your form component:
+    const EndorseForm = Form.create()(Endorse)
+2. Define your form:
+    <Form onSubmit={this.handleSubmit}>...</Form>
+3. Wrap each formitem with a decorator containing configs.
+    (example using these utils)
+    {form.getFieldDecorator('comment', rules.required)(
+      <Input type='textarea' rows={6} />
+    )}
+4. Provide an onSubmit in the class:
+    handleSubmit = (e) => {
+      e.preventDefault()
+      let { form, proposalID, user } = this.props
+      form.validateFields((err, values) => {
+        console.log('SUBMITTING', err, values, proposalID, user)
+      })
+    }
+5. Validate your fields on component mount, preventing premature submissions.
+    componentDidMount () { this.props.form.validateFields() }
+
+Unfortuanately, Antd does NOT play well with Redux form.
+However, we can work with RC form by reducing boilerplate, hence these utils.
+RC-Form means well. It helps provide custom feedback while reducing the need for manual boilerplate.
+For more information:
+    https://ant.design/components/form/
+    http://react-component.github.io/form/
+*/
+
 //  Well-situated default layout for forms
 //  <FormItem {...layout}
 const layout = {
@@ -7,18 +38,29 @@ const layout = {
 
 //  Check a form for errors. Returns bool
 const hasErrors = (fields) => Object.keys(fields).some(field => fields[field])
-
 //  Feedback checker util, usage in FormItem:
 //  <FormItem hasFeedback={feedback('comment')}
+//  <FormItem hasFeedback={feedback(form, 'comment')} ...
 const feedback = (form, field) => form.isFieldTouched(field)
-
 //  Help text for FormItems. Doesn't display anything if it hasn't been touched (aka just loaded)
-//  help={help('body.overview.abstract')}
+//  <FormItem help={help(form, 'comment')} ...
 const help = (form, field) => (form.isFieldTouched(field) && form.getFieldError(field)) || ''
+
+//  Set of useful default form rules, reduces boilerplate. Does NOT fill all use cases.
+//  {form.getFieldDecorator('comment', rule.required)(<input... />)}
+const rules = {
+  required: { rules: [{ required: true, message: 'Required.' }] }
+}
+
+//  Disable a form's submit button
+//  <Button htmlType='submit' disabled={disableSubmit(form)} />
+const disableSubmit = (form) => hasErrors(form.getFieldsError())
 
 export {
   layout,
   hasErrors,
   feedback,
-  help
+  help,
+  rules,
+  disableSubmit
 }
