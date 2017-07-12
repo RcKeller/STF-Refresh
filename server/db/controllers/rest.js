@@ -73,6 +73,7 @@ export default class REST {
     POST: Add a model
   ***** */
   post (data, query) {
+    console.log(data)
     let model = this.model.create(data)
     //  TODO: Any middleware needed?
     return model.then((modelInstance = {}) => modelInstance)

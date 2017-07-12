@@ -99,13 +99,17 @@ const post = (model, body, options) => mutateAsync({
   body,
   update: { [model.slice(0, -1)]: (prev, next) => Array.isArray(next) ? next[0] : next }
 })
-// const post = (model, body, options) => ({
-//   url: 'http://localhost:3000/v1/comments/',
-//   // options: { method: 'POST' },
-//   transform: res => ({ comments: res }),
-//   body,
-//   update: { comments: (prev, next) => next }
-// })
+// export const post = (model, body, options) => {
+//   return function (dispatch) {
+//     dispatch(mutateAsync({
+//       url: url(model, options),
+//       options: { method: 'POST' },
+//       transform: res => ({ [model.slice(0, -1)]: res }),
+//       body,
+//       update: { [model.slice(0, -1)]: (prev, next) => Array.isArray(next) ? next[0] : next }
+//     }))
+//   }
+// }
 
 /* *****
 UPDATE: PUT

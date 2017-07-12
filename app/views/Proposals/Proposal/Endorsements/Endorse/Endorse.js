@@ -14,8 +14,7 @@ import api from '../../../../../services'
 @connect(state => ({
   parent: state.entities.proposal._id,
   comments: state.entities.proposal.comments,
-  user: state.user,
-  screen: state.screen
+  user: state.user
 }))
 class Endorse extends React.Component {
   // Disable submit button at the beginning by running validation.
@@ -23,26 +22,38 @@ class Endorse extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault()
     let { user, parent, form } = this.props
-    console.log(e, e.target.values)
-    form.validateFields(function (err, values) {
-      console.log(err, values)
+    form.validateFields((err, values) => {
       if (!err) {
-        const body = {
-          proposal: parent,
-          user: user._id,
-          title: 'I messed up',
-          body: values.comment.body
+        try {
+          const body = {
+            proposal: parent,
+            user: user._id,
+            title: 'I messed up',
+            body: values.comment.body
+          }
+          let test1 = mutateAsync({
+            url: 'http://localhost:3000/v1/comments/',
+            options: { method: 'POST' },
+            transform: res => ({ comment: res }),
+            body: body,
+            update: { comment: (prev, next) => next }
+          })
+          let test2 = api.post('comments', body)
+          console.log('test1', test1)
+          console.log('test2', test2)
+          // test1()
+          // test2()
+          api.post('comments', body)
+          message.success('Draft updated!')
+        } catch (err) {
+          message.error('An error occured - Draft failed to update')
+          console.warn(err)
         }
-        console.log('Attempting to post', body)
-        let post = api.post('comments', body)
-        console.log(post)
-        post()
-        message.success('Draft updated!')
       }
     })
   }
 
-  render ({ comments, user, screen, form } = this.props) {
+  render ({ comments, user, form } = this.props) {
     return (
       <div>
         <h1>Endorse this proposal!</h1>
