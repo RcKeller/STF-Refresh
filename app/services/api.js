@@ -96,7 +96,7 @@ ex: api.post('report', {})
 const post = (model, body, options) => mutateAsync({
   url: url(model, options),
   options: { method: 'POST' },
-  transform: res => ({ [model.slice(0, -1)]: res }),
+  // transform: res => ({ [model.slice(0, -1)]: res }),
   body,
   update: { [model.slice(0, -1)]: (prev, next) => Array.isArray(next) ? next[0] : next }
 })

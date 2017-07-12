@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import { Row, Col, Alert } from 'antd'
 // import styles from './Body.css'
-@connect(state => ({ report: state.db.proposal.report }))
+@connect(state => ({ report: state.entities.proposal.report }))
 class Report extends React.Component {
   render ({ report } = this.props) {
     return (

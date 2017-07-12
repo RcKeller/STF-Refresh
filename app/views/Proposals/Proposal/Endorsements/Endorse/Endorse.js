@@ -12,8 +12,8 @@ import api from '../../../../../services'
 
 // import styles from './Body.css'
 @connect(state => ({
-  parent: state.db.proposal._id,
-  comments: state.db.proposal.comments,
+  parent: state.entities.proposal._id,
+  comments: state.entities.proposal.comments,
   user: state.user,
   screen: state.screen
 }))
@@ -25,43 +25,38 @@ class Endorse extends React.Component {
     let { user, parent, form } = this.props
     console.log(user, parent, form, api)
     form.validateFields((err, values) => {
-      console.log(err, values)
       if (!err) {
-        let body = {
-          proposal: parent,
-          user: user._id,
-          title: 'I messed up',
-          body: values.comment.body
+        try {
+          api.post('comments', {
+            proposal: parent,
+            user: user._id,
+            title: 'I messed up',
+            body: values.comment.body
+          })
+          message.success('Draft updated!')
+        } catch (err) {
+          console.warn(err)
         }
-        api.get('comments')
-        mutateAsync(api.post('comments', body))
-        message.success('Draft updated!')
       }
     })
   }
-  render (
-    { comments, user, screen, form } = this.props,
-    { handleSubmit } = this
-  ) {
+
+  render ({ comments, user, screen, form } = this.props) {
     return (
       <div>
-        {user &&
-          <div>
-            <h1>Endorse this proposal!</h1>
-            <Form onSubmit={this.handleSubmit}>
-              <FormItem {...layout} hasFeedback={feedback(form, 'comment.body')} help={help(form, 'comment.body')} >
-                {form.getFieldDecorator('comment.body', rules.required)(
-                  <Input type='textarea' rows={6} />
-                )}
-              </FormItem>
-              <FormItem>
-                <Button size='large' type='primary'
-                  htmlType='submit' disabled={disableSubmit(form)}
-                >Update</Button>
-              </FormItem>
-            </Form>
-          </div>
-        }
+        <h1>Endorse this proposal!</h1>
+        <Form onSubmit={this.handleSubmit}>
+          <FormItem {...layout} hasFeedback={feedback(form, 'comment.body')} help={help(form, 'comment.body')} >
+            {form.getFieldDecorator('comment.body', rules.required)(
+              <Input type='textarea' rows={6} />
+            )}
+          </FormItem>
+          <FormItem>
+            <Button size='large' type='primary'
+              htmlType='submit' disabled={disableSubmit(form)}
+            >Update</Button>
+          </FormItem>
+        </Form>
       </div>
     )
   }

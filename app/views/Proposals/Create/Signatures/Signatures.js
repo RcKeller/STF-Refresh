@@ -31,7 +31,7 @@ const layout = {
   user: state.user,
   //  Selecting proposal from store, not form. Good for partially preventing spoofing.
   //  This way, the server must be a part of ID verification.
-  proposal: state.db.proposal
+  proposal: state.entities.proposal
 }))
 class Signatures extends React.Component {
   render ({ user, form, proposal } = this.props) {

@@ -10,15 +10,15 @@ const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
 
 // import styles from './Body.css'
 @connect(state => ({
-  title: state.db.proposal.title,
-  organization: state.db.proposal.organization,
-  year: state.db.proposal.year,
-  number: state.db.proposal.number,
-  uac: state.db.proposal.uac,
-  contacts: state.db.proposal.contacts,
-  status: state.db.proposal.status,
-  decision: state.db.proposal.decision,
-  amendments: state.db.proposal.amendments
+  title: state.entities.proposal.title,
+  organization: state.entities.proposal.organization,
+  year: state.entities.proposal.year,
+  number: state.entities.proposal.number,
+  uac: state.entities.proposal.uac,
+  contacts: state.entities.proposal.contacts,
+  status: state.entities.proposal.status,
+  decision: state.entities.proposal.decision,
+  amendments: state.entities.proposal.amendments
 }))
 class Head extends React.Component {
   render ({ title, organization, uac, year, number, contacts, status, decision, amendments } = this.props) {

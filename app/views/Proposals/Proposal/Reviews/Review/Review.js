@@ -7,12 +7,12 @@ import { Alert, Collapse, Progress } from 'antd'
 const Panel = Collapse.Panel
 
 @connect((state, props) => ({
-  author: state.db.proposal.reviews[props.index].author,
-  body: state.db.proposal.reviews[props.index].body,
-  approved: state.db.proposal.reviews[props.index].approved,
-  score: state.db.proposal.reviews[props.index].score,
-  ratings: state.db.proposal.reviews[props.index].ratings,
-  date: state.db.proposal.reviews[props.index].date
+  author: state.entities.proposal.reviews[props.index].author,
+  body: state.entities.proposal.reviews[props.index].body,
+  approved: state.entities.proposal.reviews[props.index].approved,
+  score: state.entities.proposal.reviews[props.index].score,
+  ratings: state.entities.proposal.reviews[props.index].ratings,
+  date: state.entities.proposal.reviews[props.index].date
 }))
 class Review extends React.Component {
   render ({ date, author, body, approved, score, ratings } = this.props) {

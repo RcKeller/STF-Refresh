@@ -27,7 +27,7 @@ const columns = [
 
 @compose(
   connect(state => ({
-    blocks: state.db.blocks,
+    blocks: state.entities.blocks,
     screen: state.screen
   })),
   connectRequest(() => api.getAll('blocks'))

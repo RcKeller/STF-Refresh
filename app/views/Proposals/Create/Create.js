@@ -28,7 +28,7 @@ Render form components. Run validation and api.patch() to update the remote as n
 import styles from './Create.css'
 @compose(
   connect(
-    state => ({ proposal: state.db.proposal }),
+    state => ({ proposal: state.entities.proposal }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
   //  TODO: This ID is placeholder. Get from props.

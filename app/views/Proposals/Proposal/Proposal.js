@@ -36,7 +36,7 @@ const style = {
 }
 
 @compose(
-  connect(state => ({ proposal: state.db.proposal })),
+  connect(state => ({ proposal: state.entities.proposal })),
   connectRequest(props => api.get('proposals', {
     where: {
       year: props.params.year,

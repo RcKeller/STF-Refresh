@@ -7,7 +7,7 @@ import { Row, Col, Icon } from 'antd'
 
 import styles from './Body.css'
 @connect(state => ({
-  plan: state.db.proposal.body.plan,
+  plan: state.entities.proposal.body.plan,
   screen: state.screen
 }))
 class Body extends React.Component {
