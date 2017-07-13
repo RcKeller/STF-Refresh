@@ -10,12 +10,12 @@ Please note, migration to v4 is a BREAKING change.
 https://github.com/reactGo/reactGo/pull/841/files
 */
 const SplitFrontPage = (l, c) => require.ensure([], () => c(null, require('./views/FrontPage/FrontPage').default))
-const SplitNotFound = (l, c) => require.ensure([], () => c(null, require('./views/NotFound/NotFound').default))
+// const SplitNotFound = (l, c) => require.ensure([], () => c(null, require('./views/NotFound/NotFound').default))
 const SplitFAQ = (l, c) => require.ensure([], () => c(null, require('./views/FAQ/FAQ').default))
 const SplitAbout = (l, c) => require.ensure([], () => c(null, require('./views/About/About').default))
 const SplitContact = (l, c) => require.ensure([], () => c(null, require('./views/Contact/Contact').default))
 const SplitCreate = (l, c) => require.ensure([], () => c(null, require('./views/Proposals/Create/Create').default))
-const SplitAgreement = (l, c) => require.ensure([], () => c(null, require('./views/Proposals/Create/Agreement/Agreement').default))
+const SplitEdit = (l, c) => require.ensure([], () => c(null, require('./views/Proposals/Edit/Edit').default))
 const SplitProposals = (l, c) => require.ensure([], () => c(null, require('./views/Proposals/Proposals').default))
 const SplitProposal = (l, c) => require.ensure([], () => c(null, require('./views/Proposals/Proposal/Proposal').default))
 const SplitBlocks = (l, c) => require.ensure([], () => c(null, require('./views/Blocks/Blocks').default))
@@ -69,11 +69,11 @@ export default (store) => {
 
       <Route path='/create'
         onEnter={requireAuth}
-        breadcrumbName='Create Proposal' getComponent={SplitAgreement}
+        breadcrumbName='Create Proposal' getComponent={SplitCreate}
       />
-      <Route path='/create/:id'
+      <Route path='/edit/:id'
         onEnter={requireAuth}
-        breadcrumbName='Proposal Agreement' getComponent={SplitCreate}
+        breadcrumbName='Edit Proposal' getComponent={SplitEdit}
       />
 
       <Route path='/calendar' breadcrumbName='Calendar' getComponent={SplitCalendar} />

@@ -56,6 +56,10 @@ const ProposalSchema = new mongoose.Schema({
   report: { type: mongoose.Schema.Types.ObjectId, ref: 'Report' }
 })
 /*
+Metadata
+Contacts
+Body (Overview / Project Plan)
+Manifests
 Stynax: <parent-to-child prop>.<child-to-parent prop>
 */
 ProposalSchema.plugin(autoref, [

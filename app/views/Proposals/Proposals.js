@@ -88,6 +88,24 @@ class Proposals extends React.Component {
   //  Shorthand assignment of variables when defining render
   render ({ proposals, screen } = this.props) {
     //  Return mapped content with proposal data. Demonstrates data usage.
+    const title = () => <h1>STF Proposals</h1>
+    const footer = () => (
+      <div>
+        <ul>
+          {proposals &&
+            <div>
+              <h6>My Proposals</h6>
+              <Link to={`/proposals/${proposals[0].year}/${proposals[0].number}`}>
+                <li>{`${proposals[0].year}-${proposals[0].number}: ${proposals[0].title}`}</li>
+              </Link>
+            </div>
+          }
+          <li>My prop</li>
+          <li>My prop</li>
+        </ul>
+        <em>Any campus department or org can submit a proposal with a budget code. <Link to='/create'>Click Here!</Link></em>
+      </div>
+    )
     return (
       <article className={styles['article']}>
         {!proposals
@@ -95,8 +113,8 @@ class Proposals extends React.Component {
           : <Table dataSource={proposals} sort
             size={screen.lessThan.medium ? 'small' : ''}
             columns={screen.lessThan.medium ? columns.slice(0, 3) : columns}
-            title={() => <h1>STF Proposals</h1>}
-            footer={() => 'Your proposals here'}
+            title={title}
+            footer={footer}
           />
         }
       </article>
