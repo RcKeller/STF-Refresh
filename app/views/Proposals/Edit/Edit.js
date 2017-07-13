@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { compose, bindActionCreators } from 'redux'
+import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
@@ -12,14 +12,8 @@ import api from '../../../services'
 // import Manifest from './Manifest/Manifest'
 // import Signatures from './Signatures/Signatures'
 
-import { Form, Icon, Button, Tabs, message } from 'antd'
+import { Icon, Spin, Tabs } from 'antd'
 const TabPane = Tabs.TabPane
-const FormItem = Form.Item
-
-function hasErrors (fields) {
-  return Object.keys(fields).some(field => fields[field])
-}
-
 /*
 connectRequest should get proposal by ID
 If there is no ID, or there is an ID but you're a contact...
@@ -27,117 +21,56 @@ Render form components. Run validation and api.patch() to update the remote as n
 */
 import styles from './Edit.css'
 @compose(
-  connect(
-    state => ({ proposal: state.entities.proposal }),
-    dispatch => ({ api: bindActionCreators(api, dispatch) })
-  ),
-  //  TODO: This ID is placeholder. Get from props.
-  connectRequest((props) => api.get('proposals', {
+  connect(state => ({ proposal: state.entities.proposal })),
+  connectRequest((props) => api.get('proposal', {
     id: props.params.id,
     join: ['contacts', 'body', 'manifests']
   }))
 )
 class Edit extends React.Component {
-  // Disable submit button at the beginning by running validation.
-  componentDidMount () { this.props.form.validateFields() }
-  //  Load fields from server
-  //  TODO: Refactor for efficiency, detect if f
-  componentDidUpdate (prevProps, prevState) {
-    if (!prevProps.proposal && this.props.proposal) {
-      this.props.form.setFieldsValue(this.props.proposal)
-    }
-  }
-  /*
-  handleSubmit will handle the FINAL submission, which includes
-  marking a proposal as complete / not a draft.
-  */
-  handleSubmit = (e) => {
-    e.preventDefault()
-    let { form, proposal, api } = this.props
-    form.validateFields((err, values) => {
-      console.log('SUBMITTING', values)
-      if (!err) {
-        try {
-          api.patch({
-            model: 'proposal',
-            id: proposal._id  // _id is a mongo convention=
-          }, values)
-          // api.patch('proposal', proposal._id, values)
-          message.success('Draft updated!')
-          //  TODO: Once we add a bool for if proposals are drafts, update this to reflect that.
-        } catch (err) {
-          message.error('An error occured - Draft failed to update')
-          console.warn(err)
-        }
-      }
-    })
-  }
-  /*
-  Util for silently updating the proposal on the backend.
-  Leaving this be for now, until we decide on how aggressive our validation will be.
-  BUG: This is incomplete, due to DB migration.
-  */
-  update () {
-    let { form } = this.props
-    form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Update:', values)
-      } else {
-        console.warn('Update fails validation:', err)
-      }
-    })
-  }
-  render ({ handleSubmit, form, proposal } = this.props) {
-    const invalidData = hasErrors(form.getFieldsError())
+  render ({ proposal } = this.props) {
     return (
       <article className={styles['page']}>
-        <h1>{proposal ? proposal.title : 'Creating New Proposal'}</h1>
-        <Form onSubmit={this.handleSubmit}>
-          <Tabs defaultActiveKey='1' onChange={() => this.update()}>
-            <TabPane key='1' tab={<span>
-              <Icon type='team' />
-              Introduction</span>
-            }>
-              {/* <Introduction form={form} proposal={proposal} /> */}
-            </TabPane>
-            <TabPane key='2' tab={
-              <span><Icon type='solution' />Overview</span>
-            }>
-              {/* <Overview form={form} proposal={proposal} /> */}
-            </TabPane>
-            <TabPane key='3' tab={
-              <span><Icon type='book' />Plan</span>
-            }>
-              {/* <ProjectPlan form={form} proposal={proposal} /> */}
-            </TabPane>
-            <TabPane key='4' tab={
-              <span><Icon type='wallet' />Manifest</span>
-            }>
-              {/* <Manifest form={form} proposal={proposal} /> */}
-            </TabPane>
-            <TabPane key='5' disabled={proposal && proposal.contacts.length < 3} tab={
-              <span><Icon type='edit' />Signatures</span>
-            }>
-              {/* <Signatures form={form} proposal={proposal} /> */}
-            </TabPane>
-          </Tabs>
-          <FormItem>
-            <Button size='large' type='primary'
-              className={styles['submit-button']}
-              htmlType='submit'
-              disabled={invalidData}
-            >Update</Button>
-          </FormItem>
-        </Form>
+        {!proposal
+          ? <Spin size='large' tip='Loading...' />
+          : <div>
+            <h1>{proposal ? `Editing: ${proposal.title}` : 'Creating New Proposal'}</h1>
+            <h6>{`ID: ${proposal._id}`}</h6>
+            <Tabs tabPosition='right' defaultActiveKey='1'>
+              <TabPane key='1'
+                tab={<span><Icon type='team' />Introduction</span>
+              }>
+                <div>Intro</div>
+              </TabPane>
+              <TabPane key='2'
+                tab={<span><Icon type='team' />Contacts</span>
+              }>
+                <div>Contacts</div>
+              </TabPane>
+              <TabPane key='3'
+                tab={<span><Icon type='book' />Proposal</span>
+              }>
+                <div>Proposal Body</div>
+              </TabPane>
+              <TabPane key='4'
+                tab={<span><Icon type='wallet' />Manifest</span>
+              }>
+                <div>Manifest</div>
+              </TabPane>
+              <TabPane key='5'
+                tab={<span><Icon type='edit' />Signatures</span>
+              }>
+                <div>Signatures</div>
+              </TabPane>
+            </Tabs>
+          </div>
+        }
       </article>
     )
   }
 }
 Edit.propTypes = {
-  form: PropTypes.object,
   proposal: PropTypes.object,
   api: PropTypes.object
 }
-// Decoration doesn't work.
-const EditForm = Form.create()(Edit)
-export default EditForm
+export default Edit

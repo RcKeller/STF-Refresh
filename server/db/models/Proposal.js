@@ -9,16 +9,17 @@ const ProposalSchema = new mongoose.Schema({
   might be a good field to fill manually, prevents namespace issues later.
   NOTE: Edit, that is not the case, these are CUID's
   */
-  year: { type: Number, required: true },
-  number: { type: Number, required: true },
+  year: Number,
+  number: Number,
   quarter: String,
+  published: { type: Boolean, default: false },
   //  Overall data, probably renders everywhere.
-  title: { type: String, unique: true, required: true },
-  category: { type: String, required: true },
+  title: String,
+  category: String,
   // UAC === uniform access / tri-campus.
   uac: { type: Boolean, default: false },
   // organization === department in legacy code. This is more inclusive.
-  organization: { type: String, required: true },
+  organization: String,
   //  Proposal status, differs from decisions in that this is "summary" data for table viewing.
   status: { type: String, default: 'In Review' },
   asked: Number,
@@ -93,6 +94,7 @@ const dummyProposals = (min, ids) => {
           year: 2017,
           number: faker.random.number(),
           quarter: 'Spring',
+          published: true,
 
           title: faker.company.catchPhrase(),
           category: faker.name.jobArea(),
