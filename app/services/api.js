@@ -43,7 +43,7 @@ input:
 output:
 ...v1/block?query={"number":"70692"}&populate={"path":"contacts"}
 */
-const url = (model, options = {}) => {
+const endpoint = (model, options = {}) => {
   //  Base URL, e.g. ...host/v1/proposals/:id
   let url = `${API}/${version}/${pluralize(model)}/${options.id ? options.id : ''}`
   //  Operator to prefix query string for joins, queries, ID specification etc
@@ -65,29 +65,14 @@ const normalize = (res) => (Array.isArray(res) && res.length === 1) ? res[0] : r
 // const normalizeArray = (next) => (next.length === 1 ? next[0] : next)
 
 /* *****
-GET ALL
-ex: api.getAll('proposal', { populate: 'contacts,decision' })
-***** */
-const getAll = (model, options) => ({
-  url: url(model, options),
-  options: { method: 'GET' },
-  transform: body => ({ [model]: body }),
-  update: { [model]: (prev, next) => next }
-})
-
-/* *****
-GET ONE
+GET (ALL)
 ex: api.get('proposal', '594b49998dabd50e2c71762d')
 ***** */
 const get = (model, options = {}) => ({
-  url: url(model, options),
+  url: endpoint(model, options),
   options: { method: 'GET' },
-  transform: body => ({ [model]: normalize(body) }),
-  update: (options.update ? options.update : { [model]: (prev, next) => next })
-  // update: {
-  //   [options.update ? options.update : model]:
-  //   (prev, next) => next
-  // }
+  transform: res => ({ [model]: normalize(res) }),
+  update: options.update ? options.update : { [model]: (prev, next) => next }
 })
 
 /* *****
@@ -96,17 +81,11 @@ Pass the object in as the body arg
 ex: api.post('report', {})
 ***** */
 const post = (model, body, options) => mutateAsync({
-  url: url(model, options),
+  url: endpoint(model, options),
   options: { method: 'POST' },
-  transform: res => ({ [model]: res }),
+  transform: body => ({ [model]: normalize(body) }),
   body,
-  // update: { [model]: (prev, next) => next }
-  update: {
-    [options.update ? options.update : model]:
-    // (prev, next) => next
-    (prev, next) => Array.isArray(next) ? next[0] : next
-    // (prev, next) => Array.isArray(next) ? normalizeArray(next) : next
-  }
+  update: options.update ? options.update : { [model]: (prev, next) => next }
 })
 
 /* *****
@@ -115,11 +94,11 @@ ex: api.put('report', '594b49998dabd50e2c7176bf',
 { date: "2000-06-21T07:15:10.746Z" })
 ***** */
 const put = (model, body, options) => mutateAsync({
-  url: url(model, options),
+  url: endpoint(model, options),
   options: { method: 'PUT' },
-  transform: res => ({ [model]: res }),
+  transform: res => ({ [model]: normalize(res) }),
   body,
-  update: { [model]: (prev, next) => next }
+  update: options.update ? options.update : { [model]: (prev, next) => next }
 })
 
 /* *****
@@ -128,11 +107,11 @@ ex: api.put('report', '594b49998dabd50e2c7176bf',
 { date: "2000-06-21T07:15:10.746Z" })
 ***** */
 const patch = (model, body, options) => mutateAsync({
-  url: url(model, options),
+  url: endpoint(model, options),
   options: { method: 'PATCH' },
-  transform: res => ({ [model]: res }),
+  transform: res => ({ [model]: normalize(res) }),
   body,
-  update: { [model]: (prev, next) => next }
+  update: options.update ? options.update : { [model]: (prev, next) => next }
 })
 
 /* *****
@@ -141,14 +120,13 @@ ex: api.remove('report', '594b49998dabd50e2c7176bf')
 note: The 'delete' namespace is a JS keyword.
 ***** */
 const remove = (model, options) => mutateAsync({
-  url: url(options),
+  url: endpoint(options),
   options: { method: 'DELETE' },
-  transform: res => ({ [model]: res }),
-  update: { [model]: (prev, next) => next }
+  transform: res => ({ [model]: normalize(res) }),
+  update: options.update ? options.update : { [model]: (prev, next) => next }
 })
 
 export default {
-  getAll,
   get,
   post,
   put,

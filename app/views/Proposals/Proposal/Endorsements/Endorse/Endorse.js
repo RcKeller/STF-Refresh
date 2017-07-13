@@ -31,7 +31,7 @@ class Endorse extends React.Component {
           user: user._id,
           ...values.comment
         }, {
-          update: 'proposal.comments'
+          update: { 'proposal.comments': (prev, next) => console.log(prev, next) && next }
         })
         .then(message.success('Draft updated!'))
         .catch(err => {
