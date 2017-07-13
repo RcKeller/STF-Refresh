@@ -18,7 +18,7 @@ const TabPane = Tabs.TabPane
 import styles from './Edit.css'
 @compose(
   connect(state => ({ proposal: state.entities.proposal })),
-  connectRequest((props) => api.get('proposal', {
+  connectRequest(props => api.get('proposal', {
     id: props.params.id,
     join: ['contacts', 'body', 'manifests']
   }))

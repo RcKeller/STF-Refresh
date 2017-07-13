@@ -30,7 +30,7 @@ const columns = [
     blocks: state.entities.blocks,
     screen: state.screen
   })),
-  connectRequest(() => api.getAll('blocks'))
+  connectRequest(() => api.get('blocks'))
 )
 class Blocks extends React.Component {
   render ({ blocks, screen } = this.props) {

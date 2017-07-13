@@ -1,22 +1,26 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { bindActionCreators } from 'redux'
+import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import { Form, Input, Button, message } from 'antd'
 const FormItem = Form.Item
+const connectForm = Form.create()
 
 import { layout, feedback, help, rules, disableSubmit } from '../../../../../util/form'
 import api from '../../../../../services'
 
 // import styles from './Body.css'
-@connect(
-  state => ({
-    parent: state.entities.proposal._id,
-    user: state.user
-  }),
-  dispatch => ({ api: bindActionCreators(api, dispatch) })
+@compose(
+  connect(
+    state => ({
+      parent: state.entities.proposal._id,
+      user: state.user
+    }),
+    dispatch => ({ api: bindActionCreators(api, dispatch) })
+  ),
+  connectForm
 )
 class Endorse extends React.Component {
   // Disable submit button at the beginning by running validation.
@@ -73,5 +77,6 @@ Endorse.propTypes = {
   api: PropTypes.object,
   form: PropTypes.object
 }
-const EndorseForm = Form.create()(Endorse)
-export default EndorseForm
+export default Endorse
+// const EndorseForm = Form.create()(Endorse)
+// export default EndorseForm

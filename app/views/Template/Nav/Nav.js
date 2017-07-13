@@ -43,7 +43,7 @@ class Nav extends React.Component {
           </Item>
         </SubMenu>
         <Alert type='info' banner showIcon
-          className={styles['event']}
+          // className={styles['event']}
           message='Meetings'
           description={<span>Every Monday<br />3:30 - 5:30PM<br />HUB 305</span>}
         />

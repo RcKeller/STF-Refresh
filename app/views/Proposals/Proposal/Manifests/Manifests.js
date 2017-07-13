@@ -54,28 +54,40 @@ class Manifests extends React.Component {
   ) {
     return (
       <div>
-        <h1>Budget & Manifest</h1>
-        {manifests.length > 1 &&
-          <Alert type='info' showIcon
+        <h1>Budget</h1>
+        {(manifests && manifests.length > 1) &&
+          <Alert type='info' banner showIcon
             message='Multiple Manifests'
-            description='This proposal has multiple manifests as a result of partial awards or amendments. Use the dropdown below to browse through them all.'
-          />
+            description={<div>
+              <p>
+                This proposal has multiple manifests as a result of partial awards or amendments. Use the dropdown below to browse through them all.
+              </p>
+              <Select size='large' style={{ width: '100%' }}
+                defaultValue={(manifests.length - 1).toString()}
+                onChange={(value) => this.handleChange(value)}
+              >
+                {manifests.map((m, i) =>
+                  <Option value={i.toString()}>{m.title}</Option>
+                )}
+              </Select>
+            </div>
+          } />
         }
         <Table dataSource={manifests[index].items} sort
           size={screen.lessThan.medium ? 'small' : 'middle'}
           columns={screen.lessThan.medium ? columns.slice(1, 4) : columns}
           rowKey={record => record._id}
           //  The above will throw an error if using faker data, since duplicates are involved.
-          title={() => (
-            <Select size='large' style={{ width: '100%' }}
-              defaultValue={(manifests.length - 1).toString()}
-              onChange={(value) => this.handleChange(value)}
-            >
-              {manifests.map((m, i) =>
-                <Option value={i.toString()}>{m.title}</Option>
-              )}
-            </Select>
-          )}
+          // title={() => (
+          //   <Select size='large' style={{ width: '100%' }}
+          //     defaultValue={(manifests.length - 1).toString()}
+          //     onChange={(value) => this.handleChange(value)}
+          //   >
+          //     {manifests.map((m, i) =>
+          //       <Option value={i.toString()}>{m.title}</Option>
+          //     )}
+          //   </Select>
+          // )}
           expandedRowRender={expandedRowRender}
           pagination={false}
         />
