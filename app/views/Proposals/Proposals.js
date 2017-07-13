@@ -81,7 +81,7 @@ import styles from './Proposals.css'
     screen: state.screen
   })),
   //  Execute necessary AJAX to load said entities
-  connectRequest((props) => api.get('proposals'))
+  connectRequest((props) => api.getAll('proposals'))
   // connectRequest((props) => api.getAll('proposals'))
 )
 class Proposals extends React.Component {

@@ -14,11 +14,7 @@ import api from '../../../services'
 
 import { Icon, Spin, Tabs } from 'antd'
 const TabPane = Tabs.TabPane
-/*
-connectRequest should get proposal by ID
-If there is no ID, or there is an ID but you're a contact...
-Render form components. Run validation and api.patch() to update the remote as necessary
-*/
+
 import styles from './Edit.css'
 @compose(
   connect(state => ({ proposal: state.entities.proposal })),
