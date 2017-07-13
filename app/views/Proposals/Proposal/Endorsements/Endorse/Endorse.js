@@ -30,6 +30,8 @@ class Endorse extends React.Component {
           proposal: parent,
           user: user._id,
           ...values.comment
+        }, {
+          update: 'proposal.comments'
         })
         .then(message.success('Draft updated!'))
         .catch(err => {

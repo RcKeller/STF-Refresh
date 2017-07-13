@@ -60,6 +60,10 @@ const url = (model, options = {}) => {
   return url
 }
 
+//  Normalize responses. If you get an array with a single object, select that object.
+const normalize = (res) => (Array.isArray(res) && res.length === 1) ? res[0] : res
+// const normalizeArray = (next) => (next.length === 1 ? next[0] : next)
+
 /* *****
 GET ALL
 ex: api.getAll('proposal', { populate: 'contacts,decision' })
@@ -75,12 +79,15 @@ const getAll = (model, options) => ({
 GET ONE
 ex: api.get('proposal', '594b49998dabd50e2c71762d')
 ***** */
-const get = (model, options) => ({
+const get = (model, options = {}) => ({
   url: url(model, options),
   options: { method: 'GET' },
-  transform: body => ({ [model]: body }),
-  //  This is for a SINGLE document. Return first element if array received.
-  update: { [model]: (prev, next) => Array.isArray(next) ? next[0] : next }
+  transform: body => ({ [model]: normalize(body) }),
+  update: (options.update ? options.update : { [model]: (prev, next) => next })
+  // update: {
+  //   [options.update ? options.update : model]:
+  //   (prev, next) => next
+  // }
 })
 
 /* *****
@@ -93,7 +100,13 @@ const post = (model, body, options) => mutateAsync({
   options: { method: 'POST' },
   transform: res => ({ [model]: res }),
   body,
-  update: { [model]: (prev, next) => next }
+  // update: { [model]: (prev, next) => next }
+  update: {
+    [options.update ? options.update : model]:
+    // (prev, next) => next
+    (prev, next) => Array.isArray(next) ? next[0] : next
+    // (prev, next) => Array.isArray(next) ? normalizeArray(next) : next
+  }
 })
 
 /* *****
