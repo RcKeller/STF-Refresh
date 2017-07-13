@@ -119,7 +119,7 @@ ex: api.put('report', '594b49998dabd50e2c7176bf',
 const put = (model, body, options) => mutateAsync({
   url: url(model, options),
   options: { method: 'PUT' },
-  transform: body => ({ [model.slice(0, -1)]: body }),
+  transform: res => ({ [model.slice(0, -1)]: res }),
   body,
   update: { [model.slice(0, -1)]: (prev, next) => Array.isArray(next) ? next[0] : next }
 })
@@ -132,7 +132,7 @@ ex: api.put('report', '594b49998dabd50e2c7176bf',
 const patch = (model, body, options) => mutateAsync({
   url: url(model, options),
   options: { method: 'PATCH' },
-  transform: body => ({ [model.slice(0, -1)]: body }),
+  transform: res => ({ [model.slice(0, -1)]: res }),
   body,
   update: { [model.slice(0, -1)]: (prev, next) => Array.isArray(next) ? next[0] : next }
 })
@@ -145,7 +145,7 @@ note: The 'delete' namespace is a JS keyword.
 const remove = (model, options) => mutateAsync({
   url: url(options),
   options: { method: 'DELETE' },
-  transform: body => ({ [model.slice(0, -1)]: body }),
+  transform: res => ({ [model.slice(0, -1)]: res }),
   update: { [model.slice(0, -1)]: (prev, next) => Array.isArray(next) ? next[0] : next }
 })
 
