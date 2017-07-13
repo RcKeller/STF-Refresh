@@ -71,23 +71,11 @@ ex: api.get('proposal', '594b49998dabd50e2c71762d')
 GET ALL
 ex: api.getAll('proposal', { populate: 'contacts,decision' })
 ***** */
-const getAll = (model, options = {}) => ({
-  url: endpoint(model, options),
-  options: { method: 'GET' },
-  transform: body => ({ [model]: body }),
-  update: { [model]: (prev, next) => next }
-})
-// const get = (model, options = {}) => ({
-//   url: endpoint(model, options),
-//   options: { method: 'GET' },
-//   transform: res => ({ [model]: normalize(res) }),
-//   update: options.update ? options.update : { [model]: (prev, next) => next }
-// })
 const get = (model, options = {}) => ({
   url: endpoint(model, options),
   options: { method: 'GET' },
-  transform: body => ({ [model]: body }),
-  update: { [model]: (prev, next) => Array.isArray(next) ? next[0] : next }
+  transform: res => ({ [model]: normalize(res) }),
+  update: options.update ? options.update : { [model]: (prev, next) => next }
 })
 
 /* *****
@@ -142,7 +130,6 @@ const remove = (model, options = {}) => mutateAsync({
 })
 
 export default {
-  getAll,
   get,
   post,
   put,
