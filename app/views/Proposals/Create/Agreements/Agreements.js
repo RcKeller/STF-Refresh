@@ -48,7 +48,7 @@ class Agreement extends React.Component {
     return (
       <div>
         {agreements.important.map((policy, i) => (
-          <Alert key={i} type='error' banner
+          <Alert key={i} type='error' banner showIcon={false}
             description={policy.description}
             message={
               <a href={policy.link} target='_blank'>{policy.title}</a>
@@ -58,7 +58,7 @@ class Agreement extends React.Component {
         <Row gutter={16}>
           {agreements.standard.map((policy, i) => (
             <Col key={i} className='gutter-row' xs={24} sm={12} md={8} lg={6} xl={4}>
-              <Alert type='warning' banner
+              <Alert type='warning' banner showIcon={false}
                 description={policy.description}
                 message={
                   <a href={policy.link} target='_blank'>{policy.title}</a>
