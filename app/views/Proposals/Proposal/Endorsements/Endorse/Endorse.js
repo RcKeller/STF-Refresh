@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { mutateAsync } from 'redux-query'
 
 import { Form, Input, Button, message } from 'antd'
 const FormItem = Form.Item
@@ -15,7 +14,6 @@ import api from '../../../../../services'
 @connect(
   state => ({
     parent: state.entities.proposal._id,
-    comments: state.entities.proposal.comments,
     user: state.user
   }),
   dispatch => ({ api: bindActionCreators(api, dispatch) })
@@ -28,28 +26,31 @@ class Endorse extends React.Component {
     let { user, parent, form, api } = this.props
     form.validateFields((err, values) => {
       if (!err) {
-        try {
-          api.post('comments', {
-            proposal: parent,
-            user: user._id,
-            title: 'I messed up',
-            body: values.comment.body
-          })
-          message.success('Draft updated!')
-        } catch (err) {
+        api.post('comments', {
+          proposal: parent,
+          user: user._id,
+          ...values.comment
+        })
+        .then(message.success('Draft updated!'))
+        .catch(err => {
           message.error('An error occured - Draft failed to update')
           console.warn(err)
-        }
+        })
       }
     })
   }
 
-  render ({ comments, user, form } = this.props) {
+  render ({ user, form } = this.props) {
     return (
       <div>
         <h1>Endorse this proposal!</h1>
         <Form onSubmit={this.handleSubmit}>
-          <FormItem {...layout} hasFeedback={feedback(form, 'comment.body')} help={help(form, 'comment.body')} >
+          <FormItem label='Title' {...layout} hasFeedback={feedback(form, 'comment.title')} help={help(form, 'comment.title')} >
+            {form.getFieldDecorator('comment.title', rules.required)(
+              <Input type='textarea' />
+            )}
+          </FormItem>
+          <FormItem label='Comment' {...layout} hasFeedback={feedback(form, 'comment.body')} help={help(form, 'comment.body')} >
             {form.getFieldDecorator('comment.body', rules.required)(
               <Input type='textarea' rows={6} />
             )}
@@ -66,10 +67,10 @@ class Endorse extends React.Component {
 }
 
 Endorse.propTypes = {
-  comments: PropTypes.object,
+  parent: PropTypes.string,
   user: PropTypes.object,
   form: PropTypes.object,
-  parent: PropTypes.string
+  api: PropTypes.object
 }
 const EndorseForm = Form.create()(Endorse)
 export default EndorseForm

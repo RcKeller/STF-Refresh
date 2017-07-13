@@ -1,6 +1,7 @@
 import { API, version } from './environment'
 //  API Mutators are wrapped with async middleware
 import { mutateAsync } from 'redux-query'
+import pluralize from 'pluralize'
 
 /*
 https://amplitude.github.io/redux-query/#/
@@ -43,8 +44,8 @@ output:
 ...v1/block?query={"number":"70692"}&populate={"path":"contacts"}
 */
 const url = (model, options = {}) => {
-  //  Base URL, e.g. ...host/v1/proposal/:id
-  let url = `${API}/${version}/${model}/${options.id ? options.id : ''}`
+  //  Base URL, e.g. ...host/v1/proposals/:id
+  let url = `${API}/${version}/${pluralize(model)}/${options.id ? options.id : ''}`
   //  Operator to prefix query string for joins, queries, ID specification etc
   let operator = '?'
   if (options.where) {
@@ -58,11 +59,6 @@ const url = (model, options = {}) => {
   console.log('RETURNING URL', url)
   return url
 }
-
-//  Simple selector utils for handling plurality.
-//  options.model is the model name in plural tense. Endpoints are plural
-// const multiple = (model) => options.model
-// const single = (model) => options.model.slice(0, -1)
 
 /* *****
 GET ALL
@@ -82,9 +78,9 @@ ex: api.get('proposal', '594b49998dabd50e2c71762d')
 const get = (model, options) => ({
   url: url(model, options),
   options: { method: 'GET' },
-  transform: body => ({ [model.slice(0, -1)]: body }),
+  transform: body => ({ [model]: body }),
   //  This is for a SINGLE document. Return first element if array received.
-  update: { [model.slice(0, -1)]: (prev, next) => Array.isArray(next) ? next[0] : next }
+  update: { [model]: (prev, next) => Array.isArray(next) ? next[0] : next }
 })
 
 /* *****
@@ -95,21 +91,10 @@ ex: api.post('report', {})
 const post = (model, body, options) => mutateAsync({
   url: url(model, options),
   options: { method: 'POST' },
-  transform: res => ({ [model.slice(0, -1)]: res }),
+  transform: res => ({ [model]: res }),
   body,
-  update: { [model.slice(0, -1)]: (prev, next) => Array.isArray(next) ? next[0] : next }
+  update: { [model]: (prev, next) => next }
 })
-// export const post = (model, body, options) => {
-//   return function (dispatch) {
-//     dispatch(mutateAsync({
-//       url: url(model, options),
-//       options: { method: 'POST' },
-//       transform: res => ({ [model.slice(0, -1)]: res }),
-//       body,
-//       update: { [model.slice(0, -1)]: (prev, next) => Array.isArray(next) ? next[0] : next }
-//     }))
-//   }
-// }
 
 /* *****
 UPDATE: PUT
@@ -119,9 +104,9 @@ ex: api.put('report', '594b49998dabd50e2c7176bf',
 const put = (model, body, options) => mutateAsync({
   url: url(model, options),
   options: { method: 'PUT' },
-  transform: res => ({ [model.slice(0, -1)]: res }),
+  transform: res => ({ [model]: res }),
   body,
-  update: { [model.slice(0, -1)]: (prev, next) => Array.isArray(next) ? next[0] : next }
+  update: { [model]: (prev, next) => next }
 })
 
 /* *****
@@ -132,9 +117,9 @@ ex: api.put('report', '594b49998dabd50e2c7176bf',
 const patch = (model, body, options) => mutateAsync({
   url: url(model, options),
   options: { method: 'PATCH' },
-  transform: res => ({ [model.slice(0, -1)]: res }),
+  transform: res => ({ [model]: res }),
   body,
-  update: { [model.slice(0, -1)]: (prev, next) => Array.isArray(next) ? next[0] : next }
+  update: { [model]: (prev, next) => next }
 })
 
 /* *****
@@ -145,8 +130,8 @@ note: The 'delete' namespace is a JS keyword.
 const remove = (model, options) => mutateAsync({
   url: url(options),
   options: { method: 'DELETE' },
-  transform: res => ({ [model.slice(0, -1)]: res }),
-  update: { [model.slice(0, -1)]: (prev, next) => Array.isArray(next) ? next[0] : next }
+  transform: res => ({ [model]: res }),
+  update: { [model]: (prev, next) => next }
 })
 
 export default {
