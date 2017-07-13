@@ -43,7 +43,7 @@ input:
 output:
 ...v1/block?query={"number":"70692"}&populate={"path":"contacts"}
 */
-const endpoint = (model, options = {}) => {
+const endpoint = (model, options) => {
   //  Base URL, e.g. ...host/v1/proposals/:id
   let url = `${API}/${version}/${pluralize(model)}/${options.id ? options.id : ''}`
   //  Operator to prefix query string for joins, queries, ID specification etc
@@ -56,7 +56,6 @@ const endpoint = (model, options = {}) => {
     url = `${url}${operator}join=${options.join}`
     operator = '&'
   }
-  console.log('RETURNING URL', url)
   return url
 }
 
@@ -80,10 +79,10 @@ CREATE: POST
 Pass the object in as the body arg
 ex: api.post('report', {})
 ***** */
-const post = (model, body, options) => mutateAsync({
+const post = (model, body, options = {}) => mutateAsync({
   url: endpoint(model, options),
   options: { method: 'POST' },
-  transform: body => ({ [model]: normalize(body) }),
+  transform: res => ({ [model]: normalize(res) }),
   body,
   update: options.update ? options.update : { [model]: (prev, next) => next }
 })
@@ -93,7 +92,7 @@ UPDATE: PUT
 ex: api.put('report', '594b49998dabd50e2c7176bf',
 { date: "2000-06-21T07:15:10.746Z" })
 ***** */
-const put = (model, body, options) => mutateAsync({
+const put = (model, body, options = {}) => mutateAsync({
   url: endpoint(model, options),
   options: { method: 'PUT' },
   transform: res => ({ [model]: normalize(res) }),
@@ -106,7 +105,7 @@ UPDATE: PATCH
 ex: api.put('report', '594b49998dabd50e2c7176bf',
 { date: "2000-06-21T07:15:10.746Z" })
 ***** */
-const patch = (model, body, options) => mutateAsync({
+const patch = (model, body, options = {}) => mutateAsync({
   url: endpoint(model, options),
   options: { method: 'PATCH' },
   transform: res => ({ [model]: normalize(res) }),
@@ -119,7 +118,7 @@ DELETE
 ex: api.remove('report', '594b49998dabd50e2c7176bf')
 note: The 'delete' namespace is a JS keyword.
 ***** */
-const remove = (model, options) => mutateAsync({
+const remove = (model, options = {}) => mutateAsync({
   url: endpoint(options),
   options: { method: 'DELETE' },
   transform: res => ({ [model]: normalize(res) }),
@@ -136,28 +135,42 @@ export default {
 
 /*
 EXAMPLE IMPLEMENTATION:
+
+import { compose, bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { connectRequest } from 'redux-query'
+
 @compose(
+  // Compose is a redux utility that runs an array of functions:
+  //  Connect component to cached DB entities
   connect(
-    state => ({ proposal: state.entities.proposal }),
+    state => ({ proposals: state.entities.proposals }),
     dispatch => ({ api: bindActionCreators(api, dispatch)
-    })
   ),
-  connectRequest(() => api.get('proposal', '594b49998dabd50e2c71762d', {
-    populate: 'body,decision'
+  connectRequest(props => api.get('proposal', {
+    where: {
+      year: props.params.year,
+      number: props.params.number
+    },
+    join: ['contacts', 'decision', 'body', 'manifests', 'comments', 'amendments', 'report', 'reviews']
   }))
 )
-...
-render ({ proposal, api } = this.props) {
-...call like any other standard function.
 
-OR (updated example):
+EXAMPLE FORM:
+handleSubmit = (e) => {
+  e.preventDefault()
+  let { proposalID, user, api, form } = this.props
+  form.validateFields((err, values) => {
+    if (!err) {
+      api.post('comments', {
+        proposal: proposalID,
+        user: user._id,
+        ...values
+      })
+      .then(console.log('Updated!'))
+      .catch(err => console.warn('An error occured', err)
+    }
+  })
+}
 
-@compose(
-  connect((state, props) => ({ block: state.entities.block })),
-  connectRequest((props) => api.get({
-    model: 'block',
-    query: { number: props.options.number, year: "2017" },
-    join: ['contacts']
-  }))
-)
 */

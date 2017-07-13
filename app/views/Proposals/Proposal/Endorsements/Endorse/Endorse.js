@@ -23,16 +23,15 @@ class Endorse extends React.Component {
   componentDidMount () { this.props.form.validateFields() }
   handleSubmit = (e) => {
     e.preventDefault()
-    let { user, parent, form, api } = this.props
+    let { parent, user, api, form } = this.props
     form.validateFields((err, values) => {
       if (!err) {
         api.post('comments', {
           proposal: parent,
           user: user._id,
-          ...values.comment
-        }, {
-          update: { 'proposal.comments': (prev, next) => console.log(prev, next) && next }
+          ...values
         })
+        // update: { 'proposal.comments': (prev, next) => console.log(prev, next) && next }
         .then(message.success('Draft updated!'))
         .catch(err => {
           message.error('An error occured - Draft failed to update')
@@ -47,13 +46,13 @@ class Endorse extends React.Component {
       <div>
         <h1>Endorse this proposal!</h1>
         <Form onSubmit={this.handleSubmit}>
-          <FormItem label='Title' {...layout} hasFeedback={feedback(form, 'comment.title')} help={help(form, 'comment.title')} >
-            {form.getFieldDecorator('comment.title', rules.required)(
+          <FormItem label='Title' {...layout} hasFeedback={feedback(form, 'title')} help={help(form, 'title')} >
+            {form.getFieldDecorator('title', rules.required)(
               <Input type='textarea' />
             )}
           </FormItem>
-          <FormItem label='Comment' {...layout} hasFeedback={feedback(form, 'comment.body')} help={help(form, 'comment.body')} >
-            {form.getFieldDecorator('comment.body', rules.required)(
+          <FormItem label='Comment' {...layout} hasFeedback={feedback(form, 'body')} help={help(form, 'body')} >
+            {form.getFieldDecorator('body', rules.required)(
               <Input type='textarea' rows={6} />
             )}
           </FormItem>
@@ -71,8 +70,8 @@ class Endorse extends React.Component {
 Endorse.propTypes = {
   parent: PropTypes.string,
   user: PropTypes.object,
-  form: PropTypes.object,
-  api: PropTypes.object
+  api: PropTypes.object,
+  form: PropTypes.object
 }
 const EndorseForm = Form.create()(Endorse)
 export default EndorseForm
