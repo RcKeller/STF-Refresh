@@ -30,7 +30,7 @@ class Edit extends React.Component {
         {!proposal
           ? <Spin size='large' tip='Loading...' />
           : <div>
-            <h1>{proposal ? `Editing: ${proposal.title}` : 'Creating New Proposal'}</h1>
+            <h1>{`Editing: ${proposal && proposal.title ? proposal.title : 'New Proposal'}`}</h1>
             <h6>{`ID: ${proposal._id}`}</h6>
             <Tabs tabPosition='right' defaultActiveKey='1'>
               <TabPane key='1'

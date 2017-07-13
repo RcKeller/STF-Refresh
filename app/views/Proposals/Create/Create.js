@@ -1,11 +1,23 @@
 import React from 'react'
-import { browserHistory } from 'react-router'
+import PropTypes from 'prop-types'
 
-import { Modal, Button, Icon, message } from 'antd'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+
+import { browserHistory } from 'react-router'
+import api from '../../../services'
+
+import { Modal, Button, message } from 'antd'
 
 import Agreements from './Agreements/Agreements'
 
 import styles from './Create.css'
+@connect(
+  state => ({
+    user: state.user
+  }),
+  dispatch => ({ api: bindActionCreators(api, dispatch) })
+)
 class Create extends React.Component {
   constructor (props) {
     super(props)
@@ -17,6 +29,17 @@ class Create extends React.Component {
   }
   handleOk = () => {
     this.setState({ confirmLoading: true })
+    let { api } = this.props
+    // let { cancel } = this.handleCancel
+    api.post('proposal', {})
+    .then(res => {
+      message.success(`Proposal Created! Share the link with your team! ID: ${res.body._id}`, 10)
+      browserHistory.push(`/edit/${res.body._id}`)
+    })
+    .catch(err => {
+      message.error('An error occured - Draft failed to update')
+      console.warn(err)
+    })
     setTimeout(() => {
       this.setState({
         modal: false,
@@ -58,6 +81,9 @@ class Create extends React.Component {
       </article>
     )
   }
+}
+Create.propTypes = {
+  api: PropTypes.object
 }
 
 export default Create
