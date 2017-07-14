@@ -36,7 +36,7 @@ const columns = [
 const expandedRowRender = record => <p><h6>Description: </h6>{record.description}</p>
 
 @connect(state => ({
-  manifests: state.entities.proposal.manifests,
+  manifests: state.db.proposal.manifests,
   screen: state.screen
 }))
 class Manifests extends React.Component {

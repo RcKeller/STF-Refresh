@@ -9,8 +9,8 @@ import Endorse from './Endorse/Endorse'
 
 // import styles from './Body.css'
 @connect(state => ({
-  proposalID: state.entities.proposal._id,
-  comments: state.entities.proposal.comments,
+  proposalID: state.db.proposal._id,
+  comments: state.db.proposal.comments,
   user: state.user,
   screen: state.screen
 }))

@@ -6,8 +6,8 @@ import { connect } from 'react-redux'
 import { Row, Col, Alert } from 'antd'
 
 @connect(state => ({
-  overview: state.entities.proposal.body.overview,
-  amendments: state.entities.proposal.amendments
+  overview: state.db.proposal.body.overview,
+  amendments: state.db.proposal.amendments
 }))
 class Overview extends React.Component {
   render ({ overview, amendments } = this.props) {

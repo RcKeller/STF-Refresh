@@ -148,7 +148,7 @@ import { connectRequest } from 'redux-query'
   // Compose is a redux utility that runs an array of functions:
   //  Connect component to cached DB entities
   connect(
-    state => ({ proposals: state.entities.proposals }),
+    state => ({ proposals: state.db.proposals }),
     dispatch => ({ api: bindActionCreators(api, dispatch)
   ),
   connectRequest(props => api.get('proposal', {

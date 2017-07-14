@@ -7,8 +7,8 @@ import { Link } from 'react-router'
 
 import { Row, Col, Alert } from 'antd'
 @connect(state => ({
-  id: state.entities.proposal._id,
-  date: state.entities.proposal.date
+  id: state.db.proposal._id,
+  date: state.db.proposal.date
 }))
 class Update extends React.Component {
   render ({ id, date } = this.props) {

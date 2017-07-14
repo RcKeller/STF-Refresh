@@ -15,7 +15,7 @@ import api from '../../../../../services'
 @compose(
   connect(
     state => ({
-      parent: state.entities.proposal._id,
+      parent: state.db.proposal._id,
       user: state.user
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })

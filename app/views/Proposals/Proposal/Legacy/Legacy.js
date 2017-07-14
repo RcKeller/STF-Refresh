@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import { Alert } from 'antd'
 
-@connect(state => ({ legacy: state.entities.proposal.body.legacy }))
+@connect(state => ({ legacy: state.db.proposal.body.legacy }))
 class Legacy extends React.Component {
   render ({ legacy } = this.props) {
     return (

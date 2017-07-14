@@ -17,7 +17,7 @@ const TabPane = Tabs.TabPane
 
 import styles from './Edit.css'
 @compose(
-  connect(state => ({ proposal: state.entities.proposal })),
+  connect(state => ({ proposal: state.db.proposal })),
   connectRequest(props => api.get('proposal', {
     id: props.params.id,
     join: ['contacts', 'body', 'manifests']
@@ -32,7 +32,7 @@ class Edit extends React.Component {
           : <div>
             <h1>{`Editing: ${proposal && proposal.title ? proposal.title : 'New Proposal'}`}</h1>
             <h6>{`ID: ${proposal._id}`}</h6>
-          <hr />
+            <hr />
             <Tabs tabPosition='right' defaultActiveKey='1'>
               <TabPane key='1'
                 tab={<span><Icon type='team' />Introduction</span>

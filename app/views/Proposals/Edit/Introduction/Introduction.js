@@ -15,11 +15,11 @@ import api from '../../../../services'
 @compose(
   connect(
     state => ({
-      parent: state.entities.proposal._id,
-      title: state.entities.proposal.title,
-      category: state.entities.proposal.category,
-      organization: state.entities.proposal.organization,
-      uac: state.entities.proposal.uac
+      parent: state.db.proposal._id,
+      title: state.db.proposal.title,
+      category: state.db.proposal.category,
+      organization: state.db.proposal.organization,
+      uac: state.db.proposal.uac
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
@@ -51,12 +51,10 @@ class Introduction extends React.Component {
     let { form, api, parent } = this.props
     form.validateFields((err, values) => {
       if (!err) {
-        api.patch(
-          'proposal',
+        api.patch('proposal',
           { proposal: parent, ...values },
           { id: parent }
         )
-        // update: { 'proposal.comments': (prev, next) => console.log(prev, next) && next }
         .then(message.success('Introduction updated!'))
         .catch(err => {
           message.warning('Introductions failed to update - Unexpected client error')
@@ -115,6 +113,6 @@ Introduction.propTypes = {
   title: PropTypes.string,
   category: PropTypes.string,
   organization: PropTypes.string,
-  // uac: PropTypes.boolean
+  uac: PropTypes.boolean
 }
 export default Introduction
