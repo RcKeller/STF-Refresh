@@ -46,7 +46,7 @@ class Edit extends React.Component {
               <TabPane key='3'
                 tab={<span><Icon type='book' />Proposal</span>
               }>
-                <div>Proposal Body</div>
+                <div>Project</div>
               </TabPane>
               <TabPane key='4'
                 tab={<span><Icon type='wallet' />Manifest</span>
