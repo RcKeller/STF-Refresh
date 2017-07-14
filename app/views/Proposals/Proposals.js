@@ -109,17 +109,26 @@ class Proposals extends React.Component {
       </div>
     )
     return (
-      <article className={styles['article']}>
+      <div>
         {!proposals
           ? <Spin size='large' tip='Loading...' />
-          : <Table dataSource={proposals} sort
-            size={screen.lessThan.medium ? 'small' : ''}
-            columns={screen.lessThan.medium ? columns.slice(0, 3) : columns}
-            title={title}
-            footer={footer}
-          />
+          : (screen.greaterThan.medium
+            ? <article className={styles['article']}>
+              <Table dataSource={proposals} sort
+                columns={columns}
+                title={title}
+                footer={footer}
+              />
+            </article>
+            : <Table dataSource={proposals} sort
+              size='small'
+              columns={columns.slice(0, 3)}
+              title={title}
+              footer={footer}
+            />
+          )
         }
-      </article>
+      </div>
     )
   }
 }
