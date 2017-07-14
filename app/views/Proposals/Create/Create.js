@@ -84,14 +84,12 @@ class Create extends React.Component {
           // TODO: Add disable submit button: ...htmlType='submit' disabled={disableSubmit(form)}
         >
           <p>Proposals are only available to users who are directly associated as a point of contact. There are four different kinds:</p>
-          <p>
-            <ul>
-              <li>Primary Contact</li>
-              <li>Budget Contact</li>
-              <li>Organization Head/Leader</li>
-              <li>Student Lead (Optional, but highly reccommended)</li>
-            </ul>
-          </p>
+          <ul>
+            <li>Primary Contact</li>
+            <li>Budget Contact</li>
+            <li>Organization Head/Leader</li>
+            <li>Student Lead (Optional, but highly reccommended)</li>
+          </ul>
           <p>To start your proposal, you must specify your role with the project, and the associated UW budget code.</p>
           <Form onSubmit={this.handleSubmit}>
             <FormItem label='Budget' {...layout} hasFeedback={feedback(form, 'budget')} help={help(form, 'budget')} >

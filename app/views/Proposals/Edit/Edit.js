@@ -6,9 +6,9 @@ import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
 
-// import Introduction from './Introduction/Introduction'
-// import Overview from './Overview/Overview'
-// import ProjectPlan from './ProjectPlan/ProjectPlan'
+import Introduction from './Introduction/Introduction'
+// import Contacts from './Contacts/Contacts'
+// import Project from './Project/Project'
 // import Manifest from './Manifest/Manifest'
 // import Signatures from './Signatures/Signatures'
 
@@ -32,11 +32,12 @@ class Edit extends React.Component {
           : <div>
             <h1>{`Editing: ${proposal && proposal.title ? proposal.title : 'New Proposal'}`}</h1>
             <h6>{`ID: ${proposal._id}`}</h6>
+          <hr />
             <Tabs tabPosition='right' defaultActiveKey='1'>
               <TabPane key='1'
                 tab={<span><Icon type='team' />Introduction</span>
               }>
-                <div>Intro</div>
+                <Introduction />
               </TabPane>
               <TabPane key='2'
                 tab={<span><Icon type='team' />Contacts</span>
@@ -44,7 +45,7 @@ class Edit extends React.Component {
                 <div>Contacts</div>
               </TabPane>
               <TabPane key='3'
-                tab={<span><Icon type='book' />Proposal</span>
+                tab={<span><Icon type='book' />Project</span>
               }>
                 <div>Project</div>
               </TabPane>
