@@ -9,8 +9,9 @@ import api from '../../../services'
 
 import { layout, feedback, help, rules, disableSubmit } from '../../../util/form'
 
-import { Modal, Button, Form, Input, message } from 'antd'
+import { Modal, Button, Form, Input, Select, message } from 'antd'
 const FormItem = Form.Item
+const Option = Select.Option
 const connectForm = Form.create()
 
 import Agreements from './Agreements/Agreements'
@@ -37,25 +38,65 @@ class Create extends React.Component {
   }
   handleOk = () => {
     this.setState({ confirmLoading: true })
-    let { api, user } = this.props
-    // let { cancel } = this.handleCancel
-    api.post('proposal', {})
-    //  TODO: Pass in user as well.
-    .then(res => {
-      message.success(`Proposal Created! Share the link with your team! ID: ${res.body._id}`, 10)
-      browserHistory.push(`/edit/${res.body._id}`)
+    // const { form, api, user: { name, netID } } = this.props
+    const { form, api, user } = this.props
+    form.validateFields((err, values) => {
+      //  Create Proposal w/ budget code
+      if (!err) {
+        const { budget, role, title } = values
+        // api.post('proposal', { budget })
+        api.post('proposal')
+        .then(res => {
+          //  Save yourself as a new, related contact.
+          const parent = res.body._id
+          message.success(`Proposal Created! Share the link with your team! ID: ${parent}`, 10)
+          console.log('values', values)
+          api.post('contact', {
+            proposal: parent,
+            name: 'placeholderName',
+            netID: 'placeholderNetID',
+            role,
+            title
+          })
+          .then(browserHistory.push(`/edit/${res.body._id}`))
+          //  Redirect browser to edit the new proposal.
+          // browserHistory.push(`/edit/${parent}`)
+        })
+        .catch(err => {
+          message.error('An error occured - Draft failed to update')
+          console.warn(err)
+        })
+        .then(() => this.setState({
+          modal: false,
+          confirmLoading: false
+        }))
+      }
     })
-    .catch(err => {
-      message.error('An error occured - Draft failed to update')
-      console.warn(err)
-    })
-    setTimeout(() => {
-      this.setState({
-        modal: false,
-        confirmLoading: false
-      })
-    }, 2000)
   }
+  // handleOk = () => {
+  //   this.setState({ confirmLoading: true })
+  //   let { form, api, user } = this.props
+  //   form.validateFields((err, values) => {
+  //     if (!err) {
+  //       api.post('proposal', {})
+  //       //  TODO: Pass in user as well.
+  //       .then(res => {
+  //         message.success(`Proposal Created! Share the link with your team! ID: ${res.body._id}`, 10)
+  //         browserHistory.push(`/edit/${res.body._id}`)
+  //       })
+  //       .catch(err => {
+  //         message.error('An error occured - Draft failed to update')
+  //         console.warn(err)
+  //       })
+  //       setTimeout(() => {
+  //         this.setState({
+  //           modal: false,
+  //           confirmLoading: false
+  //         })
+  //       }, 2000)
+  //     }
+  //   }
+  // }
   handleCancel = () => {
     console.log('Clicked cancel button')
     this.setState({ modal: false })
@@ -92,9 +133,24 @@ class Create extends React.Component {
           </ul>
           <p>To start your proposal, you must specify your role with the project, and the associated UW budget code.</p>
           <Form onSubmit={this.handleSubmit}>
+            <FormItem label='I am the...' {...layout} hasFeedback={feedback(form, 'role')} help={help(form, 'role')} >
+              {form.getFieldDecorator('role', rules.required)(
+                <Select>
+                  <Option value='primary'>Primary Contact</Option>
+                  <Option value='budget'>Budget Contact</Option>
+                  <Option value='organization'>Org/Department Head</Option>
+                  <Option value='student'>Student Lead</Option>
+                </Select>
+              )}
+            </FormItem>
+            <FormItem label='Job Title' {...layout} hasFeedback={feedback(form, 'title')} help={help(form, 'title')} >
+              {form.getFieldDecorator('title', rules.required)(
+                <Input />
+              )}
+            </FormItem>
             <FormItem label='Budget' {...layout} hasFeedback={feedback(form, 'budget')} help={help(form, 'budget')} >
               {form.getFieldDecorator('budget', rules.required)(
-                <Input size='small' />
+                <Input />
               )}
             </FormItem>
             {/* TODO: Select formitem for role, modal form integration. */}
@@ -105,7 +161,9 @@ class Create extends React.Component {
   }
 }
 Create.propTypes = {
-  api: PropTypes.object
+  form: PropTypes.object,
+  api: PropTypes.object,
+  user: PropTypes.object
 }
 
 export default Create

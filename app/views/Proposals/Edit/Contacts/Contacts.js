@@ -16,34 +16,22 @@ import api from '../../../../services'
   connect(
     state => ({
       parent: state.db.proposal._id,
-      title: state.db.proposal.title,
-      category: state.db.proposal.category,
-      organization: state.db.proposal.organization,
-      uac: state.db.proposal.uac
+      contacts: state.db.proposal.contacts
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
   connectForm
 )
-class Introduction extends React.Component {
-  componentDidUpdate (prevProps, prevState) {
-    //  Load fields from server
-    console.log('REACHED UPDATE')
-    if (!prevProps.parent && this.props.parent) {
-      const { title, category, organization, uac } = this.props
-      console.log(...[title, category, organization, uac])
-      this.props.form.setFieldsValue(...[title, category, organization, uac])
-      //  Run validation, disabling submit buttons
-      this.props.form.validateFields()
-    }
-  }
-  // componentDidMount () {
+class Contacts extends React.Component {
+  // componentDidUpdate (prevProps, prevState) {
   //   //  Load fields from server
-  //   const { title, category, organization, uac } = this.props
-  //   console.log(...[title, category, organization, uac])
-  //   this.props.form.setFieldsValue(...[title, category, organization, uac])
-  //   //  Run validation, disabling submit buttons
-  //   this.props.form.validateFields()
+  //   console.log('REACHED UPDATE')
+  //   if (!prevProps.parent && this.props.parent) {
+  //     const { contacts } = this.props
+  //     console.log(...[title, category, organization, uac])
+  //     this.props.form.setFieldsValue(...[title, category, organization, uac])
+  //     //  Run validation, disabling submit buttons
+  //     this.props.form.validateFields()
   //   }
   // }
   handleSubmit = (e) => {
@@ -55,9 +43,9 @@ class Introduction extends React.Component {
           { proposal: parent, ...values },
           { id: parent }
         )
-        .then(message.success('Introduction updated!'))
+        .then(message.success('Contacts updated!'))
         .catch(err => {
-          message.warning('Introduction failed to update - Unexpected client error')
+          message.warning('Contacts failed to update - Unexpected client error')
           console.warn(err)
         })
       }
@@ -67,7 +55,7 @@ class Introduction extends React.Component {
   render ({ form, title, category, organization, uac } = this.props) {
     return (
       <div>
-        <h1>Introduction</h1>
+        <h1>Contact Information</h1>
         <Form onSubmit={this.handleSubmit}>
           <FormItem label='Title' {...layout} hasFeedback={feedback(form, 'title')} help={help(form, 'title')} >
             {form.getFieldDecorator('title', rules.required)(
@@ -106,13 +94,10 @@ class Introduction extends React.Component {
   }
 }
 
-Introduction.propTypes = {
+Contacts.propTypes = {
   form: PropTypes.object,
   api: PropTypes.object,
   parent: PropTypes.string,
-  title: PropTypes.string,
-  category: PropTypes.string,
-  organization: PropTypes.string,
-  uac: PropTypes.boolean
+  contacts: PropTypes.array
 }
-export default Introduction
+export default Contacts

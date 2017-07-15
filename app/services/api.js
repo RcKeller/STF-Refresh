@@ -83,7 +83,7 @@ CREATE: POST
 Pass the object in as the body arg
 ex: api.post('report', {})
 ***** */
-const post = (model, body, options = {}) => mutateAsync({
+const post = (model, body = {}, options = {}) => mutateAsync({
   url: endpoint(model, options),
   options: { method: 'POST' },
   transform: res => ({ [model]: normalize(res) }),
@@ -96,7 +96,7 @@ UPDATE: PUT
 ex: api.put('report', '594b49998dabd50e2c7176bf',
 { date: "2000-06-21T07:15:10.746Z" })
 ***** */
-const put = (model, body, options = {}) => mutateAsync({
+const put = (model, body = {}, options = {}) => mutateAsync({
   url: endpoint(model, options),
   options: { method: 'PUT' },
   transform: res => ({ [model]: normalize(res) }),
@@ -109,7 +109,7 @@ UPDATE: PATCH
 ex: api.put('report', '594b49998dabd50e2c7176bf',
 { date: "2000-06-21T07:15:10.746Z" })
 ***** */
-const patch = (model, body, options = {}) => mutateAsync({
+const patch = (model, body = {}, options = {}) => mutateAsync({
   url: endpoint(model, options),
   options: { method: 'PATCH' },
   transform: res => ({ [model]: normalize(res) }),
