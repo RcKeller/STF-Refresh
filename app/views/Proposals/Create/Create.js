@@ -41,16 +41,13 @@ class Create extends React.Component {
     // const { form, api, user: { name, netID } } = this.props
     const { form, api, user } = this.props
     form.validateFields((err, values) => {
-      //  Create Proposal w/ budget code
+      //  Create Proposal w/ budget code if valid
       if (!err) {
         const { budget, role, title } = values
-        // api.post('proposal', { budget })
-        api.post('proposal')
+        api.post('proposal', { budget })
         .then(res => {
-          //  Save yourself as a new, related contact.
+          //  Save yourself as a new, related contact with the new proposal ID.
           const parent = res.body._id
-          message.success(`Proposal Created! Share the link with your team! ID: ${parent}`, 10)
-          console.log('values', values)
           api.post('contact', {
             proposal: parent,
             name: 'placeholderName',
@@ -58,18 +55,22 @@ class Create extends React.Component {
             role,
             title
           })
-          .then(browserHistory.push(`/edit/${res.body._id}`))
-          //  Redirect browser to edit the new proposal.
-          // browserHistory.push(`/edit/${parent}`)
+          .then(() => {
+            message.success(`Proposal Created! Share the link with your team! ID: ${parent}`, 10)
+            browserHistory.push(`/edit/${res.body._id}`)
+            // setTimeout(() => browserHistory.push(`/edit/${res.body._id}`), 1000)
+          })
         })
         .catch(err => {
           message.error('An error occured - Draft failed to update')
           console.warn(err)
         })
-        .then(() => this.setState({
+        .then(this.setState({
           modal: false,
           confirmLoading: false
         }))
+      } else {
+        message.warning('Failed to update - Form Invalid')
       }
     })
   }
