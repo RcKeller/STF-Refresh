@@ -8,7 +8,7 @@ import api from '../../../services'
 
 import Introduction from './Introduction/Introduction'
 // import Contacts from './Contacts/Contacts'
-// import Project from './Project/Project'
+import ProposalBody from './ProposalBody/ProposalBody'
 // import Manifest from './Manifest/Manifest'
 // import Signatures from './Signatures/Signatures'
 
@@ -34,29 +34,19 @@ class Edit extends React.Component {
             <h6>{`ID: ${proposal._id}`}</h6>
             <hr />
             <Tabs tabPosition='right' defaultActiveKey='1'>
-              <TabPane key='1'
-                tab={<span><Icon type='team' />Introduction</span>
-              }>
+              <TabPane key='1' tab={<span><Icon type='team' />Introduction</span>}>
                 <Introduction />
               </TabPane>
-              <TabPane key='2'
-                tab={<span><Icon type='team' />Contacts</span>
-              }>
+              <TabPane key='2' tab={<span><Icon type='team' />Contacts</span>}>
                 <div>Contacts</div>
               </TabPane>
-              <TabPane key='3'
-                tab={<span><Icon type='book' />Project</span>
-              }>
-                <div>Project</div>
+              <TabPane key='3' tab={<span><Icon type='book' />Proposal Body</span>}>
+                <ProposalBody />
               </TabPane>
-              <TabPane key='4'
-                tab={<span><Icon type='wallet' />Manifest</span>
-              }>
+              <TabPane key='4' tab={<span><Icon type='wallet' />Manifest</span>}>
                 <div>Manifest</div>
               </TabPane>
-              <TabPane key='5'
-                tab={<span><Icon type='edit' />Signatures</span>
-              }>
+              <TabPane key='5' tab={<span><Icon type='edit' />Signatures</span>}>
                 <div>Signatures</div>
               </TabPane>
             </Tabs>

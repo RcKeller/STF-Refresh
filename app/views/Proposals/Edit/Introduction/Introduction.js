@@ -11,7 +11,6 @@ const connectForm = Form.create()
 import { layout, feedback, help, rules, disableSubmit } from '../../../../util/form'
 import api from '../../../../services'
 
-// import styles from './Body.css'
 @compose(
   connect(
     state => ({
@@ -37,15 +36,6 @@ class Introduction extends React.Component {
       this.props.form.validateFields()
     }
   }
-  // componentDidMount () {
-  //   //  Load fields from server
-  //   const { title, category, organization, uac } = this.props
-  //   console.log(...[title, category, organization, uac])
-  //   this.props.form.setFieldsValue(...[title, category, organization, uac])
-  //   //  Run validation, disabling submit buttons
-  //   this.props.form.validateFields()
-  //   }
-  // }
   handleSubmit = (e) => {
     e.preventDefault()
     let { form, api, parent } = this.props

@@ -37,12 +37,12 @@ class Create extends React.Component {
     this.props.form.validateFields()
   }
   handleOk = () => {
-    this.setState({ confirmLoading: true })
     // const { form, api, user: { name, netID } } = this.props
     const { form, api, user } = this.props
     form.validateFields((err, values) => {
       //  Create Proposal w/ budget code if valid
       if (!err) {
+        this.setState({ confirmLoading: true })
         const { budget, role, title } = values
         api.post('proposal', { budget })
         .then(res => {
