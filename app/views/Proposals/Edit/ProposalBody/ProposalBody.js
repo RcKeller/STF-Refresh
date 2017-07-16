@@ -4,9 +4,8 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Row, Col, Collapse, Form, Input, Button, message } from 'antd'
+import { Row, Col, Form, Input, Button, message } from 'antd'
 const FormItem = Form.Item
-const Panel = Collapse.Panel
 const connectForm = Form.create()
 
 import { layout, feedback, help, rules, disableSubmit } from '../../../../util/form'
@@ -171,7 +170,7 @@ class ProposalBody extends React.Component {
           <Row gutter={32}>
             {impactFields.map((impact, i) => (
               <Col key={i} className='gutter-row' xs={24} md={8}>
-                <h3>{impact.title}</h3>
+                <h4>{impact.title}</h4>
                 <p><em>{impact.subtitle}</em></p>
                 <FormItem hasFeedback={feedback(form, impact.field)} help={help(form, impact.field)} >
                   {form.getFieldDecorator(impact.field, rules.required)(
@@ -183,33 +182,32 @@ class ProposalBody extends React.Component {
           </Row>
           <hr />
           <h1>Project Plan</h1>
-          <Collapse defaultActiveKey={['0', '1', '2', '3', '4']}>
-            {projectFields.map((area, i) => (
-              <Panel key={i} header={<h2>{area.title}</h2>} >
-                <p>{area.subtitle}</p>
-                <Row gutter={32}>
-                  <Col className='gutter-row' xs={24} md={12} >
-                    <h3>{area.current.title}</h3>
-                    <em>{area.current.subtitle}</em>
-                    <FormItem hasFeedback={feedback(form, area.current.field)} help={help(form, area.current.field)} >
-                      {form.getFieldDecorator(area.current.field, rules.required)(
-                        <Input type='textarea' rows={4} />
-                      )}
-                    </FormItem>
-                  </Col>
-                  <Col className='gutter-row' xs={24} md={12} >
-                    <h3>{area.future.title}</h3>
-                    <em>{area.future.subtitle}</em>
-                    <FormItem hasFeedback={feedback(form, area.future.field)} help={help(form, area.future.field)} >
-                      {form.getFieldDecorator(area.future.field, rules.required)(
-                        <Input type='textarea' rows={4} />
-                      )}
-                    </FormItem>
-                  </Col>
-                </Row>
-              </Panel>
-            ))}
-          </Collapse>
+          {projectFields.map((area, i) => (
+            <div key={i}>
+              <h2>{area.title}</h2>
+              <p>{area.subtitle}</p>
+              <Row gutter={32}>
+                <Col className='gutter-row' xs={24} md={12} >
+                  <h4>{area.current.title}</h4>
+                  <em>{area.current.subtitle}</em>
+                  <FormItem hasFeedback={feedback(form, area.current.field)} help={help(form, area.current.field)} >
+                    {form.getFieldDecorator(area.current.field, rules.required)(
+                      <Input type='textarea' rows={4} />
+                    )}
+                  </FormItem>
+                </Col>
+                <Col className='gutter-row' xs={24} md={12} >
+                  <h4>{area.future.title}</h4>
+                  <em>{area.future.subtitle}</em>
+                  <FormItem hasFeedback={feedback(form, area.future.field)} help={help(form, area.future.field)} >
+                    {form.getFieldDecorator(area.future.field, rules.required)(
+                      <Input type='textarea' rows={4} />
+                    )}
+                  </FormItem>
+                </Col>
+              </Row>
+            </div>
+          ))}
           <FormItem>
             <Button size='large' type='primary'
               htmlType='submit' disabled={disableSubmit(form)}
