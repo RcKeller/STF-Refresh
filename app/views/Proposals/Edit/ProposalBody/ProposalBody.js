@@ -130,11 +130,20 @@ class ProposalBody extends React.Component {
   // }
   handleSubmit = (e) => {
     e.preventDefault()
-    let { form, api, parent } = this.props
+    let { form, api, parent, body } = this.props
     form.validateFields((err, values) => {
       if (!err) {
         console.log(values)
-        api.put('project', { proposal: parent, ...values })
+        //  Post to create if it doesn't exist, otherwise, update by ID
+        !body
+        ? api.post('project', {
+          proposal: parent, ...values
+        })
+        : api.put('project', {
+          proposal: parent, ...values
+        }, {
+          id: body._id
+        })
         .then(message.success('Proposal Body updated!'))
         .catch(err => {
           message.warning('Proposal Body failed to update - Unexpected client error')
@@ -222,6 +231,7 @@ class ProposalBody extends React.Component {
 ProposalBody.propTypes = {
   form: PropTypes.object,
   api: PropTypes.object,
-  parent: PropTypes.string
+  parent: PropTypes.string,
+  body: PropTypes.object
 }
 export default ProposalBody
