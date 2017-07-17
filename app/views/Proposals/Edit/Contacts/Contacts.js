@@ -106,7 +106,7 @@ class Contacts extends React.Component {
 
   render ({ form, contacts } = this.props) {
     return (
-      <Form onSubmit={this.handleSubmit}>
+      <Form layout='inline' onSubmit={this.handleSubmit}>
         <h1>Contact Information</h1>
         <Row gutter={32}>
           {contactFields.map((c, i) => (
@@ -118,7 +118,39 @@ class Contacts extends React.Component {
                 help={help(form, `contacts[${c.index}].name`)}
               >
                 {form.getFieldDecorator(`contacts[${c.index}].name`, rules.required)(
-                  <Input prefix={<Icon type='edit' />} />
+                  <Input prefix={<Icon type='edit' />} placeholder='Name' />
+                )}
+              </FormItem>
+              <FormItem
+                hasFeedback={feedback(form, `contacts[${c.index}].netID`)}
+                help={help(form, `contacts[${c.index}].netID`)}
+              >
+                {form.getFieldDecorator(`contacts[${c.index}].netID`, rules.required)(
+                  <Input prefix={<Icon type='idcard' />} placeholder='NetID' />
+                )}
+              </FormItem>
+              <FormItem
+                hasFeedback={feedback(form, `contacts[${c.index}].title`)}
+                help={help(form, `contacts[${c.index}].title`)}
+              >
+                {form.getFieldDecorator(`contacts[${c.index}].title`, rules.required)(
+                  <Input prefix={<Icon type='info-circle-o' />} placeholder='Title' />
+                )}
+              </FormItem>
+              <FormItem
+                hasFeedback={feedback(form, `contacts[${c.index}].phone`)}
+                help={help(form, `contacts[${c.index}].phone`)}
+              >
+                {form.getFieldDecorator(`contacts[${c.index}].phone`, rules.required)(
+                  <Input prefix={<Icon type='phone' />} placeholder='Phone' />
+                )}
+              </FormItem>
+              <FormItem
+                hasFeedback={feedback(form, `contacts[${c.index}].mailbox`)}
+                help={help(form, `contacts[${c.index}].mailbox`)}
+              >
+                {form.getFieldDecorator(`contacts[${c.index}].mailbox`, rules.required)(
+                  <Input prefix={<Icon type='inbox' />} placeholder='Mailbox #' />
                 )}
               </FormItem>
             </Col>
