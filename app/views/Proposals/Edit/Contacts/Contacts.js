@@ -153,14 +153,14 @@ class Contacts extends React.Component {
                   <Input prefix={<Icon type='inbox' />} placeholder='Mailbox #' />
                 )}
               </FormItem>
+              <FormItem>
+                <Button size='large' type='primary' width='100%' style={{width: '100%'}}
+                  htmlType='submit' disabled={disableSubmit(form)}
+                  >Update</Button>
+                </FormItem>
             </Col>
           ))}
         </Row>
-        <FormItem>
-          <Button size='large' type='primary'
-            htmlType='submit' disabled={disableSubmit(form)}
-            >Update</Button>
-        </FormItem>
       </Form>
     )
   }
