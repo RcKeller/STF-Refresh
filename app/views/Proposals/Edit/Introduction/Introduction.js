@@ -103,6 +103,6 @@ Introduction.propTypes = {
   title: PropTypes.string,
   category: PropTypes.string,
   organization: PropTypes.string,
-  uac: PropTypes.boolean
+  uac: PropTypes.bool
 }
 export default Introduction

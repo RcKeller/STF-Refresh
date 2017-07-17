@@ -4,6 +4,8 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
+import _ from 'lodash'
+
 import { Row, Col, Form, Input, Button, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
@@ -111,39 +113,30 @@ const projectFields = [
   connectForm
 )
 class ProposalBody extends React.Component {
-  componentDidUpdate (prevProps, prevState) {
-    //  Load fields from server
-    if (!prevProps.parent && this.props.parent) {
-      this.props.form.validateFields()
+  componentDidMount () {
+    const { form, body } = this.props
+    if (body) {
+      const { overview, plan } = body
+      form.setFieldsValue({ overview, plan })
     }
+    form.validateFields()
   }
-  // componentDidUpdate (prevProps, prevState) {
-  //   //  Load fields from server
-  //   console.log('REACHED UPDATE')
-  //   if (!prevProps.parent && this.props.parent) {
-  //     const { overview, plan } = this.props
-  //     console.log(...[overview, plan])
-  //     this.props.form.setFieldsValue(...[overview, plan])
-  //     //  Run validation, disabling submit buttons
-  //     this.props.form.validateFields()
-  //   }
-  // }
   handleSubmit = (e) => {
     e.preventDefault()
     let { form, api, parent, body } = this.props
     form.validateFields((err, values) => {
       if (!err) {
-        console.log(values)
-        //  Post to create if it doesn't exist, otherwise, update by ID
-        !body
-        ? api.post('project', {
-          proposal: parent, ...values
-        })
-        : api.put('project', {
-          proposal: parent, ...values
-        }, {
-          id: body._id
-        })
+        //  Update if the document exists, otherwise create it anew.
+        body
+        ? api.put(
+          'project',
+          { proposal: parent, ...values },
+          { id: body._id }
+        )
+        : api.post(
+          'project',
+          { proposal: parent, ...values }
+        )
         .then(message.success('Proposal Body updated!'))
         .catch(err => {
           message.warning('Proposal Body failed to update - Unexpected client error')
