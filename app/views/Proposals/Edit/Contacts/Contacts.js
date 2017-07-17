@@ -47,23 +47,41 @@ const contactFields = [
   connectForm
 )
 class Contacts extends React.Component {
-  // componentDidUpdate (prevProps, prevState) {
-  //   //  Load fields from server
-  //   console.log('REACHED UPDATE')
-  //   if (!prevProps.parent && this.props.parent) {
-  //     const { contacts } = this.props
-  //     console.log(...[title, category, organization, uac])
-  //     this.props.form.setFieldsValue(...[title, category, organization, uac])
-  //     //  Run validation, disabling submit buttons
-  //     this.props.form.validateFields()
-  //   }
-  // }
+  componentDidMount () {
+    const { form, contacts } = this.props
+    if (contacts) {
+      form.setFieldsValue({ contacts })
+    }
+    form.validateFields()
+  }
   handleSubmit = (e) => {
     e.preventDefault()
     let { form, api, parent, contacts } = this.props
     form.validateFields((err, values) => {
       if (!err) {
+        // values[0].role = 'primary'
+        // values[1].role = 'budget'
+        // values[2].role = 'organization'
+        // values[3].role = 'student'
         console.log(values)
+        values.contacts.forEach((contact, i) => {
+          contact.role = contactFields[i].field
+          contacts[i]
+          ? api.patch(
+            'contact',
+            { proposal: parent, ...values.contacts[i] },
+            { id: contacts[i]._id }
+          )
+          : api.post(
+            'contact',
+            { proposal: parent, ...values.contacts[i] }
+          )
+          .then(message.success(`Updated ${contactFields[i].title}!`))
+          .catch(err => {
+            message.warning(`Failed to update ${contactFields[i].title} - Unexpected client error`)
+            console.warn(err)
+          })
+        })
       }
       // if (!err) {
       //   //  Update if the document exists, otherwise create it anew.
