@@ -4,8 +4,6 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import _ from 'lodash'
-
 import { Row, Col, Form, Input, Button, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
@@ -128,7 +126,7 @@ class ProposalBody extends React.Component {
       if (!err) {
         //  Update if the document exists, otherwise create it anew.
         body
-        ? api.put(
+        ? api.patch(
           'project',
           { proposal: parent, ...values },
           { id: body._id }

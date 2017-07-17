@@ -7,7 +7,7 @@ import { connectRequest } from 'redux-query'
 import api from '../../../services'
 
 import Introduction from './Introduction/Introduction'
-// import Contacts from './Contacts/Contacts'
+import Contacts from './Contacts/Contacts'
 import ProposalBody from './ProposalBody/ProposalBody'
 // import Manifest from './Manifest/Manifest'
 // import Signatures from './Signatures/Signatures'
@@ -38,7 +38,7 @@ class Edit extends React.Component {
                 <Introduction />
               </TabPane>
               <TabPane key='2' tab={<span><Icon type='team' />Contacts</span>}>
-                <div>Contacts</div>
+                <Contacts />
               </TabPane>
               <TabPane key='3' tab={<span><Icon type='book' />Proposal Body</span>}>
                 <ProposalBody />

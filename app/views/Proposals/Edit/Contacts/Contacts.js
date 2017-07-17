@@ -4,12 +4,36 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Form, Input, Switch, Button, Alert, message } from 'antd'
+import { Row, Col, Form, Icon, Input, Button, Alert, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
 import { layout, feedback, help, rules, disableSubmit } from '../../../../util/form'
 import api from '../../../../services'
+
+const contactFields = [
+  {
+    index: 0,
+    field: 'primary',
+    title: 'Primary Contact',
+    subtitle: 'The primary lead and point-of-contact for this project.'
+  }, {
+    index: 1,
+    field: 'budget',
+    title: 'Budget Director',
+    subtitle: 'Contact for budgetary concerns and handling transfers of funds.'
+  }, {
+    index: 2,
+    field: 'organization',
+    title: 'Organizational Head',
+    subtitle: 'A departmental head or organization president to officiate this proposal.'
+  }, {
+    index: 3,
+    field: 'student',
+    title: 'Student Lead',
+    subtitle: 'We recommend that there be at least one student representing a project, as STF funds are intended for student use.'
+  }
+]
 
 // import styles from './Body.css'
 @compose(
@@ -36,60 +60,58 @@ class Contacts extends React.Component {
   // }
   handleSubmit = (e) => {
     e.preventDefault()
-    let { form, api, parent } = this.props
+    let { form, api, parent, contacts } = this.props
     form.validateFields((err, values) => {
       if (!err) {
-        api.patch('proposal',
-          { proposal: parent, ...values },
-          { id: parent }
-        )
-        .then(message.success('Contacts updated!'))
-        .catch(err => {
-          message.warning('Contacts failed to update - Unexpected client error')
-          console.warn(err)
-        })
+        console.log(values)
       }
+      // if (!err) {
+      //   //  Update if the document exists, otherwise create it anew.
+      //   body
+      //   ? api.put(
+      //     'project',
+      //     { proposal: parent, ...values },
+      //     { id: body._id }
+      //   )
+      //   : api.patch(
+      //     'project',
+      //     { proposal: parent, ...values }
+      //   )
+      //   .then(message.success('Proposal Body updated!'))
+      //   .catch(err => {
+      //     message.warning('Proposal Body failed to update - Unexpected client error')
+      //     console.warn(err)
+      //   })
+      // }
     })
   }
 
-  render ({ form, title, category, organization, uac } = this.props) {
+  render ({ form, contacts } = this.props) {
     return (
-      <div>
+      <Form onSubmit={this.handleSubmit}>
         <h1>Contact Information</h1>
-        <Form onSubmit={this.handleSubmit}>
-          <FormItem label='Title' {...layout} hasFeedback={feedback(form, 'title')} help={help(form, 'title')} >
-            {form.getFieldDecorator('title', rules.required)(
-              <Input type='textarea' />
-            )}
-          </FormItem>
-          <FormItem label='Category' {...layout} hasFeedback={feedback(form, 'category')} help={help(form, 'category')} >
-            {form.getFieldDecorator('category', rules.required)(
-              <Input />
-            )}
-          </FormItem>
-          <FormItem label='Organization' {...layout} hasFeedback={feedback(form, 'organization')} help={help(form, 'organization')} >
-            {form.getFieldDecorator('organization', rules.required)(
-              <Input />
-            )}
-          </FormItem>
-          <Alert type='warning'
-            message='Tri-Campus Proposals'
-            description='
-            The Universal Access Committee reviews proposals for tri-campus projects. Select this if your proposal has been reviewed by an officer and approved as a tri-campus service. Please reach out to the Proposal Officer if you have any questions.'
-          />
-          <FormItem label='Universal Access' {...layout} >
-            {form.getFieldDecorator('uac', { valuePropName: 'checked' })(
-              // valuePropName is documented in the antd docs, that's a selector for switch vals.
-              <Switch size='small' />
-            )}
-          </FormItem>
-          <FormItem>
-            <Button size='large' type='primary'
-              htmlType='submit' disabled={disableSubmit(form)}
-              >Update</Button>
-          </FormItem>
-        </Form>
-      </div>
+        <Row gutter={32}>
+          {contactFields.map((c, i) => (
+            <Col key={i} className='gutter-row' xs={24} md={12} lg={6} >
+              <h3>{c.title}</h3>
+              <p>{c.subtitle}</p>
+              <FormItem
+                hasFeedback={feedback(form, `contacts[${c.index}].name`)}
+                help={help(form, `contacts[${c.index}].name`)}
+              >
+                {form.getFieldDecorator(`contacts[${c.index}].name`, rules.required)(
+                  <Input prefix={<Icon type='edit' />} />
+                )}
+              </FormItem>
+            </Col>
+          ))}
+        </Row>
+        <FormItem>
+          <Button size='large' type='primary'
+            htmlType='submit' disabled={disableSubmit(form)}
+            >Update</Button>
+        </FormItem>
+      </Form>
     )
   }
 }

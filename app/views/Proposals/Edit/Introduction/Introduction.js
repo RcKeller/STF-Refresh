@@ -25,16 +25,12 @@ import api from '../../../../services'
   connectForm
 )
 class Introduction extends React.Component {
-  componentDidUpdate (prevProps, prevState) {
-    //  Load fields from server
-    console.log('REACHED UPDATE')
-    if (!prevProps.parent && this.props.parent) {
-      const { title, category, organization, uac } = this.props
-      console.log(...[title, category, organization, uac])
-      this.props.form.setFieldsValue(...[title, category, organization, uac])
-      //  Run validation, disabling submit buttons
-      this.props.form.validateFields()
+  componentDidMount () {
+    const { form, title, category, organization, uac } = this.props
+    if (title) {
+      form.setFieldsValue({ title, category, organization, uac })
     }
+    form.validateFields()
   }
   handleSubmit = (e) => {
     e.preventDefault()
