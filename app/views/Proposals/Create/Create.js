@@ -50,8 +50,8 @@ class Create extends React.Component {
           const parent = res.body._id
           api.post('contact', {
             proposal: parent,
-            name: 'placeholderName',
-            netID: 'placeholderNetID',
+            name: user.name,
+            netID: user.netID,
             role,
             title
           })
@@ -119,7 +119,9 @@ class Create extends React.Component {
           I Agree<Icon type='right' />
         </Button> */}
         <Button type='primary' onClick={this.showModal}>I Agree</Button>
-        <Modal title='Create a Proposal - Initial Contact Information' visible={modal}
+        <Modal visible={modal}
+          title='Create a Proposal - Initial Contact Information'
+          okText='Create Proposal'
           onCancel={this.handleCancel}
           onOk={this.handleOk}
           confirmLoading={confirmLoading}

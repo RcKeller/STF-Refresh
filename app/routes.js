@@ -67,18 +67,12 @@ export default (store) => {
         breadcrumbName='Block' getComponent={SplitBlock}
       />
 
-      {/* <Route path='/create'
-        onEnter={requireAuth}
-        breadcrumbName='Create Proposal' getComponent={SplitCreate}
-      />
-      <Route path='/edit/:id'
-        onEnter={requireAuth}
-        breadcrumbName='Edit Proposal' getComponent={SplitEdit}
-      /> */}
       <Route path='/create'
+        onEnter={requireAuth}
         breadcrumbName='Create Proposal' getComponent={SplitCreate}
       />
       <Route path='/edit/:id'
+        onEnter={requireAuth}
         breadcrumbName='Edit Proposal' getComponent={SplitEdit}
       />
 

@@ -134,7 +134,7 @@ class ProposalBody extends React.Component {
     form.validateFields((err, values) => {
       if (!err) {
         console.log(values)
-        api.post('project', { proposal: parent, ...values })
+        api.put('project', { proposal: parent, ...values })
         .then(message.success('Proposal Body updated!'))
         .catch(err => {
           message.warning('Proposal Body failed to update - Unexpected client error')

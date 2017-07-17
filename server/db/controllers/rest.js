@@ -50,23 +50,21 @@ export default class REST {
     https://stackoverflow.com/questions/33455507/javascript-conditionally-call-a-function
   ***** */
   getAll (query) {
-    let model = this.model
     //  Get all, unless "where" query, e.g. where={"year":"2017"}
-    !query.where
-    ? model = model.find({})
-    : model = model.find(JSON.parse(query.where))
+    let model = !query.where
+    ? this.model.find({})
+    : this.model.find(JSON.parse(query.where))
     model = this.queryHandler(model, query)
-    return model.then((modelInstances = []) => modelInstances)
+    return model.then(modelInstances => modelInstances)
   }
 
   get (id, query) {
-    let model = this.model
     //  Find by key, unless "where" query, e.g. where={"year":"2017"}
-    !query.where
-    ? model = model.findOne({ [this.key]: id })
-    : model = model.findOne(JSON.parse(query.where))
+    let model = !query.where
+    ? this.model.findOne({ [this.key]: id })
+    : this.model.findOne(JSON.parse(query.where))
     model = this.queryHandler(model, query)
-    return model.then((modelInstance = {}) => modelInstance)
+    return model.then(modelInstance => modelInstance)
   }
 
   /* *****
@@ -76,7 +74,7 @@ export default class REST {
     console.log(data)
     let model = this.model.create(data)
     //  TODO: Any middleware needed?
-    return model.then((modelInstance = {}) => modelInstance)
+    return model.then(modelInstance => modelInstance)
   }
 
   /* *****
@@ -94,7 +92,7 @@ export default class REST {
         }
         return modelInstance.save()
       })
-      .then((modelInstance = {}) => modelInstance)
+      .then(modelInstance => modelInstance)
   }
 
   patch (id, data, query) {
@@ -102,8 +100,8 @@ export default class REST {
     //  https://github.com/linnovate/mean/issues/511
     let model = this.model
     return model
-      .findOneAndUpdate({ [this.key]: id }, data)
-      .then((modelInstance = {}) => modelInstance)
+      .findOneAndUpdate({ [this.key]: id }, data, { upsert: true, setDefaultsOnInsert: true })
+      .then(modelInstance => modelInstance)
   }
 
   /* *****
