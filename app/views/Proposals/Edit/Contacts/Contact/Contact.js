@@ -8,16 +8,11 @@ import { Form, Icon, Input, Button, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
-import { layout, feedback, help, rules, disableSubmit } from '../../../../../util/form'
+import { feedback, help, rules, disableSubmit } from '../../../../../util/form'
 import api from '../../../../../services'
 import { getRole } from '../../../../../util/selectors'
 
-// const connectRole = (contacts, role) => contacts.filter(obj => obj.role === role)[0]
-
-// import styles from './Body.css'
-const jss = {
-  icon: { fontSize: 13 }
-}
+const jss = { icon: { fontSize: 13 } }
 @compose(
   connect(
     (state, props) => ({

@@ -5,13 +5,13 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
-import { isContact, redirectUnaffiliated } from '../../../util/selectors'
+import { redirectUnaffiliated } from '../../../util/selectors'
 
 import Introduction from './Introduction/Introduction'
 import Contacts from './Contacts/Contacts'
 import ProposalBody from './ProposalBody/ProposalBody'
 // import Manifest from './Manifest/Manifest'
-// import Signatures from './Signatures/Signatures'
+import Signatures from './Signatures/Signatures'
 
 import { Icon, Spin, Tabs } from 'antd'
 const TabPane = Tabs.TabPane
@@ -31,6 +31,7 @@ import styles from './Edit.css'
 class Edit extends React.Component {
   render ({ proposal, user } = this.props) {
     proposal && redirectUnaffiliated(proposal.contacts, user)
+    //  You can remove your netID and push an update, but if you leave the page after that, it locks you out.
     return (
       <article className={styles['page']}>
         {!proposal
@@ -53,7 +54,7 @@ class Edit extends React.Component {
                 <div>Manifest</div>
               </TabPane>
               <TabPane key='5' tab={<span><Icon type='edit' />Signatures</span>}>
-                <div>Signatures</div>
+                <Signatures />
               </TabPane>
             </Tabs>
           </div>

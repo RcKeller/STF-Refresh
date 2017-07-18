@@ -1,11 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-
-import { connect } from 'react-redux'
 
 import { Row, Col } from 'antd'
 
-import { isContact } from '../../../../util/selectors'
 import Contact from './Contact/Contact'
 
 const contactFields = [
@@ -28,17 +24,8 @@ const contactFields = [
   }
 ]
 
-// import styles from './Body.css'
-// const jss = {
-//   icon: { fontSize: 13 }
-// }
-@connect(state => ({
-  contacts: state.db.proposal.contacts,
-  user: state.user
-}))
 class Contacts extends React.Component {
-  render ({ contacts, user } = this.props) {
-    console.log(contacts, user)
+  render () {
     return (
       <div>
         <h1>Contact Information</h1>
