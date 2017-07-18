@@ -20,8 +20,12 @@ const SplitProposals = (l, c) => require.ensure([], () => c(null, require('./vie
 const SplitProposal = (l, c) => require.ensure([], () => c(null, require('./views/Proposals/Proposal/Proposal').default))
 const SplitBlocks = (l, c) => require.ensure([], () => c(null, require('./views/Blocks/Blocks').default))
 const SplitBlock = (l, c) => require.ensure([], () => c(null, require('./views/Blocks/Block/Block').default))
-const SplitCalendar = (l, c) => require.ensure([], () => c(null, require('./views/Calendar/Calendar').default))
-const SplitEvents = (l, c) => require.ensure([], () => c(null, require('./views/Calendar/Events/Events').default))
+const SplitKnowledge = (l, c) => require.ensure([], () => c(null, require('./views/Committee/Knowledge/Knowledge').default))
+const SplitArticle = (l, c) => require.ensure([], () => c(null, require('./views/Committee/Knowledge/Article/Article').default))
+const SplitDashboard = (l, c) => require.ensure([], () => c(null, require('./views/Committee/Dashboard/Dashboard').default))
+const SplitVoting = (l, c) => require.ensure([], () => c(null, require('./views/Committee/Voting/Voting').default))
+const SplitDocket = (l, c) => require.ensure([], () => c(null, require('./views/Committee/Docket/Docket').default))
+const SplitConfig = (l, c) => require.ensure([], () => c(null, require('./views/Committee/Config/Config').default))
 
 /*
  * @param {Redux Store}
@@ -41,16 +45,20 @@ export default (store) => {
     }
     callback()
   }
+  //  TODO: Refactor once we have a live demo
+  const requireCommittee = (nextState, replace, callback) => {
+    const { user: { committee } } = store.getState()
+    if (!committee) {
+      window.location = '/auth/google'
+      replace({
+        //  TODO: When shib is fully implemented, dynamically re-route based on ENV
+        // pathname: '/login',
+        state: { nextPathname: nextState.location.pathname }
+      })
+    }
+    callback()
+  }
 
-  // const redirectAuth = (nextState, replace, callback) => {
-  //   const { user: { authenticated } } = store.getState()
-  //   if (authenticated) {
-  //     replace({
-  //       pathname: '/'
-  //     })
-  //   }
-  //   callback()
-  // }
   return (
     <Route path='/' breadcrumbName='Home' component={Template} >
       <IndexRoute getComponent={SplitFrontPage} />
@@ -76,9 +84,30 @@ export default (store) => {
         breadcrumbName='Edit Proposal' getComponent={SplitEdit}
       />
 
-      <Route path='/calendar' breadcrumbName='Calendar' getComponent={SplitCalendar} />
-      <Route path='/calendar/events' breadcrumbName='Events' getComponent={SplitEvents} />
-
+      <Route path='/knowledge'
+        onEnter={requireCommittee}
+        breadcrumbName='Knowledge Base' getComponent={SplitKnowledge}
+      />
+      <Route path='/knowledge/:number'
+        onEnter={requireCommittee}
+        breadcrumbName='Knowledge Base Article' getComponent={SplitArticle}
+      />
+      <Route path='/dashboard'
+        onEnter={requireCommittee}
+        breadcrumbName='Dashboard' getComponent={SplitDashboard}
+      />
+      <Route path='/voting'
+        onEnter={requireCommittee}
+        breadcrumbName='Voting' getComponent={SplitVoting}
+      />
+      <Route path='/docket'
+        onEnter={requireCommittee}
+        breadcrumbName='Set Docket' getComponent={SplitDocket}
+      />
+      <Route path='/config'
+        onEnter={requireCommittee}
+        breadcrumbName='Site Config' getComponent={SplitConfig}
+      />
     </Route>
   )
 }

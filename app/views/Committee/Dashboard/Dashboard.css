@@ -1,4 +1,4 @@
-@import '../../css/layout';
+@import '../../../css/layout';
 
 .article {
   @apply --page;
