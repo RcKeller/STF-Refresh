@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
+import { isContact, redirectUnaffiliated } from '../../../util/selectors'
 
 import Introduction from './Introduction/Introduction'
 import Contacts from './Contacts/Contacts'
@@ -17,14 +18,27 @@ const TabPane = Tabs.TabPane
 
 import styles from './Edit.css'
 @compose(
-  connect(state => ({ proposal: state.db.proposal })),
+  connect(state => ({
+    proposal: state.db.proposal,
+    // contacts: state.db.proposal.contacts,
+    user: state.user
+  })),
   connectRequest(props => api.get('proposal', {
     id: props.params.id,
     join: ['contacts', 'body', 'manifests']
   }))
 )
 class Edit extends React.Component {
-  render ({ proposal } = this.props) {
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.proposal) {
+      const { proposal, user } = nextProps
+      redirectUnaffiliated(proposal.contacts, user.netID)
+      // console.log('ComponentWillReceive', isContact(proposal.contacts, user.netID))
+    }
+  }
+  render ({ proposal, user } = this.props) {
+    // proposal && console.log('CHECK', proposal.contacts, user)
+    // proposal && console.log(isContact(proposal.contacts, user.netID))
     return (
       <article className={styles['page']}>
         {!proposal

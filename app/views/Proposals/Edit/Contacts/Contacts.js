@@ -1,7 +1,11 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
-import { Row, Col, Form } from 'antd'
+import { connect } from 'react-redux'
 
+import { Row, Col } from 'antd'
+
+import { isContact } from '../../../../util/selectors'
 import Contact from './Contact/Contact'
 
 const contactFields = [
@@ -28,10 +32,13 @@ const contactFields = [
 // const jss = {
 //   icon: { fontSize: 13 }
 // }
+@connect(state => ({
+  contacts: state.db.proposal.contacts,
+  user: state.user
+}))
 class Contacts extends React.Component {
-  // render ({ contacts } = this.props) {
-    // const requireForStaff = (index) => index !== 3 ? rules.required : null
-  render () {
+  render ({ contacts, user } = this.props) {
+    console.log(contacts, user)
     return (
       <div>
         <h1>Contact Information</h1>

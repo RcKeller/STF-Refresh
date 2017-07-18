@@ -10,19 +10,9 @@ const connectForm = Form.create()
 
 import { layout, feedback, help, rules, disableSubmit } from '../../../../../util/form'
 import api from '../../../../../services'
+import { getRole } from '../../../../../util/selectors'
 
-// const connectRole = (contacts, role) => {
-//   // contacts.map((c, i))
-//   var contact = contacts.filter(function ( obj ) {
-//     return obj.role === role
-//   })[0]
-// }
-
-// const connectRole = (contacts, role) => contacts.filter(function (obj) {
-//   return obj.role === role
-// })[0]
-
-const connectRole = (contacts, role) => contacts.filter(obj => obj.role === role)[0]
+// const connectRole = (contacts, role) => contacts.filter(obj => obj.role === role)[0]
 
 // import styles from './Body.css'
 const jss = {
@@ -32,7 +22,7 @@ const jss = {
   connect(
     (state, props) => ({
       parent: state.db.proposal._id,
-      contact: connectRole(state.db.proposal.contacts, props.role)
+      contact: getRole(state.db.proposal.contacts, props.role)
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),

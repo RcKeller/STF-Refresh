@@ -8,8 +8,7 @@ isn't coupled with a specific view.
 //  REST API
 import api from './api'
 export default api
-//  Other services
-export { default as environment } from './environment'
+//  MICROSERVICES
 export { default as authentication } from './authentication'
-//  Temporary service during DB migration
-export { default as stub } from './stub'
+//  ENVIRONMENT VARIABLES
+export { default as environment } from './environment'
