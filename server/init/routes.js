@@ -11,6 +11,7 @@ export default (app) => {
   RESTful API
   */
   app.use(`/${version}/contacts`, new controllers.Contacts().api())
+  app.use(`/${version}/comments`, new controllers.Comments().api())
   app.use(`/${version}/proposals`, new controllers.Proposals().api())
   app.use(`/${version}/projects`, new controllers.Projects().api())
   app.use(`/${version}/amendments`, new controllers.Amendments().api())
@@ -20,7 +21,7 @@ export default (app) => {
   app.use(`/${version}/reviews`, new controllers.Reviews().api())
   app.use(`/${version}/decisions`, new controllers.Decisions().api())
   app.use(`/${version}/reports`, new controllers.Reports().api())
-  app.use(`/${version}/comments`, new controllers.Comments().api())
+  app.use(`/${version}/articles`, new controllers.Articles().api())
   console.log(`REST: API live for all ${Object.keys(controllers).length - 1} core models.`)
 
   // USER PROFILE ROUTES

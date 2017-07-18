@@ -10,6 +10,7 @@ export default function () {
 
   //  Generate an object containing ObjectIds for dummy objects.
   const ids = {
+    user: [],
     contact: [],
     comment: [],
     proposal: [],
@@ -21,7 +22,7 @@ export default function () {
     review: [],
     decision: [],
     report: [],
-    user: []
+    article: []
     //  User?
   }
   Object.keys(ids).forEach((key) => {

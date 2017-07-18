@@ -19,6 +19,7 @@ export default function loadModels () {
   require('./review')
   require('./decision')
   require('./report')
+  require('./article')
 }
 
 /*
@@ -28,6 +29,7 @@ For express-restify-mongoose
 
 import User, { dummyUsers } from './user'
 import Contact, { dummyContacts } from './contact'
+import Comment, { dummyComments } from './comment'
 import Proposal, { dummyProposals } from './proposal'
 import Project, { dummyProjects } from './project'
 import Amendment, { dummyAmendments } from './amendment'
@@ -37,15 +39,15 @@ import Block, { dummyBlocks } from './block'
 import Review, { dummyReviews } from './review'
 import Decision, { dummyDecisions } from './decision'
 import Report, { dummyReports } from './report'
-import Comment, { dummyComments } from './comment'
+import Article, { dummyArticles } from './article'
 //  Note that users are not here, that's bespoke.
 export {
   User, Contact, Comment,
   Proposal, Project, Amendment, Manifest, Item, Block,
-  Review, Decision, Report
+  Review, Decision, Report, Article
 }
 export const restDummies = [
   dummyUsers, dummyContacts, dummyComments,
   dummyProposals, dummyProjects, dummyAmendments, dummyManifests, dummyItems, dummyBlocks,
-  dummyReviews, dummyDecisions, dummyReports
+  dummyReviews, dummyDecisions, dummyReports, dummyArticles
 ]
