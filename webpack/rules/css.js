@@ -65,5 +65,6 @@ module.exports = ({ production = false, browser = false } = {}) => {
     test: /\.css$/,
     use: browser ? browserLoaders : serverLoaders,
     include: PATHS.app
+    // include: [PATHS.app, PATHS.modules]
   }
 }

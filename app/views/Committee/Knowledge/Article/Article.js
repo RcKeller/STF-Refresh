@@ -12,7 +12,7 @@ const TabPane = Tabs.TabPane
 
 //  I'm keeping this view simple.
 // import View from './View/View'
-// import Update from './Update/Update'
+import Update from './Update/Update'
 
 import styles from './Article.css'
 @compose(
@@ -32,7 +32,7 @@ class Article extends React.Component {
               <div>View</div>
             </TabPane>
             <TabPane tab='Update' key='2' className={styles['tab-pane']}>
-              <div>update</div>
+              <Update />
             </TabPane>
           </Tabs>
         }

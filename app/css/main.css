@@ -2,11 +2,9 @@
 @import 'layout';
 @import 'typography';
 
-/*https://www.memeexplorer.com/cache/846.jpg*/
-* {
-  box-sizing: border-box !important;
-  -webkit-font-smoothing: antialiased;
-}
+/*
+https://www.memeexplorer.com/cache/846.jpg
+*/
 
 /*Define variables and style classes*/
 :root {

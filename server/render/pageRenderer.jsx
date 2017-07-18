@@ -19,6 +19,7 @@ const buildPage = ({ componentHTML, initialState, headAssets }) => {
     ${headAssets.title.toString()}
     ${headAssets.meta.toString()}
     ${headAssets.link.toString()}
+    <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.0/quill.bubble.css">
     ${staticAssets.createStylesheets()}
     ${staticAssets.createTrackingScript()}
   </head>
