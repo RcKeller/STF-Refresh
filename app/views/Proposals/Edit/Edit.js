@@ -56,6 +56,7 @@ class Edit extends React.Component {
               <TabPane key='5' tab={<span><Icon type='edit' />Signatures</span>}>
                 <Signatures />
               </TabPane>
+              <p>Proposals can be published after all sections are completed and the appropriate contacts sign.</p>
             </Tabs>
           </div>
         }
