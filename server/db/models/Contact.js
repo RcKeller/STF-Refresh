@@ -9,10 +9,10 @@ const ContactSchema = new mongoose.Schema({
   amendment: { type: mongoose.Schema.Types.ObjectId, ref: 'Amendment' },
   block: { type: mongoose.Schema.Types.ObjectId, ref: 'Block' },
   //  Role is the person's association - Primary (contact), Budget, official (dean), Student
-  role: { type: String, required: true },
-  name: { type: String, required: true },
-  netID: { type: String, required: true },
-  title: { type: String, required: true },
+  role: String,
+  name: String,
+  netID: String,
+  title: String,
   //  Client can handle string->number logic, since it's JS this is trivial.
   phone: String,
   mailbox: String,
