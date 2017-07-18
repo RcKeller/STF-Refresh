@@ -29,16 +29,8 @@ import styles from './Edit.css'
   }))
 )
 class Edit extends React.Component {
-  componentWillReceiveProps (nextProps) {
-    if (nextProps.proposal) {
-      const { proposal, user } = nextProps
-      redirectUnaffiliated(proposal.contacts, user.netID)
-      // console.log('ComponentWillReceive', isContact(proposal.contacts, user.netID))
-    }
-  }
   render ({ proposal, user } = this.props) {
-    // proposal && console.log('CHECK', proposal.contacts, user)
-    // proposal && console.log(isContact(proposal.contacts, user.netID))
+    proposal && redirectUnaffiliated(proposal.contacts, user)
     return (
       <article className={styles['page']}>
         {!proposal

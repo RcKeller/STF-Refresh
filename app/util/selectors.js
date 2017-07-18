@@ -9,15 +9,22 @@ connect((state, props) => ({
 */
 const getRole = (contacts, role) => contacts.filter(obj => obj.role === role)[0]
 //  Check to see if someone is authorized to perform actions on a proposal.
-const isContact = (contacts, netID) => contacts.filter(obj => obj.netID === netID)[0]
-
-const redirectUnaffiliated = (contacts, netID) => {
+const isContact = (contacts, user) => contacts.filter(obj => obj.netID === user.netID)[0]
+/*
+Util for redirecting unaffiliated users from CRUD pages, like editing proposals.
+Best used in the render method, because you can skip lifecycle methods with the back button in some browsers.
+render ({ contacts, user } = this.props) {
+  proposal && redirectUnaffiliated(contacts, user)
+  ...
+}
+*/
+const redirectUnaffiliated = (contacts, user) => {
   let authorized = []
   contacts.map(c => authorized.push(c.netID))
   console.log(authorized)
-  if (!authorized.includes(netID)) {
+  if (!authorized.includes(user.netID)) {
     browserHistory.push(`/`)
-    message.warning(`Sorry! ${netID} is unauthorized to visit this page. Authorized users include: ${authorized.join(',', ' ')}`, 10)
+    message.warning(`Sorry! ${user.netID} is unauthorized to visit this page. Authorized users include: ${authorized.join(',', ' ')}`, 10)
   }
 }
 
