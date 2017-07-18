@@ -58,10 +58,7 @@ function breadcrumbRenderFix (route, params, routes, paths) {
     : <Link to={path || '/'}>{route.breadcrumbName}</Link>
 }
 
-@connect(state => ({
-  // user: state.user
-  screen: state.screen
-}))
+@connect(state => ({ screen: state.screen }))
 class Template extends React.Component {
   constructor (props) {
     super(props)
@@ -74,7 +71,7 @@ class Template extends React.Component {
   }
   componentWillReceiveProps
   toggle = () => { this.setState({ collapsed: !this.state.collapsed }) }
-  render ({ children, router, routes, user, screen } = this.props) {
+  render ({ children, routes, screen } = this.props) {
     // React-router is separated from redux store - too heavy to persist.
     return (
       <LocaleProvider locale={enUS}>
@@ -89,8 +86,8 @@ class Template extends React.Component {
             breakpoint='md'
             width={240} collapsedWidth='0'
           >
-            <Login router={router} />
-            <Nav router={router} />
+            <Login />
+            <Nav />
           </Sider>
           <Layout className={styles['body']}>
             <Header>
@@ -121,7 +118,6 @@ Template.propTypes = {
   children: PropTypes.object.isRequired,
   router: PropTypes.object.isRequired,
   routes: PropTypes.array.isRequired,
-  screen: PropTypes.object,
-  user: PropTypes.object  // Async
+  screen: PropTypes.object
 }
 export default Template

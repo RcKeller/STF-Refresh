@@ -7,6 +7,7 @@ const ArticleSchema = new mongoose.Schema({
   year: { type: Number, required: true },
   number: { type: Number, required: true },
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', autopopulate: true },
+  position: String,
   //  Metadata
   title: { type: String, required: true },
   category: { type: String, required: true },

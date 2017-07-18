@@ -1,9 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-// import { Avatar, Icon } from 'antd'
-// import Avatar from 'antd/lib/avatar'
+import { connect } from 'react-redux'
 
 import { endSession } from '../../../services/authentication'
 
@@ -14,11 +12,6 @@ import styles from './Login.css'
 )
 class Login extends React.Component {
   render ({ user, signOut } = this.props) {
-    /*
-    This function determines the highest authN level of the user.
-    It's ugly and inefficient, because the schema was built as an object.
-    However, this is the only time we need this information.
-    */
     return (
       <div>
         {!user.authenticated
@@ -40,7 +33,6 @@ class Login extends React.Component {
 }
 
 Login.propTypes = {
-  // router: PropTypes.object.isRequired
   user: PropTypes.object,
   signOut: PropTypes.func
 }

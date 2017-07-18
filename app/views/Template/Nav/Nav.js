@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
 
 import { Menu, Icon, Alert } from 'antd'
 const SubMenu = Menu.SubMenu
@@ -13,20 +14,18 @@ const keyserver = 'http://itconnect.uw.edu/wares/acquiring-software-and-hardware
 
 import styles from './Nav.css'
 @connect(state => ({
-  // location: state.routing ? state.routing.locationBeforeTransitions.pathname : '',
-  location: '',
+  //  NOTE: Do NOT try refactoring this selector. This is isomorphically generated, more specific selectors will break.
+  routing: state.routing,
   user: state.user
 }))
 class Nav extends React.Component {
-  render ({ router, location, user: { committee } } = this.props) {
-    console.log(committee)
+  render ({ routing, user: { committee } } = this.props) {
+    const location = routing.locationBeforeTransitions ? routing.locationBeforeTransitions.pathname : '1'
     return (
       <Menu mode='inline'
         defaultSelectedKeys={['1']}
         selectedKeys={[location]}
-        // selectedKeys={location ? [location] : ['1']}
-        // selectedKeys={[router.location.pathname]}
-        onClick={(i) => i.key && router.push(i.key)}
+        onClick={(i) => i.key && browserHistory.push(i.key)}
       >
         {true &&
           <SubMenu key='sub1' title={<span><Icon type='safety' /><span>Committee</span></span>}>
@@ -37,8 +36,8 @@ class Nav extends React.Component {
               <Item key='/dashboard'>
                 <Icon type='team' /><span className='nav-text'>Dashboard</span>
               </Item>
-              <Item key='/voting/'>
-                <Icon type='unlock' /><span className='nav-text'>Voting Tools</span>
+              <Item key='/voting'>
+                <Icon type='check' /><span className='nav-text'>Voting</span>
               </Item>
               </ItemGroup>}
             {true && <ItemGroup key='g2' title='Admins'>
