@@ -11,6 +11,19 @@ const connectForm = Form.create()
 import { layout, feedback, help, rules, disableSubmit } from '../../../../../util/form'
 import api from '../../../../../services'
 
+// const connectRole = (contacts, role) => {
+//   // contacts.map((c, i))
+//   var contact = contacts.filter(function ( obj ) {
+//     return obj.role === role
+//   })[0]
+// }
+
+// const connectRole = (contacts, role) => contacts.filter(function (obj) {
+//   return obj.role === role
+// })[0]
+
+const connectRole = (contacts, role) => contacts.filter(obj => obj.role === role)[0]
+
 // import styles from './Body.css'
 const jss = {
   icon: { fontSize: 13 }
@@ -19,7 +32,7 @@ const jss = {
   connect(
     (state, props) => ({
       parent: state.db.proposal._id,
-      contact: state.db.proposal.contacts[props.index]
+      contact: connectRole(state.db.proposal.contacts, props.role)
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
@@ -37,9 +50,9 @@ class Contact extends React.Component {
     e.preventDefault()
     let { form, api, parent, contact, role, title } = this.props
     form.validateFields((err, values) => {
+      //  Patch contacts if they already exist. Create them otherwise.
       if (!err && values) {
-        //  Patch contacts if they already exist. Create them otherwise.
-        values.role = role
+        values.role = role  //  Set role, it's not in the form for security.
         contact
         ? api.patch(
           'contact',
@@ -59,8 +72,7 @@ class Contact extends React.Component {
     })
   }
 
-  render ({ form, contact, index, role, title, subtitle } = this.props) {
-    //  If this
+  render ({ form, role, title, subtitle } = this.props) {
     const requireStaff = role !== 'student' ? rules.required : null
     return (
       <Form layout='inline' onSubmit={this.handleSubmit}>
@@ -108,7 +120,6 @@ Contact.propTypes = {
   contact: PropTypes.object,
   //  Props from container - REQUIRED.
   role: PropTypes.string,
-  index: PropTypes.number,
   title: PropTypes.string,
   subtitle: PropTypes.string
 }

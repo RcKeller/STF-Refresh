@@ -38,7 +38,7 @@ class Contacts extends React.Component {
         <Row gutter={32}>
           {contactFields.map((c, i) => (
             <Col key={i} className='gutter-row' xs={24} md={12} lg={6} >
-              <Contact key={i} index={i} {...c} />
+              <Contact key={i} {...c} />
             </Col>
           ))}
         </Row>
