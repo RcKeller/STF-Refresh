@@ -2,4 +2,5 @@
 
 .article {
   @apply --page;
+  padding: 0;
 }

@@ -109,17 +109,15 @@ class Proposals extends React.Component {
       </div>
     )
     return (
-      <div>
+      <article className={styles['article']}>
         {!proposals
           ? <Spin size='large' tip='Loading...' />
           : (screen.greaterThan.medium
-            ? <article className={styles['article']}>
-              <Table dataSource={proposals} sort
-                columns={columns}
-                title={title}
-                footer={footer}
+            ? <Table dataSource={proposals} sort
+              columns={columns}
+              title={title}
+              footer={footer}
               />
-            </article>
             : <Table dataSource={proposals} sort
               size='small'
               columns={columns.slice(0, 3)}
@@ -128,7 +126,7 @@ class Proposals extends React.Component {
             />
           )
         }
-      </div>
+      </article>
     )
   }
 }
