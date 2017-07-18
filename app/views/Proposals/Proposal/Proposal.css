@@ -22,19 +22,6 @@
   border-radius: 0 4px 4px 4px;
 }
 
-.centered {
-  text-align: center;
-}
-
-.arrow {
-  text-align: center;
-  font-size: 32px;
-  color: var(--gold, gold);
-  padding: 16px 0;
-  display: block !important;
-  margin: auto;
-}
-
 .badge {
   color: '#FFF !important';
   background-color: '#87d068';

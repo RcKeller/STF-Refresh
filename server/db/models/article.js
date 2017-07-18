@@ -41,6 +41,7 @@ const dummyArticles = (min, ids) => {
           year: 2017,
           number: faker.random.number(),
           author: ids.user[i],
+          position: faker.name.jobArea(),
           title: faker.company.catchPhrase(),
           category: faker.name.jobArea(),
           published: faker.random.boolean(),

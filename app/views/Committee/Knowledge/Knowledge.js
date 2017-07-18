@@ -8,7 +8,7 @@ import { connectRequest } from 'redux-query'
 import api from '../../../services'
 
 import { Link } from 'react-router'
-import { Spin, Table, Progress, Badge } from 'antd'
+import { Spin, Table } from 'antd'
 
 const columns = [
   {
@@ -31,16 +31,21 @@ const columns = [
   {
     title: 'Author',
     dataIndex: 'author.name',
-    render: (text, record) => <span>{`${record.author.name} (${record.author.netID})`}</span>
+    render: (text, record) => <span>
+      {`${record.author.name} (${record.author.netID})`}
+      <br />
+      <em>{record.position}</em>
+    </span>
   },
-  { title: 'Position', dataIndex: 'position' },
-  { title: 'Author', dataIndex: 'category' }
+  // { title: 'Position', dataIndex: 'position' },
+  { title: 'Category', dataIndex: 'category' }
 ]
 
 import styles from './Knowledge.css'
 @compose(
   connect((state, props) => ({
     articles: state.db.articles,
+    user: state.user,
     screen: state.screen
   })),
   connectRequest((props) => api.get('articles', {
@@ -48,12 +53,37 @@ import styles from './Knowledge.css'
   }))
 )
 class Knowledge extends React.Component {
-  render ({ articles, screen } = this.props) {
-    //  Return mapped content with proposal data. Demonstrates data usage.
+  constructor (props) {
+    super(props)
+    this.state = { myArticles: [] }
+  }
+  componentWillReceiveProps (nextProps) {
+    const { articles, user: { netID } } = nextProps
+    if (articles && netID) {
+      console.log(nextProps)
+      // const myArticles = articles.filter(obj => obj.author.netID === netID)
+      const myArticles = articles.filter(obj => obj.author.netID === 'mafalda.conroy66')
+      this.setState({ myArticles })
+    }
+  }
+  render (
+    { articles, screen } = this.props,
+    { myArticles } = this.state
+  ) {
     const title = () => <h1>Knowledge Base Articles</h1>
     const footer = () => (
       <div>
         <em>"KBA"s are our way of preserving continuity in STF decisions with dynamic leadership. <Link to='/create'>Click Here</Link> to create a KBA.</em>
+        {myArticles &&
+          <p>
+            <h6>My KBA's</h6>
+            {myArticles.map((a, i) =>
+              <Link to={`/knowledge/${a.number}/`}>
+                <li>{`${a.number} - ${a.title}`}</li>
+              </Link>
+            )}
+          </p>
+        }
       </div>
     )
     return (
@@ -79,6 +109,7 @@ class Knowledge extends React.Component {
   }
 }
 Knowledge.propTypes = {
-  Knowledge: PropTypes.array
+  articles: PropTypes.array,
+  user: PropTypes.object
 }
 export default Knowledge
