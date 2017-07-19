@@ -148,6 +148,25 @@ class EditableTable extends React.Component {
   handleSubmit = () => {
     let { onSubmit } = this.props
     let { data } = this.state
+    // let values = data.map((e, i) => {
+    //   Object.keys(e).forEach((key) => {
+    //     e[key] = e[key].value
+    //   })
+    //   delete e.key
+    //   return e
+    // })
+    // console.log(values)
+    // console.log('DATA', data)
+    // // // let data = this.state.data.slice()
+    // // let values = Array.from(this.state.data)
+    // // for (let record of values) {
+    // //   Object.keys(record).forEach((prop, i) => {
+    // //     //  Replace props with just their values
+    // //     record[prop] = record[prop].value
+    // //   })
+    // //   //  Delete the unique identifier
+    // //   delete record.key
+    // // }
     onSubmit(data)
   }
   render () {

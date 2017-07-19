@@ -56,16 +56,17 @@ const dataSource = [{
   state => ({ manifest: state.db.proposal.manifests[0] }),
   dispatch => ({ api: bindActionCreators(api, dispatch) })
 )
-class Signatures extends React.Component {
+class Manifest extends React.Component {
   handleSubmit (values) {
     console.log('HANDLE SUBMIT', values)
-    // for (record of values) {
-    //   Object.keys(record).forEach((prop, i) => {
-    //     //  Replace props with just their values
-    //     record[prop] = record[prop].value
-    //   })
-    //   delete record.key
-    // }
+    for (let record of values) {
+      Object.keys(record).forEach((prop, i) => {
+        //  Replace props with just their values
+        record[prop] = record[prop].value
+      })
+      delete record.key
+    }
+    console.log('normal values', values)
   }
 
   render ({ manifest } = this.props) {
@@ -81,10 +82,10 @@ class Signatures extends React.Component {
     )
   }
 }
-Signatures.propTypes = {
+Manifest.propTypes = {
   form: PropTypes.object,
   api: PropTypes.object,
   contacts: PropTypes.array,
   user: PropTypes.object
 }
-export default Signatures
+export default Manifest
