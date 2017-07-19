@@ -20,6 +20,9 @@ import styles from './Edit.css'
 @compose(
   connect(state => ({
     proposal: state.db.proposal,
+    // id: state.db.proposal._id,
+    // title: state.db.proposal.title,
+    // contacts: state.db.proposal.contacts,
     // contacts: state.db.proposal.contacts,
     user: state.user
   })),
@@ -30,14 +33,18 @@ import styles from './Edit.css'
 )
 class Edit extends React.Component {
   render ({ proposal, user } = this.props) {
-    proposal && redirectUnaffiliated(proposal.contacts, user)
+    //  Checking for the existence of contacts before redirection.
+    if (proposal && proposal.contacts.length >= 1) {
+      console.log('LOADED', proposal.contacts)
+      redirectUnaffiliated(user, proposal.contacts)
+    }
     //  You can remove your netID and push an update, but if you leave the page after that, it locks you out.
     return (
       <article className={styles['page']}>
         {!proposal
           ? <Spin size='large' tip='Loading...' />
           : <div>
-            <h1>{`Editing: ${proposal && proposal.title ? proposal.title : 'New Proposal'}`}</h1>
+            <h1>{`Editing: ${proposal.title || 'New Proposal'}`}</h1>
             <h6>{`ID: ${proposal._id}`}</h6>
             <hr />
             <Tabs tabPosition='right' defaultActiveKey='1'>

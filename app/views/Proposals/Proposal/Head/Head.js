@@ -71,14 +71,6 @@ class Head extends React.Component {
     )
   }
 }
-/*
-{decision &&
-  <Progress type='circle' width={80}
-    status={decision ? (decision.approved ? 'success' : 'exception') : 'active'}
-    percent={100}
-  />
-}
-*/
 Head.propTypes = {
   contacts: PropTypes.object,
   status: PropTypes.string,

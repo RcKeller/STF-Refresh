@@ -4,11 +4,11 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Row, Col, Alert, Form, Button, Switch, Icon, message } from 'antd'
+import { Row, Col, Alert, Form, Switch, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
-import { layout, feedback, help, rules, disableSubmit } from '../../../../util/form'
+// import { layout, feedback, help, rules, disableSubmit } from '../../../../util/form'
 import api from '../../../../services'
 
 /*
@@ -68,7 +68,7 @@ class Signatures extends React.Component {
             />
             {contacts.map((c, i) => (
               <Col key={i} className='gutter-row' xs={24}>
-                <FormItem {...layout} >
+                <FormItem>
                   {form.getFieldDecorator(c.role, { valuePropName: 'checked' })(
                     //  Valueprop is a selector for antd switches, it's in the docs.
                     <Switch size='large' unCheckedChildren={c.title} checkedChildren={c.title}

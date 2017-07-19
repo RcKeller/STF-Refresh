@@ -31,7 +31,6 @@ class Update extends React.Component {
     this.setState({ loading: true })
     const body = this.state.value.toString('html')
     const { api, id } = this.props
-    console.log('Uploading value', body)
     api.patch(
       'article',
       { body },

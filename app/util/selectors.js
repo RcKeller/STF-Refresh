@@ -18,13 +18,14 @@ render ({ contacts, user } = this.props) {
   ...
 }
 */
-const redirectUnaffiliated = (contacts, user) => {
+const redirectUnaffiliated = (user, contacts) => {
+  console.log('GOT CONTACTS', contacts)
   let authorized = []
-  contacts.map(c => authorized.push(c.netID))
-  console.log(authorized)
+  for (let c of contacts) authorized.push(c.netID)
+  console.log('AUTHZ and user', authorized, user)
   if (!authorized.includes(user.netID)) {
     browserHistory.push(`/`)
-    message.warning(`Sorry! ${user.netID} is unauthorized to visit this page. Authorized users include: ${authorized.join(',', ' ')}`, 10)
+    message.warning(`Sorry! ${user.netID} is unauthorized to visit this page. Authorized users include: ${authorized}`, 10)
   }
 }
 

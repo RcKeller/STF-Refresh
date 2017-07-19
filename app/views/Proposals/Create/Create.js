@@ -74,30 +74,6 @@ class Create extends React.Component {
       }
     })
   }
-  // handleOk = () => {
-  //   this.setState({ confirmLoading: true })
-  //   let { form, api, user } = this.props
-  //   form.validateFields((err, values) => {
-  //     if (!err) {
-  //       api.post('proposal', {})
-  //       //  TODO: Pass in user as well.
-  //       .then(res => {
-  //         message.success(`Proposal Created! Share the link with your team! ID: ${res.body._id}`, 10)
-  //         browserHistory.push(`/edit/${res.body._id}`)
-  //       })
-  //       .catch(err => {
-  //         message.error('An error occured - Draft failed to update')
-  //         console.warn(err)
-  //       })
-  //       setTimeout(() => {
-  //         this.setState({
-  //           modal: false,
-  //           confirmLoading: false
-  //         })
-  //       }, 2000)
-  //     }
-  //   }
-  // }
   handleCancel = () => {
     console.log('Clicked cancel button')
     this.setState({ modal: false })
