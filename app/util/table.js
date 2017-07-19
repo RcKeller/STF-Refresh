@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Table, Input, Popconfirm } from 'antd'
+import { Table, Input, Button, Popconfirm } from 'antd'
 
 class EditableCell extends React.Component {
   constructor (props) {
@@ -74,8 +74,8 @@ class EditableTable extends React.Component {
     }
     //  Push in the row editor cell, enabling operations such as saving (and delete in the future)
     columns.push({
-      title: 'operation',
-      dataIndex: 'operation',
+      title: 'Modify',
+      dataIndex: 'modify',
       render: (text, record, index) => {
         const { editable } = this.state.data[index].name
         return (
@@ -97,6 +97,10 @@ class EditableTable extends React.Component {
     })
     //  Final assignments = set columns and initial data.
     this.columns = columns
+    //  Assign unique keys to each record, making it possible to access them without indexes.
+    for (let i; i < dataSource.length; i++) {
+      dataSource[i].key = i
+    }
     this.state = { data: dataSource }
   }
   renderColumns (data, index, key, text) {
@@ -141,6 +145,20 @@ class EditableTable extends React.Component {
       })
     })
   }
+  handleSubmit = () => {
+    //  We need to normalize data and remove table logic.
+    //  Every field is an obj with an editable prop and value prop.
+    //  We're going to replace the fields with their values
+    let { data } = this.state
+    for (let record of data) {
+      Object.keys(record).forEach((prop, i) => {
+        record[prop] = record[prop].value
+        //  Remove table keys (_id should serve nicely)
+        delete record.key
+      })
+    }
+    console.log('processed', data)
+  }
   render () {
     const { data } = this.state
     const dataSource = data.map((item) => {
@@ -152,10 +170,13 @@ class EditableTable extends React.Component {
     })
     const columns = this.columns
     return (
-      <Table bordered
-        dataSource={dataSource}
-        columns={columns}
-      />
+      <div>
+        <Table bordered
+          dataSource={dataSource}
+          columns={columns}
+        />
+        <Button size='large' type='primary' onClick={this.handleSubmit}>Update</Button>
+      </div>
     )
   }
 }

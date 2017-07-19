@@ -25,7 +25,7 @@ const columns = [{
 }]
 
 const dataSource = [{
-  key: '0',
+  // key: '9',
   name: {
     editable: false,
     value: 'Edward King 0'
@@ -36,6 +36,19 @@ const dataSource = [{
   },
   address: {
     value: 'London, Park Lane no. 0'
+  }
+}, {
+  // key: '7',
+  name: {
+    editable: false,
+    value: 'King Snowden'
+  },
+  age: {
+    editable: false,
+    value: '12'
+  },
+  address: {
+    value: 'London, Park Lane no. 1'
   }
 }]
 
