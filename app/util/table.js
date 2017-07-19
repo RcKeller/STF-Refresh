@@ -65,27 +65,14 @@ EditableCell.propTypes = {
 class EditableTable extends React.Component {
   constructor (props) {
     super(props)
-    //  Take in columns, but without custom renderers since they're scoped to the EditableTable component.
-    let columns = [{
-      title: 'name',
-      dataIndex: 'name',
-      width: '25%'
-    }, {
-      title: 'age',
-      dataIndex: 'age',
-      width: '15%'
-    }, {
-      title: 'address',
-      dataIndex: 'address',
-      width: '40%'
-    }]
+    //  Get column configs and initial data from porps
+    //  Columns will have custom renderers applied based on config.
+    let { columns, dataSource } = this.props
     //  Apply custom renderers that enable data editing.
-    console.log(columns)
     for (let i = 0; i < columns.length; i++) {
       columns[i].render = (text, record, index) => this.renderColumns(this.state.data, index, columns[i].title, text)
     }
-    console.log(columns)
-    //  Push in the editor cell, enabling operations such as saving (and delete in the future)
+    //  Push in the row editor cell, enabling operations such as saving (and delete in the future)
     columns.push({
       title: 'operation',
       dataIndex: 'operation',
@@ -108,24 +95,9 @@ class EditableTable extends React.Component {
         )
       }
     })
-    //  Final assignment
+    //  Final assignments = set columns and initial data.
     this.columns = columns
-    this.state = {
-      data: [{
-        key: '0',
-        name: {
-          editable: false,
-          value: 'Edward King 0'
-        },
-        age: {
-          editable: false,
-          value: '32'
-        },
-        address: {
-          value: 'London, Park Lane no. 0'
-        }
-      }]
-    }
+    this.state = { data: dataSource }
   }
   renderColumns (data, index, key, text) {
     const { editable, status } = data[index][key]
@@ -187,5 +159,8 @@ class EditableTable extends React.Component {
     )
   }
 }
-
+EditableTable.PropTypes = {
+  columns: PropTypes.array,
+  dataSource: PropTypes.array
+}
 export default EditableTable

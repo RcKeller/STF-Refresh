@@ -10,6 +10,35 @@ import { connect } from 'react-redux'
 import api from '../../../../services'
 import EditableTable from '../../../../util/table'
 
+const columns = [{
+  title: 'name',
+  dataIndex: 'name',
+  width: '25%'
+}, {
+  title: 'age',
+  dataIndex: 'age',
+  width: '15%'
+}, {
+  title: 'address',
+  dataIndex: 'address',
+  width: '40%'
+}]
+
+const dataSource = [{
+  key: '0',
+  name: {
+    editable: false,
+    value: 'Edward King 0'
+  },
+  age: {
+    editable: false,
+    value: '32'
+  },
+  address: {
+    value: 'London, Park Lane no. 0'
+  }
+}]
+
 @connect(
   state => ({ manifest: state.db.proposal.manifests[0] }),
   dispatch => ({ api: bindActionCreators(api, dispatch) })
@@ -19,7 +48,10 @@ class Signatures extends React.Component {
     console.log('LOADED MANIFEST', manifest)
     return (
       <div>
-        <EditableTable />
+        <EditableTable
+          columns={columns}
+          dataSource={dataSource}
+        />
       </div>
     )
   }
