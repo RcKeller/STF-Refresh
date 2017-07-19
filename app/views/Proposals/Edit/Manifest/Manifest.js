@@ -24,32 +24,41 @@ const columns = [{
   width: '40%'
 }]
 
+// const dataSource = [{
+//   // key: '9',
+//   name: {
+//     editable: false,
+//     value: 'Edward King 0'
+//   },
+//   age: {
+//     editable: false,
+//     value: '32'
+//   },
+//   address: {
+//     value: 'London, Park Lane no. 0'
+//   }
+// }, {
+//   // key: '7',
+//   name: {
+//     editable: false,
+//     value: 'King Snowden'
+//   },
+//   age: {
+//     editable: false,
+//     value: '12'
+//   },
+//   address: {
+//     value: 'London, Park Lane no. 1'
+//   }
+// }]
 const dataSource = [{
-  // key: '9',
-  name: {
-    editable: false,
-    value: 'Edward King 0'
-  },
-  age: {
-    editable: false,
-    value: '32'
-  },
-  address: {
-    value: 'London, Park Lane no. 0'
-  }
+  name: 'Edward King 0',
+  age: '32',
+  address: 'London, Park Lane no. 0'
 }, {
-  // key: '7',
-  name: {
-    editable: false,
-    value: 'King Snowden'
-  },
-  age: {
-    editable: false,
-    value: '12'
-  },
-  address: {
-    value: 'London, Park Lane no. 1'
-  }
+  name: 'King Snowden',
+  age: '12',
+  address: 'London, Park Lane no. 1'
 }]
 
 @connect(

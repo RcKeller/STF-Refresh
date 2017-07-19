@@ -66,13 +66,13 @@ class EditableTable extends React.Component {
   constructor (props) {
     super(props)
     //  Get column configs and initial data from porps
-    //  Columns will have custom renderers applied based on config.
+    //  Columns will have custom renderers that manage editing based on the "editable" prop
     let { columns, dataSource } = this.props
     //  Apply custom renderers that enable data editing.
     for (let i = 0; i < columns.length; i++) {
       columns[i].render = (text, record, index) => this.renderColumns(this.state.data, index, columns[i].title, text)
     }
-    //  Push in the row editor cell, enabling operations such as saving (and delete in the future)
+    //  Add the editor column, allowing you to modify data.
     columns.push({
       title: 'Modify',
       dataIndex: 'modify',
@@ -95,14 +95,33 @@ class EditableTable extends React.Component {
         )
       }
     })
+    /*
+    Denormalizing source data
+    We add a unique key and abstract out the values for each field, adding props for editor status.
+    These are stripped away when render executes.
+    E.G: { name: 'King Snowden' } becomes: {
+    key: '7',
+    name: {
+      editable: false,
+      value: 'King Snowden'
+    },
+    ...}
+    */
+    let i = 0
+    for (let record of dataSource) {
+      console.log('r', record)
+      Object.keys(record).forEach((key, i) => {
+        let value = record[key]
+        console.log(record, key, value)
+        record[key] = { value, editable: false }
+      })
+      record.key = i
+      i++
+    }
+    console.log('Finished', dataSource)
     //  Final assignments = set columns and initial data.
     this.columns = columns
-    //  Assign unique keys to each record, making it possible to access them without indexes.
-    for (let i; i < dataSource.length; i++) {
-      dataSource[i].key = i
-    }
     this.state = { data: dataSource }
-    // this.submit = this.submit.bind(this)
   }
   renderColumns (data, index, key, text) {
     const { editable, status } = data[index][key]
