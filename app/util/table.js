@@ -146,17 +146,11 @@ class EditableTable extends React.Component {
       })
     })
   }
-  // submit () {
-  //   const { data } = this.state
-  //   const { submit } = this.props
-  //   console.log(typeof submit, typeof data)
-  //   let newData = data
-  //   newData[0] = ''
-  //   submit(newData)
-  // }
-  render () {
-    const { data } = this.state
-    const columns = this.columns
+  render (
+    { columns } = this,
+    { data } = this.state,
+    { onSubmit } = this.props
+  ) {
     //  Remove table configs ("editable", etc) from data source
     const dataSource = data.map((item) => {
       const obj = {}
@@ -172,7 +166,7 @@ class EditableTable extends React.Component {
           columns={columns}
         />
         <form onSubmit={this.onSubmit}>
-          <Button size='large' type='primary' onClick={() => this.props.submit(dataSource)}> Update</Button>
+          <Button size='large' type='primary' onClick={() => onSubmit(dataSource)}> Update</Button>
         </form>
       </div>
     )
@@ -181,6 +175,6 @@ class EditableTable extends React.Component {
 EditableTable.PropTypes = {
   columns: PropTypes.array,
   dataSource: PropTypes.array,
-  submit: PropTypes.function
+  onSubmit: PropTypes.function
 }
 export default EditableTable

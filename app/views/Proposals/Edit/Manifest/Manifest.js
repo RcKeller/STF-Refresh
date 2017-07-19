@@ -57,11 +57,7 @@ const dataSource = [{
   dispatch => ({ api: bindActionCreators(api, dispatch) })
 )
 class Manifest extends React.Component {
-  constructor (props) {
-    super(props)
-    this.handleSubmit = this.handleSubmit.bind(this)
-  }
-  handleSubmit (values) {
+  handleSubmit = (values) => {
     console.log('HANDLE SUBMIT', values)
   }
   render ({ manifest } = this.props) {
@@ -71,7 +67,7 @@ class Manifest extends React.Component {
         <EditableTable
           columns={columns}
           dataSource={dataSource}
-          submit={this.handleSubmit}
+          onSubmit={this.handleSubmit}
         />
       </div>
     )
