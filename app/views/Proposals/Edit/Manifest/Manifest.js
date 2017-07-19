@@ -57,18 +57,13 @@ const dataSource = [{
   dispatch => ({ api: bindActionCreators(api, dispatch) })
 )
 class Manifest extends React.Component {
+  constructor (props) {
+    super(props)
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
   handleSubmit (values) {
     console.log('HANDLE SUBMIT', values)
-    for (let record of values) {
-      Object.keys(record).forEach((prop, i) => {
-        //  Replace props with just their values
-        record[prop] = record[prop].value
-      })
-      delete record.key
-    }
-    console.log('normal values', values)
   }
-
   render ({ manifest } = this.props) {
     console.log('LOADED MANIFEST', manifest)
     return (
@@ -76,7 +71,7 @@ class Manifest extends React.Component {
         <EditableTable
           columns={columns}
           dataSource={dataSource}
-          onSubmit={(values) => this.handleSubmit(values)}
+          submit={this.handleSubmit}
         />
       </div>
     )

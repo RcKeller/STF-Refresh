@@ -102,6 +102,7 @@ class EditableTable extends React.Component {
       dataSource[i].key = i
     }
     this.state = { data: dataSource }
+    // this.submit = this.submit.bind(this)
   }
   renderColumns (data, index, key, text) {
     const { editable, status } = data[index][key]
@@ -145,32 +146,18 @@ class EditableTable extends React.Component {
       })
     })
   }
-  handleSubmit = () => {
-    let { onSubmit } = this.props
-    let { data } = this.state
-    // let values = data.map((e, i) => {
-    //   Object.keys(e).forEach((key) => {
-    //     e[key] = e[key].value
-    //   })
-    //   delete e.key
-    //   return e
-    // })
-    // console.log(values)
-    // console.log('DATA', data)
-    // // // let data = this.state.data.slice()
-    // // let values = Array.from(this.state.data)
-    // // for (let record of values) {
-    // //   Object.keys(record).forEach((prop, i) => {
-    // //     //  Replace props with just their values
-    // //     record[prop] = record[prop].value
-    // //   })
-    // //   //  Delete the unique identifier
-    // //   delete record.key
-    // // }
-    onSubmit(data)
-  }
+  // submit () {
+  //   const { data } = this.state
+  //   const { submit } = this.props
+  //   console.log(typeof submit, typeof data)
+  //   let newData = data
+  //   newData[0] = ''
+  //   submit(newData)
+  // }
   render () {
     const { data } = this.state
+    const columns = this.columns
+    //  Remove table configs ("editable", etc) from data source
     const dataSource = data.map((item) => {
       const obj = {}
       Object.keys(item).forEach((key) => {
@@ -178,14 +165,15 @@ class EditableTable extends React.Component {
       })
       return obj
     })
-    const columns = this.columns
     return (
       <div>
         <Table bordered
           dataSource={dataSource}
           columns={columns}
         />
-        <Button size='large' type='primary' onClick={this.handleSubmit}>Update</Button>
+        <form onSubmit={this.onSubmit}>
+          <Button size='large' type='primary' onClick={() => this.props.submit(dataSource)}> Update</Button>
+        </form>
       </div>
     )
   }
@@ -193,6 +181,6 @@ class EditableTable extends React.Component {
 EditableTable.PropTypes = {
   columns: PropTypes.array,
   dataSource: PropTypes.array,
-  onSubmit: PropTypes.func
+  submit: PropTypes.function
 }
 export default EditableTable
