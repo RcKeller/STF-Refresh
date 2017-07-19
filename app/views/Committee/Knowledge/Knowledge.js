@@ -14,23 +14,27 @@ const columns = [
   {
     title: 'Year',
     dataIndex: 'year',
+    key: 'year',
     sorter: (a, b) => (a.date) - (b.date),
     width: 90
   },
   {
     title: 'ID',
     dataIndex: 'number',
+    key: 'number',
     sorter: (a, b) => (a.year * a.number) - (b.year * b.number),
     width: 90
   },
   {
     title: 'Title',
     dataIndex: 'title',
+    key: 'title',
     render: (text, record) => <Link to={`/knowledge/${record.number}`}>{record.title}</Link>
   },
   {
     title: 'Author',
     dataIndex: 'author.name',
+    key: 'author.name',
     render: (text, record) => <span>
       {`${record.author.name} (${record.author.netID})`}
       <br />
@@ -38,7 +42,7 @@ const columns = [
     </span>
   },
   // { title: 'Position', dataIndex: 'position' },
-  { title: 'Category', dataIndex: 'category' }
+  { title: 'Category', dataIndex: 'category', key: 'category' }
 ]
 
 import styles from './Knowledge.css'
@@ -75,14 +79,14 @@ class Knowledge extends React.Component {
       <div>
         <em>"KBA"s are our way of preserving continuity in STF decisions with dynamic leadership. <Link to='/create'>Click Here</Link> to create a KBA.</em>
         {myArticles &&
-          <p>
+          <div>
             <h6>My KBA's</h6>
             {myArticles.map((a, i) =>
-              <Link to={`/knowledge/${a.number}/`}>
+              <Link key={i} to={`/knowledge/${a.number}/`}>
                 <li>{`${a.number} - ${a.title}`}</li>
               </Link>
             )}
-          </p>
+          </div>
         }
       </div>
     )
