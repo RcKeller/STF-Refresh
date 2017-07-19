@@ -10,12 +10,6 @@ import { connect } from 'react-redux'
 import api from '../../../../services'
 import EditableTable from '../../../../util/table'
 
-/*
-NOTE:
-Instead of instantiating 4 different forms for a single field, we're using AntD's
-API for submission, but using connectForm to instantiate initial values.
-*/
-//  The first manifest is the original. Editing others will be "partials" and "supplementals" in other views.
 @connect(
   state => ({ manifest: state.db.proposal.manifests[0] }),
   dispatch => ({ api: bindActionCreators(api, dispatch) })

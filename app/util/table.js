@@ -39,8 +39,7 @@ class EditableCell extends React.Component {
     const { value, editable } = this.state
     return (
       <div>
-        {
-          editable
+        {editable
             ? <div>
               <Input
                 value={value}
@@ -66,44 +65,51 @@ EditableCell.propTypes = {
 class EditableTable extends React.Component {
   constructor (props) {
     super(props)
-    this.columns = [{
+    //  Take in columns, but without custom renderers since they're scoped to the EditableTable component.
+    let columns = [{
       title: 'name',
       dataIndex: 'name',
-      width: '25%',
-      render: (text, record, index) => this.renderColumns(this.state.data, index, 'name', text)
+      width: '25%'
     }, {
       title: 'age',
       dataIndex: 'age',
-      width: '15%',
-      render: (text, record, index) => this.renderColumns(this.state.data, index, 'age', text)
+      width: '15%'
     }, {
       title: 'address',
       dataIndex: 'address',
-      width: '40%',
-      render: (text, record, index) => this.renderColumns(this.state.data, index, 'address', text)
-    }, {
+      width: '40%'
+    }]
+    //  Apply custom renderers that enable data editing.
+    console.log(columns)
+    for (let i = 0; i < columns.length; i++) {
+      columns[i].render = (text, record, index) => this.renderColumns(this.state.data, index, columns[i].title, text)
+    }
+    console.log(columns)
+    //  Push in the editor cell, enabling operations such as saving (and delete in the future)
+    columns.push({
       title: 'operation',
       dataIndex: 'operation',
       render: (text, record, index) => {
         const { editable } = this.state.data[index].name
         return (
           <div className='editable-row-operations'>
-            {
-              editable
-                ? <span>
-                  <a onClick={() => this.editDone(index, 'save')}>Save</a>
-                  <Popconfirm title='Sure to cancel?' onConfirm={() => this.editDone(index, 'cancel')}>
-                    <a>Cancel</a>
-                  </Popconfirm>
-                </span>
-                : <span>
-                  <a onClick={() => this.edit(index)}>Edit</a>
-                </span>
+            {editable
+              ? <span>
+                <a onClick={() => this.editDone(index, 'save')}>Save</a>
+                <Popconfirm title='Sure to cancel?' onConfirm={() => this.editDone(index, 'cancel')}>
+                  <a>Cancel</a>
+                </Popconfirm>
+              </span>
+              : <span>
+                <a onClick={() => this.edit(index)}>Edit</a>
+              </span>
             }
           </div>
         )
       }
-    }]
+    })
+    //  Final assignment
+    this.columns = columns
     this.state = {
       data: [{
         key: '0',
@@ -173,7 +179,12 @@ class EditableTable extends React.Component {
       return obj
     })
     const columns = this.columns
-    return <Table bordered dataSource={dataSource} columns={columns} />
+    return (
+      <Table bordered
+        dataSource={dataSource}
+        columns={columns}
+      />
+    )
   }
 }
 
