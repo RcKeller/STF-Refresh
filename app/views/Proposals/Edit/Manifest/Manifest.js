@@ -57,6 +57,9 @@ const dataSource = [{
   dispatch => ({ api: bindActionCreators(api, dispatch) })
 )
 class Signatures extends React.Component {
+  handleSubmit (values) {
+    console.log(values)
+  }
   render ({ manifest } = this.props) {
     console.log('LOADED MANIFEST', manifest)
     return (
@@ -64,6 +67,7 @@ class Signatures extends React.Component {
         <EditableTable
           columns={columns}
           dataSource={dataSource}
+          onSubmit={this.handleSubmit}
         />
       </div>
     )
