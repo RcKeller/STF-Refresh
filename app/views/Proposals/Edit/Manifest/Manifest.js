@@ -58,8 +58,16 @@ const dataSource = [{
 )
 class Signatures extends React.Component {
   handleSubmit (values) {
-    console.log(values)
+    console.log('HANDLE SUBMIT', values)
+    // for (record of values) {
+    //   Object.keys(record).forEach((prop, i) => {
+    //     //  Replace props with just their values
+    //     record[prop] = record[prop].value
+    //   })
+    //   delete record.key
+    // }
   }
+
   render ({ manifest } = this.props) {
     console.log('LOADED MANIFEST', manifest)
     return (
@@ -67,7 +75,7 @@ class Signatures extends React.Component {
         <EditableTable
           columns={columns}
           dataSource={dataSource}
-          onSubmit={this.handleSubmit}
+          onSubmit={(values) => this.handleSubmit(values)}
         />
       </div>
     )

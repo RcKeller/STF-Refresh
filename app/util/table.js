@@ -145,36 +145,10 @@ class EditableTable extends React.Component {
       })
     })
   }
-  // handleSubmit = () => {
-  //   //  We need to normalize data and remove table logic.
-  //   //  Every field is an obj with an editable prop and value prop.
-  //   //  We're going to replace the fields with their values
-  //   let { data } = this.state
-  //   for (let record of data) {
-  //     Object.keys(record).forEach((prop, i) => {
-  //       record[prop] = record[prop].value
-  //       //  Remove table keys (_id should serve nicely)
-  //       delete record.key
-  //     })
-  //   }
-  //   console.log('processed', data)
-  // }
-  normalizeAndSubmit = () => {
-    //  We need to normalize data and remove table logic.
-    //  Every field is an obj with an editable prop and value prop.
-    //  We're going to replace the fields with their values
-    console.log('START DATA', this.state.data)
-    // let { data } = this.state
-    let returnData = this.state.data
-    // for (let record of returnData) {
-    //   Object.keys(record).forEach((prop, i) => {
-    //     record[prop] = record[prop].value
-    //     //  Remove table keys (_id should serve nicely)
-    //     delete record.key
-    //   })
-    // }
-    console.log('END DATA', this.state.data)
-    this.props.onSubmit(returnData)
+  handleSubmit = () => {
+    let { onSubmit } = this.props
+    let { data } = this.state
+    onSubmit(data)
   }
   render () {
     const { data } = this.state
@@ -192,13 +166,14 @@ class EditableTable extends React.Component {
           dataSource={dataSource}
           columns={columns}
         />
-        <Button size='large' type='primary' onClick={this.normalizeAndSubmit}>Update</Button>
+        <Button size='large' type='primary' onClick={this.handleSubmit}>Update</Button>
       </div>
     )
   }
 }
 EditableTable.PropTypes = {
   columns: PropTypes.array,
-  dataSource: PropTypes.array
+  dataSource: PropTypes.array,
+  onSubmit: PropTypes.func
 }
 export default EditableTable
