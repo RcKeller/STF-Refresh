@@ -33,12 +33,9 @@ import styles from './Edit.css'
 )
 class Edit extends React.Component {
   render ({ proposal, user } = this.props) {
-    //  Checking for the existence of contacts before redirection.
-    if (proposal && proposal.contacts.length >= 1) {
-      console.log('LOADED', proposal.contacts)
-      redirectUnaffiliated(user, proposal.contacts)
-    }
+    //  Once proposals have loaded, redirect unaffiliated users.
     //  You can remove your netID and push an update, but if you leave the page after that, it locks you out.
+    proposal && redirectUnaffiliated(user, proposal.contacts)
     return (
       <article className={styles['page']}>
         {!proposal
