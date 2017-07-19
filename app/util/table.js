@@ -176,3 +176,5 @@ class EditableTable extends React.Component {
     return <Table bordered dataSource={dataSource} columns={columns} />
   }
 }
+
+export default EditableTable

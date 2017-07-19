@@ -19,6 +19,8 @@ render ({ contacts, user } = this.props) {
 }
 */
 const redirectUnaffiliated = (user, contacts) => {
+  //  Only redirect if there's an actual set of authorized users.
+  //  This gives users who accidentally delete their info a chance to correct that.
   if (contacts.length >= 1) {
     let authorized = []
     for (let c of contacts) authorized.push(c.netID)

@@ -58,7 +58,6 @@ class Create extends React.Component {
           .then(() => {
             message.success(`Proposal Created! Share the link with your team! ID: ${parent}`, 10)
             browserHistory.push(`/edit/${res.body._id}`)
-            // setTimeout(() => browserHistory.push(`/edit/${res.body._id}`), 1000)
           })
         })
         .catch(err => {

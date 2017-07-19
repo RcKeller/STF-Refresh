@@ -10,7 +10,7 @@ import { redirectUnaffiliated } from '../../../util/selectors'
 import Introduction from './Introduction/Introduction'
 import Contacts from './Contacts/Contacts'
 import ProposalBody from './ProposalBody/ProposalBody'
-// import Manifest from './Manifest/Manifest'
+import Manifest from './Manifest/Manifest'
 import Signatures from './Signatures/Signatures'
 
 import { Icon, Spin, Tabs } from 'antd'
@@ -19,11 +19,8 @@ const TabPane = Tabs.TabPane
 import styles from './Edit.css'
 @compose(
   connect(state => ({
+    //  Loads async, don't use specific selectors.
     proposal: state.db.proposal,
-    // id: state.db.proposal._id,
-    // title: state.db.proposal.title,
-    // contacts: state.db.proposal.contacts,
-    // contacts: state.db.proposal.contacts,
     user: state.user
   })),
   connectRequest(props => api.get('proposal', {
@@ -55,7 +52,7 @@ class Edit extends React.Component {
                 <ProposalBody />
               </TabPane>
               <TabPane key='4' tab={<span><Icon type='wallet' />Manifest</span>}>
-                <div>Manifest</div>
+                <Manifest />
               </TabPane>
               <TabPane key='5' tab={<span><Icon type='edit' />Signatures</span>}>
                 <Signatures />
