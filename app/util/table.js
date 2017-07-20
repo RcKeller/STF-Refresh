@@ -63,7 +63,6 @@ class EditableTable extends React.Component {
   }
   //  RenderColumn passes cell data and callbacks to display elements.
   renderColumn = (text, record, dataIndex) => {
-    console.log('renderColumn')
     const { _editable, _key } = record
     return <EditableCell
       editable={_editable} value={text}
@@ -72,7 +71,6 @@ class EditableTable extends React.Component {
   }
   //  ToggleRow finds the record with the specified key and sets it to editable.
   toggleRowEditing = (record) => {
-    console.log('toggleRowEditing')
     let { data } = this.state
     const key = record._key
     data.forEach((d, i) => {
@@ -93,17 +91,18 @@ class EditableTable extends React.Component {
     })
   }
   //  Handlesubmit scrubs out _key and _editable when submitting to parent.
-  handleSubmit = (d) => {
+  handleSubmit = () => {
     let { data } = this.state
-    // for (let r of values) {
-    //   // delete r._key
-    //   // delete r._editable
-    // }
-    data.forEach(function (record, i) {
-      console.log(record)
-      record._key = 'TEST'
+    const values = data.map((item) => {
+      const obj = {}
+      Object.keys(item).forEach((key) => {
+        if (key !== '_key' && key !== '_editable') {
+          obj[key] = item[key]
+        }
+      })
+      return obj
     })
-    // this.props.onSubmit(newData)
+    this.props.onSubmit(values)
   }
   render (
     { columns, toggleRowEditing, handleSubmit } = this,
@@ -114,9 +113,10 @@ class EditableTable extends React.Component {
         <p>
           <em>Double click a row to edit it.</em>
         </p>
-        <Button size='large' type='primary' onClick={() => handleSubmit(this.state.data)}>Update</Button>
+        <Button size='large' type='primary' onClick={handleSubmit}>Update</Button>
       </div>
     )
+
     return <Table bordered footer={footer}
       dataSource={data}
       columns={columns}
