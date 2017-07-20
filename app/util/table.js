@@ -4,16 +4,40 @@ import PropTypes from 'prop-types'
 import { Table, Input, Button } from 'antd'
 
 class EditableCell extends React.Component {
-  render ({ text, editable } = this.props) {
+  constructor (props) {
+    super(props)
+    const { value } = this.props
+    this.state = { value }
+  }
+  componentWillReceiveProps (nextProps) {
+    // console.log('EDITOR RECEIVED PROPS:', this.props, nextProps)
+    //  Editing enabled - cache your data!
+    if (!this.props.editable && nextProps.editable) {
+      console.log('Editing has been enabled!', nextProps)
+    }
+    //  Editing disabled - update data via callback and clear cache.
+    if (this.props.editable && !nextProps.editable) {
+      console.log('Editing is going away!', nextProps)
+    }
+  }
+  render (
+    { value } = this.state,
+    { editable } = this.props
+  ) {
     return (
       <div>
         {editable
-          ? <span>EDITING:{text}</span>
-          : <span>{text}</span>
+          ? <span>EDITING:{value}</span>
+          : <span>{value}</span>
         }
       </div>
     )
   }
+}
+EditableCell.PropTypes = {
+  value: PropTypes.string,  //  casting?
+  editable: PropTypes.bool,
+  handleUpdate: PropTypes.function
 }
 
 class EditableTable extends React.Component {
@@ -34,14 +58,17 @@ class EditableTable extends React.Component {
     this.state = { data: dataSource }
   }
   renderColumn (text, record, index) {
-    console.log('text/record/index', text, record, index)
+    // console.log('text/record/index', text, record, index)
     // console.log('Editable?', record._editable)
     const { _editable, _key } = record
-    return <EditableCell editable={_editable} text={text} />
+    return <EditableCell editable={_editable} value={text} />
   }
-  toggleRowEditing (record, index, event) {
-    console.log('TOGGLE', record, index, event)
-    console.log('Key to row:', record._key)
+  toggleRowEditing = (record, index, event) => {
+    // console.log('TOGGLE', record, index, event)
+    // console.log('Key to row:', record._key)
+    let { data } = this.state
+    data[index]._editable = !data[index]._editable
+    this.setState({ data })
   }
   render (
     { columns, toggleRowEditing } = this,
@@ -53,7 +80,7 @@ class EditableTable extends React.Component {
         <Table bordered
           dataSource={data}
           columns={columns}
-          onRowDoubleClick={toggleRowEditing}
+          onRowDoubleClick={this.toggleRowEditing}
         />
         <Button size='large' type='primary' onClick={() => onSubmit(data)}>
           Update
