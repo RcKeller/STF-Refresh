@@ -81,21 +81,16 @@ class EditableTable extends React.Component {
     // console.log('Key vs index?', _key, index)
     return <EditableCell editable={_editable} value={text} index={index} />
   }
-  //  ToggleRow finds the record at the specified index and sets it to editable.
+  //  ToggleRow finds the record with the specified key and sets it to editable.
   toggleRowEditing = (record, index, event) => {
-    // console.log('TOGGLE', record, index, event)
-    // console.log('Key to row:', record._key)
     let { data } = this.state
     let key = record._key
     for (let d of data) {
-      console.log('check', d, d._key, key)
       if (d._key === key) {
-        console.log('Found matching key', d._key)
-        d = record
-        console.log('Updated d', d)
+        // d = record
+        d._editable = !record._editable
       }
     }
-    data[index]._editable = !data[index]._editable
     this.setState({ data })
   }
   render (
