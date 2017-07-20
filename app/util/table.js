@@ -60,13 +60,13 @@ class EditableTable extends React.Component {
     })
     this.columns = columns
     this.state = { data: dataSource }
-    this.renderColumn = this.renderColumn.bind(this)
+    // this.renderColumn = this.renderColumn.bind(this)
     // this.toggleRowEditing = this.toggleRowEditing.bind(this)
     // this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
   //  RenderColumn passes cell data and callbacks to display elements.
-  renderColumn (text, record, dataIndex) {
+  renderColumn = (text, record, dataIndex) => {
     console.log('renderColumn')
     const { _editable, _key } = record
     return <EditableCell
@@ -95,18 +95,19 @@ class EditableTable extends React.Component {
   //  Handlesubmit scrubs out _key and _editable when submitting to parent.
   handleSubmit () {
     console.log('Table handleSubmit')
-    // let normalizedData = this.state.data.slice()
+    let normalizedData = this.state.data.slice()
     // normalizedData[0] = undefined
-    // console.log('submit in table', this.state.data, normalizedData)
-    let { data } = this.state
-    // console.log('HAndlesubmit for ', this.state.data)
-    // let normalizedData = this.state.data.slice()
-    // // //  BUG: Sanitizing data here seems to mutate this.state.data
-    // for (let d of normalizedData) {
-    //   delete d._editable
-    //   delete d._key
-    // }
-    // this.props.onSubmit(normalizedData)
+    console.log('submit in table', this.state.data, normalizedData)
+    // let { data } = this.state
+    // console.log('Submitting data', data)
+    // // console.log('HAndlesubmit for ', this.state.data)
+    // // let normalizedData = this.state.data.slice()
+    // // // //  BUG: Sanitizing data here seems to mutate this.state.data
+    for (let d of normalizedData) {
+      delete d._editable
+      delete d._key
+    }
+    this.props.onSubmit(normalizedData)
   }
 
   render (
