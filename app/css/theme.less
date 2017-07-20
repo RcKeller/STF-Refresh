@@ -66,14 +66,20 @@ ANT Design theme overrides
 
 @input-hover-border-color    : @secondary-color;
 
-// @layout-header-height     : 60px;
-@layout-header-height     : 90px;
+// @layout-header-height     : 90px;
 @layout-header-padding    : 0 16px;
 @layout-header-background : @primary-color;
 .ant-layout-header {
+  height: 60px;
   box-shadow: 0 10px 20px rgba(6,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+  @media (min-width: 768px) {
+    height: 90px;
+  }
 }
 @layout-sider-background  : white;
+@media (min-width: 768px) {
+  @layout-header-height     : 90px;
+}
 @layout-body-background   : @light-gray;
 
 @outline-color          : @secondary-color;

@@ -13,12 +13,22 @@ class EditableCell extends React.Component {
     // console.log('EDITOR RECEIVED PROPS:', this.props, nextProps)
     //  Editing enabled - cache your data!
     if (!this.props.editable && nextProps.editable) {
-      console.log('Editing has been enabled!', nextProps)
+      // console.log('Editing has been enabled!', nextProps)
+      //  Update data cache with initial editing state
+      this.setState({ value: nextProps.value })
     }
     //  Editing disabled - update data via callback and clear cache.
     if (this.props.editable && !nextProps.editable) {
-      console.log('Editing is going away!', nextProps)
+      // console.log('Editing is going away!', nextProps)
     }
+  }
+  handleChange (e) {
+    const value = e.target.value
+    this.setState({ value })
+  }
+  handleUpdate () {
+    let { onUpdate } = this.props
+    return 'TEST'
   }
   render (
     { value } = this.state,
@@ -27,7 +37,10 @@ class EditableCell extends React.Component {
     return (
       <div>
         {editable
-          ? <span>EDITING:{value}</span>
+          ? <Input
+            value={value}
+            onChange={e => this.handleChange(e)}
+          />
           : <span>{value}</span>
         }
       </div>
@@ -54,19 +67,34 @@ class EditableTable extends React.Component {
     for (let column of columns) {
       column.render = (text, record, index) => this.renderColumn(text, record, index)
     }
+
+    //  TODO: Remove (This is for debugging)
+    dataSource.splice(2, 1)
     this.columns = columns
     this.state = { data: dataSource }
   }
+  //  RenderColumn passes cell data, editor status and callbacks to display elements.
   renderColumn (text, record, index) {
     // console.log('text/record/index', text, record, index)
     // console.log('Editable?', record._editable)
     const { _editable, _key } = record
-    return <EditableCell editable={_editable} value={text} />
+    // console.log('Key vs index?', _key, index)
+    return <EditableCell editable={_editable} value={text} index={index} />
   }
+  //  ToggleRow finds the record at the specified index and sets it to editable.
   toggleRowEditing = (record, index, event) => {
     // console.log('TOGGLE', record, index, event)
     // console.log('Key to row:', record._key)
     let { data } = this.state
+    let key = record._key
+    for (let d of data) {
+      console.log('check', d, d._key, key)
+      if (d._key === key) {
+        console.log('Found matching key', d._key)
+        d = record
+        console.log('Updated d', d)
+      }
+    }
     data[index]._editable = !data[index]._editable
     this.setState({ data })
   }

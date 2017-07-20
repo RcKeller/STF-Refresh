@@ -5,48 +5,8 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 // import { Row, Col, Alert, Form, Switch, message } from 'antd'
-
-// import { layout, feedback, help, rules, disableSubmit } from '../../../../util/form'
 import api from '../../../../services'
 import EditableTable from '../../../../util/table'
-
-// const dataSource = [{
-//   // key: '9',
-//   name: {
-//     editable: false,
-//     value: 'Edward King 0'
-//   },
-//   age: {
-//     editable: false,
-//     value: '32'
-//   },
-//   address: {
-//     value: 'London, Park Lane no. 0'
-//   }
-// }, {
-//   // key: '7',
-//   name: {
-//     editable: false,
-//     value: 'King Snowden'
-//   },
-//   age: {
-//     editable: false,
-//     value: '12'
-//   },
-//   address: {
-//     value: 'London, Park Lane no. 1'
-//   }
-// }]
-
-// const dataSource = [{
-//   name: 'Edward King 0',
-//   age: '32',
-//   address: 'London, Park Lane no. 0'
-// }, {
-//   name: 'King Snowden',
-//   age: '12',
-//   address: 'London, Park Lane no. 1'
-// }]
 
 const dataSource = [{
   '_id': '596e8a522465c05140e07da5',
@@ -100,23 +60,9 @@ const dataSource = [{
   'quantity': 35641
 }]
 
-// const columns = [{
-//   title: 'name',
-//   dataIndex: 'name',
-//   width: '25%'
-// }, {
-//   title: 'age',
-//   dataIndex: 'age',
-//   width: '15%'
-// }, {
-//   title: 'address',
-//   dataIndex: 'address',
-//   width: '40%'
-// }]
 const columns = [{
   title: 'Name',
-  dataIndex: 'name',
-  // width: 400
+  dataIndex: 'name'
 }, {
   title: 'Quantity',
   dataIndex: 'quantity',
@@ -134,7 +80,6 @@ const columns = [{
   dataIndex: 'priority',
   width: 85
 }]
-
 
 @connect(
   state => ({ manifest: state.db.proposal.manifests[0] }),
