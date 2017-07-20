@@ -125,6 +125,7 @@ class EditableTable extends React.Component {
     this.state = { data: dataSource }
   }
   renderColumns (data, index, key, text) {
+    console.log('RENDERING COLUMNS WITH VALUES:', data, index, key, text)
     const { editable, status } = data[index][key]
     if (typeof editable === 'undefined') {
       return text
