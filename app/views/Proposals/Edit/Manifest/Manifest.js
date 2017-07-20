@@ -10,20 +10,6 @@ import { connect } from 'react-redux'
 import api from '../../../../services'
 import EditableTable from '../../../../util/table'
 
-const columns = [{
-  title: 'name',
-  dataIndex: 'name',
-  width: '25%'
-}, {
-  title: 'age',
-  dataIndex: 'age',
-  width: '15%'
-}, {
-  title: 'address',
-  dataIndex: 'address',
-  width: '40%'
-}]
-
 // const dataSource = [{
 //   // key: '9',
 //   name: {
@@ -51,15 +37,104 @@ const columns = [{
 //     value: 'London, Park Lane no. 1'
 //   }
 // }]
+
+// const dataSource = [{
+//   name: 'Edward King 0',
+//   age: '32',
+//   address: 'London, Park Lane no. 0'
+// }, {
+//   name: 'King Snowden',
+//   age: '12',
+//   address: 'London, Park Lane no. 1'
+// }]
+
 const dataSource = [{
-  name: 'Edward King 0',
-  age: '32',
-  address: 'London, Park Lane no. 0'
+  '_id': '596e8a522465c05140e07da5',
+  'manifest': '596e8a522465c05140e07da0',
+  'name': 'e-commerce',
+  'description': 'Saepe provident minus. Recusandae nulla qui repudiandae velit voluptatibus consequatur sed facilis. Delectus sed et voluptatem harum consequatur consequatur enim. Nobis cum perspiciatis labore consectetur quia et magnam est. Molestiae cupiditate voluptatem aut eius atque voluptatum.',
+  'price': 88964,
+  'priority': 46490,
+  '__v': 0,
+  'tax': 68575,
+  'quantity': 43749
 }, {
-  name: 'King Snowden',
-  age: '12',
-  address: 'London, Park Lane no. 1'
+  '_id': '596e8a522465c05140e07da4',
+  'manifest': '596e8a522465c05140e07d9f',
+  'name': 'infomediaries',
+  'description': 'Ex libero et vitae et quia consequuntur. Occaecati consectetur tenetur hic soluta. Et illum sapiente laudantium quia et sit.',
+  'price': 36510,
+  'priority': 9724,
+  '__v': 0,
+  'tax': 63233,
+  'quantity': 62004
+}, {
+  '_id': '596e8a522465c05140e07da7',
+  'manifest': '596e8a522465c05140e07da2',
+  'name': 'synergies',
+  'description': 'Nihil qui rerum aut labore. Dolor maiores in molestiae quo quas quis sunt non. Dolor vel alias soluta in quis. Est nam et est. Ad in sit repellat.',
+  'price': 19954,
+  'priority': 51183,
+  '__v': 0,
+  'tax': 26719,
+  'quantity': 53391
+}, {
+  '_id': '596e8a522465c05140e07da3',
+  'manifest': '596e8a522465c05140e07d9e',
+  'name': 'applications',
+  'description': 'Ab inventore consequatur. Qui autem voluptate similique. Dignissimos aut ipsam quia rerum.',
+  'price': 15577,
+  'priority': 58404,
+  '__v': 0,
+  'tax': 73779,
+  'quantity': 84166
+}, {
+  '_id': '596e8a522465c05140e07da6',
+  'manifest': '596e8a522465c05140e07da1',
+  'name': 'supply-chains',
+  'description': 'Optio neque incidunt perferendis quo reiciendis quaerat. Similique voluptatem debitis. Est voluptas mollitia. Sint provident quibusdam. Qui laborum dolorem explicabo. Incidunt consequatur est mollitia mollitia totam quam.',
+  'price': 68196,
+  'priority': 1758,
+  '__v': 0,
+  'tax': 46341,
+  'quantity': 35641
 }]
+
+// const columns = [{
+//   title: 'name',
+//   dataIndex: 'name',
+//   width: '25%'
+// }, {
+//   title: 'age',
+//   dataIndex: 'age',
+//   width: '15%'
+// }, {
+//   title: 'address',
+//   dataIndex: 'address',
+//   width: '40%'
+// }]
+const columns = [{
+  title: 'name',
+  dataIndex: 'name',
+  // width: 400
+}, {
+  title: 'quantity',
+  dataIndex: 'quantity',
+  width: 85
+}, {
+  title: 'price',
+  dataIndex: 'price',
+  width: 85
+}, {
+  title: 'tax',
+  dataIndex: 'tax',
+  width: 85
+}, {
+  title: 'priority',
+  dataIndex: 'priority',
+  width: 85
+}]
+
 
 @connect(
   state => ({ manifest: state.db.proposal.manifests[0] }),

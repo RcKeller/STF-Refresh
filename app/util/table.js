@@ -76,6 +76,7 @@ class EditableTable extends React.Component {
     columns.push({
       title: 'Modify',
       dataIndex: 'modify',
+      width: 150,
       render: (text, record, index) => {
         const { editable } = this.state.data[index].name
         return (
@@ -184,9 +185,9 @@ class EditableTable extends React.Component {
           dataSource={dataSource}
           columns={columns}
         />
-        <form onSubmit={this.onSubmit}>
-          <Button size='large' type='primary' onClick={() => onSubmit(dataSource)}> Update</Button>
-        </form>
+        <Button size='large' type='primary' onClick={() => onSubmit(dataSource)}>
+          Update
+        </Button>
       </div>
     )
   }
