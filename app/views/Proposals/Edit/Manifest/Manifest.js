@@ -88,12 +88,12 @@ const columns = [{
 class Manifest extends React.Component {
   handleSubmit (values) {
     console.log('HANDLE SUBMIT', values)
-    let x = values
-    x.forEach((value, i) => {
-      delete value._key
-      delete value._editable
-    })
-    console.log(x)
+    // let x = values
+    // x.forEach((value, i) => {
+    //   delete value._key
+    //   delete value._editable
+    // })
+    // console.log(x)
   }
   render ({ manifest } = this.props) {
     console.log('LOADED MANIFEST', manifest)
@@ -102,7 +102,7 @@ class Manifest extends React.Component {
         <EditableTable
           columns={columns}
           dataSource={dataSource}
-          onSubmit={(values) => this.handleSubmit(values)}
+          onSubmit={this.handleSubmit}
         />
       </div>
     )
