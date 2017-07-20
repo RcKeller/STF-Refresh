@@ -10,25 +10,15 @@ class EditableCell extends React.Component {
     this.state = { value }
   }
   componentWillReceiveProps (nextProps) {
-    // console.log('EDITOR RECEIVED PROPS:', this.props, nextProps)
-    //  Editing enabled - cache your data!
-    if (!this.props.editable && nextProps.editable) {
-      // console.log('Editing has been enabled!', nextProps)
-      //  Update data cache with initial editing state
-      this.setState({ value: nextProps.value })
-    }
     //  Editing disabled - update data via callback and clear cache.
     if (this.props.editable && !nextProps.editable) {
-      // console.log('Editing is going away!', nextProps)
+      this.props.onChange(this.state.value)
     }
   }
+  //  Handle the change in child state, then bubble the event to the parent component.
   handleChange (e) {
     const value = e.target.value
     this.setState({ value })
-  }
-  handleUpdate () {
-    let { onUpdate } = this.props
-    return 'TEST'
   }
   render (
     { value } = this.state,
@@ -75,23 +65,28 @@ class EditableTable extends React.Component {
   }
   //  RenderColumn passes cell data, editor status and callbacks to display elements.
   renderColumn (text, record, index) {
-    // console.log('text/record/index', text, record, index)
-    // console.log('Editable?', record._editable)
     const { _editable, _key } = record
-    // console.log('Key vs index?', _key, index)
-    return <EditableCell editable={_editable} value={text} index={index} />
+    return <EditableCell
+      editable={_editable}
+      value={text} index={index}
+      onChange={value => this.handleChange(value, _key)}
+    />
   }
   //  ToggleRow finds the record with the specified key and sets it to editable.
   toggleRowEditing = (record, index, event) => {
     let { data } = this.state
     let key = record._key
     for (let d of data) {
-      if (d._key === key) {
+      // if (d._key === key) {
+      if (d._key === record._key) {
         // d = record
         d._editable = !record._editable
       }
     }
     this.setState({ data })
+  }
+  handleChange (value, key) {
+    console.log('Handlechange in parent', value, key)
   }
   render (
     { columns, toggleRowEditing } = this,
