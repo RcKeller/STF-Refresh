@@ -1,7 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Table, Input, Button } from 'antd'
+import { Table, Input, Button, Icon } from 'antd'
+const { Group } = Button
 
 class EditableCell extends React.Component {
   constructor (props) {
@@ -29,7 +30,7 @@ class EditableCell extends React.Component {
     return (
       <div>
         {editable
-          ? <Input value={value} onChange={handleChange} />
+          ? <Input size='large' value={value} onChange={handleChange} />
           : <span>{value}</span>
         }
       </div>
@@ -70,7 +71,7 @@ class EditableTable extends React.Component {
     />
   }
   //  ToggleRow finds the record with the specified key and sets it to editable.
-  toggleRowEditing = (record) => {
+  toggleEditRow = (record) => {
     let { data } = this.state
     const key = record._key
     data.forEach((d, i) => {
@@ -79,6 +80,18 @@ class EditableTable extends React.Component {
         this.setState({ data })
       }
     })
+  }
+  toggleEditAll = () => {
+    let { data } = this.state
+    console.log('Placeholder func')
+  }
+  addRow = () => {
+    let { data } = this.state
+    console.log('Placeholder func')
+  }
+  deleteRow = () => {
+    let { data } = this.state
+    console.log('Placeholder func')
   }
   //  Handlechange identifies the prop (dataIndex) modified in a col, updates the data val.
   handleChange = (dataIndex, key, value) => {
@@ -93,6 +106,7 @@ class EditableTable extends React.Component {
   //  Handlesubmit scrubs out _key and _editable when submitting to parent.
   handleSubmit = () => {
     let { data } = this.state
+    const { onSubmit } = this.props
     const values = data.map((item) => {
       const obj = {}
       Object.keys(item).forEach((key) => {
@@ -102,25 +116,48 @@ class EditableTable extends React.Component {
       })
       return obj
     })
-    this.props.onSubmit(values)
+    onSubmit(values)
   }
+  title = () => (
+    <h1>{`Editing ...prop`}</h1>
+  )
+  footer = () => (
+    <div>
+      <p>
+        <em>Double click a row to edit it.</em>
+      </p>
+      <Group size='large'>
+        <Button size='large' type='primary' ghost onClick={this.toggleEditAll}>
+          <Icon type='edit' />Edit All
+        </Button>
+        <Button size='large' type='primary' ghost onClick={this.addRow}>
+          <Icon type='plus-circle-o' />Add Row
+        </Button>
+        <Button size='large' type='primary' ghost onClick={this.handleSubmit}>
+          <Icon type='upload' />Update
+        </Button>
+      </Group>
+
+    </div>
+  )
   render (
-    { columns, toggleRowEditing, handleSubmit } = this,
+    { title, footer, columns, toggleEditRow, handleSubmit } = this,
     { data } = this.state
   ) {
-    const footer = () => (
-      <div>
-        <p>
-          <em>Double click a row to edit it.</em>
-        </p>
-        <Button size='large' type='primary' onClick={handleSubmit}>Update</Button>
-      </div>
-    )
+    // const footer = () => (
+    //   <div>
+    //     <p>
+    //       <em>Double click a row to edit it.</em>
+    //     </p>
+    //     <Button size='large' type='primary' onClick={handleSubmit}>Update</Button>
+    //   </div>
+    // )
 
-    return <Table bordered footer={footer}
+    return <Table title={this.props.title} footer={footer}
+      bordered size='small'
       dataSource={data}
       columns={columns}
-      onRowDoubleClick={toggleRowEditing}
+      onRowDoubleClick={toggleEditRow}
     />
   }
 }

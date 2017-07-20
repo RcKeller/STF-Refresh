@@ -58,7 +58,8 @@ const dataSource = [{
   '__v': 0,
   'tax': 46341,
   'quantity': 35641
-}]
+},
+{}]
 
 const columns = [{
   title: 'Name',
@@ -88,12 +89,6 @@ const columns = [{
 class Manifest extends React.Component {
   handleSubmit (values) {
     console.log('HANDLE SUBMIT', values)
-    // let x = values
-    // x.forEach((value, i) => {
-    //   delete value._key
-    //   delete value._editable
-    // })
-    // console.log(x)
   }
   render ({ manifest } = this.props) {
     console.log('LOADED MANIFEST', manifest)
