@@ -17,21 +17,19 @@ class EditableCell extends React.Component {
     }
   }
   //  Handle the change in child state, then bubble the event to the parent component.
-  handleChange (e) {
+  handleChange = (e) => {
     const value = e.target.value
     this.setState({ value })
   }
   render (
+    { handleChange } = this,
     { value } = this.state,
     { editable } = this.props
   ) {
     return (
       <div>
         {editable
-          ? <Input
-            value={value}
-            onChange={e => this.handleChange(e)}
-          />
+          ? <Input value={value} onChange={handleChange} />
           : <span>{value}</span>
         }
       </div>
@@ -77,7 +75,6 @@ class EditableTable extends React.Component {
     for (let d of data) {
       if (d._key === record._key) d._editable = !record._editable
     }
-    this.setState({ data })
   }
   //  Handlechange identifies the prop (dataIndex) modified in a col, updates the data val.
   handleChange (dataIndex, key, value) {
@@ -85,35 +82,40 @@ class EditableTable extends React.Component {
     for (let d of data) {
       if (d._key === key) d[dataIndex] = value
     }
-    this.setState({ data })
   }
   //  Handlesubmit scrubs out _key and _editable when submitting to parent.
   handleSubmit = () => {
-    console.log('submit in table')
-    let { data } = this.state
-    for (let d of data) {
-      delete d._editable
-      delete d._key
-    }
-    this.props.onSubmit(data)
+    console.log('Table handleSubmit')
+    let normalizedData = this.state.data.slice()
+    normalizedData[0] = undefined
+    console.log('submit in table', this.state.data, normalizedData)
+    // let { data } = this.state
+    // console.log('HAndlesubmit for ', this.state.data)
+    // let normalizedData = this.state.data.slice()
+    // // //  BUG: Sanitizing data here seems to mutate this.state.data
+    // for (let d of normalizedData) {
+    //   delete d._editable
+    //   delete d._key
+    // }
+    // this.props.onSubmit(normalizedData)
   }
+  footer = () => (
+    <div>
+      <p>
+        <em>Double click a row to edit it.</em>
+      </p>
+      <Button size='large' type='primary' onClick={this.handleSubmit}>Update</Button>
+    </div>
+  )
   render (
-    { columns, toggleRowEditing, handleSubmit } = this,
-    { data } = this.state,
-    // { onSubmit } = this.props
+    { columns, toggleRowEditing, handleSubmit, footer } = this,
+    { data } = this.state
   ) {
-    return (
-      <div>
-        <Table bordered
-          dataSource={data}
-          columns={columns}
-          onRowDoubleClick={toggleRowEditing}
-        />
-        <Button size='large' type='primary' onClick={handleSubmit}>
-          Update
-        </Button>
-      </div>
-    )
+    return <Table bordered footer={footer}
+      dataSource={data}
+      columns={columns}
+      onRowDoubleClick={toggleRowEditing}
+    />
   }
 }
 EditableTable.PropTypes = {
