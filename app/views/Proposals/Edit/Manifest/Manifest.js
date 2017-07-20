@@ -114,23 +114,23 @@ const dataSource = [{
 //   width: '40%'
 // }]
 const columns = [{
-  title: 'name',
+  title: 'Name',
   dataIndex: 'name',
   // width: 400
 }, {
-  title: 'quantity',
+  title: 'Quantity',
   dataIndex: 'quantity',
   width: 85
 }, {
-  title: 'price',
+  title: 'Price',
   dataIndex: 'price',
   width: 85
 }, {
-  title: 'tax',
+  title: 'Tax',
   dataIndex: 'tax',
   width: 85
 }, {
-  title: 'priority',
+  title: 'Priority',
   dataIndex: 'priority',
   width: 85
 }]
