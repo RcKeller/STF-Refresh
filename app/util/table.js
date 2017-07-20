@@ -8,6 +8,7 @@ class EditableCell extends React.Component {
     super(props)
     const { value } = this.props
     this.state = { value }
+    this.handleChange = this.handleChange.bind(this)
   }
   componentWillReceiveProps (nextProps) {
     //  Editing disabled - update data via callback and clear cache.
@@ -17,7 +18,7 @@ class EditableCell extends React.Component {
     }
   }
   //  Handle the change in child state, then bubble the event to the parent component.
-  handleChange = (e) => {
+  handleChange (e) {
     const value = e.target.value
     this.setState({ value })
   }
@@ -60,13 +61,13 @@ class EditableTable extends React.Component {
     })
     this.columns = columns
     this.state = { data: dataSource }
-    // this.renderColumn = this.renderColumn.bind(this)
-    // this.toggleRowEditing = this.toggleRowEditing.bind(this)
-    // this.handleChange = this.handleChange.bind(this)
+    this.renderColumn = this.renderColumn.bind(this)
+    this.toggleRowEditing = this.toggleRowEditing.bind(this)
+    this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
   }
   //  RenderColumn passes cell data and callbacks to display elements.
-  renderColumn = (text, record, dataIndex) => {
+  renderColumn (text, record, dataIndex) {
     console.log('renderColumn')
     const { _editable, _key } = record
     return <EditableCell
@@ -75,7 +76,7 @@ class EditableTable extends React.Component {
     />
   }
   //  ToggleRow finds the record with the specified key and sets it to editable.
-  toggleRowEditing = (record) => {
+  toggleRowEditing (record) {
     console.log('toggleRowEditing')
     let { data } = this.state
     for (let d of data) {
@@ -84,7 +85,7 @@ class EditableTable extends React.Component {
     this.setState({data})
   }
   //  Handlechange identifies the prop (dataIndex) modified in a col, updates the data val.
-  handleChange = (dataIndex, key, value) => {
+  handleChange (dataIndex, key, value) {
     console.log('handleChange')
     let { data } = this.state
     for (let d of data) {
@@ -94,20 +95,8 @@ class EditableTable extends React.Component {
   }
   //  Handlesubmit scrubs out _key and _editable when submitting to parent.
   handleSubmit () {
-    console.log('Table handleSubmit')
-    let normalizedData = this.state.data.slice()
-    // normalizedData[0] = undefined
-    console.log('submit in table', this.state.data, normalizedData)
-    // let { data } = this.state
-    // console.log('Submitting data', data)
-    // // console.log('HAndlesubmit for ', this.state.data)
-    // // let normalizedData = this.state.data.slice()
-    // // // //  BUG: Sanitizing data here seems to mutate this.state.data
-    for (let d of normalizedData) {
-      delete d._editable
-      delete d._key
-    }
-    this.props.onSubmit(normalizedData)
+    const data = this.state.data
+    this.props.onSubmit(data)
   }
 
   render (
@@ -119,7 +108,7 @@ class EditableTable extends React.Component {
         <p>
           <em>Double click a row to edit it.</em>
         </p>
-        <Button size='large' type='primary' onClick={this.handleSubmit}>Update</Button>
+        <Button size='large' type='primary' onClick={() => this.handleSubmit()}>Update</Button>
       </div>
     )
     return <Table bordered footer={footer}
