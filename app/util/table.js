@@ -54,39 +54,42 @@ class EditableTable extends React.Component {
       dataSource[i]._editable = false
     }
     //  Apply custom renderers that enable data editing.
-    for (let column of columns) {
-      column.render = (text, record, index) => this.renderColumn(text, record, index)
-    }
+    columns.forEach((column, i) => {
+      //  Include the data index of the column - this is the prop associated with the data obj
+      column.render = (text, record) => this.renderColumn(text, record, columns[i].dataIndex)
+    })
 
     //  TODO: Remove (This is for debugging)
     dataSource.splice(2, 1)
     this.columns = columns
     this.state = { data: dataSource }
   }
-  //  RenderColumn passes cell data, editor status and callbacks to display elements.
-  renderColumn (text, record, index) {
+  //  RenderColumn passes cell data and callbacks to display elements.
+  renderColumn (text, record, dataIndex) {
     const { _editable, _key } = record
     return <EditableCell
-      editable={_editable}
-      value={text} index={index}
-      onChange={value => this.handleChange(value, _key)}
+      editable={_editable} value={text}
+      onChange={value => this.handleChange(dataIndex, _key, value)}
     />
   }
   //  ToggleRow finds the record with the specified key and sets it to editable.
-  toggleRowEditing = (record, index, event) => {
+  toggleRowEditing = (record) => {
     let { data } = this.state
-    let key = record._key
     for (let d of data) {
-      // if (d._key === key) {
       if (d._key === record._key) {
-        // d = record
         d._editable = !record._editable
       }
     }
     this.setState({ data })
   }
-  handleChange (value, key) {
-    console.log('Handlechange in parent', value, key)
+  handleChange (dataIndex, key, value) {
+    let { data } = this.state
+    for (let d of data) {
+      if (d._key === key) {
+        d[dataIndex] = value
+      }
+    }
+    this.setState({ data })
   }
   render (
     { columns, toggleRowEditing } = this,
