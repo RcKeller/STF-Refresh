@@ -86,7 +86,7 @@ const columns = [{
   dispatch => ({ api: bindActionCreators(api, dispatch) })
 )
 class Manifest extends React.Component {
-  handleSubmit = (values) => {
+  handleSubmit (values) {
     console.log('HANDLE SUBMIT', values)
   }
   render ({ manifest } = this.props) {
@@ -96,7 +96,7 @@ class Manifest extends React.Component {
         <EditableTable
           columns={columns}
           dataSource={dataSource}
-          onSubmit={this.handleSubmit}
+          onSubmit={(values) => this.handleSubmit(values)}
         />
       </div>
     )
