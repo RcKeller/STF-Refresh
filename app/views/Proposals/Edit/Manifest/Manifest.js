@@ -66,35 +66,47 @@ const dataSource = [{
 },
 {}]
 
+// const columns = [{
+//   title: 'Name',
+//   dataIndex: 'name',
+//   type: 'string'
+// }, {
+//   title: 'Quantity',
+//   dataIndex: 'quantity',
+//   width: 85,
+//   type: 'number'
+// }, {
+//   title: 'Price',
+//   dataIndex: 'price',
+//   width: 85,
+//   type: 'number'
+// }, {
+//   title: 'Tax',
+//   dataIndex: 'tax',
+//   width: 85,
+//   type: 'number'
+// }, {
+//   title: 'Priority',
+//   dataIndex: 'priority',
+//   width: 85,
+//   type: 'number'
+// }, {
+//   title: 'Purchased',
+//   dataIndex: 'purchased',
+//   width: 85,
+//   type: 'boolean',
+//   render: 'test'
+// }]
 const columns = [{
   title: 'Name',
   dataIndex: 'name',
-  type: 'string'
-}, {
-  title: 'Quantity',
-  dataIndex: 'quantity',
-  width: 85,
-  type: 'number'
-}, {
-  title: 'Price',
-  dataIndex: 'price',
-  width: 85,
-  type: 'number'
-}, {
-  title: 'Tax',
-  dataIndex: 'tax',
-  width: 85,
-  type: 'number'
-}, {
-  title: 'Priority',
-  dataIndex: 'priority',
-  width: 85,
-  type: 'number'
-}, {
-  title: 'Purchased',
-  dataIndex: 'purchased',
-  width: 85,
-  type: 'boolean'
+  type: 'string',
+  render: {
+    edit: ({value, handleChange, ...args}) =>
+      <Input value={value} onChange={(e) => handleChange(e.target.value)} {...args} />,
+    cell: ({value}) =>
+      <span>{value}</span>
+  }
 }]
 
 @connect(

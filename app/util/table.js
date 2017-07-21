@@ -7,30 +7,10 @@ const { Group } = Button
 class EditableCell extends React.Component {
   constructor (props) {
     super(props)
-    const { value, type } = this.props
+    const { components, value } = this.props
+    this.Edit = components.edit
+    this.Cell = components.cell
     this.state = { value }
-
-    let handleChange = (value) => this.setState({ value })
-    switch (type) {
-      case 'string':
-        handleChange = (e) => {
-          const { value } = e.target
-          this.setState({ value })
-        }
-        this.EditCell = ({...args}) => <Input {...args} onChange={handleChange} />
-        this.Cell = ({value}) => <span>{value}</span>
-        break
-      case 'number':
-        this.EditCell = ({...args}) => <InputNumber {...args} onChange={handleChange} />
-        this.Cell = ({value}) => <span>{value}</span>
-        break
-      case 'boolean':
-        this.EditCell = ({value, ...args}) => <Switch checked={value} onChange={handleChange} />
-        this.Cell = ({value}) => <Switch checked={this.state.value} disabled />
-        break
-      //  No default case, don't want to hold that much memory.
-      //  Type is a required prop
-    }
   }
   componentWillReceiveProps (nextProps) {
     //  Editing disabled - update data via callback and clear cache.
@@ -39,15 +19,16 @@ class EditableCell extends React.Component {
       onChange(this.state.value)
     }
   }
+  handleChange = (value) => this.setState({ value })
   render (
-    { EditCell, Cell, handleChange } = this,
+    { Edit, Cell, handleChange } = this,
     { value } = this.state,
     { editable } = this.props
   ) {
     return (
       <div>
         {editable
-          ? <EditCell size='large' value={value} />
+          ? <Edit size='large' value={value} handleChange={this.handleChange} />
           : <Cell value={value} />
         }
       </div>
@@ -74,40 +55,48 @@ class EditableTable extends React.Component {
     columns.forEach((column, i) => {
       //  Include the data index of the column - this is the prop associated with the data obj
       //  Also, include the type, giving EditableCell the ability to choose a proper component.
+      const components = column.render
       column.render = (text, record) =>
-        this.renderColumn(text, record, column.dataIndex, column.type)
+        this.renderColumn(text, record, column.dataIndex, components)
     })
     this.columns = columns
-    this.state = { data: dataSource }
+    this.state = { data: dataSource, editAll: false }
   }
   //  RenderColumn passes cell data and callbacks to display elements.
-  renderColumn = (text, record, dataIndex, type) => {
+  renderColumn = (text, record, dataIndex, components) => {
     const { _editable, _key } = record
     const callback = value => this.handleChange(dataIndex, _key, value)
     return <EditableCell
       editable={_editable}
-      value={text} type={type}
+      value={text} components={components}
       onChange={callback}
     />
   }
   //  ToggleRow finds the record with the specified key and sets it to editable.
-  toggleEditRow = (record) => {
-    let { data } = this.state
-    const key = record._key
-    data.forEach((d, i) => {
-      if (d._key === key) {
-        data[i]._editable = !record._editable
-        this.setState({ data })
-      }
-    })
-  }
+  // toggleEditRow = (record) => {
+  //   let { data } = this.state
+  //   const key = record._key
+  //   data.forEach((d, i) => {
+  //     if (d._key === key) {
+  //       data[i]._editable = !record._editable
+  //       this.setState({ data })
+  //     }
+  //   })
+  // }
   toggleEditAll = () => {
-    let { data } = this.state
+    let { data, editAll } = this.state
+    editAll = !editAll
+    for (let record of data) {
+      // record._editable = !record._editable
+      record._editable = editAll
+    }
+    this.setState({ data, editAll })
     console.log('Placeholder func')
   }
   addRow = () => {
     let { data } = this.state
-    data.push({})
+    //  TODO: include uuidv4
+    data.push({ _editable: true })
     this.setState({ data })
   }
   deleteRow = () => {
@@ -166,7 +155,7 @@ class EditableTable extends React.Component {
       bordered size='small' pagination={false}
       dataSource={data}
       columns={columns}
-      onRowDoubleClick={toggleEditRow}
+      // onRowDoubleClick={toggleEditRow}
     />
   }
 }
