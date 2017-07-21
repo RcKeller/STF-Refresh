@@ -8,29 +8,29 @@ class EditableCell extends React.Component {
   constructor (props) {
     super(props)
     const { value, type } = this.props
-    // const { type } = typeof value
-    console.log('RECEIVED TYPE', type)
+    this.state = { value }
+
+    let handleChange = (value) => this.setState({ value })
     switch (type) {
-      //
       case 'string':
-        this.EditCell = ({...args}) => <Input {...args} />
-        this.Cell = () => <span>{value}</span>
-        this.handleChange = (e) => this.setState({ value: e.target.value })
+        handleChange = (e) => {
+          const { value } = e.target
+          this.setState({ value })
+        }
+        this.EditCell = ({...args}) => <Input {...args} onChange={handleChange} />
+        this.Cell = ({value}) => <span>{value}</span>
         break
       case 'number':
-        this.EditCell = ({...args}) => <InputNumber {...args} />
-        this.Cell = () => <span>{value}</span>
-        this.handleChange = (value) => this.setState({ value })
+        this.EditCell = ({...args}) => <InputNumber {...args} onChange={handleChange} />
+        this.Cell = ({value}) => <span>{value}</span>
         break
       case 'boolean':
-        const handleChange = (value) => this.setState({ value })
         this.EditCell = ({value, ...args}) => <Switch checked={value} onChange={handleChange} />
-        this.Cell = () => <Switch checked={this.state.value} disabled />
+        this.Cell = ({value}) => <Switch checked={this.state.value} disabled />
         break
       //  No default case, don't want to hold that much memory.
       //  Type is a required prop
     }
-    this.state = { value }
   }
   componentWillReceiveProps (nextProps) {
     //  Editing disabled - update data via callback and clear cache.
@@ -48,7 +48,7 @@ class EditableCell extends React.Component {
       <div>
         {editable
           ? <EditCell size='large' value={value} />
-          : <Cell />
+          : <Cell value={value} />
         }
       </div>
     )
@@ -109,7 +109,6 @@ class EditableTable extends React.Component {
     let { data } = this.state
     data.push({})
     this.setState({ data })
-    // console.log('Placeholder func')
   }
   deleteRow = () => {
     let { data } = this.state
