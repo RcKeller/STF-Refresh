@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-// import { Row, Col, Alert, Form, Switch, message } from 'antd'
+import { Input, InputNumber, Switch, message } from 'antd'
 import api from '../../../../services'
 import EditableTable from '../../../../util/table'
 
@@ -17,7 +17,8 @@ const dataSource = [{
   'priority': 46490,
   '__v': 0,
   'tax': 68575,
-  'quantity': 43749
+  'quantity': 43749,
+  'purchased': true
 }, {
   '_id': '596e8a522465c05140e07da4',
   'manifest': '596e8a522465c05140e07d9f',
@@ -27,7 +28,8 @@ const dataSource = [{
   'priority': 9724,
   '__v': 0,
   'tax': 63233,
-  'quantity': 62004
+  'quantity': 62004,
+  'purchased': true
 }, {
   '_id': '596e8a522465c05140e07da7',
   'manifest': '596e8a522465c05140e07da2',
@@ -37,7 +39,8 @@ const dataSource = [{
   'priority': 51183,
   '__v': 0,
   'tax': 26719,
-  'quantity': 53391
+  'quantity': 53391,
+  'purchased': true
 }, {
   '_id': '596e8a522465c05140e07da3',
   'manifest': '596e8a522465c05140e07d9e',
@@ -47,7 +50,8 @@ const dataSource = [{
   'priority': 58404,
   '__v': 0,
   'tax': 73779,
-  'quantity': 84166
+  'quantity': 84166,
+  'purchased': true
 }, {
   '_id': '596e8a522465c05140e07da6',
   'manifest': '596e8a522465c05140e07da1',
@@ -57,29 +61,40 @@ const dataSource = [{
   'priority': 1758,
   '__v': 0,
   'tax': 46341,
-  'quantity': 35641
+  'quantity': 35641,
+  'purchased': true
 },
 {}]
 
 const columns = [{
   title: 'Name',
-  dataIndex: 'name'
+  dataIndex: 'name',
+  type: 'string'
 }, {
   title: 'Quantity',
   dataIndex: 'quantity',
-  width: 85
+  width: 85,
+  type: 'number'
 }, {
   title: 'Price',
   dataIndex: 'price',
-  width: 85
+  width: 85,
+  type: 'number'
 }, {
   title: 'Tax',
   dataIndex: 'tax',
-  width: 85
+  width: 85,
+  type: 'number'
 }, {
   title: 'Priority',
   dataIndex: 'priority',
-  width: 85
+  width: 85,
+  type: 'number'
+}, {
+  title: 'Purchased',
+  dataIndex: 'purchased',
+  width: 85,
+  type: 'boolean'
 }]
 
 @connect(

@@ -1,13 +1,35 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Table, Input, Button, Icon } from 'antd'
+import { Table, Input, InputNumber, Switch, Button, Icon } from 'antd'
 const { Group } = Button
 
 class EditableCell extends React.Component {
   constructor (props) {
     super(props)
-    const { value } = this.props
+    const { value, type } = this.props
+    // const { type } = typeof value
+    console.log('RECEIVED TYPE', type)
+    switch (type) {
+      //
+      case 'string':
+        this.EditCell = ({...args}) => <Input {...args} />
+        this.Cell = () => <span>{value}</span>
+        this.handleChange = (e) => this.setState({ value: e.target.value })
+        break
+      case 'number':
+        this.EditCell = ({...args}) => <InputNumber {...args} />
+        this.Cell = () => <span>{value}</span>
+        this.handleChange = (value) => this.setState({ value })
+        break
+      case 'boolean':
+        const handleChange = (value) => this.setState({ value })
+        this.EditCell = ({value, ...args}) => <Switch checked={value} onChange={handleChange} />
+        this.Cell = () => <Switch checked={this.state.value} disabled />
+        break
+      //  No default case, don't want to hold that much memory.
+      //  Type is a required prop
+    }
     this.state = { value }
   }
   componentWillReceiveProps (nextProps) {
@@ -17,21 +39,16 @@ class EditableCell extends React.Component {
       onChange(this.state.value)
     }
   }
-  //  Handle the change in child state, then bubble the event to the parent component.
-  handleChange = (e) => {
-    const value = e.target.value
-    this.setState({ value })
-  }
   render (
-    { handleChange } = this,
+    { EditCell, Cell, handleChange } = this,
     { value } = this.state,
     { editable } = this.props
   ) {
     return (
       <div>
         {editable
-          ? <Input size='large' value={value} onChange={handleChange} />
-          : <span>{value}</span>
+          ? <EditCell size='large' value={value} />
+          : <Cell />
         }
       </div>
     )
@@ -56,18 +73,21 @@ class EditableTable extends React.Component {
     //  Apply custom renderers that enable data editing.
     columns.forEach((column, i) => {
       //  Include the data index of the column - this is the prop associated with the data obj
+      //  Also, include the type, giving EditableCell the ability to choose a proper component.
       column.render = (text, record) =>
-        this.renderColumn(text, record, columns[i].dataIndex)
+        this.renderColumn(text, record, column.dataIndex, column.type)
     })
     this.columns = columns
     this.state = { data: dataSource }
   }
   //  RenderColumn passes cell data and callbacks to display elements.
-  renderColumn = (text, record, dataIndex) => {
+  renderColumn = (text, record, dataIndex, type) => {
     const { _editable, _key } = record
+    const callback = value => this.handleChange(dataIndex, _key, value)
     return <EditableCell
-      editable={_editable} value={text}
-      onChange={value => this.handleChange(dataIndex, _key, value)}
+      editable={_editable}
+      value={text} type={type}
+      onChange={callback}
     />
   }
   //  ToggleRow finds the record with the specified key and sets it to editable.
@@ -87,7 +107,9 @@ class EditableTable extends React.Component {
   }
   addRow = () => {
     let { data } = this.state
-    console.log('Placeholder func')
+    data.push({})
+    this.setState({ data })
+    // console.log('Placeholder func')
   }
   deleteRow = () => {
     let { data } = this.state
@@ -118,9 +140,6 @@ class EditableTable extends React.Component {
     })
     onSubmit(values)
   }
-  title = () => (
-    <h1>{`Editing ...prop`}</h1>
-  )
   footer = () => (
     <div>
       <p>
@@ -144,17 +163,8 @@ class EditableTable extends React.Component {
     { title, footer, columns, toggleEditRow, handleSubmit } = this,
     { data } = this.state
   ) {
-    // const footer = () => (
-    //   <div>
-    //     <p>
-    //       <em>Double click a row to edit it.</em>
-    //     </p>
-    //     <Button size='large' type='primary' onClick={handleSubmit}>Update</Button>
-    //   </div>
-    // )
-
-    return <Table title={this.props.title} footer={footer}
-      bordered size='small'
+    return <Table footer={footer}
+      bordered size='small' pagination={false}
       dataSource={data}
       columns={columns}
       onRowDoubleClick={toggleEditRow}
