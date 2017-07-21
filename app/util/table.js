@@ -1,164 +1,110 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import ReactDataGrid from 'react-data-grid'
 import { Table, Input, InputNumber, Switch, Button, Icon } from 'antd'
 const { Group } = Button
 
 const uuidv4 = require('uuid/v4')
 
-class EditableCell extends React.Component {
-  constructor (props) {
-    super(props)
-    const { components, value } = this.props
-    this.Edit = components.edit
-    this.Cell = components.cell
-    this.state = { value }
-  }
-  componentWillReceiveProps (nextProps) {
-    //  Editing disabled - update data via callback and clear cache.
-    const { editing, onChange } = this.props
-    if (editing && !nextProps.editing) {
-      onChange(this.state.value)
-    }
-  }
-  handleChange = (value) => this.setState({ value })
-  render (
-    { Edit, Cell, handleChange } = this,
-    { value } = this.state,
-    { editing } = this.props
-  ) {
-    return (
-      <div>
-        {editing
-          ? <Edit
-            value={value} handleChange={this.handleChange}
-            size='large'
-          />
-          : <Cell value={value} />
-        }
-      </div>
-    )
-  }
-}
-EditableCell.PropTypes = {
-  value: PropTypes.string,  //  casting?
-  editable: PropTypes.bool,
-  handleUpdate: PropTypes.function
-}
-
 class EditableTable extends React.Component {
   constructor (props) {
     super(props)
-    let { columns, dataSource } = this.props
-    //  Add unique keys to your data. These serve as unique identifiers.
-    //  We're just using a loop for compute efficiency, uuid's can be used later.
-    for (let i = 0; i < dataSource.length; i++) {
-      dataSource[i]._key = i
-    }
-    //  Apply custom renderers that enable data editing.
-    columns.forEach((column, i) => {
-      //  Include the data index of the column - this is the prop associated with the data obj
-      //  Also, include the type, giving EditableCell the ability to choose a proper component.
-      const components = column.render
-      column.render = (text, record) =>
-        this.renderColumn(text, record, column.dataIndex, components)
-    })
-    this.columns = columns
-    this.state = { data: dataSource, editing: false }
-  }
-  //  RenderColumn passes cell data and callbacks to display elements.
-  renderColumn = (text, record, dataIndex, components) => {
-    const { _key } = record
-    const { editing } = this.state
-    const callback = value => this.handleChange(dataIndex, _key, value)
-    return <EditableCell
-      editing={editing}
-      value={text} components={components}
-      onChange={callback}
-    />
-  }
-  toggleEditAll = () => {
-    let { data, editing } = this.state
-    editing = !editing
-    for (let record of data) {
-      // record._editable = !record._editable
-      record._editable = !editing
-    }
-    this.setState({ data, editing })
-    // console.log('Placeholder func')
-  }
-  addRow = () => {
-    //  Add unique ID's
-    let { data } = this.state
-    const _key = uuidv4()
-    data.push({ _key })
-    this.setState({ data })
-  }
-  deleteRow = () => {
-    let { data } = this.state
-    console.log('Placeholder func')
-  }
-  //  Handlechange identifies the prop (dataIndex) modified in a col, updates the data val.
-  handleChange = (dataIndex, key, value) => {
-    let { data } = this.state
-    data.forEach((d, i) => {
-      if (d._key === key) {
-        data[i][dataIndex] = value
-        this.setState({ data })
+    this._columns = [
+      {
+        key: 'id',
+        name: 'ID',
+        width: 80
+      },
+      {
+        key: 'task',
+        name: 'Title',
+        editable: true
+      },
+      {
+        key: 'priority',
+        name: 'Priority',
+        editable: true
+      },
+      {
+        key: 'issueType',
+        name: 'Issue Type',
+        editable: true
+      },
+      {
+        key: 'complete',
+        name: '% Complete',
+        editable: true
+      },
+      {
+        key: 'startDate',
+        name: 'Start Date',
+        editable: true
+      },
+      {
+        key: 'completeDate',
+        name: 'Expected Complete',
+        editable: true
       }
-    })
+    ]
+    const rows = this.createRows(1000)
+    this.state = ({ rows })
+    this.getRandomDate = this.getRandomDate.bind(this)
+    this.createRows = this.createRows.bind(this)
+    this.rowGetter = this.rowGetter.bind(this)
+    this.handleGridRowsUpdated = this.rowGetter.bind(this)
   }
-  //  Handlesubmit scrubs out _key and _editable when submitting to parent.
-  handleSubmit = () => {
-    //  Set state to false, which will also force subcomponents to save changes to table data.
-    this.setState({ editing: false })
-    let { data } = this.state
-    const { onSubmit } = this.props
-    //  Remove unique ID's (keys) from data.
-    const values = data.map((item) => {
-      const obj = {}
-      Object.keys(item).forEach((key) => {
-        if (key !== '_key') {
-          obj[key] = item[key]
-        }
+
+  getRandomDate (start, end) {
+    console.log('getRandomDate')
+    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toLocaleDateString()
+  }
+
+  createRows (numberOfRows) {
+    console.log('createRows')
+    let rows = []
+    for (let i = 1; i < numberOfRows; i++) {
+      rows.push({
+        id: i,
+        task: `Task ${i}`,
+        complete: Math.min(100, Math.round(Math.random() * 110)),
+        priority: ['Critical', 'High', 'Medium', 'Low'][Math.floor((Math.random() * 3) + 1)],
+        issueType: ['Bug', 'Improvement', 'Epic', 'Story'][Math.floor((Math.random() * 3) + 1)],
+        startDate: this.getRandomDate(new Date(2015, 3, 1), new Date()),
+        completeDate: this.getRandomDate(new Date(), new Date(2016, 0, 1))
       })
-      return obj
-    })
-    onSubmit(values)
+    }
+    return rows
   }
-  render (
-    { columns, toggleEditAll, addRow, handleSubmit } = this,
-    { data } = this.state
-  ) {
-    const footer = () => (
-      <div>
-        <p>
-          <em>Double click a row to edit it.</em>
-        </p>
-        <Group size='large'>
-          <Button size='large' type='primary' ghost onClick={toggleEditAll}>
-            <Icon type='edit' />Edit All
-          </Button>
-          <Button size='large' type='primary' ghost onClick={addRow}>
-            <Icon type='plus-circle-o' />Add Row
-          </Button>
-          <Button size='large' type='primary' ghost onClick={handleSubmit}>
-            <Icon type='upload' />Update
-          </Button>
-        </Group>
-      </div>
-    )
-    return <Table bordered size='small' pagination={false}
-      footer={footer}
-      dataSource={data}
-      columns={columns}
-      // onRowDoubleClick={toggleEditRow}
+
+  rowGetter (i) {
+    console.log('rowGetter')
+    return this.state.rows[i]
+  }
+
+  handleGridRowsUpdated ({ fromRow, toRow, updated }) {
+    console.log('handleGridRowsUpdated')
+    let rows = this.state.rows.slice()
+
+    for (let i = fromRow; i <= toRow; i++) {
+      let rowToUpdate = rows[i]
+      let updatedRow = React.addons.update(rowToUpdate, {$merge: updated})
+      rows[i] = updatedRow
+    }
+
+    this.setState({ rows })
+  }
+
+  render () {
+    return <ReactDataGrid
+      enableCellSelect
+      columns={this._columns}
+      rowGetter={this.rowGetter}
+      rowsCount={this.state.rows.length}
+      minHeight={500}
+      onGridRowsUpdated={this.handleGridRowsUpdated}
     />
   }
 }
-EditableTable.PropTypes = {
-  columns: PropTypes.array,
-  dataSource: PropTypes.array,
-  onSubmit: PropTypes.function
-}
+
 export default EditableTable
