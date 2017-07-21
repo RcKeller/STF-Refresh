@@ -47,20 +47,15 @@ class EditableTable extends React.Component {
         editable: true
       }
     ]
-    const rows = this.createRows(1000)
+    const rows = this.createRows(100)
     this.state = ({ rows })
-    this.getRandomDate = this.getRandomDate.bind(this)
-    this.createRows = this.createRows.bind(this)
-    this.rowGetter = this.rowGetter.bind(this)
-    this.handleGridRowsUpdated = this.rowGetter.bind(this)
   }
 
-  getRandomDate (start, end) {
-    console.log('getRandomDate')
+  getRandomDate = (start, end) => {
     return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toLocaleDateString()
   }
 
-  createRows (numberOfRows) {
+  createRows = (numberOfRows) => {
     console.log('createRows')
     let rows = []
     for (let i = 1; i < numberOfRows; i++) {
@@ -77,19 +72,22 @@ class EditableTable extends React.Component {
     return rows
   }
 
-  rowGetter (i) {
-    console.log('rowGetter')
+  rowGetter = (i) => {
+    // console.log('rowGetter')
     return this.state.rows[i]
   }
 
-  handleGridRowsUpdated ({ fromRow, toRow, updated }) {
+  handleGridRowsUpdated = ({ fromRow, toRow, updated }) => {
     console.log('handleGridRowsUpdated')
     let rows = this.state.rows.slice()
 
     for (let i = fromRow; i <= toRow; i++) {
       let rowToUpdate = rows[i]
-      let updatedRow = React.addons.update(rowToUpdate, {$merge: updated})
-      rows[i] = updatedRow
+      console.log('ARGS', fromRow, toRow, updated)
+      console.log('rowToUpdate', rowToUpdate)
+      let updatedRow = Object.assign(rowToUpdate, updated)
+      // let updatedRow = React.addons.update(rowToUpdate, {$merge: updated})
+      // rows[i] = updatedRow
     }
 
     this.setState({ rows })
