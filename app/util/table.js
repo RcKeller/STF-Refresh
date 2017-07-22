@@ -9,7 +9,8 @@ import { Editors, Formatters } from 'react-data-grid-addons'
 const { DropDownEditor } = Editors
 const { DropDownFormatter } = Formatters
 
-import TextArea from './textarea'
+// import TextArea from './textarea'
+import SimpleTextEditor from './editors'
 
 const uuidv4 = require('uuid/v4')
 
@@ -26,7 +27,8 @@ class EditableTable extends React.Component {
         key: 'task',
         name: 'Title',
         editable: true,
-        editor: TextArea
+        editor: SimpleTextEditor
+        // editor: TextArea
       },
       {
         key: 'priority',
