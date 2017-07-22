@@ -29,11 +29,16 @@ class EditorBase extends React.Component {
 }
 
 EditorBase.propTypes = {
-  onKeyDown: React.PropTypes.func.isRequired,
+  onKeyDown: React.PropTypes.func, //  Possible bug - not always present
   value: React.PropTypes.any.isRequired,
   onBlur: React.PropTypes.func.isRequired,
-  // column: React.PropTypes.shape(ExcelColumn).isRequired,
-  commit: React.PropTypes.func.isRequired
+  column: React.PropTypes.shape({
+    name: React.PropTypes.node.isRequired,
+    key: React.PropTypes.string.isRequired,
+    width: React.PropTypes.number.isRequired,
+    filterable: React.PropTypes.bool
+  }).isRequired,
+  commit: React.PropTypes.func //  Possible bug - not always present
 }
 
 class SimpleTextEditor extends EditorBase {
