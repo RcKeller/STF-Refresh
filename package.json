@@ -99,6 +99,7 @@
     "react": "^15.5.3",
     "react-addons-test-utils": "^15.5.0",
     "react-data-grid": "^2.0.54",
+    "react-data-grid-addons": "^2.0.54",
     "react-dom": "^15.5.3",
     "react-helmet": "^5.0.2",
     "react-redux": "^5.0.3",

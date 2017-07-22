@@ -6063,6 +6063,12 @@ react-addons-test-utils@^15.5.0:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
+react-data-grid-addons@^2.0.54:
+  version "2.0.54"
+  resolved "https://registry.yarnpkg.com/react-data-grid-addons/-/react-data-grid-addons-2.0.54.tgz#fae0f8d98599e87ccc23ab4912acb01473873657"
+  dependencies:
+    react-data-grid "^2.0.54"
+
 react-data-grid@^2.0.54:
   version "2.0.54"
   resolved "https://registry.yarnpkg.com/react-data-grid/-/react-data-grid-2.0.54.tgz#c953cafa1e9da5cd97eb04564d86e3d93e2ca0bf"

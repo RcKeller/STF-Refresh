@@ -5,6 +5,12 @@ import ReactDataGrid from 'react-data-grid'
 import { Table, Input, InputNumber, Switch, Button, Icon } from 'antd'
 const { Group } = Button
 
+import { Editors, Formatters } from 'react-data-grid-addons'
+const { DropDownEditor } = Editors
+const { DropDownFormatter } = Formatters
+
+import TextArea from './textarea'
+
 const uuidv4 = require('uuid/v4')
 
 class EditableTable extends React.Component {
@@ -19,7 +25,8 @@ class EditableTable extends React.Component {
       {
         key: 'task',
         name: 'Title',
-        editable: true
+        editable: true,
+        editor: TextArea
       },
       {
         key: 'priority',
@@ -51,9 +58,8 @@ class EditableTable extends React.Component {
     this.state = ({ rows })
   }
 
-  getRandomDate = (start, end) => {
-    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toLocaleDateString()
-  }
+  getRandomDate = (start, end) =>
+    new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toLocaleDateString()
 
   createRows = (numberOfRows) => {
     console.log('createRows')
@@ -72,19 +78,18 @@ class EditableTable extends React.Component {
     return rows
   }
 
-  rowGetter = (i) => {
-    // console.log('rowGetter')
-    return this.state.rows[i]
-  }
+  rowGetter = (i) =>
+    this.state.rows[i]
 
   handleGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-    console.log('handleGridRowsUpdated')
+    // console.log('handleGridRowsUpdated')
     let rows = this.state.rows.slice()
+    // let { rows } = this.state.rows
 
     for (let i = fromRow; i <= toRow; i++) {
       let rowToUpdate = rows[i]
-      console.log('ARGS', fromRow, toRow, updated)
-      console.log('rowToUpdate', rowToUpdate)
+      // console.log('ARGS', fromRow, toRow, updated)
+      // console.log('rowToUpdate', rowToUpdate)
       let updatedRow = Object.assign(rowToUpdate, updated)
       // let updatedRow = React.addons.update(rowToUpdate, {$merge: updated})
       // rows[i] = updatedRow
@@ -95,7 +100,7 @@ class EditableTable extends React.Component {
 
   render () {
     return <ReactDataGrid
-      enableCellSelect
+      enableCellSelect cellNavigationMode='changeRow'
       columns={this._columns}
       rowGetter={this.rowGetter}
       rowsCount={this.state.rows.length}
