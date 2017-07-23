@@ -42,16 +42,33 @@ EditorBase.propTypes = {
 }
 
 class SimpleTextEditor extends EditorBase {
-  render () {
+  ref = node => this.input = node
+  render (
+    { ref } = this,
+    { onBlur, value } = this.props
+  ) {
     return (
-      <input
-        ref={node => this.input = node}
-        type='text' onBlur={this.props.onBlur}
-        className='form-control'
-        defaultValue={this.props.value}
+      <input type='text' className='form-control'
+        // ref={node => this.input = node}
+        ref={ref}
+        defaultValue={value}
+        onBlur={onBlur}
       />
     )
   }
 }
+
+// class SimpleTextEditor extends EditorBase {
+//   render () {
+//     return (
+//       <input
+//         ref={node => this.input = node}
+//         type='text' onBlur={this.props.onBlur}
+//         className='form-control'
+//         defaultValue={this.props.value}
+//       />
+//     )
+//   }
+// }
 
 export default SimpleTextEditor

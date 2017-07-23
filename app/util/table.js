@@ -17,7 +17,7 @@ const uuidv4 = require('uuid/v4')
 class EditableTable extends React.Component {
   constructor (props) {
     super(props)
-    this._columns = [
+    this.columns = [
       {
         key: 'id',
         name: 'ID',
@@ -106,13 +106,13 @@ class EditableTable extends React.Component {
   }
 
   render (
-    { _columns, rowGetter, handleGridRowsUpdated, handleSubmit } = this,
+    { columns, rowGetter, handleGridRowsUpdated, handleSubmit } = this,
     { rows } = this.state
 ) {
     return <div>
       <ReactDataGrid
         enableCellSelect cellNavigationMode='changeRow'
-        columns={_columns}
+        columns={columns}
         rowGetter={rowGetter}
         rowsCount={rows.length}
         minHeight={500}
