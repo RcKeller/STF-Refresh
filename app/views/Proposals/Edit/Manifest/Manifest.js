@@ -9,7 +9,7 @@ import api from '../../../../services'
 // import EditableTable from '../../../../util/table'
 import { SpreadSheet } from '../../../../components'
 
-const dataSource = [{
+const testData = [{
   '_id': '596e8a522465c05140e07da5',
   'manifest': '596e8a522465c05140e07da0',
   'name': 'e-commerce',
@@ -68,56 +68,28 @@ const dataSource = [{
 {}]
 
 const columns = [{
-  title: 'Name',
-  dataIndex: 'name',
-  render: {
-    edit: ({value, handleChange, ...args}) =>
-      <Input value={value} onChange={(e) => handleChange(e.target.value)} {...args} />,
-    cell: ({value}) =>
-      <span>{value}</span>
-  }
+  name: 'Name',
+  key: 'name',
+  editable: true
 }, {
-  title: 'Quantity',
-  dataIndex: 'quantity',
-  width: 85,
-  render: {
-    edit: ({value, handleChange, ...args}) =>
-      <Input value={value} onChange={(e) => handleChange(e.target.value)} {...args} />,
-    cell: ({value}) =>
-      <span>{value}</span>
-  }
+  name: 'Quantity',
+  key: 'quantity',
+  editable: true
 }, {
-  title: 'Price',
-  dataIndex: 'price',
-  width: 85,
-  render: {
-    edit: ({value, handleChange, ...args}) =>
-      <Input value={value} onChange={(e) => handleChange(e.target.value)} {...args} />,
-    cell: ({value}) =>
-      <span>{value}</span>
-  }
+  name: 'Price',
+  key: 'price',
+  editable: true
 }, {
-  title: 'Tax',
-  dataIndex: 'tax',
-  width: 85,
-  render: {
-    edit: ({value, handleChange, ...args}) =>
-      <Input value={value} onChange={(e) => handleChange(e.target.value)} {...args} />,
-    cell: ({value}) =>
-      <span>{value}</span>
-  }
+  name: 'Tax',
+  key: 'tax',
+  editable: true
 }, {
-  title: 'Priority',
-  dataIndex: 'priority',
-  width: 85,
-  render: {
-    edit: ({value, handleChange, ...args}) =>
-      <Input value={value} onChange={(e) => handleChange(e.target.value)} {...args} />,
-    cell: ({value}) =>
-      <span>{value}</span>
-  }
+  name: 'Priority',
+  key: 'priority',
+  editable: true
 }]
 
+//  TODO: Testing with http://localhost:3000/edit/596e8a522465c05140e07d8f
 @connect(
   state => ({ manifest: state.db.proposal.manifests[0] }),
   dispatch => ({ api: bindActionCreators(api, dispatch) })
@@ -132,7 +104,8 @@ class Manifest extends React.Component {
       <div>
         <SpreadSheet
           columns={columns}
-          dataSource={dataSource}
+          // data={manifest.items}
+          data={testData}
           onSubmit={this.handleSubmit}
         />
       </div>

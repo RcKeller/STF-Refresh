@@ -5,81 +5,46 @@ import ReactDataGrid from 'react-data-grid'
 import { Button, Icon } from 'antd'
 const { Group } = Button
 
+import { Toolbar, Data } from 'react-data-grid-addons'
+const Selectors = Data.Selectors
 // import { Editors, Formatters } from 'react-data-grid-addons'
 // const { DropDownEditor } = Editors
 // const { DropDownFormatter } = Formatters
 
-// import TextArea from './textarea'
 import { SimpleText } from './Editors'
 
 class SpreadSheet extends React.Component {
   constructor (props) {
     super(props)
-    this.columns = [
-      {
-        key: 'id',
-        name: 'ID',
-        width: 80
-      },
-      {
-        key: 'task',
-        name: 'Title',
-        editable: true,
-        // editor: SimpleText
-        // editor: TextArea
-      },
-      {
-        key: 'priority',
-        name: 'Priority',
-        editable: true
-      },
-      {
-        key: 'issueType',
-        name: 'Issue Type',
-        editable: true
-      },
-      {
-        key: 'complete',
-        name: '% Complete',
-        editable: true
-      },
-      {
-        key: 'startDate',
-        name: 'Start Date',
-        editable: true
-      },
-      {
-        key: 'completeDate',
-        name: 'Expected Complete',
-        editable: true
-      }
-    ]
-    const rows = this.createRows(100)
-    this.state = ({ rows })
-  }
-
-  getRandomDate = (start, end) =>
-    new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime())).toLocaleDateString()
-
-  createRows = (numberOfRows) => {
-    console.log('createRows')
-    let rows = []
-    for (let i = 1; i < numberOfRows; i++) {
-      rows.push({
-        id: i,
-        task: `Task ${i}`,
-        complete: Math.min(100, Math.round(Math.random() * 110)),
-        priority: ['Critical', 'High', 'Medium', 'Low'][Math.floor((Math.random() * 3) + 1)],
-        issueType: ['Bug', 'Improvement', 'Epic', 'Story'][Math.floor((Math.random() * 3) + 1)],
-        startDate: this.getRandomDate(new Date(2015, 3, 1), new Date()),
-        completeDate: this.getRandomDate(new Date(), new Date(2016, 0, 1))
-      })
+    const { columns, data } = this.props
+    this.columns = columns
+    for (let col of columns) {
+      col.resizable = true
+      col.sortable = true
+      col.filterable = true
     }
-    return rows
+    this.state = ({ rows: data,
+      filters: {},
+      sortColumn: null,
+      sortDirection: null
+    })
   }
 
   rowGetter = (i) =>
     this.state.rows[i]
+
+  getRows () {
+    return Selectors.getRows(this.state)
+  }
+
+  getSize () {
+    return this.getRows().length
+  }
+
+  rowGetter (rowIdx) {
+    const rows = this.getRows()
+    return rows[rowIdx]
+  }
 
   handleGridRowsUpdated = ({ fromRow, toRow, updated }) => {
     // console.log('handleGridRowsUpdated')
@@ -94,8 +59,24 @@ class SpreadSheet extends React.Component {
       // let updatedRow = React.addons.update(rowToUpdate, {$merge: updated})
       // rows[i] = updatedRow
     }
-
     this.setState({ rows })
+  }
+  handleGridSort = (sortColumn, sortDirection) => {
+    this.setState({ sortColumn, sortDirection })
+  }
+  handleFilterChange = (filter) => {
+    let filters = Object.assign({}, this.state.filters)
+    if (filter.filterTerm) {
+      filters[filter.column.key] = filter
+    } else {
+      delete filters[filter.column.key]
+    }
+
+    this.setState({ filters })
+  }
+
+  onClearFilters = () => {
+    this.setState({ filters: {} })
   }
   handleSubmit = () => {
     let { rows } = this.state
@@ -104,17 +85,24 @@ class SpreadSheet extends React.Component {
   }
 
   render (
-    { columns, rowGetter, handleGridRowsUpdated, handleSubmit } = this,
-    { rows } = this.state
+    { rowGetter, handleGridRowsUpdated, handleSubmit } = this,
+    { columns } = this.props,
+    { rows: { length } } = this.state
 ) {
     return <div>
       <ReactDataGrid
         enableCellSelect cellNavigationMode='changeRow'
+        // minHeight={500}
         columns={columns}
-        rowGetter={rowGetter}
-        rowsCount={rows.length}
-        minHeight={500}
+        // rowGetter={rowGetter}
+        // rowsCount={length}
+        rowGetter={this.rowGetter}
+        rowsCount={this.getSize()}
         onGridRowsUpdated={handleGridRowsUpdated}
+        toolbar={<Toolbar enableFilter />}
+        onGridSort={this.handleGridSort}
+        onAddFilter={this.handleFilterChange}
+        onClearFilters={this.onClearFilters}
       />
       <Group size='large'>
         {/* <Button size='large' type='primary' ghost onClick={toggleEditAll}>
