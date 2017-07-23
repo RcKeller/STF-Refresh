@@ -60,6 +60,48 @@ class SimpleText extends EditorBase {
   }
 }
 
+class SimpleNumber extends EditorBase {
+  getValue () {
+    let updated = super.getValue()
+    console.log('updated', updated)
+    Object.keys(updated).forEach((prop, i) => {
+      let parsedProp = parseInt(updated[prop])
+      !isNaN(parsedProp) ? updated[prop] = parsedProp : updated[prop] = 0
+      // if isNan(parsedProp)
+      //
+      // let check = parseInt(updated[prop])
+      // if isNaN(check) check = 0
+      // let fix = parseInt(updated[prop])
+      // if (typeof fix !== 'number') {
+      //   fix = 0
+      // }
+      // updated[prop] = fix
+      // updated[prop] = parseInt(updated[prop])
+
+      // console.log('CHECK', (typeof updated[prop]), updated[prop])
+      // if (typeof updated[prop] !== 'number') {
+      //   updated[prop] = 0
+      // }
+    })
+    console.log('fixed', updated)
+    return updated
+  }
+  ref = node => this.input = node
+  render (
+    { ref } = this,
+    { onBlur, value } = this.props
+  ) {
+    return (
+      <input type='text' className='form-control'
+        ref={ref}
+        defaultValue={value}
+        onBlur={onBlur}
+      />
+    )
+  }
+}
+
 export default EditorBase
 export { SimpleText }
+export { SimpleNumber }
 // export { default as SimpleText } from './SimpleText'

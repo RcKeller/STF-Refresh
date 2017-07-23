@@ -2,16 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import ReactDataGrid from 'react-data-grid'
+import { Toolbar } from 'react-data-grid-addons'
 import { Button, Icon } from 'antd'
 const { Group } = Button
 
-import { Toolbar, Data } from 'react-data-grid-addons'
-const Selectors = Data.Selectors
 // import { Editors, Formatters } from 'react-data-grid-addons'
 // const { DropDownEditor } = Editors
 // const { DropDownFormatter } = Formatters
 
-import { SimpleText } from './Editors'
+import { SimpleText, SimpleNumber } from './Editors'
 
 class SpreadSheet extends React.Component {
   constructor (props) {
@@ -20,31 +19,14 @@ class SpreadSheet extends React.Component {
     this.columns = columns
     for (let col of columns) {
       col.resizable = true
-      col.sortable = true
-      col.filterable = true
+      // col.draggable = true
     }
-    this.state = ({ rows: data,
-      filters: {},
-      sortColumn: null,
-      sortDirection: null
-    })
+    columns[1].editor = SimpleNumber
+    this.state = ({ rows: data })
   }
 
   rowGetter = (i) =>
     this.state.rows[i]
-
-  getRows () {
-    return Selectors.getRows(this.state)
-  }
-
-  getSize () {
-    return this.getRows().length
-  }
-
-  rowGetter (rowIdx) {
-    const rows = this.getRows()
-    return rows[rowIdx]
-  }
 
   handleGridRowsUpdated = ({ fromRow, toRow, updated }) => {
     // console.log('handleGridRowsUpdated')
@@ -59,25 +41,16 @@ class SpreadSheet extends React.Component {
       // let updatedRow = React.addons.update(rowToUpdate, {$merge: updated})
       // rows[i] = updatedRow
     }
+
     this.setState({ rows })
   }
-  handleGridSort = (sortColumn, sortDirection) => {
-    this.setState({ sortColumn, sortDirection })
-  }
-  handleFilterChange = (filter) => {
-    let filters = Object.assign({}, this.state.filters)
-    if (filter.filterTerm) {
-      filters[filter.column.key] = filter
-    } else {
-      delete filters[filter.column.key]
-    }
 
-    this.setState({ filters })
+  handleAddRow = () => {
+    let { rows } = this.state
+    rows.push({})
+    this.setState({ rows })
   }
 
-  onClearFilters = () => {
-    this.setState({ filters: {} })
-  }
   handleSubmit = () => {
     let { rows } = this.state
     const { onSubmit } = this.props
@@ -85,7 +58,7 @@ class SpreadSheet extends React.Component {
   }
 
   render (
-    { rowGetter, handleGridRowsUpdated, handleSubmit } = this,
+    { rowGetter, handleGridRowsUpdated, handleAddRow, handleSubmit } = this,
     { columns } = this.props,
     { rows: { length } } = this.state
 ) {
@@ -93,16 +66,11 @@ class SpreadSheet extends React.Component {
       <ReactDataGrid
         enableCellSelect cellNavigationMode='changeRow'
         // minHeight={500}
+        toolbar={<Toolbar onAddRow={handleAddRow} />}
         columns={columns}
-        // rowGetter={rowGetter}
-        // rowsCount={length}
-        rowGetter={this.rowGetter}
-        rowsCount={this.getSize()}
+        rowGetter={rowGetter}
+        rowsCount={length}
         onGridRowsUpdated={handleGridRowsUpdated}
-        toolbar={<Toolbar enableFilter />}
-        onGridSort={this.handleGridSort}
-        onAddFilter={this.handleFilterChange}
-        onClearFilters={this.onClearFilters}
       />
       <Group size='large'>
         {/* <Button size='large' type='primary' ghost onClick={toggleEditAll}>
