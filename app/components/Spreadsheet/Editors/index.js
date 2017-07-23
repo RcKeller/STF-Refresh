@@ -41,7 +41,7 @@ EditorBase.propTypes = {
   commit: React.PropTypes.func //  Possible bug - not always present
 }
 
-class SimpleTextEditor extends EditorBase {
+class SimpleText extends EditorBase {
   ref = node => this.input = node
   render (
     { ref } = this,
@@ -49,7 +49,6 @@ class SimpleTextEditor extends EditorBase {
   ) {
     return (
       <input type='text' className='form-control'
-        // ref={node => this.input = node}
         ref={ref}
         defaultValue={value}
         onBlur={onBlur}
@@ -58,17 +57,6 @@ class SimpleTextEditor extends EditorBase {
   }
 }
 
-// class SimpleTextEditor extends EditorBase {
-//   render () {
-//     return (
-//       <input
-//         ref={node => this.input = node}
-//         type='text' onBlur={this.props.onBlur}
-//         className='form-control'
-//         defaultValue={this.props.value}
-//       />
-//     )
-//   }
-// }
-
-export default SimpleTextEditor
+export default EditorBase
+export { SimpleText }
+// export { default as SimpleText } from './SimpleText'

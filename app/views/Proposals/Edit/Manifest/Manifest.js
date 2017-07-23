@@ -6,7 +6,8 @@ import { connect } from 'react-redux'
 
 import { Input, InputNumber, Switch, message } from 'antd'
 import api from '../../../../services'
-import EditableTable from '../../../../util/table'
+// import EditableTable from '../../../../util/table'
+import { SpreadSheet } from '../../../../components'
 
 const dataSource = [{
   '_id': '596e8a522465c05140e07da5',
@@ -129,7 +130,7 @@ class Manifest extends React.Component {
     console.log('LOADED MANIFEST', manifest)
     return (
       <div>
-        <EditableTable
+        <SpreadSheet
           columns={columns}
           dataSource={dataSource}
           onSubmit={this.handleSubmit}
