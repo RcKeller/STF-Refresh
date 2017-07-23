@@ -99,16 +99,37 @@ class EditableTable extends React.Component {
 
     this.setState({ rows })
   }
+  handleSubmit = () => {
+    let { rows } = this.state
+    const { onSubmit } = this.props
+    onSubmit(rows)
+  }
 
-  render () {
-    return <ReactDataGrid
-      enableCellSelect cellNavigationMode='changeRow'
-      columns={this._columns}
-      rowGetter={this.rowGetter}
-      rowsCount={this.state.rows.length}
-      minHeight={500}
-      onGridRowsUpdated={this.handleGridRowsUpdated}
-    />
+  render (
+    { _columns, rowGetter, handleGridRowsUpdated, handleSubmit } = this,
+    { rows } = this.state
+) {
+    return <div>
+      <ReactDataGrid
+        enableCellSelect cellNavigationMode='changeRow'
+        columns={_columns}
+        rowGetter={rowGetter}
+        rowsCount={rows.length}
+        minHeight={500}
+        onGridRowsUpdated={handleGridRowsUpdated}
+      />
+      <Group size='large'>
+        {/* <Button size='large' type='primary' ghost onClick={toggleEditAll}>
+          <Icon type='edit' />Toggle Editing
+        </Button>
+        <Button size='large' type='primary' ghost onClick={addRow}>
+          <Icon type='plus-circle-o' />Add Row
+        </Button> */}
+        <Button size='large' type='primary' ghost onClick={handleSubmit}>
+          <Icon type='upload' />Save
+        </Button>
+      </Group>
+    </div>
   }
 }
 
