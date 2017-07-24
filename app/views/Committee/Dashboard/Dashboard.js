@@ -14,7 +14,7 @@ class Dashboard extends React.Component {
   render ({ user } = this.props) {
     return (
       <article className={styles['article']}>
-        Placeholder - Docket
+        Placeholder - Dashboard
       </article>
     )
   }

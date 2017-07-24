@@ -4,9 +4,11 @@ import autopopulate from 'mongoose-autopopulate'
 import faker from 'faker'
 
 const ManifestSchema = new mongoose.Schema({
+  date: { type: Date, default: Date.now },
   //  NOTE: The original manifest is manitfests[0] in a proposal.
   proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
-  title: { type: String, required: true },
+  //  Type: original, partial or supplemental
+  type: String,
   // Is this the initial proposition? If not, it's a "partial" manifest for what was actually funded.
   // Items in the manifest.
   items: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item', autopopulate: true }],
@@ -33,7 +35,6 @@ const dummyManifests = (min, ids) => {
         fakes[i] = new Manifest({
           _id: ids.manifest[i],
           proposal: ids.proposal[i],
-          title: faker.company.bsNoun(),
           items: [
             ids.item[i],
             ids.item[i]

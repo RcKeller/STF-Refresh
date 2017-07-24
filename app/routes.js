@@ -36,7 +36,11 @@ export default (store) => {
   const requireAuth = (nextState, replace, callback) => {
     const { user: { authenticated } } = store.getState()
     if (!authenticated) {
-      window.location = '/auth/google'
+      try {
+        window.location = '/auth/google'
+      } catch (err) {
+        console.error(err)
+      }
       replace({
         //  TODO: When shib is fully implemented, dynamically re-route based on ENV
         // pathname: '/login',
@@ -49,7 +53,11 @@ export default (store) => {
   const requireCommittee = (nextState, replace, callback) => {
     const { user: { committee } } = store.getState()
     if (!committee) {
-      window.location = '/auth/google'
+      try {
+        window.location = '/auth/google'
+      } catch (err) {
+        console.error(err)
+      }
       replace({
         //  TODO: When shib is fully implemented, dynamically re-route based on ENV
         // pathname: '/login',

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Row, Col, Alert, Form, Checkbox, Switch, message } from 'antd'
+import { Row, Col, Alert, Form, Checkbox, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 

@@ -29,7 +29,10 @@ export default class REST {
   Error handler
   */
   fail (res) {
-    return (error) => res.sendStatus(error.status || 404).end()
+    return (error) => {
+      console.error(error)
+      res.sendStatus(error.status || 404).end()
+    }
   }
 
   /*

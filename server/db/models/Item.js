@@ -3,8 +3,9 @@ import autoref from 'mongoose-autorefs'
 import faker from 'faker'
 
 const ItemSchema = new mongoose.Schema({
-  //  Items are tied to manifests, tied to proposals.
+  //  Items are tied to manifests, tied to proposals... or a budget report.
   manifest: { type: mongoose.Schema.Types.ObjectId, ref: 'Manifest' },
+  report: { type: mongoose.Schema.Types.ObjectId, ref: 'Report' },
   name: { type: String, required: true },
   // Description will contain the old "justification" element at the end,
   description: String,
@@ -13,11 +14,16 @@ const ItemSchema = new mongoose.Schema({
   //  Tax rate, used to automatically account for tax.
   //  TODO: Handle tax calculations on the server side.
   tax: { type: Number, required: true, default: 10.1, min: 0 },
+  //  Vendor (for reporting, these are tracked)
+  vendor: String,
   //  Priority (legacy: group) is used to sort items by importance, lower is most imp.
   //  Tad confusing, but this is a constant question for proposers.
   priority: { type: Number, min: 0 }
 })
-ItemSchema.plugin(autoref, ['manifest.items'])
+ItemSchema.plugin(autoref, [
+  'manifest.items',
+  'report.items'
+])
 const Item = mongoose.model('Item', ItemSchema)
 export default Item
 

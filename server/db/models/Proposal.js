@@ -14,6 +14,11 @@ const ProposalSchema = new mongoose.Schema({
   number: Number,
   quarter: String,
   published: { type: Boolean, default: false },
+  /*
+  Every proposal MUST have a budget CODE. Planning and Budgeting needs this.
+  Later, awards will be dispersed with budget NUMBERS (!== codes) for reporting.
+  */
+  budget: String,
   //  Overall data, probably renders everywhere.
   title: String,
   category: String,
@@ -97,6 +102,7 @@ const dummyProposals = (min, ids) => {
           number: faker.random.number(),
           quarter: 'Spring',
           published: true,
+          budget: faker.random.number(),
 
           title: faker.company.catchPhrase(),
           category: faker.name.jobArea(),
