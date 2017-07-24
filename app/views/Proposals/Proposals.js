@@ -78,7 +78,8 @@ import styles from './Proposals.css'
   //  Connect component to cached DB entities
   connect((state, props) => ({
     proposals: state.db.proposals,
-    screen: state.screen
+    screen: state.screen,
+    user: state.user
   })),
   //  Execute necessary AJAX to load said entities
   connectRequest((props) => api.get('proposals', {
@@ -87,27 +88,66 @@ import styles from './Proposals.css'
   // connectRequest((props) => api.getAll('proposals'))
 )
 class Proposals extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = { myProposals: [] }
+  }
+  componentWillReceiveProps (nextProps) {
+    const { proposals } = nextProps
+    const { user } = this.props
+    if (proposals && user.netID) {
+      //  Filter out proposals containing the netID in contacts.
+      const myProposals = proposals.filter(proposal => {
+        for (const contact of proposal.contacts) {
+          return contact.netID === user.netID
+        }
+      })
+      // console.log('myProposals', myProposals)
+      this.setState({ myProposals })
+    }
+  }
   //  Shorthand assignment of variables when defining render
-  render ({ proposals, screen } = this.props) {
+  render (
+    { proposals, screen } = this.props,
+    { myProposals } = this.state
+  ) {
     //  Return mapped content with proposal data. Demonstrates data usage.
     const title = () => <h1>STF Proposals</h1>
     const footer = () => (
       <div>
-        <ul>
-          {proposals &&
-            <div>
-              <h6>My Proposals</h6>
-              <Link to={`/proposals/${proposals[0].year}/${proposals[0].number}`}>
-                <li>{`${proposals[0].year}-${proposals[0].number}: ${proposals[0].title}`}</li>
-              </Link>
-            </div>
-          }
-          <li>My prop</li>
-          <li>My prop</li>
-        </ul>
+        {myProposals &&
+          <div>
+            <h6>My Proposals</h6>
+            <ul>
+              {myProposals.map((p, i) => (
+                <Link to={`/proposals/${p.year}/${p.number}`}>
+                  <li>{`${p.year}-${p.number}: ${p.title}`}</li>
+                </Link>
+              ))}
+          </ul>
+          </div>
+        }
         <em>Any campus department or org can submit a proposal with a budget code. <Link to='/create'>Click Here!</Link></em>
       </div>
     )
+    // const footer = () => (
+    //   <div>
+    //     <ul>
+    //       {proposals &&
+    //         <div>
+    //           <h6>My Proposals</h6>
+    //           <Link to={`/proposals/${proposals[0].year}/${proposals[0].number}`}>
+    //             <li>{`${proposals[0].year}-${proposals[0].number}: ${proposals[0].title}`}</li>
+    //           </Link>
+    //         </div>
+    //       }
+    //       <li>My prop</li>
+    //       <li>My prop</li>
+    //     </ul>
+    //     <em>Any campus department or org can submit a proposal with a budget code. <Link to='/create'>Click Here!</Link></em>
+    //   </div>
+    // )
+    console.log(myProposals)
     return (
       <article className={styles['article']}>
         {!proposals
