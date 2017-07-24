@@ -1,30 +1,27 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import ReactDataGrid from 'react-data-grid'
-// import { Toolbar } from 'react-data-grid-addons'
-// const { Menu: { ContextMenu, MenuItem, SubMenu } } = require('react-data-grid-addons');
 import { Menu } from 'react-data-grid-addons'
 const { ContextMenu, MenuItem, SubMenu } = Menu
 
-import styles from './Menu.css'
+import styles from './Menu.css' //  global, doesn't work if hashed.
 class MyMenu extends React.Component {
-
   onRowDelete = (e, data) => {
-    if (typeof (this.props.onRowDelete) === 'function') {
-      this.props.onRowDelete(e, data)
+    const { onRowDelete } = this.props
+    if (typeof onRowDelete === 'function') {
+      onRowDelete(e, data)
     }
   }
-
   onRowInsertAbove = (e, data) => {
-    if (typeof (this.props.onRowInsertAbove) === 'function') {
-      this.props.onRowInsertAbove(e, data)
+    const { onRowInsertAbove } = this.props
+    if (typeof onRowInsertAbove === 'function') {
+      onRowInsertAbove(e, data)
     }
   }
-
   onRowInsertBelow = (e, data) => {
-    if (typeof (this.props.onRowInsertBelow) === 'function') {
-      this.props.onRowInsertBelow(e, data)
+    const { onRowInsertBelow } = this.props
+    if (typeof onRowInsertBelow === 'function') {
+      onRowInsertBelow(e, data)
     }
   }
 
@@ -41,12 +38,12 @@ class MyMenu extends React.Component {
   }
 }
 
-// MyMenu.propTypes = {
-//   onRowDelete: PropTypes.func.isRequired,
-//   onRowInsertAbove: PropTypes.func.isRequired,
-//   onRowInsertBelow: PropTypes.func.isRequired,
-//   rowIdx: PropTypes.string.isRequired,
-//   idx: PropTypes.string.isRequired
-// }
+MyMenu.propTypes = {
+  onRowDelete: PropTypes.func.isRequired,
+  onRowInsertAbove: PropTypes.func.isRequired,
+  onRowInsertBelow: PropTypes.func.isRequired,
+  rowIdx: PropTypes.number,
+  idx: PropTypes.number
+}
 
 export default MyMenu
