@@ -77,7 +77,7 @@ const columns = [{
   name: 'Description',
   key: 'description',
   editable: true
-  // width: 400
+  //  Takes up remaining width.
 }, {
   name: 'Quantity',
   key: 'quantity',

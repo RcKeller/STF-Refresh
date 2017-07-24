@@ -4,13 +4,13 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Row, Col, Alert, Form, Switch, message } from 'antd'
+import { Row, Col, Alert, Form, Checkbox, Switch, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
-// import { layout, feedback, help, rules, disableSubmit } from '../../../../util/form'
 import api from '../../../../services'
 
+import styles from './Signatures.css'
 /*
 NOTE:
 Instead of instantiating 4 different forms for a single field, we're using AntD's
@@ -51,8 +51,12 @@ class Signatures extends React.Component {
   render ({ form, contacts, user } = this.props) {
     return (
       <Form>
-        <Row gutter={32} type='flex' justify='space-between' align='bottom'>
+        <Row gutter={32}>
           <Col className='gutter-row' xs={24} sm={12}>
+            <Alert type='info' banner showIcon={false}
+              message='Share this link!'
+              description='Your signers can access this page by signing in with their netID. This is the very last step!'
+            />
             <h2>Final Signatures</h2>
             <p>
               To submit your proposal to the Committee, all contacts must sign this proposal signature page.
@@ -62,22 +66,24 @@ class Signatures extends React.Component {
             </p>
           </Col>
           <Col className='gutter-row' xs={24} sm={12}>
-            <Alert message='Last Step:'
-              description='Send this link to the contacts listed in your proposal introduction. Ensure their NetID are spelled correctly. Each contact, with the exception of the optional student lead, will need to sign the proposal.'
-              type='info' showIcon
-            />
+            <Row>
             {contacts.map((c, i) => (
-              <Col key={i} className='gutter-row' xs={24}>
+              <Col key={i} xs={24}>
                 <FormItem>
                   {form.getFieldDecorator(c.role, { valuePropName: 'checked' })(
                     //  Valueprop is a selector for antd switches, it's in the docs.
-                    <Switch size='large' unCheckedChildren={c.title} checkedChildren={c.title}
+                    <Checkbox size='large'
                       disabled={c.netID !== user.netID} onChange={(checked) => this.handleToggle(checked, c)}
-                    />
+                    >
+                      <span className={styles['checkbox-text']}>
+                        {`${c.name} - ${c.title}`}
+                      </span>
+                    </Checkbox>
                   )}
                 </FormItem>
               </Col>
             ))}
+          </Row>
           </Col>
         </Row>
       </Form>

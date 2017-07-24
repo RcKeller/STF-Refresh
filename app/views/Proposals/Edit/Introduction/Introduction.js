@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Form, Input, Switch, Button, Alert, message } from 'antd'
+import { Form, Input, Checkbox, Button, Alert, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
@@ -78,7 +78,7 @@ class Introduction extends React.Component {
           <FormItem label='Universal Access' {...layout} >
             {form.getFieldDecorator('uac', { valuePropName: 'checked' })(
               // valuePropName is documented in the antd docs, that's a selector for switch vals.
-              <Switch size='small' />
+              <Checkbox />
             )}
           </FormItem>
           <FormItem>

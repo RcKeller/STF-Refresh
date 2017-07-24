@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 
 import ReactDataGrid from 'react-data-grid'
 import { Button, Icon } from 'antd'
-const { Group } = Button
 
 import Menu from './Menu'
 
@@ -69,11 +68,9 @@ class SpreadSheet extends React.Component {
         rowsCount={length}
         onGridRowsUpdated={handleGridRowsUpdated}
       />
-      <Group size='large'>
-        <Button size='large' type='primary' ghost onClick={handleSubmit}>
-          <Icon type='upload' />Save
-        </Button>
-      </Group>
+      <Button size='large' type='primary' style={{ width: '100%' }} ghost onClick={handleSubmit}>
+        <Icon type='upload' />Save
+      </Button>
     </div>
   }
 }
