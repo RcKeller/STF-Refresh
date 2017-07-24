@@ -4,6 +4,7 @@ import autopopulate from 'mongoose-autopopulate'
 import faker from 'faker'
 
 const AmendmentSchema = new mongoose.Schema({
+  date: { type: Date, default: Date.now },
   proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
   //  We only need one contact for an amendment. Let's not make it a heavily involved process.
   contact: { type: mongoose.Schema.Types.ObjectId, ref: 'Contact', autopopulate: true },

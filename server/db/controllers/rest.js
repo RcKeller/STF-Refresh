@@ -78,23 +78,9 @@ export default class REST {
   }
 
   /* *****
-    PUT: Update a model
-    (formerly patch. On the fence about changing this).
+    PATCH: Update a model
+    (also known as PUT in other REST api specs)
   ***** */
-  put (id, data, query) {
-    let model = this.model.findOne({ [this.key]: id })
-    return model
-      .then((modelInstance) => {
-        for (var attribute in data) {
-          if (data.hasOwnProperty(attribute) && attribute !== this.key && attribute !== '_id') {
-            modelInstance[attribute] = data[attribute]
-          }
-        }
-        return modelInstance.save()
-      })
-      .then(modelInstance => modelInstance)
-  }
-
   patch (id, data, query) {
     //  https://codexample.org/questions/306428/mongodb-mongoose-subdocuments-created-twice.c
     //  https://github.com/linnovate/mean/issues/511

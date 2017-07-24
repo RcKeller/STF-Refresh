@@ -10,6 +10,7 @@ const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
 
 // import styles from './Body.css'
 @connect(state => ({
+  id: state.db.proposal._id,
   title: state.db.proposal.title,
   organization: state.db.proposal.organization,
   year: state.db.proposal.year,
@@ -21,17 +22,31 @@ const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
   amendments: state.db.proposal.amendments
 }))
 class Head extends React.Component {
-  render ({ title, organization, uac, year, number, contacts, status, decision, amendments } = this.props) {
+  render ({ id, title, organization, uac, year, number, contacts, status, decision, amendments } = this.props) {
     return (
       <section>
-        <Row gutter={32}>
+        <Row gutter={32} type='flex' justify='space-between' align='middle' >
           <Col className='gutter-row' xs={24} md={12} lg={16} >
             <h1>{title}</h1>
             <h3>For {organization}</h3>
-            <h6>{`ID: ${year}-${number}`}</h6>
-            {uac && <Alert showIcon={false} type='warning' style={{paddingLeft: 0}}
-              message={<span><b>Tri-Campus</b>: This is a Uniform Access Committe (UAC) proposal</span>}
+            <h6 id={id}>{`ID: ${year}-${number}`}</h6>
+            {uac && <Alert showIcon={false} type='warning' banner
+              style={{padding: '8px 0'}}
+              message={<span><b>Tri-Campus</b>: This is a Universal Access Committe (UAC) proposal</span>}
             />}
+            {decision
+              ? <Alert type={decision.approved ? 'success' : 'error'}
+                message={<b>Proposal {decision.approved ? 'Approved' : 'Rejected'}</b>}
+                description={<span>
+                  <h6>Author: {decision.author.name} | {decision.date}</h6>
+                  <p>{decision.body}</p>
+                </span>}
+              />
+              : <Alert type='info' showIcon banner
+                message={`Status: ${status}`}
+                description='Lorem Ipsum'
+              />
+            }
           </Col>
           <Col className='gutter-row' xs={24} md={12} lg={8} >
             <Collapse bordered={false} >
@@ -44,7 +59,6 @@ class Head extends React.Component {
                 }>
                   <ul>
                     <li>NetID: {c.netID}</li>
-                    <li>Email: {c.email}</li>
                     <li>Phone: {c.phone}</li>
                     <li>Mailbox: {c.mailbox}</li>
                   </ul>
@@ -53,20 +67,6 @@ class Head extends React.Component {
             </Collapse>
           </Col>
         </Row>
-        {decision
-          ? <Alert type={decision.approved ? 'success' : 'error'} showIcon
-            message={<b>Proposal {decision.approved ? 'Approved' : 'Rejected'}</b>}
-            description={<span>
-              <h6>Author: {decision.author.name} | {decision.date}</h6>
-              <p>{decision.body}</p>
-            </span>}
-          />
-          : <Alert type='info' showIcon banner
-            message={`Status: ${status}`}
-            description='Lorem Ipsum'
-          />
-        }
-
       </section>
     )
   }

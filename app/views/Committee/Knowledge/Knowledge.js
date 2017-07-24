@@ -77,7 +77,6 @@ class Knowledge extends React.Component {
     const title = () => <h1>Knowledge Base Articles</h1>
     const footer = () => (
       <div>
-        <em>"KBA"s are our way of preserving continuity in STF decisions with dynamic leadership. <Link to='/create'>Click Here</Link> to create a KBA.</em>
         {myArticles &&
           <div>
             <h6>My KBA's</h6>
@@ -88,6 +87,7 @@ class Knowledge extends React.Component {
             )}
           </div>
         }
+        <em>"KBA"s are our way of preserving continuity in STF decisions with dynamic leadership. <Link to='/create'>Click Here</Link> to create a KBA.</em>
       </div>
     )
     return (

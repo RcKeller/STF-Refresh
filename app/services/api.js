@@ -65,11 +65,6 @@ const normalize = (res) => (Array.isArray(res) && res.length === 1) ? res[0] : r
 
 /* *****
 GET (ALL)
-ex: api.get('proposal', '594b49998dabd50e2c71762d')
-***** */
-/* *****
-GET ALL
-ex: api.getAll('proposal', { populate: 'contacts,decision' })
 ***** */
 const get = (model, options = {}) => ({
   url: endpoint(model, options),
@@ -86,19 +81,6 @@ ex: api.post('report', {})
 const post = (model, body = {}, options = {}) => mutateAsync({
   url: endpoint(model, options),
   options: { method: 'POST' },
-  transform: res => ({ [model]: normalize(res) }),
-  body,
-  update: options.update ? options.update : { [model]: (prev, next) => next }
-})
-
-/* *****
-UPDATE: PUT
-ex: api.put('report', '594b49998dabd50e2c7176bf',
-{ date: "2000-06-21T07:15:10.746Z" })
-***** */
-const put = (model, body = {}, options = {}) => mutateAsync({
-  url: endpoint(model, options),
-  options: { method: 'PUT' },
   transform: res => ({ [model]: normalize(res) }),
   body,
   update: options.update ? options.update : { [model]: (prev, next) => next }
@@ -132,7 +114,6 @@ const remove = (model, options = {}) => mutateAsync({
 export default {
   get,
   post,
-  put,
   patch,
   remove
 }

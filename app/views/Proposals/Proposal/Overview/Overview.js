@@ -41,7 +41,7 @@ class Overview extends React.Component {
           </Col>
         </Row>
         {amendments && amendments.map((a, i) =>
-          <Alert key={i} type={!a.approved ? 'error' : 'info'} showIcon
+          <Alert key={i} type={!a.approved ? 'error' : 'info'}
             message={<span>
               <b>Request for Supplemental Funding ({++i})</b>
               <h6>{a.contact.name} | DATE MISSING</h6>
