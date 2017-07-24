@@ -7,7 +7,11 @@ import { connect } from 'react-redux'
 import { Input, InputNumber, Switch, message } from 'antd'
 import api from '../../../../services'
 // import EditableTable from '../../../../util/table'
-import { SpreadSheet } from '../../../../components'
+import SpreadSheet, { Editors } from '../../../../components/SpreadSheet'
+const { SimpleNumber } = Editors
+console.log(SimpleNumber)
+// console.log(Editors)
+// console.log(Editors.SimpleText)
 
 const testData = [{
   '_id': '596e8a522465c05140e07da5',
@@ -70,23 +74,37 @@ const testData = [{
 const columns = [{
   name: 'Name',
   key: 'name',
+  editable: true,
+  width: 300
+}, {
+  name: 'Description',
+  key: 'description',
   editable: true
+  // width: 400
 }, {
   name: 'Quantity',
   key: 'quantity',
-  editable: true
+  editable: true,
+  editor: SimpleNumber,
+  width: 85
 }, {
   name: 'Price',
   key: 'price',
-  editable: true
+  editable: true,
+  editor: SimpleNumber,
+  width: 85
 }, {
   name: 'Tax',
   key: 'tax',
-  editable: true
+  editable: true,
+  editor: SimpleNumber,
+  width: 85
 }, {
   name: 'Priority',
   key: 'priority',
-  editable: true
+  editable: true,
+  editor: SimpleNumber,
+  width: 85
 }]
 
 //  TODO: Testing with http://localhost:3000/edit/596e8a522465c05140e07d8f

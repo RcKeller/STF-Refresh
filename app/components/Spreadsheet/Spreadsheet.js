@@ -21,7 +21,6 @@ class SpreadSheet extends React.Component {
       col.resizable = true
       // col.draggable = true
     }
-    columns[1].editor = SimpleNumber
     this.state = ({ rows: data })
   }
 

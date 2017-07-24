@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import EditorBase from './'
+import EditorBase from './EditorBase'
 
 class SimpleText extends EditorBase {
   ref = node => this.input = node
