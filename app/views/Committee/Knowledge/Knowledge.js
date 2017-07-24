@@ -64,9 +64,7 @@ class Knowledge extends React.Component {
   componentWillReceiveProps (nextProps) {
     const { articles, user: { netID } } = nextProps
     if (articles && netID) {
-      console.log(nextProps)
-      // const myArticles = articles.filter(obj => obj.author.netID === netID)
-      const myArticles = articles.filter(obj => obj.author.netID === 'mafalda.conroy66')
+      const myArticles = articles.filter(obj => obj.author.netID === netID)
       this.setState({ myArticles })
     }
   }

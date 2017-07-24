@@ -102,7 +102,6 @@ class Proposals extends React.Component {
           return contact.netID === user.netID
         }
       })
-      // console.log('myProposals', myProposals)
       this.setState({ myProposals })
     }
   }
@@ -124,7 +123,7 @@ class Proposals extends React.Component {
                   <li>{`${p.year}-${p.number}: ${p.title}`}</li>
                 </Link>
               ))}
-          </ul>
+            </ul>
           </div>
         }
         <em>Any campus department or org can submit a proposal with a budget code. <Link to='/create'>Click Here!</Link></em>
@@ -174,6 +173,9 @@ class Proposals extends React.Component {
 //  Proptypes are an idiomatic way of defining expected values.
 //  Flow typing and typescript work well with React, but I'd like to stay unopinionated.
 Proposals.propTypes = {
-  proposals: PropTypes.array
+  proposals: PropTypes.array,
+  screen: PropTypes.object,
+  user: PropTypes.object
+
 }
 export default Proposals

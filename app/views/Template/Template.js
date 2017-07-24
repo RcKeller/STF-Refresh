@@ -99,15 +99,17 @@ class Template extends React.Component {
                 <img src={stf} height={50} className={styles['logo']} />
               </Link>
             </Header>
-            <Content>
-              {routes[1].path &&
-                <Breadcrumb
-                  className={styles['breadcrumb']}
-                  routes={routes} itemRender={breadcrumbRenderFix}
-                />
-              }
-              {children}
-            </Content>
+            {children &&  //  Prevents returning 500 due to async load
+              <Content>
+                {routes[1].path &&
+                  <Breadcrumb
+                    className={styles['breadcrumb']}
+                    routes={routes} itemRender={breadcrumbRenderFix}
+                  />
+                }
+                {children}
+              </Content>
+            }
           </Layout>
         </Layout>
       </LocaleProvider>
