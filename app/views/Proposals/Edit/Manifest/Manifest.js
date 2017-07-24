@@ -4,14 +4,11 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Input, InputNumber, Switch, message } from 'antd'
+import { message } from 'antd'
 import api from '../../../../services'
-// import EditableTable from '../../../../util/table'
+
 import SpreadSheet, { Editors } from '../../../../components/SpreadSheet'
 const { SimpleNumber } = Editors
-console.log(SimpleNumber)
-// console.log(Editors)
-// console.log(Editors.SimpleText)
 
 const testData = [{
   '_id': '596e8a522465c05140e07da5',

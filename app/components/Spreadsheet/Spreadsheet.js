@@ -6,6 +6,8 @@ import { Toolbar } from 'react-data-grid-addons'
 import { Button, Icon } from 'antd'
 const { Group } = Button
 
+import Menu from './Menu'
+
 // import { Editors, Formatters } from 'react-data-grid-addons'
 // const { DropDownEditor } = Editors
 // const { DropDownFormatter } = Formatters
@@ -28,25 +30,37 @@ class SpreadSheet extends React.Component {
     this.state.rows[i]
 
   handleGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-    // console.log('handleGridRowsUpdated')
     let rows = this.state.rows.slice()
-    // let { rows } = this.state.rows
-
     for (let i = fromRow; i <= toRow; i++) {
       let rowToUpdate = rows[i]
-      // console.log('ARGS', fromRow, toRow, updated)
-      // console.log('rowToUpdate', rowToUpdate)
       let updatedRow = Object.assign(rowToUpdate, updated)
-      // let updatedRow = React.addons.update(rowToUpdate, {$merge: updated})
-      // rows[i] = updatedRow
     }
 
     this.setState({ rows })
   }
 
-  handleAddRow = () => {
+  deleteRow = (e, { rowIdx }) => {
+    console.log('deleteRow', e, rowIdx)
     let { rows } = this.state
-    rows.push({})
+    rows.splice(rowIdx, 1)
+    this.setState({rows})
+  }
+
+  insertRowAbove = (e, { rowIdx }) => {
+    console.log('insertRowAbove', e, rowIdx)
+    this.insertRow(rowIdx)
+  }
+
+  insertRowBelow = (e, { rowIdx }) => {
+    console.log('insertRowBelow', e, rowIdx)
+    this.insertRow(++rowIdx)
+  }
+
+  insertRow = (rowIdx) => {
+    console.log('insertRow', rowIdx)
+    let { rows } = this.state
+    const newRow = {}
+    rows.splice(rowIdx, 0, newRow)
     this.setState({ rows })
   }
 
@@ -64,8 +78,14 @@ class SpreadSheet extends React.Component {
     return <div>
       <ReactDataGrid
         enableCellSelect cellNavigationMode='changeRow'
+        contextMenu={<Menu
+          onRowDelete={this.deleteRow}
+          onRowInsertAbove={this.insertRowAbove}
+          onRowInsertBelow={this.insertRowBelow}
+        />}
+
         // minHeight={500}
-        toolbar={<Toolbar onAddRow={handleAddRow} />}
+        // toolbar={<Toolbar onAddRow={handleAddRow} />}
         columns={columns}
         rowGetter={rowGetter}
         rowsCount={length}
