@@ -6,7 +6,8 @@ import { connect } from 'react-redux'
 import { layout, feedback, help, rules, disableSubmit } from '../../../../util/form'
 import api from '../../../../services'
 
-import { Form, Input, Checkbox, Switch, Button, Alert, message } from 'antd'
+import { Form, Input, Select, Checkbox, Switch, Button, Alert, message } from 'antd'
+const Option = Select.Option
 const FormItem = Form.Item
 const connectForm = Form.create()
 
@@ -27,11 +28,20 @@ const connectForm = Form.create()
 class Settings extends React.Component {
   componentDidMount () {
     //  Take contacts, make an object with role-to-signature bool, use this to set initial vals.
-    const { form, id, published, budget } = this.props
+    const { form, id, published, budget, status, category, organization } = this.props
     if (id) {
-      let fields = { published, budget }
+      let fields = { published, budget, status, category, organization }
       form.setFieldsValue(fields)
     }
+  }
+  handleCategory = (category) => {
+    console.log('Category?', category)
+  }
+  handleOrganization = (organization) => {
+    console.log('Organization?', organization)
+  }
+  handleStatus = (status) => {
+    console.log('Status?', status)
   }
   handleBudget = (budget) => {
     console.log('Budget?', budget)
@@ -57,17 +67,42 @@ class Settings extends React.Component {
     return (
       <section>
         <h1>Proposal Settings</h1>
-        Change Status Indicator
-        Change Budget Code
-        Change org/category?
-        Withdraw from publication
+        <h6>Internal use only.</h6>
+        <p>Warnings and such.</p>
         <Form>
-          <FormItem {...layout} label='Budget'>
+          <FormItem label='Status' {...layout} >
+            {form.getFieldDecorator('status')(
+              <Select onChange={this.handleStatus}>
+                <Option value='a'>Placeholder A</Option>
+                <Option value='b'>Placeholder B</Option>
+                <Option value='c'>Placeholder C</Option>
+              </Select>
+            )}
+          </FormItem>
+          <FormItem label='Category' {...layout} >
+            {form.getFieldDecorator('category')(
+              <Select onChange={this.handleCategory}>
+                <Option value='a'>Placeholder A</Option>
+                <Option value='b'>Placeholder B</Option>
+                <Option value='c'>Placeholder C</Option>
+              </Select>
+            )}
+          </FormItem>
+          <FormItem label='Organization' {...layout} >
+            {form.getFieldDecorator('organization')(
+              <Select onChange={this.handleOrganization}>
+                <Option value='a'>Placeholder A</Option>
+                <Option value='b'>Placeholder B</Option>
+                <Option value='c'>Placeholder C</Option>
+              </Select>
+            )}
+          </FormItem>
+          <FormItem label='Budget Code' {...layout} >
             {form.getFieldDecorator('budget')(
               <Input onChange={(e) => this.handleBudget(e.target.value)} />
             )}
           </FormItem>
-          <FormItem {...layout} label='Published'>
+          <FormItem label='Published' {...layout} >
             {form.getFieldDecorator('published', { valuePropName: 'checked' })(
               <Switch onChange={(checked) => this.handlePublished(checked)} />
             )}
