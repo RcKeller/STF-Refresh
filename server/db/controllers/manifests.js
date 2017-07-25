@@ -1,5 +1,6 @@
 import REST from './rest'
-import { Manifest, Item } from '../models'
+import { Manifest } from '../models'
+// import { Manifest, Item } from '../models'
 
 export default class Manifests extends REST {
   constructor () {

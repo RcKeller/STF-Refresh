@@ -1,5 +1,6 @@
 import Users from './users'
 import Contacts from './contacts'
+import Committees from './committees'
 import Comments from './comments'
 import Proposals from './proposals'
 import Projects from './projects'
@@ -14,6 +15,7 @@ import Articles from './articles'
 
 const controllers = {
   Users,
+  Committees,
   Contacts,
   Comments,
   Proposals,

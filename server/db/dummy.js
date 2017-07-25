@@ -22,7 +22,8 @@ export default function () {
     review: [],
     decision: [],
     report: [],
-    article: []
+    article: [],
+    committee: []
     //  User?
   }
   Object.keys(ids).forEach((key) => {

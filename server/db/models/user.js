@@ -1,8 +1,7 @@
-/**
- * Defining a User Model in mongoose
- * Code modified from https://github.com/sahat/hackathon-starter
- */
+// https://github.com/sahat/hackathon-starter
 import mongoose from 'mongoose'
+import autoref from 'mongoose-autorefs'
+import autopopulate from 'mongoose-autopopulate'
 import faker from 'faker'
 
 const UserSchema = new mongoose.Schema({
@@ -16,18 +15,16 @@ const UserSchema = new mongoose.Schema({
   NOTE: This should stay in the user schema.
   A join for each authN action is a very expensive operation detrimental to UX.
   */
-  committee: {
-    spectator: Boolean,
-    member: Boolean,
-    admin: Boolean
-  },
+  committee: { type: mongoose.Schema.Types.ObjectId, ref: 'Committee', autopopulate: true }
   /*
   Tokens and the google object are used by Oauth for the google (dev) strategy
   NOTE: These will never actually show up in production.
   */
-  tokens: Array,
-  google: Object
+  // tokens: Array,
+  // google: Object
 })
+UserSchema.plugin(autoref, ['committee.user'])
+UserSchema.plugin(autopopulate)
 const User = mongoose.model('User', UserSchema)
 export default User
 
@@ -48,7 +45,7 @@ const dummyUsers = (min, ids) => {
           name: faker.name.findName(),
           netID: faker.internet.userName(),
           email: faker.internet.email(),
-          committee: {}
+          committee: ids.committee[i]
         })
       }
       //  Create will push our fakes into the DB.
