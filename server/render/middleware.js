@@ -14,6 +14,7 @@ export default function render (req, res) {
   const history = createMemoryHistory()
   //
   let user = { authenticated }
+  console.log(req.user)
   // AuthZ data if user is initialized.
   if (user.authenticated && req.user) {
     Object.assign(user, {

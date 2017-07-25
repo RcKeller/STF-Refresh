@@ -2,8 +2,12 @@ import User from '../models/user'
 
 /* eslint-disable no-param-reassign */
 export default (req, accessToken, refreshToken, profile, done) => {
+  console.log('===PROFILE===', profile.id, profile._json)
+  const email = profile._json.emails[0].value
+  const netID = email.split('@')[0]
   if (req.user) {
-    return User.findOne({ google: profile.id }, (findOneErr, existingUser) => {
+    // return User.findOne({ google: profile.id }, (findOneErr, existingUser) => {
+    return User.findOne({ netID }, (findOneErr, existingUser) => {
       if (existingUser) {
         return done(null, false, { message: 'There is already a Google account that belongs to you. Sign in with that account or delete it, then link it with your current account.' })
       }
@@ -20,9 +24,9 @@ export default (req, accessToken, refreshToken, profile, done) => {
       })
     })
   }
-  return User.findOne({ google: profile.id }, (findByGoogleIdErr, existingUser) => {
+  return User.findOne({ netID }, (findByGoogleIdErr, existingUser) => {
     if (existingUser) return done(null, existingUser)
-    return User.findOne({ email: profile._json.emails[0].value }, (findByEmailErr, existingEmailUser) => {
+    return User.findOne({ netID }, (findByEmailErr, existingEmailUser) => {
       if (existingEmailUser) {
         return done(null, false, { message: 'There is already an account using this email address. Sign in to that account and link it with Google manually from Account Settings.' })
       }
