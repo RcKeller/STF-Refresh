@@ -11,12 +11,11 @@ import fetchDataForRoute from './fetchDataForRoute'
  */
 export default function render (req, res) {
   let authenticated = req.isAuthenticated()
-  const history = createMemoryHistory()
-  //
   let user = { authenticated }
+  const history = createMemoryHistory()
   // AuthZ data if user is initialized.
   if (user.authenticated && req.user) {
-    console.log('req.user:', req.user)
+    //  May seem rendant and non-DRY, but this is for security.
     const { _id, name, netID, email, stf } = req.user
     Object.assign(user, { _id, name, netID, email, stf })
   }

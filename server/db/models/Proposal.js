@@ -72,7 +72,7 @@ Stynax: <parent-to-child prop>.<child-to-parent prop>
 ProposalSchema.plugin(autoref, [
   'contacts.proposal',
   'body.proposal',
-  'maniefests.proposal',
+  'manifests.proposal',
   'supplementals.proposal',
   'reviews.proposal',
   'decision.proposal',

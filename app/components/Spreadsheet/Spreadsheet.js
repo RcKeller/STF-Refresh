@@ -9,12 +9,14 @@ import Menu from './Menu'
 class SpreadSheet extends React.Component {
   constructor (props) {
     super(props)
-    const { columns, data } = this.props
+    const { columns, data, newData } = this.props
     this.columns = columns
     for (let col of columns) {
       col.resizable = true
     }
-    this.state = ({ rows: data })
+    let rows = data
+    if (rows.length < 1) rows[0] = {...newData} || {}
+    this.state = ({ rows })
   }
 
   rowGetter = (i) =>
@@ -35,14 +37,13 @@ class SpreadSheet extends React.Component {
   }
   insertRow = (rowIdx) => {
     let { rows } = this.state
-    const newRow = {}
+    let { newData } = this.props
+    let newRow = {...newData} || {}
     rows.splice(rowIdx, 0, newRow)
     this.setState({ rows })
   }
-  insertRowAbove = (e, { rowIdx }) =>
-    this.insertRow(rowIdx)
-  insertRowBelow = (e, { rowIdx }) =>
-    this.insertRow(++rowIdx)
+  insertRowAbove = (e, { rowIdx }) => this.insertRow(rowIdx)
+  insertRowBelow = (e, { rowIdx }) => this.insertRow(++rowIdx)
 
   handleSubmit = () => {
     let { rows } = this.state
@@ -55,6 +56,7 @@ class SpreadSheet extends React.Component {
     { columns } = this.props,
     { rows: { length } } = this.state
 ) {
+    if (length < 1) this.insertRow(0)
     return <div>
       <ReactDataGrid
         enableCellSelect cellNavigationMode='changeRow'
@@ -76,6 +78,7 @@ class SpreadSheet extends React.Component {
 }
 
 SpreadSheet.propTypes = {
+  //  Column config api is preserved, but editable is REQUIRED
   columns: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.node.isRequired,
     key: PropTypes.string.isRequired,
@@ -83,7 +86,11 @@ SpreadSheet.propTypes = {
     editor: PropTypes.func,
     width: PropTypes.number
   })).isRequired,
+  //  Your dataset is never mutated and can even be ref'd.
   data: PropTypes.array.isRequired,
+  //  NewData is a prop representing what a brand new field / row should be like (defaults).
+  newData: PropTypes.object,
+  //  onSubmit is your callback for receiving well formed data.
   onSubmit: PropTypes.func.isRequired
 }
 

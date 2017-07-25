@@ -15,7 +15,10 @@ const ManifestSchema = new mongoose.Schema({
   // Total cost, should be calculated dynamically.
   total: { type: Number, required: true, default: 0 }
 })
-ManifestSchema.plugin(autoref, ['items.manifest'])
+ManifestSchema.plugin(autoref, [
+  'proposal.manifests',
+  'items.manifest'
+])
 ManifestSchema.plugin(autopopulate)
 const Manifest = mongoose.model('Manifest', ManifestSchema)
 export default Manifest

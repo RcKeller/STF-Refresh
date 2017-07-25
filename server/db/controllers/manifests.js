@@ -1,6 +1,6 @@
 import REST from './rest'
-import { Manifest } from '../models'
-// import { Manifest, Item } from '../models'
+import { Manifest, Item } from '../models'
+import _  from 'lodash'
 
 export default class Manifests extends REST {
   constructor () {
@@ -11,8 +11,12 @@ export default class Manifests extends REST {
     Modified to insertMany(<items>)
   ***** */
   post (data, query) {
-    console.log(data)
-    let model = this.model.create(data)
+    let { items } = data
+    let manifest = _.omit(data, ['_v', 'items'])
+    console.log(typeof items, items)
+    console.log(typeof manifest, manifest)
+
+    let model = this.model.create(manifest)
     //  TODO: Any middleware needed?
     return model.then(modelInstance => modelInstance)
   }
@@ -25,9 +29,12 @@ export default class Manifests extends REST {
   patch (id, data, query) {
     //  https://codexample.org/questions/306428/mongodb-mongoose-subdocuments-created-twice.c
     //  https://github.com/linnovate/mean/issues/511
+    let { items } = data
+    let manifest = _.omit(data, ['_v', 'items'])
+
     let model = this.model
     return model
-      .findOneAndUpdate({ [this.key]: id }, data, { upsert: true, setDefaultsOnInsert: true })
+      .findOneAndUpdate({ [this.key]: id }, manifest, { upsert: true, setDefaultsOnInsert: true })
       .then(modelInstance => modelInstance)
   }
 }

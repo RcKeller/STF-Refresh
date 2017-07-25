@@ -25,7 +25,7 @@ export default (req, accessToken, refreshToken, profile, done) => {
       }
       // Else link new OAuth account with currently logged-in user.
       //  TODO: See if it's _id or id?
-      console.log('Checking ID for existing user:', req.user.id)
+      // console.log('Checking ID for existing user:', req.user.id)
       return User.findById(req.user.id, (findByIdErr, user) => {
         console.log('found by id', req.user.id, user)
         Object.assign(user, profile)
@@ -43,24 +43,24 @@ export default (req, accessToken, refreshToken, profile, done) => {
     .populate('stf')
     .exec((findByGoogleIdErr, existingUser) => {
     // If returning user, sign in and we are done.
-    if (existingUser) {
-      console.log('existingUser by netID', existingUser)
-      return done(null, existingUser)
-    }
-    // Else check if there is an existing account with user's netID.
-    return User.findOne({ netID: profile.netID }, (findByEmailErr, existingEmailUser) => {
-      // If there is, return an error message.
-      if (existingEmailUser) {
-        console.log('existing user for netID that tried logging in', existingEmailUser)
-        return done(null, false, { message: 'There is already an account using this email address. Sign in to that account and link it with Google manually from Account Settings.' })
+      if (existingUser) {
+      // console.log('existingUser by netID', existingUser)
+        return done(null, existingUser)
       }
+    // Else check if there is an existing account with user's netID.
+      return User.findOne({ netID: profile.netID }, (findByEmailErr, existingEmailUser) => {
+      // If there is, return an error message.
+        if (existingEmailUser) {
+        // console.log('existing user for netID that tried logging in', existingEmailUser)
+          return done(null, false, { message: 'There is already an account using this email address. Sign in to that account and link it with Google manually from Account Settings.' })
+        }
       // Else create a new account.
-      const user = new User()
-      Object.assign(user, profile)
-      return user.save((err) => {
-        done(err, user)
+        const user = new User()
+        Object.assign(user, profile)
+        return user.save((err) => {
+          done(err, user)
+        })
       })
     })
-  })
 }
 /* eslint-enable no-param-reassign */
