@@ -67,23 +67,23 @@ class Signatures extends React.Component {
           </Col>
           <Col className='gutter-row' xs={24} sm={12}>
             <Row>
-            {contacts.map((c, i) => (
-              <Col key={i} xs={24}>
-                <FormItem>
-                  {form.getFieldDecorator(c.role, { valuePropName: 'checked' })(
-                    //  Valueprop is a selector for antd switches, it's in the docs.
-                    <Checkbox size='large'
-                      disabled={c.netID !== user.netID} onChange={(checked) => this.handleToggle(checked, c)}
-                    >
-                      <span className={styles['checkbox-text']}>
-                        {`${c.name} - ${c.title}`}
-                      </span>
-                    </Checkbox>
-                  )}
-                </FormItem>
-              </Col>
-            ))}
-          </Row>
+              {contacts.map((c, i) => (
+                <Col key={i} xs={24}>
+                  <FormItem>
+                    {form.getFieldDecorator(c.role, { valuePropName: 'checked' })(
+                      //  Valueprop is a selector for antd switches, it's in the docs.
+                      <Checkbox size='large'
+                        disabled={c.netID !== user.netID} onChange={(checked) => this.handleToggle(checked, c)}
+                      >
+                        <span className={styles['checkbox-text']}>
+                          {`${c.name} - ${c.title}`}
+                        </span>
+                      </Checkbox>
+                    )}
+                  </FormItem>
+                </Col>
+              ))}
+            </Row>
           </Col>
         </Row>
       </Form>
