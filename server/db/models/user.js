@@ -15,15 +15,15 @@ const UserSchema = new mongoose.Schema({
   NOTE: This should stay in the user schema.
   A join for each authN action is a very expensive operation detrimental to UX.
   */
-  committee: { type: mongoose.Schema.Types.ObjectId, ref: 'Committee', autopopulate: true }
+  stf: { type: mongoose.Schema.Types.ObjectId, ref: 'STF', autopopulate: true },
   /*
   Tokens and the google object are used by Oauth for the google (dev) strategy
   NOTE: These will never actually show up in production.
   */
-  // tokens: Array,
-  // google: Object
+  tokens: Array,
+  google: Object
 })
-UserSchema.plugin(autoref, ['committee.user'])
+UserSchema.plugin(autoref, ['stf.user'])
 UserSchema.plugin(autopopulate)
 const User = mongoose.model('User', UserSchema)
 export default User
@@ -31,7 +31,7 @@ export default User
 /* *****
 FAKE DATA GENERATOR: User
 ******/
-const dummyUsers = (min, ids) => {
+const dummyUsers = (min, ids, developer) => {
   //  Check the db for existing data satisfying min required
   User.count().exec((err, count) => {
     if (err) {
@@ -45,9 +45,11 @@ const dummyUsers = (min, ids) => {
           name: faker.name.findName(),
           netID: faker.internet.userName(),
           email: faker.internet.email(),
-          committee: ids.committee[i]
+          stf: ids.stf[i]
         })
       }
+      //  Create a special user for the webdev's profile
+      fakes.push(new User({...developer}))
       //  Create will push our fakes into the DB.
       User.create(fakes, (error) => {
         if (!error) { console.log(`SEED: Created fake User (${fakes.length})`) }

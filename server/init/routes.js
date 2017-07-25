@@ -11,7 +11,7 @@ export default (app) => {
   RESTful API
   */
   app.use(`/${version}/contacts`, new controllers.Contacts().api())
-  app.use(`/${version}/committees`, new controllers.Committees().api())
+  app.use(`/${version}/stf`, new controllers.STF().api())
   app.use(`/${version}/comments`, new controllers.Comments().api())
   app.use(`/${version}/proposals`, new controllers.Proposals().api())
   app.use(`/${version}/projects`, new controllers.Projects().api())

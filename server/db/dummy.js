@@ -11,6 +11,7 @@ export default function () {
   //  Generate an object containing ObjectIds for dummy objects.
   const ids = {
     user: [],
+    stf: [],
     contact: [],
     comment: [],
     proposal: [],
@@ -22,15 +23,19 @@ export default function () {
     review: [],
     decision: [],
     report: [],
-    article: [],
-    committee: []
-    //  User?
+    article: []
   }
   Object.keys(ids).forEach((key) => {
     for (let i = 0; i < min; i++) {
       ids[key].push(new mongoose.Types.ObjectId())
     }
   })
+  const developer = {
+    _id: new mongoose.Types.ObjectId(),
+    name: 'Ryan Keller',
+    netID: 'rykeller',
+    email: 'rykeller@uw.edu'
+  }
   //  Create dummies for all RESTful models
-  restDummies.map((model) => model(min, ids))
+  restDummies.map((model) => model(min, ids, developer))
 }

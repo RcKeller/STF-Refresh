@@ -2,42 +2,49 @@ import mongoose from 'mongoose'
 import autoref from 'mongoose-autorefs'
 import faker from 'faker'
 /*
-Schema for commitee members. These are deleted if members are no longer associated with the committee.
+Schema for commitee members. These are deleted if members are no longer associated with the STF.
 */
-const CommitteeSchema = new mongoose.Schema({
+const STFSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
   spectator: Boolean,
   member: Boolean,
   admin: Boolean
 })
-CommitteeSchema.plugin(autoref, ['user.commitee'])
-const Committee = mongoose.model('Committee', CommitteeSchema)
-export default Committee
+STFSchema.plugin(autoref, ['user.stf'])
+//  NOTE: Add autopop if nececssary, not needed for now.
+const STF = mongoose.model('STF', STFSchema)
+export default STF
 
 /* *****
 FAKE DATA GENERATOR: User
 ******/
-const dummyCommittees = (min, ids) => {
+const dummySTF = (min, ids, developer) => {
   //  Check the db for existing data satisfying min required
-  Committee.count().exec((err, count) => {
+  STF.count().exec((err, count) => {
     if (err) {
       console.warn(`Unable to count Decision schema: ${err}`)
     } else if (count < min) {
       //  If it didn't, inject dummies.
       let fakes = []
       for (let i = 0; i < min; i++) {
-        fakes[i] = new Committee({
-          _id: ids.committee[i],
+        fakes[i] = new STF({
+          _id: ids.stf[i],
           spectator: faker.random.boolean(),
           member: faker.random.boolean(),
           admin: faker.random.boolean()
         })
       }
+      fakes.push(new STF({
+        _id: developer._id,
+        spectator: true,
+        member: true,
+        admin: true
+      }))
       //  Create will push our fakes into the DB.
-      Committee.create(fakes, (error) => {
+      STF.create(fakes, (error) => {
         if (!error) { console.log(`SEED: Created fake Committe profile (${fakes.length})`) }
       })
     }
   })
 }
-export { dummyCommittees }
+export { dummySTF }

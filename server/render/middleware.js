@@ -22,9 +22,9 @@ export default function render (req, res) {
       netID: req.user.netID,
       email: req.user.email
     })
-    if (req.user.committee) {
+    if (req.user.stf) {
       Object.assign(user, {
-        committee: req.user.committee
+        stf: req.user.stf
       })
     }
   }

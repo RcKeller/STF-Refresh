@@ -19,7 +19,7 @@ import styles from './Nav.css'
   user: state.user
 }))
 class Nav extends React.Component {
-  render ({ routing, user: { committee } } = this.props) {
+  render ({ routing, user: { stf } } = this.props) {
     const location = routing.locationBeforeTransitions ? routing.locationBeforeTransitions.pathname : '1'
     return (
       <Menu mode='inline'
