@@ -38,6 +38,7 @@ connectRequest will force a query if there's a mismatch.
 */
 @compose(
   connect(state => ({
+    id: state.db.proposal && state.db.proposal._id,
     published: state.db.proposal && state.db.proposal.published
   })),
   connectRequest(props => api.get('proposal', {
@@ -49,15 +50,17 @@ connectRequest will force a query if there's a mismatch.
   }))
 )
 class Proposal extends React.Component {
-  render ({ proposal, published } = this.props) {
+  render ({ proposal, id, published } = this.props) {
     return (
       <article className={styles['tabbed-article']} >
-        {!published
+        {!id
           ? <Spin size='large' tip='Loading...' />
           : <Tabs className='tab-container' type='card' >
-            <TabPane tab='Proposal' key='1' className={styles['tab-pane']}>
-              <View />
-            </TabPane>
+            {published &&
+              <TabPane tab='Proposal' key='1' className={styles['tab-pane']}>
+                <View />
+              </TabPane>
+            }
             <TabPane tab={<Badge dot style={style.badge}>
               <span style={{paddingRight: 4}}>Endorsements </span>
             </Badge>} key='2' className={styles['tab-pane']}>

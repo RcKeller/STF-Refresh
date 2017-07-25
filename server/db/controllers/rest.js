@@ -84,6 +84,9 @@ export default class REST {
     PATCH: Update a model
     (also known as PUT in other REST api specs)
   ***** */
+
+  //  TODO: I think put needs to be re-implemented. Patch is not populating returns.
+
   patch (id, data, query) {
     //  https://codexample.org/questions/306428/mongodb-mongoose-subdocuments-created-twice.c
     //  https://github.com/linnovate/mean/issues/511
@@ -130,15 +133,9 @@ export default class REST {
         .then(null, this.fail(res))
     })
     //  UPDATE
-    router.put('/:key', (req, res) => {
-      this
-        .put(req.params.key, req.body, req.query)
-        .then(this.ok(res))
-        .then(null, this.fail(res))
-    })
     router.patch('/:key', (req, res) => {
       this
-        .put(req.params.key, req.body)  // query?
+        .patch(req.params.key, req.body, req.query)  // query?
         .then(this.ok(res))
         .then(null, this.fail(res))
     })
