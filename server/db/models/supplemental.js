@@ -3,37 +3,37 @@ import autoref from 'mongoose-autorefs'
 import autopopulate from 'mongoose-autopopulate'
 import faker from 'faker'
 
-const AmendmentSchema = new mongoose.Schema({
+const SupplementalSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
   proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
-  //  We only need one contact for an amendment. Let's not make it a heavily involved process.
+  //  We only need one contact for an Supplemental. Let's not make it a heavily involved process.
   contact: { type: mongoose.Schema.Types.ObjectId, ref: 'Contact', autopopulate: true },
   title: { type: String, require: true },
   //  We want these BRIEF. Very BRIEF. Thus, no extensive plan, etc. This ends up as a headnote for proposals.
   body: { type: String, require: true }
 })
-AmendmentSchema.plugin(autoref, [
-  'proposal.amendments',
-  'contact.amendment'
+SupplementalSchema.plugin(autoref, [
+  'proposal.Supplementals',
+  'contact.Supplemental'
 ])
-AmendmentSchema.plugin(autopopulate)
-const Amendment = mongoose.model('Amendment', AmendmentSchema)
-export default Amendment
+SupplementalSchema.plugin(autopopulate)
+const Supplemental = mongoose.model('Supplemental', SupplementalSchema)
+export default Supplemental
 
 /* *****
-FAKE DATA GENERATOR: Amendment
+FAKE DATA GENERATOR: Supplemental
 ***** */
-const dummyAmendments = (min, ids) => {
+const dummySupplementals = (min, ids) => {
   //  Check the db for existing data satisfying min required
-  Amendment.count().exec((err, count) => {
+  Supplemental.count().exec((err, count) => {
     if (err) {
-      console.warn(`Unable to count Amendment schema: ${err}`)
+      console.warn(`Unable to count Supplemental schema: ${err}`)
     } else if (count < min) {
       //  If it didn't, inject dummies.
       let fakes = []
       for (let i = 0; i < min; i++) {
-        fakes[i] = new Amendment({
-          _id: ids.amendment[i],
+        fakes[i] = new Supplemental({
+          _id: ids.supplemental[i],
           proposal: ids.proposal[i],
           contact: ids.contact[i],
           title: faker.company.catchPhrase(),
@@ -41,10 +41,10 @@ const dummyAmendments = (min, ids) => {
         })
       }
       //  Create will push our fakes into the DB.
-      Amendment.create(fakes, (error) => {
-        if (!error) { console.log(`SEED: Created fake Amendment (${fakes.length})`) }
+      Supplemental.create(fakes, (error) => {
+        if (!error) { console.log(`SEED: Created fake Supplemental (${fakes.length})`) }
       })
     }
   })
 }
-export { dummyAmendments }
+export { dummySupplementals }

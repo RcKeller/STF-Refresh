@@ -7,7 +7,7 @@ const ManifestSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
   //  NOTE: The original manifest is manitfests[0] in a proposal.
   proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
-  //  Type: original, partial or supplemental
+  //  Type: original, partial or supplementalal
   type: String,
   // Is this the initial proposition? If not, it's a "partial" manifest for what was actually funded.
   // Items in the manifest.

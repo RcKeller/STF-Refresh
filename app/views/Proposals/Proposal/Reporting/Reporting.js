@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { Row, Col, Alert } from 'antd'
 // import styles from './Body.css'
 @connect(state => ({ report: state.db.proposal.report }))
-class Report extends React.Component {
+class Reporting extends React.Component {
   render ({ report } = this.props) {
     return (
       <section>
@@ -18,7 +18,7 @@ class Report extends React.Component {
           <Col className='gutter-row' xs={24} md={12}>
             <Alert type='info' showIcon
               message='About the Reporting Process'
-              description='Fill out the report, even if you underspent. If you need more money, submit an amendment to ask for supplemental funding.'
+              description='Fill out the report, even if you underspent. If you need more money, submit an supplemental to ask for supplementalal funding.'
             />
           </Col>
         </Row>
@@ -27,7 +27,7 @@ class Report extends React.Component {
   }
 }
 
-Report.propTypes = {
+Reporting.propTypes = {
   report: PropTypes.object
 }
-export default Report
+export default Reporting

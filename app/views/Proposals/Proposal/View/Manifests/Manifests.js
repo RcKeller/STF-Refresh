@@ -60,7 +60,7 @@ class Manifests extends React.Component {
             message='Multiple Manifests'
             description={<div>
               <p>
-                This proposal has multiple manifests as a result of partial awards or amendments. Use the dropdown below to browse through them all.
+                This proposal has multiple manifests as a result of partial awards or supplementals. Use the dropdown below to browse through them all.
               </p>
               <Select size='large' style={{ width: '100%' }}
                 defaultValue={(manifests.length - 1).toString()}

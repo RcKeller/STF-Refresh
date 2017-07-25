@@ -46,8 +46,8 @@ class FrontPage extends React.Component {
               <h1>Announcements</h1>
               <Row gutter={16}>
                 <Col xs={24} sm={12} xl={8}>
-                  <Card title='Supplemental Reminder'>
-                      If you plan on writing a supplemental, make sure to submit it when you are finished ('Submit Supplemental' on the Edit Supplemental page). If you are have any issues or questions, please email us.
+                  <Card title='supplementalal Reminder'>
+                      If you plan on writing a supplementalal, make sure to submit it when you are finished ('Submit supplementalal' on the Edit supplementalal page). If you are have any issues or questions, please email us.
                   </Card>
                 </Col>
                 <Col xs={24} sm={12} xl={8}>

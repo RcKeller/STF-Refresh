@@ -29,7 +29,7 @@ const authorContent = [
     a: 'Funds are sent out by the first day of the next quarter. The exception to this is Spring Quarter, the funds of which will be available starting July 1st. All budgets close on June 30th.'
   }, {
     q: 'Will you fund my department\'s basic technological needs?',
-    a: 'Likely, no. The STF exists to supplement student technological needs, not as a crutch for departments. It is expected that a fictional Department of Underwater Basket Weaving would provide its students with wicker and water, which seem rather essential to the education of that department\'s students. The Committee expects departments to fund such basic requirements. A good rule of thumb is if the answer to the question "Could my students learn without [item]" is "no", the committee will likely ask the department to fund the item.'
+    a: 'Likely, no. The STF exists to supplemental student technological needs, not as a crutch for departments. It is expected that a fictional Department of Underwater Basket Weaving would provide its students with wicker and water, which seem rather essential to the education of that department\'s students. The Committee expects departments to fund such basic requirements. A good rule of thumb is if the answer to the question "Could my students learn without [item]" is "no", the committee will likely ask the department to fund the item.'
   }, {
     q: 'How can I best present to the committee?',
     a: 'A good presentation quickly goes over what the proposal is, the purpose of the proposal, how many students will use the funded proposal, any past similar proposals, any similar funded proposals already on campus, and departmental support.'

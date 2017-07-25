@@ -15,7 +15,7 @@ import View from './View/View'
 
 import Endorsements from './Endorsements/Endorsements'
 //  Contact view
-import Report from './Report/Report'
+import Reporting from './Reporting/Reporting'
 import NextSteps from './NextSteps/NextSteps'
 import Update from './Update/Update'
 //  STF Memeber and admin views
@@ -45,7 +45,7 @@ connectRequest will force a query if there's a mismatch.
       year: props.params.year,
       number: props.params.number
     },
-    join: ['contacts', 'decision', 'body', 'manifests', 'comments', 'amendments', 'report', 'reviews']
+    join: ['contacts', 'decision', 'body', 'manifests', 'comments', 'supplementals', 'report', 'reviews']
   }))
 )
 class Proposal extends React.Component {
@@ -64,7 +64,7 @@ class Proposal extends React.Component {
               <Endorsements />
             </TabPane>
             <TabPane tab='Report' key='3' className={styles['tab-pane']}>
-              <Report />
+              <Reporting />
             </TabPane>
             <TabPane tab='Next Steps' key='4' className={styles['tab-pane']}>
               <NextSteps />

@@ -19,10 +19,10 @@ const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
   contacts: state.db.proposal.contacts,
   status: state.db.proposal.status,
   decision: state.db.proposal.decision,
-  amendments: state.db.proposal.amendments
+  supplementals: state.db.proposal.supplementals
 }))
 class Head extends React.Component {
-  render ({ id, title, organization, uac, year, number, contacts, status, decision, amendments } = this.props) {
+  render ({ id, title, organization, uac, year, number, contacts, status, decision, supplementals } = this.props) {
     return (
       <section>
         <Row gutter={32} type='flex' justify='space-between' align='middle' >

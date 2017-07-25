@@ -7,10 +7,10 @@ import { Row, Col, Alert } from 'antd'
 
 @connect(state => ({
   overview: state.db.proposal.body.overview,
-  amendments: state.db.proposal.amendments
+  supplementals: state.db.proposal.supplementals
 }))
 class Overview extends React.Component {
-  render ({ overview, amendments } = this.props) {
+  render ({ overview, supplementals } = this.props) {
     return (
       <section>
         <Row gutter={32}>
@@ -40,10 +40,10 @@ class Overview extends React.Component {
             <p>{overview.impact.career}</p>
           </Col>
         </Row>
-        {amendments && amendments.map((a, i) =>
+        {supplementals && supplementals.map((a, i) =>
           <Alert key={i} type={!a.approved ? 'error' : 'info'}
             message={<span>
-              <b>Request for Supplemental Funding ({++i})</b>
+              <b>Request for supplementalal Funding ({++i})</b>
               <h6>{a.contact.name} | DATE MISSING</h6>
             </span>}
             description={
@@ -62,6 +62,6 @@ class Overview extends React.Component {
 Overview.propTypes = {
   overview: PropTypes.object,
   decision: PropTypes.object,
-  amendments: PropTypes.object
+  supplementals: PropTypes.object
 }
 export default Overview

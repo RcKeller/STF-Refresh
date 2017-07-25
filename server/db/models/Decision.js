@@ -5,7 +5,7 @@ import faker from 'faker'
 
 const DecisionSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
-  //  A decision for a proposal. Gets revised in case of amendments.
+  //  A decision for a proposal. Gets revised in case of supplementals.
   proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
   //  Author, typically the chair or proposal officer
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', autopopulate: true },

@@ -137,7 +137,7 @@ import { connectRequest } from 'redux-query'
       year: props.params.year,
       number: props.params.number
     },
-    join: ['contacts', 'decision', 'body', 'manifests', 'comments', 'amendments', 'report', 'reviews']
+    join: ['contacts', 'decision', 'body', 'manifests', 'comments', 'Supplements', 'report', 'reviews']
   }))
 )
 

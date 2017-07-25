@@ -42,16 +42,16 @@ const ProposalSchema = new mongoose.Schema({
   */
   manifests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Manifest' }],
   /*
-  Amendments, AKA "supplementals", are revisions to the original propsal.
+  supplementals, AKA "supplementalals", are revisions to the original propsal.
   These will be shown as "updates" or revisions to the proposal, but don't
   necessarily mean the entire proposal was re-done.
   It's usually just a blurb, plus decision. In rare instances there are multiple.
   */
-  amendments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Amendment' }],
+  supplementals: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Supplemental' }],
   reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }],
   //  The decision contains details about the actual award, provisions, etc.
-  //  NOTE: In the case of amendments, decisions will be changed to "pending review."
-  //  We don't want edge cases where a proposal is viewable as approved, post-amendment.
+  //  NOTE: In the case of supplementals, decisions will be changed to "pending review."
+  //  We don't want edge cases where a proposal is viewable as approved, post-supplemental.
   decision: { type: mongoose.Schema.Types.ObjectId, ref: 'Decision' },
   /*
   Comments are user endorsements of a proposal. They're abstracted out
@@ -73,7 +73,7 @@ ProposalSchema.plugin(autoref, [
   'contacts.proposal',
   'body.proposal',
   'maniefests.proposal',
-  'amendments.proposal',
+  'supplementals.proposal',
   'reviews.proposal',
   'decision.proposal',
   'comments.proposal',
@@ -129,8 +129,8 @@ const dummyProposals = (min, ids) => {
             ids.review[i]
           ],
           decision: ids.decision[i],
-          amendments: [
-            ids.amendment[i]
+          supplementals: [
+            ids.supplemental[i]
           ],
           report: ids.report[i],
           comments: [

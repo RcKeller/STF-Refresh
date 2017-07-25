@@ -4,9 +4,9 @@ import faker from 'faker'
 
 const ContactSchema = new mongoose.Schema({
   // Contact info for associated proposal
-  //  NOTE: Can be either a proposal, amendment or block. Be careful if reverse populating.
+  //  NOTE: Can be either a proposal, supplemental or block. Be careful if reverse populating.
   proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
-  amendment: { type: mongoose.Schema.Types.ObjectId, ref: 'Amendment' },
+  supplemental: { type: mongoose.Schema.Types.ObjectId, ref: 'Supplemental' },
   block: { type: mongoose.Schema.Types.ObjectId, ref: 'Block' },
   //  Role is the person's association - Primary (contact), Budget, official (dean), Student
   role: String,
@@ -21,7 +21,7 @@ const ContactSchema = new mongoose.Schema({
 })
 ContactSchema.plugin(autoref, [
   'proposal.contacts',
-  'amendment.contacts',
+  'supplemental.contacts',
   'block.contacts'
 ])
 const Contact = mongoose.model('Contact', ContactSchema)

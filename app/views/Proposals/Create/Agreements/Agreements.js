@@ -32,8 +32,8 @@ const agreements = {
       title: 'Accessibility Policy',
       description: 'Departments must keep access open to their funded resources as much as possible. All students paying the STF are expected access. Changes to resource access requires STFC approval'
     }, {
-      link: 'https://uwstf.org/docs/Policy/Supplemental%20Policy.pdf',
-      title: 'Supplemental Policy',
+      link: 'https://uwstf.org/docs/Policy/supplementalal%20Policy.pdf',
+      title: 'supplementalal Policy',
       description: 'Sometimes prices and plans change; the STFC will hear changes to previously funded proposals for one year after the original funds were allocated'
     }, {
       link: 'https://uwstf.org/docs/Findings/Departmental%20Technology%20Obligation%20Finding.pdf',

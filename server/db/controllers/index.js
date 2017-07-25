@@ -4,7 +4,7 @@ import Committees from './committees'
 import Comments from './comments'
 import Proposals from './proposals'
 import Projects from './projects'
-import Amendments from './amendments'
+import Supplementals from './supplementals'
 import Manifests from './manifests'
 import Items from './items'
 import Blocks from './blocks'
@@ -20,7 +20,7 @@ const controllers = {
   Comments,
   Proposals,
   Projects,
-  Amendments,
+  Supplementals,
   Manifests,
   Items,
   Blocks,

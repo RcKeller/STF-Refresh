@@ -98,7 +98,7 @@ I've got a manifest of all technologies in use (equivocal to `wtf.txt`) in STACK
   - [] Browse Proposals
     - [] Proposal View
       - [] Comment on Proposal
-      - [] Amend a Proposal (supplemental)
+      - [] Amend a Proposal (supplementalal)
       - [] Delete proposal
   - [] Proposal reports
     - [] Proposal audits
