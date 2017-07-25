@@ -29,13 +29,15 @@ const dummySTF = (min, ids, developer) => {
       for (let i = 0; i < min; i++) {
         fakes[i] = new STF({
           _id: ids.stf[i],
+          user: ids.user[i],
           spectator: faker.random.boolean(),
           member: faker.random.boolean(),
           admin: faker.random.boolean()
         })
       }
       fakes.push(new STF({
-        _id: developer._id,
+        _id: developer.stf,
+        user: developer._id,
         spectator: true,
         member: true,
         admin: true

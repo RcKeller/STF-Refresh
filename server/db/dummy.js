@@ -30,8 +30,11 @@ export default function () {
       ids[key].push(new mongoose.Types.ObjectId())
     }
   })
+  let _id = new mongoose.Types.ObjectId()
+  let stf = new mongoose.Types.ObjectId()
   const developer = {
-    _id: new mongoose.Types.ObjectId(),
+    _id,
+    stf,
     name: 'Ryan Keller',
     netID: 'rykeller',
     email: 'rykeller@uw.edu'

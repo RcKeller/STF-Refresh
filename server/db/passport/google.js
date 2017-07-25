@@ -2,69 +2,61 @@ import User from '../models/user'
 
 /* eslint-disable no-param-reassign */
 export default (req, accessToken, refreshToken, profile, done) => {
-  let p = profile._json
-  let userData = {
-    name: p.displayName,
-    netID: p.emails[0].value,
-    email: p.emails[0].value,
-    google: p.id,
+  //  Use the JSON returned by Google
+  profile = profile._json
+  //  Select relevant fields
+  profile = {
+    name: profile.displayName,
+    email: profile.emails[0].value,
+    // Simulate a netID by splitting the e-mail address. Genius!
+    netID: profile.emails[0].value.split('@')[0],
+    //  The following are part of our OAuth strat, don't show in shib production
+    google: profile.id,
     tokens: { kind: 'google', accessToken }
   }
-  console.log('USERDATA', userData)
-// User is already logged in.
-// Check if there is an existing account with a provider id.
-// If there is, return an error message. (Account merging not supported)
-// Else link new OAuth account with currently logged-in user.
-// User is not logged in.
-// Check if it's a returning user.
-// If returning user, sign in and we are done.
-// Else check if there is an existing account with user's email.
-// If there is, return an error message.
-// Else create a new account.
-  console.log('===PROFILE===', profile.id, profile._json)
-  const email = profile._json.emails[0].value
-  const netID = email.split('@')[0]
+  //  CASE: User is logged in
   if (req.user) {
-    // return User.findOne({ google: profile.id }, (findOneErr, existingUser) => {
-    return User.findOne({ netID }, (findOneErr, existingUser) => {
+    // Check if there is an existing account with a provider id.
+    return User.findOne({ netID: profile.netID }, (findOneErr, existingUser) => {
+      // If there is, return an error message. (Account merging not supported)
       if (existingUser) {
-        console.log('existingUser by netID', existingUser)
+        console.log('Logged in, existingUser by netID', existingUser)
         return done(null, false, { message: 'There is already a Google account that belongs to you. Sign in with that account or delete it, then link it with your current account.' })
       }
+      // Else link new OAuth account with currently logged-in user.
+      //  TODO: See if it's _id or id?
+      console.log('Checking ID for existing user:', req.user.id)
       return User.findById(req.user.id, (findByIdErr, user) => {
         console.log('found by id', req.user.id, user)
-        const parsedEmail = profile._json.emails[0].value
-        user.name = profile.displayName
-        user.netID = parsedEmail.split('@')[0]
-        user.email = parsedEmail
-        user.google = profile.id
-        user.tokens.push({ kind: 'google', accessToken })
+        Object.assign(user, profile)
         user.save((err) => {
           done(err, user, { message: 'Google account has been linked.' })
         })
       })
     })
   }
-  return User.findOne({ netID }, (findByGoogleIdErr, existingUser) => {
+  // CASE: User is NOT logged in
+  // Check if it's a returning user.
+  return User
+    .findOne({ netID: profile.netID })
+    //  Returning users have their authZ with the STF populated.
+    .populate('stf')
+    .exec((findByGoogleIdErr, existingUser) => {
+    // If returning user, sign in and we are done.
     if (existingUser) {
-      console.log('existingUser by googleID', existingUser)
+      console.log('existingUser by netID', existingUser)
       return done(null, existingUser)
     }
-    return User.findOne({ netID }, (findByEmailErr, existingEmailUser) => {
+    // Else check if there is an existing account with user's netID.
+    return User.findOne({ netID: profile.netID }, (findByEmailErr, existingEmailUser) => {
+      // If there is, return an error message.
       if (existingEmailUser) {
-        // console.log('existingEmailUser', existingEmailUser)
+        console.log('existing user for netID that tried logging in', existingEmailUser)
         return done(null, false, { message: 'There is already an account using this email address. Sign in to that account and link it with Google manually from Account Settings.' })
       }
-      const parsedEmail = profile._json.emails[0].value
+      // Else create a new account.
       const user = new User()
-
-      user.name = profile.displayName
-      // Simulate a netID by splitting the e-mail address. Genius!
-      user.netID = parsedEmail.split('@')[0]
-      user.email = parsedEmail
-      user.google = profile.id
-      user.tokens.push({ kind: 'google', accessToken })
-      // console.log('Created user profile??', user)
+      Object.assign(user, profile)
       return user.save((err) => {
         done(err, user)
       })
