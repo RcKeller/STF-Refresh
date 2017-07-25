@@ -42,7 +42,7 @@ const dummySTF = (min, ids, developer) => {
       }))
       //  Create will push our fakes into the DB.
       STF.create(fakes, (error) => {
-        if (!error) { console.log(`SEED: Created fake Committe profile (${fakes.length})`) }
+        if (!error) { console.log(`SEED: Created fake STF authZ (${fakes.length})`) }
       })
     }
   })

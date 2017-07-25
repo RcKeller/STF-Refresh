@@ -15,6 +15,11 @@ class Config extends React.Component {
     return (
       <article className={styles['article']}>
         Placeholder - Config
+        Modify announcements.
+        Open/Close voting
+        Edit STF committee
+        Change Organization Types
+        (?) Edit Q/A prompts
       </article>
     )
   }

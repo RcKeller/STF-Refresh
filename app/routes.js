@@ -50,9 +50,9 @@ export default (store) => {
     callback()
   }
   //  TODO: Refactor once we have a live demo
-  const requireCommittee = (nextState, replace, callback) => {
-    const { user: { committee } } = store.getState()
-    if (!committee) {
+  const requireSTF = (nextState, replace, callback) => {
+    const { user: { stf } } = store.getState()
+    if (!stf) {
       try {
         window.location = '/auth/google'
       } catch (err) {
@@ -93,27 +93,27 @@ export default (store) => {
       />
 
       <Route path='/knowledge'
-        onEnter={requireCommittee}
+        onEnter={requireSTF}
         breadcrumbName='Knowledge Base' getComponent={SplitKnowledge}
       />
       <Route path='/knowledge/:number'
-        onEnter={requireCommittee}
+        onEnter={requireSTF}
         breadcrumbName='Knowledge Base Article' getComponent={SplitArticle}
       />
       <Route path='/dashboard'
-        onEnter={requireCommittee}
+        onEnter={requireSTF}
         breadcrumbName='Dashboard' getComponent={SplitDashboard}
       />
       <Route path='/voting'
-        onEnter={requireCommittee}
+        onEnter={requireSTF}
         breadcrumbName='Voting' getComponent={SplitVoting}
       />
       <Route path='/docket'
-        onEnter={requireCommittee}
+        onEnter={requireSTF}
         breadcrumbName='Set Docket' getComponent={SplitDocket}
       />
       <Route path='/config'
-        onEnter={requireCommittee}
+        onEnter={requireSTF}
         breadcrumbName='Site Config' getComponent={SplitConfig}
       />
     </Route>

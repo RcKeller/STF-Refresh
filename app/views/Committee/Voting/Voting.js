@@ -15,6 +15,9 @@ class Voting extends React.Component {
     return (
       <article className={styles['article']}>
         Placeholder - Voting
+        There are two kinds of meetings:
+        - QA meetings (metrics, no votes)
+        - Voting meetings (votes, may have metrics but probably not)
       </article>
     )
   }

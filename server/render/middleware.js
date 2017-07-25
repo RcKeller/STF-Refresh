@@ -14,20 +14,10 @@ export default function render (req, res) {
   const history = createMemoryHistory()
   //
   let user = { authenticated }
-  console.log(req.user)
   // AuthZ data if user is initialized.
   if (user.authenticated && req.user) {
-    Object.assign(user, {
-      _id: req.user._id,
-      name: req.user.name,
-      netID: req.user.netID,
-      email: req.user.email
-    })
-    if (req.user.stf) {
-      Object.assign(user, {
-        stf: req.user.stf
-      })
-    }
+    const { _id, name, netID, email, stf } = req.user
+    Object.assign(user, { _id, name, netID, email, stf })
   }
   const store = configureStore({ user }, history)
   const routes = createRoutes(store)

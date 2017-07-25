@@ -7,17 +7,8 @@ class Settings extends React.Component {
     return (
       <section>
         <h1>Proposal Settings</h1>
-        <Row gutter={32}>
-          <Col className='gutter-row' xs={24} md={12}>
-            <p>Lorem Ipsum</p>
-          </Col>
-          <Col className='gutter-row' xs={24} md={12}>
-            <Alert type='warning' showIcon
-              message='Warning'
-              description='CYA stuff.'
-            />
-          </Col>
-        </Row>
+        Change Budget Code
+        Withdraw from publication
       </section>
     )
   }

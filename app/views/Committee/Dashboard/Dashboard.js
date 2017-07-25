@@ -15,6 +15,13 @@ class Dashboard extends React.Component {
     return (
       <article className={styles['article']}>
         Placeholder - Dashboard
+        Possible tables:
+        Personal Metrics
+        Recent decisions
+        Decisions this quarter
+        Upcoming proposals
+        Extended Proposal Browser
+        Budget / Audit information
       </article>
     )
   }

@@ -15,6 +15,8 @@ class Docket extends React.Component {
     return (
       <article className={styles['article']}>
         Placeholder - Docket
+        Add proposals to docket.
+        Determine Q/A or if voting.
       </article>
     )
   }
