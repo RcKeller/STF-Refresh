@@ -56,7 +56,13 @@ class Settings extends React.Component {
   handlePublished = (published) => {
     console.log('Published?', published)
     let { api, id } = this.props
-    api.patch('proposal', { published }, { id })
+    // api.patch('proposal', { published }, { id })
+    api.patch('proposal', { published }, {
+      id,
+      update: { proposal: (prev, next) =>
+        Object.assign(prev, { published: next.published })
+      }
+    })
     .then(message.warning(`Proposal is now ${published ? 'public' : 'private'}!`))
     .catch(err => {
       message.warning(`Failed to update - client error`)

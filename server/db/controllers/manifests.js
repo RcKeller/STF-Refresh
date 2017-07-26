@@ -1,6 +1,6 @@
 import REST from './rest'
 import { Manifest, Item } from '../models'
-import _  from 'lodash'
+import _ from 'lodash'
 
 export default class Manifests extends REST {
   constructor () {

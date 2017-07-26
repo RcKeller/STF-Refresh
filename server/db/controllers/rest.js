@@ -17,6 +17,7 @@ export default class REST {
   constructor (model, key) {
     this.model = model
     this.key = key
+    //  TODO: Consider adding a param for populate fields that are autopopulated when mutations are returned.
     console.log(`REST: Instantiated controller: ${model.modelName.toLowerCase()}s, keyed by ${this.key}`)
   }
 
@@ -74,7 +75,6 @@ export default class REST {
     POST: Add a model
   ***** */
   post (data, query) {
-    console.log(data)
     let model = this.model.create(data)
     //  TODO: Any middleware needed?
     return model.then(modelInstance => modelInstance)
@@ -84,17 +84,27 @@ export default class REST {
     PATCH: Update a model
     (also known as PUT in other REST api specs)
   ***** */
-
-  //  TODO: I think put needs to be re-implemented. Patch is not populating returns.
-
   patch (id, data, query) {
-    //  https://codexample.org/questions/306428/mongodb-mongoose-subdocuments-created-twice.c
-    //  https://github.com/linnovate/mean/issues/511
-    let model = this.model
+    let model = this.model.findOne({ [this.key]: id })
     return model
-      .findOneAndUpdate({ [this.key]: id }, data, { upsert: true, setDefaultsOnInsert: true })
-      .then(modelInstance => modelInstance)
+     .then((modelInstance) => {
+       for (var attribute in data) {
+         if (data.hasOwnProperty(attribute) && attribute !== this.key && attribute !== '_id') {
+           modelInstance[attribute] = data[attribute]
+         }
+       }
+       return modelInstance.save()
+     })
+     .then(modelInstance => modelInstance)
   }
+  // patch (id, data, query) {
+  //   //  https://codexample.org/questions/306428/mongodb-mongoose-subdocuments-created-twice.c
+  //   //  https://github.com/linnovate/mean/issues/511
+  //   let model = this.model
+  //   return model
+  //     .findOneAndUpdate({ [this.key]: id }, data, { upsert: true, setDefaultsOnInsert: true })
+  //     .then(modelInstance => modelInstance)
+  // }
 
   /* *****
   DELETE: Remove a model
