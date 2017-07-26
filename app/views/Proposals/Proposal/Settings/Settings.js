@@ -16,11 +16,12 @@ const connectForm = Form.create()
   connect(
     state => ({
       id: state.db.proposal._id,
-      published: state.db.proposal.published,
-      budget: state.db.proposal.budget,
       category: state.db.proposal.category,
       organization: state.db.proposal.organization,
-      uac: state.db.proposal.uac
+      budget: state.db.proposal.budget,
+      uac: state.db.proposal.uac,
+      status: state.db.proposal.status,
+      published: state.db.proposal.published
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
@@ -29,30 +30,72 @@ const connectForm = Form.create()
 class Settings extends React.Component {
   componentDidMount () {
     //  Take contacts, make an object with role-to-signature bool, use this to set initial vals.
-    const { form, id, published, budget, status, category, organization } = this.props
+    const { form, id, category, organization, budget, uac, status, published } = this.props
     if (id) {
-      let fields = { published, budget, status, category, organization }
-      form.setFieldsValue(fields)
+      form.setFieldsValue({ category, organization, budget, uac, status, published })
     }
   }
   handleCategory = (category) => {
-    console.log('Category?', category)
-  }
-  handleOrganization = (organization) => {
-    console.log('Organization?', organization)
-  }
-  handleStatus = (status) => {
-    console.log('Status?', status)
-  }
-  handleBudget = (budget) => {
-    console.log('Budget?', budget)
     const { api, id } = this.props
     const update = {  //  Replace publication status only.
       proposal: (prev, next) =>
-        Object.assign(prev, { budget: next.budget })
+        Object.assign(prev, { organization: next.category })
+    }
+    api.patch('proposal', { category }, { id, update })
+    .then(message.success(`Updated category: ${category}`), 10)
+    .catch(err => {
+      message.warning(`Failed to update - client error`)
+      console.warn(err)
+    })
+  }
+  handleOrganization = (organization) => {
+    const { api, id } = this.props
+    const update = {
+      proposal: (prev, next) =>
+        Object.assign(prev, { organization: next.organization })
+    }
+    api.patch('proposal', { organization }, { id, update })
+    .then(message.success(`Updated organization: ${organization}`), 10)
+    .catch(err => {
+      message.warning(`Failed to update - client error`)
+      console.warn(err)
+    })
+  }
+  handleBudget = (budget) => {
+    const { api, id } = this.props
+    const update = {
+      proposal: (prev, next) =>
+      Object.assign(prev, { budget: next.budget })
     }
     api.patch('proposal', { budget }, { id, update })
-    .then(console.log('Updated budget:', budget))
+    .then(message.success(`Updated budget: ${budget}`), 10)
+    .catch(err => {
+      message.warning(`Failed to update - client error`)
+      console.warn(err)
+    })
+  }
+  handleUAC = (uac) => {
+    console.log('UAC?', uac)
+    const { api, id } = this.props
+    const update = {  //  Replace publication status only.
+      proposal: (prev, next) =>
+        Object.assign(prev, { uac: next.uac })
+    }
+    api.patch('proposal', { uac }, { id, update })
+    .then(message.warning(`Proposal is now ${uac ? 'UAC' : 'Seattle-only'}!`), 10)
+    .catch(err => {
+      message.warning(`Failed to update - client error`)
+      console.warn(err)
+    })
+  }
+  handleStatus = (status) => {
+    const { api, id } = this.props
+    const update = {
+      proposal: (prev, next) =>
+        Object.assign(prev, { status: next.status })
+    }
+    api.patch('proposal', { status }, { id, update })
+    .then(message.success(`Updated status: ${status}`), 10)
     .catch(err => {
       message.warning(`Failed to update - client error`)
       console.warn(err)
@@ -61,13 +104,12 @@ class Settings extends React.Component {
   handlePublished = (published) => {
     console.log('Published?', published)
     const { api, id } = this.props
-    // api.patch('proposal', { published }, { id })
     const update = {  //  Replace publication status only.
       proposal: (prev, next) =>
         Object.assign(prev, { published: next.published })
     }
     api.patch('proposal', { published }, { id, update })
-    .then(message.warning(`Proposal is now ${published ? 'public' : 'private'}!`))
+    .then(message.warning(`Proposal is now ${published ? 'public' : 'private'}!`), 10)
     .catch(err => {
       message.warning(`Failed to update - client error`)
       console.warn(err)
@@ -78,21 +120,11 @@ class Settings extends React.Component {
       <section>
         <h1>Proposal Settings</h1>
         <h6>Internal use only.</h6>
-        <p>Warnings and such.</p>
         <Alert type='warning' showIcon banner
           message='Fair Warning'
           description='Changes made here go into production immediately. Be advised that making such changes during daytime is generally poor practice. Do not tab through this section.'
         />
         <Form>
-          <FormItem label='Status' {...layout} >
-            {form.getFieldDecorator('status')(
-              <Select onChange={this.handleStatus}>
-                <Option value='a'>Placeholder A</Option>
-                <Option value='b'>Placeholder B</Option>
-                <Option value='c'>Placeholder C</Option>
-              </Select>
-            )}
-          </FormItem>
           <FormItem label='Category' {...layout} >
             {form.getFieldDecorator('category')(
               <Select onChange={this.handleCategory}>
@@ -116,6 +148,20 @@ class Settings extends React.Component {
               <Input onPressEnter={(e) => this.handleBudget(e.target.value)} />
             )}
           </FormItem>
+          <FormItem label='UAC / Tri-Campus' {...layout} >
+            {form.getFieldDecorator('uac', { valuePropName: 'checked' })(
+              <Checkbox onChange={(e) => this.handleUAC(e.target.checked)} />
+            )}
+          </FormItem>
+          <FormItem label='Status' {...layout} >
+            {form.getFieldDecorator('status')(
+              <Select onChange={this.handleStatus}>
+                <Option value='a'>Placeholder A</Option>
+                <Option value='b'>Placeholder B</Option>
+                <Option value='c'>Placeholder C</Option>
+              </Select>
+            )}
+          </FormItem>
           <FormItem label='Published' {...layout} >
             {form.getFieldDecorator('published', { valuePropName: 'checked' })(
               <Switch onChange={(checked) => this.handlePublished(checked)} />
@@ -129,10 +175,11 @@ class Settings extends React.Component {
 Settings.propTypes = {
   api: PropTypes.object,
   id: PropTypes.string,
-  budget: PropTypes.string,
-  uac: PropTypes.bool,
   category: PropTypes.string,
   organization: PropTypes.string,
+  budget: PropTypes.string,
+  uac: PropTypes.bool,
+  status: PropTypes.string,
   published: PropTypes.bool
 }
 
