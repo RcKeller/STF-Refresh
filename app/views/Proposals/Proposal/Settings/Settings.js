@@ -1,9 +1,10 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { layout, feedback, help, rules, disableSubmit } from '../../../../util/form'
+import { layout } from '../../../../util/form'
 import api from '../../../../services'
 
 import { Form, Input, Select, Checkbox, Switch, Button, Alert, message } from 'antd'
@@ -45,24 +46,27 @@ class Settings extends React.Component {
   }
   handleBudget = (budget) => {
     console.log('Budget?', budget)
-    // let { api, id } = this.props
-    // api.patch('proposal', { budget }, { id })
-    // .then(console.log('Updated budget', budget))
-    // .catch(err => {
-    //   message.warning(`Failed to update - client error`)
-    //   console.warn(err)
-    // })
+    const { api, id } = this.props
+    const update = {  //  Replace publication status only.
+      proposal: (prev, next) =>
+        Object.assign(prev, { budget: next.budget })
+    }
+    api.patch('proposal', { budget }, { id, update })
+    .then(console.log('Updated budget:', budget))
+    .catch(err => {
+      message.warning(`Failed to update - client error`)
+      console.warn(err)
+    })
   }
   handlePublished = (published) => {
     console.log('Published?', published)
-    let { api, id } = this.props
+    const { api, id } = this.props
     // api.patch('proposal', { published }, { id })
-    api.patch('proposal', { published }, {
-      id,
-      update: { proposal: (prev, next) =>
+    const update = {  //  Replace publication status only.
+      proposal: (prev, next) =>
         Object.assign(prev, { published: next.published })
-      }
-    })
+    }
+    api.patch('proposal', { published }, { id, update })
     .then(message.warning(`Proposal is now ${published ? 'public' : 'private'}!`))
     .catch(err => {
       message.warning(`Failed to update - client error`)
@@ -75,6 +79,10 @@ class Settings extends React.Component {
         <h1>Proposal Settings</h1>
         <h6>Internal use only.</h6>
         <p>Warnings and such.</p>
+        <Alert type='warning' showIcon banner
+          message='Fair Warning'
+          description='Changes made here go into production immediately. Be advised that making such changes during daytime is generally poor practice. Do not tab through this section.'
+        />
         <Form>
           <FormItem label='Status' {...layout} >
             {form.getFieldDecorator('status')(
@@ -105,7 +113,7 @@ class Settings extends React.Component {
           </FormItem>
           <FormItem label='Budget Code' {...layout} >
             {form.getFieldDecorator('budget')(
-              <Input onChange={(e) => this.handleBudget(e.target.value)} />
+              <Input onPressEnter={(e) => this.handleBudget(e.target.value)} />
             )}
           </FormItem>
           <FormItem label='Published' {...layout} >
@@ -117,6 +125,15 @@ class Settings extends React.Component {
       </section>
     )
   }
+}
+Settings.propTypes = {
+  api: PropTypes.object,
+  id: PropTypes.string,
+  budget: PropTypes.string,
+  uac: PropTypes.bool,
+  category: PropTypes.string,
+  organization: PropTypes.string,
+  published: PropTypes.bool
 }
 
 export default Settings

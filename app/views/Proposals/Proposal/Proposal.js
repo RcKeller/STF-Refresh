@@ -56,11 +56,9 @@ class Proposal extends React.Component {
         {!id
           ? <Spin size='large' tip='Loading...' />
           : <Tabs className='tab-container' type='card' >
-            {published &&
-              <TabPane tab='Proposal' key='1' className={styles['tab-pane']}>
-                <View />
-              </TabPane>
-            }
+            <TabPane tab='Proposal' key='1' className={styles['tab-pane']}>
+              <View />
+            </TabPane>
             <TabPane tab={<Badge dot style={style.badge}>
               <span style={{paddingRight: 4}}>Endorsements </span>
             </Badge>} key='2' className={styles['tab-pane']}>
