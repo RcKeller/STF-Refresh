@@ -30,11 +30,23 @@ export default class Manifests extends REST {
     //  https://codexample.org/questions/306428/mongodb-mongoose-subdocuments-created-twice.c
     //  https://github.com/linnovate/mean/issues/511
     let { items } = data
-    let manifest = _.omit(data, ['_v', 'items'])
+    data = _.omit(data, ['items'])
 
-    let model = this.model
+    let model = this.model.findOne({ [this.key]: id })
     return model
-      .findOneAndUpdate({ [this.key]: id }, manifest, { upsert: true, setDefaultsOnInsert: true })
-      .then(modelInstance => modelInstance)
+     .then((modelInstance) => {
+       for (var attribute in data) {
+         if (data.hasOwnProperty(attribute) && attribute !== this.key && attribute !== '_id') {
+           modelInstance[attribute] = data[attribute]
+         }
+       }
+       return modelInstance.save()
+     })
+     .then(modelInstance => modelInstance)
   }
+  //   let model = this.model
+  //   return model
+  //     .findOneAndUpdate({ [this.key]: id }, manifest, { upsert: true, setDefaultsOnInsert: true })
+  //     .then(modelInstance => modelInstance)
+  // }
 }

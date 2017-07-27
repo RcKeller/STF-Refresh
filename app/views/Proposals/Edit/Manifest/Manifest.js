@@ -60,19 +60,26 @@ class Manifest extends React.Component {
     let { api, parent, manifest } = this.props
     // let items = Object.values(values)
     // console.log(items)
+    const id = manifest._id
+    const update = {  //  Replace publication status only.
+      proposal: (prev, next) =>
+        next && next.manifests
+        ? Object.assign(prev, { manifests: next.manifests })
+        : prev
+    }
+    // console.log(manifest)
     manifest
     ? api.patch('manifest', {
       proposal: parent,
       type: 'original',
       items
-    }, { id: manifest._id })
+    }, { id, update })
+    // }, { id: manifest._id })
     : api.post('manifest', {
       proposal: parent,
       type: 'original',
       items
-    }, {
-      update: { 'proposal.manifests': (prev, next) => next }
-    }
+    }, { update }
   )
     .then(message.success(`Updated budget manifest!`))
     .catch(err => {

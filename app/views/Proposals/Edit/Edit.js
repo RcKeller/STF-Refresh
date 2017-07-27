@@ -32,7 +32,7 @@ class Edit extends React.Component {
   render ({ forceRequest, proposal, user } = this.props) {
     //  Once proposals have loaded, redirect unaffiliated users.
     //  You can remove your netID and push an update, but if you leave the page after that, it locks you out.
-    proposal && redirectUnaffiliated(user, proposal.contacts)
+    proposal && proposal.contacts && redirectUnaffiliated(user, proposal.contacts)
     //  forceRequest is bound by redux-query and run on tab changes.
     //  This ensures all fields populate() completely and changes reflect other subsections (contact changes update sigs, etc)
     return (
@@ -69,7 +69,8 @@ class Edit extends React.Component {
   }
 }
 Edit.propTypes = {
+  api: PropTypes.object,
   proposal: PropTypes.object,
-  api: PropTypes.object
+  user: PropTypes.object
 }
 export default Edit
