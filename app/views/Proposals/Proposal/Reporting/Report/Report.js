@@ -5,14 +5,15 @@ import { connect } from 'react-redux'
 
 @connect(state => ({
   contacts: state.db.proposal.contacts,
+  budget: state.db.proposal.budget,
   report: state.db.proposal.report
 }))
 class Report extends React.Component {
-  render ({ report } = this.props) {
+  render ({ budget, report } = this.props) {
     return (
       <section>
         <h1>Budget Reporting</h1>
-        <h6>For internal use only.</h6>
+        <h3>{`Organization Budget Code: ${budget}`}</h3>
         <p>Lorem ipsum, why we do this...</p>
       </section>
     )

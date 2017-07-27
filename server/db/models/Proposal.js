@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 import autoref from 'mongoose-autorefs'
-import autopopulate from 'mongoose-autopopulate'
+// import autopopulate from 'mongoose-autopopulate'
+//  BUG: autopopulate was causing children to be autoref'd multiple times even if set to unique:true
 import faker from 'faker'
 
 const ProposalSchema = new mongoose.Schema({
@@ -33,7 +34,7 @@ const ProposalSchema = new mongoose.Schema({
   // Contacts - array of objects, can iterate over via client with Object.keys().forEach(k, i) {}
   //  NOTE: Although it doesn't make sense for this to be an array vs an object, this makes our scheme
   //  more agnostic, since the contacts required may change as the proposal process evolves.
-  contacts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Contact', autopopulate: true }],
+  contacts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Contact' }],
   // Body contains the Project Plan, de-coupled from the core doc so that searching proposals is more efficient.
   body: { type: mongoose.Schema.Types.ObjectId, ref: 'Project' },
   /*
@@ -79,7 +80,7 @@ ProposalSchema.plugin(autoref, [
   'comments.proposal',
   'report.proposal'
 ])
-ProposalSchema.plugin(autopopulate)
+// ProposalSchema.plugin(autopopulate)
 const Proposal = mongoose.model('Proposal', ProposalSchema)
 export default Proposal
 

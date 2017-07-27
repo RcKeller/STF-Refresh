@@ -8,25 +8,22 @@ import { connect } from 'react-redux'
 
 // import { Collapse } from 'antd'
 
-import styles from './Dashboard.css'
+import styles from './Docket.css'
 @connect(state => ({ user: state.user }))
-class Dashboard extends React.Component {
+class Docket extends React.Component {
   render ({ user } = this.props) {
     return (
       <article className={styles['article']}>
-        Placeholder - Dashboard
-        Possible tables:
-        Personal Metrics
-        Recent decisions
-        Decisions this quarter
-        Upcoming proposals
-        Extended Proposal Browser
-        Budget / Audit information
+        Placeholder - Docket
+        <ul>
+          <li>Add proposals to docket.</li>
+          <li>Determine Q/A or if voting.</li>
+        </ul>
       </article>
     )
   }
 }
-Dashboard.propTypes = {
+Docket.propTypes = {
   user: PropTypes.object
 }
-export default Dashboard
+export default Docket

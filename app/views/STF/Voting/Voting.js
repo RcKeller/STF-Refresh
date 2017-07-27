@@ -8,23 +8,23 @@ import { connect } from 'react-redux'
 
 // import { Collapse } from 'antd'
 
-import styles from './Config.css'
+import styles from './Voting.css'
 @connect(state => ({ user: state.user }))
-class Config extends React.Component {
+class Voting extends React.Component {
   render ({ user } = this.props) {
     return (
       <article className={styles['article']}>
-        Placeholder - Config
-        Modify announcements.
-        Open/Close voting
-        Edit STF committee
-        Change Organization Types
-        (?) Edit Q/A prompts
+        Placeholder - Voting
+        <ul>
+          <li>There are two kinds of meetings:</li>
+          <li>- QA meetings (metrics, no votes)</li>
+          <li>- Voting meetings (votes, may have metrics but probably not)</li>
+        </ul>
       </article>
     )
   }
 }
-Config.propTypes = {
+Voting.propTypes = {
   user: PropTypes.object
 }
-export default Config
+export default Voting

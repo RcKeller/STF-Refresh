@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { layout } from '../../../../util/form'
 import api from '../../../../services'
 
-import { Form, Input, Select, Checkbox, Switch, Button, Alert, message } from 'antd'
+import { Form, Input, Select, Checkbox, Switch, Alert, message } from 'antd'
 const Option = Select.Option
 const FormItem = Form.Item
 const connectForm = Form.create()
@@ -173,6 +173,7 @@ class Settings extends React.Component {
   }
 }
 Settings.propTypes = {
+  form: PropTypes.object,
   api: PropTypes.object,
   id: PropTypes.string,
   category: PropTypes.string,

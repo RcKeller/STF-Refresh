@@ -8,20 +8,25 @@ import { connect } from 'react-redux'
 
 // import { Collapse } from 'antd'
 
-import styles from './Docket.css'
+import styles from './Config.css'
 @connect(state => ({ user: state.user }))
-class Docket extends React.Component {
+class Config extends React.Component {
   render ({ user } = this.props) {
     return (
       <article className={styles['article']}>
-        Placeholder - Docket
-        Add proposals to docket.
-        Determine Q/A or if voting.
+        Placeholder - Config
+        <ul>
+          <li>Modify announcements.</li>
+          <li>Open/Close voting</li>
+          <li>Edit STF committee</li>
+          <li>Change Organization Types</li>
+          <li>(?) Edit Q/A prompts</li>
+        </ul>
       </article>
     )
   }
 }
-Docket.propTypes = {
+Config.propTypes = {
   user: PropTypes.object
 }
-export default Docket
+export default Config

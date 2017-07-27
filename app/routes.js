@@ -20,12 +20,12 @@ const SplitProposals = (l, c) => require.ensure([], () => c(null, require('./vie
 const SplitProposal = (l, c) => require.ensure([], () => c(null, require('./views/Proposals/Proposal/Proposal').default))
 const SplitBlocks = (l, c) => require.ensure([], () => c(null, require('./views/Blocks/Blocks').default))
 const SplitBlock = (l, c) => require.ensure([], () => c(null, require('./views/Blocks/Block/Block').default))
-const SplitKnowledge = (l, c) => require.ensure([], () => c(null, require('./views/Committee/Knowledge/Knowledge').default))
-const SplitArticle = (l, c) => require.ensure([], () => c(null, require('./views/Committee/Knowledge/Article/Article').default))
-const SplitDashboard = (l, c) => require.ensure([], () => c(null, require('./views/Committee/Dashboard/Dashboard').default))
-const SplitVoting = (l, c) => require.ensure([], () => c(null, require('./views/Committee/Voting/Voting').default))
-const SplitDocket = (l, c) => require.ensure([], () => c(null, require('./views/Committee/Docket/Docket').default))
-const SplitConfig = (l, c) => require.ensure([], () => c(null, require('./views/Committee/Config/Config').default))
+const SplitKnowledge = (l, c) => require.ensure([], () => c(null, require('./views/STF/Knowledge/Knowledge').default))
+const SplitArticle = (l, c) => require.ensure([], () => c(null, require('./views/STF/Knowledge/Article/Article').default))
+const SplitDashboard = (l, c) => require.ensure([], () => c(null, require('./views/STF/Dashboard/Dashboard').default))
+const SplitVoting = (l, c) => require.ensure([], () => c(null, require('./views/STF/Voting/Voting').default))
+const SplitDocket = (l, c) => require.ensure([], () => c(null, require('./views/STF/Docket/Docket').default))
+const SplitConfig = (l, c) => require.ensure([], () => c(null, require('./views/STF/Config/Config').default))
 
 /*
  * @param {Redux Store}

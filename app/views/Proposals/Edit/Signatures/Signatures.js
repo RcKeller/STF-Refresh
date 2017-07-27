@@ -36,12 +36,10 @@ class Signatures extends React.Component {
     }
   }
   handleToggle = (signature, contact) => {
-    let { api } = this.props
-    api.patch(
-      'contact',
-      { signature },
-      { id: contact._id }
-    )
+    console.log('TOGGLE CONTACT', signature, contact)
+    const { api } = this.props
+    const id = contact._id
+    api.patch('contact', { signature }, { id })
     .then(message.success(`You have signed and approved this proposal !`))
     .catch(err => {
       message.warning(`Failed to update - Unexpected client error`)
@@ -73,7 +71,8 @@ class Signatures extends React.Component {
                     {form.getFieldDecorator(c.role, { valuePropName: 'checked' })(
                       //  Valueprop is a selector for antd switches, it's in the docs.
                       <Checkbox size='large'
-                        disabled={c.netID !== user.netID} onChange={(checked) => this.handleToggle(checked, c)}
+                        disabled={c.netID !== user.netID}
+                        onChange={(e) => this.handleToggle(e.target.checked, c)}
                       >
                         <span className={styles['checkbox-text']}>
                           {`${c.name} - ${c.title}`}

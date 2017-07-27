@@ -29,10 +29,12 @@ import styles from './Edit.css'
   }))
 )
 class Edit extends React.Component {
-  render ({ proposal, user } = this.props) {
+  render ({ forceRequest, proposal, user } = this.props) {
     //  Once proposals have loaded, redirect unaffiliated users.
     //  You can remove your netID and push an update, but if you leave the page after that, it locks you out.
     proposal && redirectUnaffiliated(user, proposal.contacts)
+    //  forceRequest is bound by redux-query and run on tab changes.
+    //  This ensures all fields populate() completely and changes reflect other subsections (contact changes update sigs, etc)
     return (
       <article className={styles['page']}>
         {!proposal
@@ -41,7 +43,9 @@ class Edit extends React.Component {
             <h1>{`Editing: ${proposal.title || 'New Proposal'}`}</h1>
             <h6>{`ID: ${proposal._id}`}</h6>
             <hr />
-            <Tabs tabPosition='right' defaultActiveKey='1'>
+            <Tabs tabPosition='right' defaultActiveKey='1'
+              onChange={forceRequest}
+            >
               <TabPane key='1' tab={<span><Icon type='team' />Introduction</span>}>
                 <Introduction />
               </TabPane>
