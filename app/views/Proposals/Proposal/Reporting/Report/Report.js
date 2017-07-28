@@ -14,24 +14,23 @@ const { SimpleNumber } = Editors
 const columns = [{
   name: 'Name',
   key: 'name',
-  editable: false,
+  editable: false
+}, {
+  name: 'Vendor',
+  key: 'vendor',
+  editable: true,
   width: 300
 }, {
   name: 'Quantity',
-  key: 'purchase.quantity',
+  key: 'quantity',
   editable: true,
   editor: SimpleNumber,
   width: 85
 }, {
-  name: 'Spent',
-  key: 'purchase.price',
+  name: 'Price',
+  key: 'price',
   editable: true,
   editor: SimpleNumber,
-  width: 85
-}, {
-  name: 'Vendor',
-  key: 'purchase.vendor',
-  editable: true,
   width: 85
 }]
 
@@ -39,24 +38,14 @@ const columns = [{
   state => ({
     parent: state.db.proposal._id,
     budget: state.db.proposal.budget,
-    manifests: state.db.proposal.manifests,
     report: state.db.proposal.report
+    // manifests: state.db.proposal.manifests,
   }),
   dispatch => ({ api: bindActionCreators(api, dispatch) })
 )
 class Report extends React.Component {
   handleSubmit = (items) => {
     console.log('HANDLE SUBMIT', items)
-    //  Normalize item object(keys) (Bug fix)
-    for (let item of items) {
-      item.purchase.price = item['purchase.price']
-      item.purchase.quantity = item['purchase.quantity']
-      item.purchase.vendor = item['purchase.vendor']
-      delete item['purchase.price']
-      delete item['purchase.quantity']
-      delete item['purchase.vendor']
-      console.log('Normalized', item)
-    }
     let { api, budget, report } = this.props
     report = {
       budget,
@@ -65,6 +54,7 @@ class Report extends React.Component {
     console.log(report)
   }
   render ({ budget, report } = this.props) {
+    const data = report ? report.items : []
     return (
       <section>
         <h1>Budget Reporting</h1>
@@ -72,8 +62,7 @@ class Report extends React.Component {
         <p>Lorem ipsum, why we do this...</p>
         <SpreadSheet
           columns={columns}
-          data={report ? report.items : []}
-          // data={testData}
+          data={data}
           newData={{tax: 10.1}}
           onSubmit={this.handleSubmit}
         />
