@@ -16,6 +16,8 @@ import { layout, feedback, help, rules, disableSubmit } from '../../../../../uti
 @compose(
   connect(
     state => ({
+      proposal: state.db.proposal._id,
+      budget: state.db.proposal.budget,
       supplementals: state.db.proposal.supplementals,
       contacts: state.db.proposal.contacts,
       user: state.user
@@ -31,25 +33,21 @@ class Supplemental extends React.Component {
   }
   showModal = () => {
     this.setState({ modal: true })
-    //  Trigger required prompt, disabling submit button.
     this.props.form.validateFields()
   }
   handleOk = () => {
     // const { form, api, user: { name, netID } } = this.props
-    const { form, api, user } = this.props
+    const { form, api, proposal, budget } = this.props
     form.validateFields((err, values) => {
-      //  Create Proposal w/ budget code if valid
       if (!err) {
         this.setState({ confirmLoading: true })
         const { contact, title, body } = values
-        let report = { contact, title, body }
+        let report = { proposal, budget, contact, title, body }
         console.log('Report ready to submit', report)
         //  TODO
         Promise.resolve()
-        .then(this.setState({
-          modal: false,
-          confirmLoading: false
-        }))
+        .then(() => message.success(`Supplemental Submitted! ID: ${'_ID'}`), 10)
+        .then(this.setState({ modal: false, confirmLoading: false }))
       } else {
         message.warning('Failed to update - Form Invalid')
       }
