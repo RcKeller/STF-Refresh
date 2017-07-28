@@ -58,9 +58,6 @@ class Manifest extends React.Component {
   handleSubmit = (items) => {
     console.log('HANDLE SUBMIT', items)
     let { api, parent, manifest } = this.props
-    // let items = Object.values(values)
-    // console.log(items)
-    const id = manifest._id
     const update = {  //  Replace publication status only.
       proposal: (prev, next) =>
         next && next.manifests
@@ -73,7 +70,7 @@ class Manifest extends React.Component {
       proposal: parent,
       type: 'original',
       items
-    }, { id, update })
+    }, { id: manifest._id, update })
     // }, { id: manifest._id })
     : api.post('manifest', {
       proposal: parent,
