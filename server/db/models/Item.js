@@ -14,11 +14,18 @@ const ItemSchema = new mongoose.Schema({
   //  Tax rate, used to automatically account for tax.
   //  TODO: Handle tax calculations on the server side.
   tax: { type: Number, required: true, default: 10.1, min: 0 },
-  //  Vendor (for reporting, these are tracked)
-  vendor: String,
   //  Priority (legacy: group) is used to sort items by importance, lower is most imp.
   //  Tad confusing, but this is a constant question for proposers.
-  priority: { type: Number, min: 0 }
+  priority: { type: Number, min: 0 },
+  /*
+  BUDGET REPORTING FIELDS
+  */
+  purchase: {
+    price: Number,
+    quantity: Number,
+    //  Vendor (for reporting, these are tracked)
+    vendor: String
+  }
 })
 ItemSchema.plugin(autoref, [
   'manifest.items',
@@ -47,7 +54,12 @@ const dummyItems = (min, ids) => {
           quantity: faker.random.number(),
           price: faker.random.number(),
           tax: faker.random.number(),
-          priority: faker.random.number()
+          priority: faker.random.number(),
+          purchase: {
+            price: faker.random.number(),
+            quantity: faker.random.number(),
+            vendor: faker.company.bsNoun()
+          }
         })
       }
       //  Create will push our fakes into the DB.
