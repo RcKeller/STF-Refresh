@@ -42,6 +42,7 @@ const dummyItems = (min, ids) => {
         fakes[i] = new Item({
           _id: ids.item[i],
           manifest: ids.manifest[i],
+          report: ids.report[i],
           name: faker.company.bsNoun(),
           description: faker.lorem.paragraph(),
           quantity: faker.random.number(),

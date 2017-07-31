@@ -7,17 +7,23 @@ const ManifestSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
   //  NOTE: The original manifest is manitfests[0] in a proposal.
   proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
+  supplemental: { type: mongoose.Schema.Types.ObjectId, ref: 'Supplemental' },
+  report: { type: mongoose.Schema.Types.ObjectId, ref: 'Report' },
   //  Type: original, partial or supplementalal
   type: String,
   // Is this the initial proposition? If not, it's a "partial" manifest for what was actually funded.
   // Items in the manifest.
   items: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item', autopopulate: true }],
   // Total cost, should be calculated dynamically.
-  total: { type: Number, required: true, default: 0 }
+  total: { type: Number, required: true, default: 0 },
+  //  Decisions are issues on manifests, which are an author's ask.
+  decision: { type: mongoose.Schema.Types.ObjectId, ref: 'Decision' }
 })
 ManifestSchema.plugin(autoref, [
   'proposal.manifests',
-  'items.manifest'
+  'report.manifest',
+  'items.manifest',
+  'decision.manifest'
 ])
 ManifestSchema.plugin(autopopulate)
 const Manifest = mongoose.model('Manifest', ManifestSchema)
@@ -38,6 +44,7 @@ const dummyManifests = (min, ids) => {
         fakes[i] = new Manifest({
           _id: ids.manifest[i],
           proposal: ids.proposal[i],
+          report: ids.report[i],
           items: [
             ids.item[i],
             ids.item[i]

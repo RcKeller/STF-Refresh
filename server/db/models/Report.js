@@ -3,11 +3,16 @@ import autoref from 'mongoose-autorefs'
 import autopopulate from 'mongoose-autopopulate'
 import faker from 'faker'
 
+/*
+A report is a record of what was ACTUALLY purchased by proposal authors for a specific manifest (original/partial/supplemental).
+*/
 const ReportSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
   //  Dates are automatically due one year from now with no exceptions.
   due: { type: Date, default: new Date().setFullYear(new Date().getFullYear() + 1) },
   proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
+  //  Autopopulate the original manifest.
+  manifest: { type: mongoose.Schema.Types.ObjectId, ref: 'Manifest', autopopulate: true },
   /*
   Grants come with a brand new budget NUMBER for tracking expenditures
   We need this for Planning and Budgeting to check
@@ -15,13 +20,10 @@ const ReportSchema = new mongoose.Schema({
   budget: String,
   items: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item', autopopulate: true }],
   total: { type: Number, required: true, default: 0 }
-  /* TODO: Iron out these details with a proposal officer.
-  EDIT: Have done so, and this is very unclear. We may be re-evaluating this process.
-  This should be coupled either with a separate audit document, or that data can be kept inside.
-  */
 })
 ReportSchema.plugin(autoref, [
-  'proposal.report',
+  'proposal.reports',
+  'manifest.report',
   'item.report'
 ])
 ReportSchema.plugin(autopopulate)
@@ -44,6 +46,7 @@ const dummyReports = (min, ids) => {
           _id: ids.report[i],
           date: faker.date.recent(),
           proposal: ids.proposal[i],
+          manifest: ids.manifest[i],
           budget: faker.random.number(),
           items: [
             ids.item[i],

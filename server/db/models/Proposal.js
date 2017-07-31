@@ -51,8 +51,7 @@ const ProposalSchema = new mongoose.Schema({
   supplementals: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Supplemental' }],
   reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }],
   //  The decision contains details about the actual award, provisions, etc.
-  //  NOTE: In the case of supplementals, decisions will be changed to "pending review."
-  //  We don't want edge cases where a proposal is viewable as approved, post-supplemental.
+  //  NOTE: Decisions relate to manifests for proposals, not directly to proposals.
   decision: { type: mongoose.Schema.Types.ObjectId, ref: 'Decision' },
   /*
   Comments are user endorsements of a proposal. They're abstracted out
@@ -61,7 +60,7 @@ const ProposalSchema = new mongoose.Schema({
   comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
   // TODO: Reports (they're unclear to me). Renders in another tab.
   //  Edit: One proposal, one decision, one report.
-  report: { type: mongoose.Schema.Types.ObjectId, ref: 'Report' }
+  reports: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Report' }]
 })
 /*
 Metadata
@@ -78,7 +77,7 @@ ProposalSchema.plugin(autoref, [
   'reviews.proposal',
   'decision.proposal',
   'comments.proposal',
-  'report.proposal'
+  'reports.proposal'
 ])
 // ProposalSchema.plugin(autopopulate)
 const Proposal = mongoose.model('Proposal', ProposalSchema)
@@ -133,7 +132,10 @@ const dummyProposals = (min, ids) => {
           supplementals: [
             ids.supplemental[i]
           ],
-          report: ids.report[i],
+          reports: [
+            ids.report[i],
+            ids.report[i]
+          ],
           comments: [
             ids.comment[i],
             ids.comment[i]

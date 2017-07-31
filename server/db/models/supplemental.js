@@ -6,6 +6,7 @@ import faker from 'faker'
 const SupplementalSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
   proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
+  supplemental: { type: mongoose.Schema.Types.ObjectId, ref: 'Supplemental' },
   //  We only need one contact for an Supplemental. Let's not make it a heavily involved process.
   contact: { type: mongoose.Schema.Types.ObjectId, ref: 'Contact', autopopulate: true },
   title: { type: String, require: true },
@@ -13,8 +14,9 @@ const SupplementalSchema = new mongoose.Schema({
   body: { type: String, require: true }
 })
 SupplementalSchema.plugin(autoref, [
-  'proposal.Supplementals',
-  'contact.Supplemental'
+  'proposal.supplementals',
+  'manifest.supplemental',
+  'contact.supplemental'
 ])
 SupplementalSchema.plugin(autopopulate)
 const Supplemental = mongoose.model('Supplemental', SupplementalSchema)
@@ -35,6 +37,7 @@ const dummySupplementals = (min, ids) => {
         fakes[i] = new Supplemental({
           _id: ids.supplemental[i],
           proposal: ids.proposal[i],
+          supplemental: ids.supplemental[i],
           contact: ids.contact[i],
           title: faker.company.catchPhrase(),
           body: faker.lorem.paragraph()
