@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 @connect(state => ({
   contacts: state.db.proposal.contacts,
-  report: state.db.proposal.report
+  reports: state.db.proposal.reports
 }))
 class Audit extends React.Component {
   render ({ report } = this.props) {

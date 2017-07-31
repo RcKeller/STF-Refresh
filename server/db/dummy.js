@@ -16,7 +16,6 @@ export default function () {
     comment: [],
     proposal: [],
     project: [],
-    supplemental: [],
     manifest: [],
     item: [],
     block: [],

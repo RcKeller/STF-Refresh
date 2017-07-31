@@ -15,7 +15,6 @@ export default (app) => {
   app.use(`/${version}/comments`, new controllers.Comments().api())
   app.use(`/${version}/proposals`, new controllers.Proposals().api())
   app.use(`/${version}/projects`, new controllers.Projects().api())
-  app.use(`/${version}/supplementals`, new controllers.Supplementals().api())
   app.use(`/${version}/manifests`, new controllers.Manifests().api())
   app.use(`/${version}/items`, new controllers.Items().api())
   app.use(`/${version}/blocks`, new controllers.Blocks().api())

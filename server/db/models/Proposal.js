@@ -40,19 +40,13 @@ const ProposalSchema = new mongoose.Schema({
   /*
   Manifests are the items requested. The first in the array is the ORIGINAL.
   the others are PARTIAL or revised manifests that reflect what is actually funded.
+  Then there are SUPPLEMENTALS, which are like mini awards made after the initial grant to meet unforseen needs.
   */
   manifests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Manifest' }],
-  /*
-  supplementals, AKA "supplementalals", are revisions to the original propsal.
-  These will be shown as "updates" or revisions to the proposal, but don't
-  necessarily mean the entire proposal was re-done.
-  It's usually just a blurb, plus decision. In rare instances there are multiple.
-  */
-  supplementals: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Supplemental' }],
   reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }],
   //  The decision contains details about the actual award, provisions, etc.
   //  NOTE: Decisions relate to manifests for proposals, not directly to proposals.
-  decision: { type: mongoose.Schema.Types.ObjectId, ref: 'Decision' },
+  decisions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Decision' }],
   /*
   Comments are user endorsements of a proposal. They're abstracted out
   so that we can view "feeds" of endorsements and examine trends in user activity.
@@ -73,9 +67,8 @@ ProposalSchema.plugin(autoref, [
   'contacts.proposal',
   'body.proposal',
   'manifests.proposal',
-  'supplementals.proposal',
   'reviews.proposal',
-  'decision.proposal',
+  'decisions.proposal',
   'comments.proposal',
   'reports.proposal'
 ])
@@ -124,17 +117,17 @@ const dummyProposals = (min, ids) => {
             ids.manifest[i],
             ids.manifest[i]
           ],
-          reviews: [
-            ids.review[i],
-            ids.review[i]
-          ],
-          decision: ids.decision[i],
-          supplementals: [
-            ids.supplemental[i]
-          ],
           reports: [
             ids.report[i],
             ids.report[i]
+          ],
+          decisions: [
+            ids.decision[i],
+            ids.decision[i]
+          ],
+          reviews: [
+            ids.review[i],
+            ids.review[i]
           ],
           comments: [
             ids.comment[i],

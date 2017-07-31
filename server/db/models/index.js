@@ -12,7 +12,6 @@ export default function loadModels () {
   //  Proposals
   require('./proposal')
   require('./project') //  a proposal body
-  require('./supplemental')
   require('./manifest')
   require('./item')
   require('./block')  //  Concise proposals for cont funding
@@ -34,7 +33,6 @@ import Contact, { dummyContacts } from './contact'
 import Comment, { dummyComments } from './comment'
 import Proposal, { dummyProposals } from './proposal'
 import Project, { dummyProjects } from './project'
-import Supplemental, { dummySupplementals } from './supplemental'
 import Manifest, { dummyManifests } from './manifest'
 import Item, { dummyItems } from './item'
 import Block, { dummyBlocks } from './block'
@@ -45,11 +43,11 @@ import Article, { dummyArticles } from './article'
 //  Note that users are not here, that's bespoke.
 export {
   User, STF, Contact, Comment,
-  Proposal, Project, Supplemental, Manifest, Item, Block,
+  Proposal, Project, Manifest, Item, Block,
   Review, Decision, Report, Article
 }
 export const restDummies = [
   dummyUsers, dummySTF, dummyContacts, dummyComments,
-  dummyProposals, dummyProjects, dummySupplementals, dummyManifests, dummyItems, dummyBlocks,
+  dummyProposals, dummyProjects, dummyManifests, dummyItems, dummyBlocks,
   dummyReviews, dummyDecisions, dummyReports, dummyArticles
 ]

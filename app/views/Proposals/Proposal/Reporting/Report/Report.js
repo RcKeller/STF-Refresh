@@ -38,7 +38,7 @@ const columns = [{
   state => ({
     parent: state.db.proposal._id,
     budget: state.db.proposal.budget,
-    report: state.db.proposal.report
+    report: state.db.proposal.reports ? state.db.proposal.reports.slice(-1)[0] : []
     // manifests: state.db.proposal.manifests,
   }),
   dispatch => ({ api: bindActionCreators(api, dispatch) })

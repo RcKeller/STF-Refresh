@@ -18,7 +18,7 @@ import { layout, feedback, help, rules, disableSubmit } from '../../../../../uti
     state => ({
       proposal: state.db.proposal._id,
       budget: state.db.proposal.budget,
-      supplementals: state.db.proposal.supplementals,
+      // supplementals: state.db.proposal.supplementals,
       contacts: state.db.proposal.contacts,
       user: state.user
     }),

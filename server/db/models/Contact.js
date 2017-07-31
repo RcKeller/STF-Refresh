@@ -6,8 +6,8 @@ const ContactSchema = new mongoose.Schema({
   // Contact info for associated proposal
   //  NOTE: Can be either a proposal, supplemental or block. Be careful if reverse populating.
   proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
-  supplemental: { type: mongoose.Schema.Types.ObjectId, ref: 'Supplemental' },
   block: { type: mongoose.Schema.Types.ObjectId, ref: 'Block' },
+  manifest: { type: mongoose.Schema.Types.ObjectId, ref: 'Manifest' },
   //  Role is the person's association - Primary (contact), Budget, official (dean), Student
   role: String,
   name: String,
@@ -21,7 +21,7 @@ const ContactSchema = new mongoose.Schema({
 })
 ContactSchema.plugin(autoref, [
   'proposal.contacts',
-  'supplemental.contacts',
+  'manifest.contact',
   'block.contacts'
 ])
 const Contact = mongoose.model('Contact', ContactSchema)
@@ -41,6 +41,8 @@ const dummyContacts = (min, ids) => {
         fakes[i] = new Contact({
           _id: ids.contact[i],
           proposal: ids.proposal[i],
+          block: ids.block[i],
+          manifest: ids.manifest[i],
           role: 'primary',
           netID: faker.internet.userName(),
           name: faker.name.findName(),

@@ -46,7 +46,7 @@ connectRequest will force a query if there's a mismatch.
       year: props.params.year,
       number: props.params.number
     },
-    join: ['contacts', 'decision', 'body', 'manifests', 'comments', 'supplementals', 'report', 'reviews']
+    join: ['contacts', 'decision', 'body', 'manifests', 'comments', 'reports', 'reviews']
   }))
 )
 class Proposal extends React.Component {
