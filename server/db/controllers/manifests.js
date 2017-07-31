@@ -30,8 +30,26 @@ export default class Manifests extends REST {
     //  https://codexample.org/questions/306428/mongodb-mongoose-subdocuments-created-twice.c
     //  https://github.com/linnovate/mean/issues/511
     let { items } = data
-    data = _.omit(data, ['items'])
+    let manifest = _.omit(data, ['_v', 'items'])
+    console.log(typeof manifest, manifest)
+    console.log(typeof items, items)
+    for (let item of items) {
+      item.manifest = id
+      // let { _id } = item
+      //  Don't upsert this:  https://stackoverflow.com/questions/39761771/mongoose-findbyidandupdate-doesnt-generate-id-on-insert
+      Item.findOne({ id: item._id }, (err, doc) => {
+        console.log('RESULT', err, doc)
+      })
+      // Item.findOneAndUpdate({ _id }, item, { upsert: true, setDefaultsOnInsert: true })
+      //   .then((itemInstance => {
+      //     console.log('itemInstance', itemInstance)
+      //   }))
+    }
+      // Item.update(criteria, item, { upsert: true, setDefaultsOnInsert: true })
+      //   .then((itemModel) => console.log('updated', itemModel))
+    // }
 
+    //     .then(modelInstance => modelInstance)
     let model = this.model.findOne({ [this.key]: id })
     return model
      .then((modelInstance) => {
