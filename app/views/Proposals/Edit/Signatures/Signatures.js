@@ -51,10 +51,7 @@ class Signatures extends React.Component {
       <Form>
         <Row gutter={32}>
           <Col className='gutter-row' xs={24} sm={12}>
-            <Alert type='info' banner showIcon={false}
-              message='Share this link!'
-              description='Your signers can access this page by signing in with their netID. This is the very last step!'
-            />
+
             <h2>Final Signatures</h2>
             <p>
               To submit your proposal to the Committee, all contacts must sign this proposal signature page.
@@ -62,6 +59,10 @@ class Signatures extends React.Component {
             <p>
               By signing this proposal, a department pledges general, physical, and financial support to this proposal. Submitting a proposal also represents the department and contact's agreement with STF policies and procedures.
             </p>
+            <Alert type='info' banner showIcon={false}
+              message='Share this link!'
+              description='Your signers can access this page by signing in with their netID. This is the very last step!'
+            />
           </Col>
           <Col className='gutter-row' xs={24} sm={12}>
             <Row>

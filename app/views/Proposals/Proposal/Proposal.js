@@ -68,17 +68,17 @@ class Proposal extends React.Component {
             </Badge>} key='2' className={styles['tab-pane']}>
               <Endorsements />
             </TabPane>
-            {author &&
+            {(author || stf) &&
               <TabPane tab='Reporting' key='3' className={styles['tab-pane']}>
                 <Reporting />
               </TabPane>
             }
-            {author &&
+            {(author || stf) &&
               <TabPane tab='Next Steps' key='4' className={styles['tab-pane']}>
                 <NextSteps />
               </TabPane>
             }
-            {author &&
+            {(author || stf) &&
               <TabPane tab='Update' key='5' className={styles['tab-pane']}>
                 <Update />
               </TabPane>
