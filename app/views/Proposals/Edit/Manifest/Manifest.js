@@ -86,12 +86,13 @@ class Manifest extends React.Component {
   }
   render ({ manifest } = this.props) {
     console.log('LOADED MANIFEST', manifest)
+    const data = manifest ? manifest.items : []
     return (
       <div>
         <p>Enter your budget requirements here. Tax MUST be included and will automatically default at 10.1% (Seattle's tax rate)</p>
         <SpreadSheet
           columns={columns}
-          data={manifest ? manifest.items : []}
+          data={data}
           // data={testData}
           newData={{tax: 10.1}}
           onSubmit={this.handleSubmit}

@@ -1,5 +1,6 @@
 import REST from './rest'
 import { Manifest, Item } from '../models'
+import mongoose from 'mongoose'
 import _ from 'lodash'
 
 export default class Manifests extends REST {
@@ -33,12 +34,26 @@ export default class Manifests extends REST {
     let manifest = _.omit(data, ['_v', 'items'])
     console.log(typeof manifest, manifest)
     console.log(typeof items, items)
+    //  Keep track of item refs to update manifest.
+    let itemRefs = []
     for (let item of items) {
+      /*
+      We're using findOneAndUpdate with upsertion (creation of documents if null is returned)
+      HOWEVER, this does not automatically create a new objectID. So we do that part.
+      We'll also keep track of refs so we can update the parent.
+      Related:
+      https://stackoverflow.com/questions/17244363/mongoose-findoneandupdate-upsert-id-null
+      https://stackoverflow.com/questions/39761771/mongoose-findbyidandupdate-doesnt-generate-id-on-insert
+      https://medium.skyrocketdev.com/es6-to-the-rescue-c832c286d28f
+      */
       item.manifest = id
-      // let { _id } = item
-      //  Don't upsert this:  https://stackoverflow.com/questions/39761771/mongoose-findbyidandupdate-doesnt-generate-id-on-insert
-      Item.findOne({ id: item._id }, (err, doc) => {
+      let _id = item.id ? item.id : new mongoose.Types.ObjectId()
+      Item.findOneAndUpdate({ _id }, item, { upsert: true, setDefaultsOnInsert: true, new: true })
+      .exec((err, doc) => {
         console.log('RESULT', err, doc)
+        if (!err) {
+          itemRefs.push(doc._id)
+        }
       })
       // Item.findOneAndUpdate({ _id }, item, { upsert: true, setDefaultsOnInsert: true })
       //   .then((itemInstance => {
@@ -58,6 +73,8 @@ export default class Manifests extends REST {
            modelInstance[attribute] = data[attribute]
          }
        }
+       // Update the manifest with the new child refs.
+       modelInstance['items'] = itemRefs
        return modelInstance.save()
      })
      .then(modelInstance => modelInstance)
