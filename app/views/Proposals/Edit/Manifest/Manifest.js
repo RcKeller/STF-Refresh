@@ -8,7 +8,7 @@ import { message } from 'antd'
 import api from '../../../../services'
 
 import SpreadSheet, { Editors } from '../../../../components/SpreadSheet'
-const { SimpleNumber } = Editors
+const { SimpleNumber, TaxRate } = Editors
 
 const columns = [{
   name: 'Name',
@@ -36,7 +36,7 @@ const columns = [{
   name: 'Tax',
   key: 'tax',
   editable: true,
-  editor: SimpleNumber,
+  editor: TaxRate,
   width: 85
 }, {
   name: 'Priority',
