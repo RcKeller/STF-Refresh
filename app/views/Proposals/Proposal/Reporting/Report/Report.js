@@ -38,8 +38,9 @@ const columns = [{
   state => ({
     parent: state.db.proposal._id,
     budget: state.db.proposal.budget,
-    report: state.db.proposal.reports ? state.db.proposal.reports.slice(-1)[0] : []
-    // manifests: state.db.proposal.manifests,
+    //  Use the most recent report (target document) and recent manifest (initial data)
+    report: state.db.proposal.reports && state.db.proposal.reports.slice(-1)[0],
+    manifest: state.db.proposal.manifests && state.db.proposal.manifests.slice(-1)[0]
   }),
   dispatch => ({ api: bindActionCreators(api, dispatch) })
 )
@@ -53,8 +54,9 @@ class Report extends React.Component {
     }
     console.log(report)
   }
-  render ({ budget, report } = this.props) {
-    const data = report ? report.items : []
+  render ({ budget, report, manifest } = this.props) {
+    //  Use the most recent manifest for initial data if report has not been created.
+    const data = report && report.items ? report.items : manifest.items
     return (
       <section>
         <h1>Budget Reporting</h1>

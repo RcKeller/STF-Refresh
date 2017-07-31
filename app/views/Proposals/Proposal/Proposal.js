@@ -39,7 +39,8 @@ connectRequest will force a query if there's a mismatch.
 @compose(
   connect(state => ({
     id: state.db.proposal && state.db.proposal._id,
-    published: state.db.proposal && state.db.proposal.published
+    published: state.db.proposal && state.db.proposal.published,
+    user: state.user
   })),
   connectRequest(props => api.get('proposal', {
     where: {
@@ -50,7 +51,10 @@ connectRequest will force a query if there's a mismatch.
   }))
 )
 class Proposal extends React.Component {
-  render ({ proposal, id, published } = this.props) {
+  render ({ proposal, id, published, user } = this.props) {
+    const author = true // TODO
+    const stf = user && user.stf
+    const admin = stf && stf.admin
     return (
       <article className={styles['tabbed-article']} >
         {!id
@@ -64,21 +68,31 @@ class Proposal extends React.Component {
             </Badge>} key='2' className={styles['tab-pane']}>
               <Endorsements />
             </TabPane>
-            <TabPane tab='Reporting' key='3' className={styles['tab-pane']}>
-              <Reporting />
-            </TabPane>
-            <TabPane tab='Next Steps' key='4' className={styles['tab-pane']}>
-              <NextSteps />
-            </TabPane>
-            <TabPane tab='Update' key='5' className={styles['tab-pane']}>
-              <Update />
-            </TabPane>
-            <TabPane tab={<span>Reviews (<em>STF-Only</em>)</span>} key='6' className={styles['tab-pane']}>
-              <Reviews />
-            </TabPane>
-            <TabPane tab={<span>Settings (<em>Admin-Only</em>)</span>} key='7' className={styles['tab-pane']}>
-              <Settings />
-            </TabPane>
+            {author &&
+              <TabPane tab='Reporting' key='3' className={styles['tab-pane']}>
+                <Reporting />
+              </TabPane>
+            }
+            {author &&
+              <TabPane tab='Next Steps' key='4' className={styles['tab-pane']}>
+                <NextSteps />
+              </TabPane>
+            }
+            {author &&
+              <TabPane tab='Update' key='5' className={styles['tab-pane']}>
+                <Update />
+              </TabPane>
+            }
+            {stf &&
+              <TabPane tab={<span>Reviews (<em>STF-Only</em>)</span>} key='6' className={styles['tab-pane']}>
+                <Reviews />
+              </TabPane>
+            }
+            {admin &&
+              <TabPane tab={<span>Settings (<em>Admin-Only</em>)</span>} key='7' className={styles['tab-pane']}>
+                <Settings />
+              </TabPane>
+            }
           </Tabs>
         }
       </article>

@@ -8,17 +8,15 @@ import Supplemental from './Supplemental/Supplemental'
 import Audit from './Audit/Audit'
 
 @connect(state => ({
-  // stf: state.user.stf
-  //  TODO: Placeholder
-  stf: { admin: true }
+  stf: state.user && state.user.stf
 }))
 class Reporting extends React.Component {
-  render ({ report, stf: { admin } } = this.props) {
+  render ({ report, stf } = this.props) {
     return (
       <section>
         <Report />
         <Supplemental />
-        {admin && <Audit />}
+        {stf && stf.admin && <Audit />}
       </section>
     )
   }
