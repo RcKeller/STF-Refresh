@@ -14,12 +14,11 @@ import Manifests from './Manifests/Manifests'
 
 @connect(state => ({
   proposal: state.db.proposal._id,
-  // legacy: state.db.proposal.body.legacy,
-  legacy: state.db.proposal.body.legacy,
+  isLegacy: state.db.proposal.body.legacy.length > 0,
   published: state.db.proposal.published
 }))
 class View extends React.Component {
-  render ({ proposal, published, legacy } = this.props) {
+  render ({ proposal, published, isLegacy } = this.props) {
     //  Once the proposal has loaded, render it. Only render body if published.
     return (
       <div>
@@ -33,10 +32,7 @@ class View extends React.Component {
                 description='This proposal has been withdrawn from publication by either an author or administrator. It exists for STF recordkeeping. For further inquiries, e-mail STFCweb@uw.edu'
               />
               : <div>
-                {!legacy
-                  ? <div><Overview /><Body /></div>
-                  : <Legacy />
-                }
+                {isLegacy ? <Legacy /> : <div><Overview /><Body /></div>}
                 <Manifests />
               </div>
             }

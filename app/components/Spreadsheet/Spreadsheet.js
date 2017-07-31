@@ -2,10 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import ReactDataGrid from 'react-data-grid'
-import { Button, Icon } from 'antd'
+import { Alert, Button, Icon } from 'antd'
 
 import Menu from './Menu'
 
+const jss = {
+  alert: { padding: 8 },
+  button: { width: '100%', borderRadius: '0 0 inherit inherit' }
+}
 class SpreadSheet extends React.Component {
   constructor (props) {
     super(props)
@@ -58,6 +62,11 @@ class SpreadSheet extends React.Component {
 ) {
     if (length < 1) this.insertRow(0)
     return <div>
+      <Alert type='warning' banner showIcon={false} closable
+        style={jss.alert}
+        message='Excel Datatable'
+        description='This table can be edited! Remember to save your data when you are done'
+        />
       <ReactDataGrid
         enableCellSelect cellNavigationMode='changeRow'
         contextMenu={<Menu
@@ -70,7 +79,7 @@ class SpreadSheet extends React.Component {
         rowsCount={length}
         onGridRowsUpdated={handleGridRowsUpdated}
       />
-      <Button size='large' type='primary' style={{ width: '100%' }} ghost onClick={handleSubmit}>
+      <Button size='large' type='primary' style={jss.button} onClick={handleSubmit}>
         <Icon type='upload' />Save
       </Button>
     </div>

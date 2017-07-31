@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 
 import { message } from 'antd'
 import api from '../../../../../services'
+import _ from 'lodash'
 
 import SpreadSheet, { Editors } from '../../../../../components/SpreadSheet'
 const { SimpleNumber } = Editors
@@ -14,7 +15,7 @@ const { SimpleNumber } = Editors
 const columns = [{
   name: 'Name',
   key: 'name',
-  editable: false
+  editable: true
 }, {
   name: 'Vendor',
   key: 'vendor',
@@ -39,33 +40,32 @@ const columns = [{
     parent: state.db.proposal._id,
     budget: state.db.proposal.budget,
     //  Use the most recent report (target document) and recent manifest (initial data)
-    report: state.db.proposal.reports && state.db.proposal.reports.slice(-1)[0],
+    // report: state.db.proposal.reports && state.db.proposal.reports.slice(-1)[0],
     manifest: state.db.proposal.manifests && state.db.proposal.manifests.slice(-1)[0]
   }),
   dispatch => ({ api: bindActionCreators(api, dispatch) })
 )
 class Report extends React.Component {
   handleSubmit = (items) => {
-    console.log('HANDLE SUBMIT', items)
     let { api, budget, report } = this.props
-    report = {
-      budget,
-      items
-    }
-    console.log(report)
+    report = { budget, items }
+    console.log('REPORT', report)
   }
   render ({ budget, report, manifest } = this.props) {
     //  Use the most recent manifest for initial data if report has not been created.
-    const data = report && report.items ? report.items : manifest.items
+    //  Make sure to omit mongo data, preventing the original from being mutated.
+    let data = (report && report.items)
+      ? report.items
+      : manifest.items.map((item) =>
+        _.omit(item, ['_id', '__v', 'manifest', 'description', 'priority', 'tax', 'report']))
     return (
       <section>
         <h1>Budget Reporting</h1>
         <h3>{`Organization Budget Code: ${budget}`}</h3>
-        <p>Lorem ipsum, why we do this...</p>
+        <p>Here you can record your recent expenditures as part of the STF process...</p>
         <SpreadSheet
           columns={columns}
           data={data}
-          newData={{tax: 10.1}}
           onSubmit={this.handleSubmit}
         />
       </section>

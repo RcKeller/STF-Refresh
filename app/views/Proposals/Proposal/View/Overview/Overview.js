@@ -6,11 +6,10 @@ import { connect } from 'react-redux'
 import { Row, Col, Alert } from 'antd'
 
 @connect(state => ({
-  overview: state.db.proposal.body.overview,
-  supplementals: state.db.proposal.supplementals
+  overview: state.db.proposal.body.overview
 }))
 class Overview extends React.Component {
-  render ({ overview, supplementals } = this.props) {
+  render ({ overview } = this.props) {
     return (
       <section>
         <Row gutter={32}>
@@ -40,7 +39,7 @@ class Overview extends React.Component {
             <p>{overview.impact.career}</p>
           </Col>
         </Row>
-        {supplementals && supplementals.map((a, i) =>
+        {/* {supplementals && supplementals.map((a, i) =>
           <Alert key={i} type={!a.approved ? 'error' : 'info'}
             message={<span>
               <b>Request for supplementalal Funding ({++i})</b>
@@ -53,7 +52,7 @@ class Overview extends React.Component {
               </span>
             }
             />
-        )}
+        )} */}
       </section>
     )
   }
