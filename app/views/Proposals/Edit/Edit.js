@@ -29,6 +29,42 @@ import styles from './Edit.css'
   }))
 )
 class Edit extends React.Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      valid: {
+        introduction: false,
+        contacts: false,
+        body: false,
+        manifest: false,
+        signatures: false
+      }
+    }
+  }
+  /*
+  If a section hasn't been validated, run validations as the server returns updated props (on tab change)
+  Saving this in state allows us to stop redundant validation attempts.
+  */
+  componentWillReceiveProps (nextProps, nextState) {
+    let { valid } = this.state
+    const next = nextProps.proposal
+    if (!valid.introduction) valid.introduction = this.validateIntroduction(next.title, next.category, next.organization)
+    if (!valid.contacts) valid.contacts = this.validateContacts(next.contacts)
+    if (!valid.body) valid.body = this.validateBody(next.body)
+    if (!valid.manifest) valid.manifest = this.validateManifest(next.manifests[0])
+    if (!valid.signatures) valid.signatures = this.validateSignatures(next.contacts)
+    this.setState({ valid })
+    console.log('VALID', valid)
+  }
+  validateIntroduction = (...args) => {
+    //  Valid if  all args have content.
+    let validFields = args.filter((a) => a.length >= 0)
+    return validFields.length === args.length
+  }
+  validateContacts = (contacts) => true
+  validateBody = () => true
+  validateManifest = () => true
+  validateSignatures = () => true
   render ({ forceRequest, proposal, user } = this.props) {
     //  Once proposals have loaded, redirect unaffiliated users.
     //  You can remove your netID and push an update, but if you leave the page after that, it locks you out.
@@ -47,7 +83,7 @@ class Edit extends React.Component {
               onChange={forceRequest}
             >
               <TabPane key='1' tab={<span><Icon type='team' />Introduction</span>}>
-                <Introduction />
+                <Introduction validate={this.validateIntroduction} />
               </TabPane>
               <TabPane key='2' tab={<span><Icon type='team' />Contacts</span>}>
                 <Contacts />
