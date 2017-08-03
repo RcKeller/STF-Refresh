@@ -44,7 +44,10 @@ import Nav from './Nav/Nav'
 
 import coreStyles from '../../css/main'
 import styles from './Template.css'
-import stf from '../../images/logoname.png'
+
+import mobileLogo from '../../images/mobileLogo.png'
+import desktopLogo from '../../images/desktopLogo.png'
+
 import wordmark from '../../images/wordmark.png'
 
 /*
@@ -63,15 +66,11 @@ function breadcrumbRenderFix (route, params, routes, paths) {
 class Template extends React.Component {
   constructor (props) {
     super(props)
-    this.state = { collapsed: true }
+    const { screen } = this.props
+    let collapsed = screen.lessThan.medium
+    this.state = { collapsed }
   }
-  componentDidMount () {
-    if (this.props.screen.greaterThan.medium) {
-      this.toggle()
-    }
-  }
-  componentWillReceiveProps
-  toggle = () => { this.setState({ collapsed: !this.state.collapsed }) }
+  toggle = () => this.setState({ collapsed: !this.state.collapsed })
   render ({ children, routes, screen } = this.props) {
     // React-router is separated from redux store - too heavy to persist.
     return (
@@ -101,7 +100,7 @@ class Template extends React.Component {
                 onClick={this.toggle}
               />
               <Link to='/'>
-                <img src={stf} className={styles['logo']} />
+                <img src={screen.is.extraSmall ? mobileLogo : desktopLogo} className={styles['logo']} />
               </Link>
             </Header>
             {children &&  //  Prevents returning 500 due to async load
