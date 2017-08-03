@@ -83,10 +83,8 @@ class Docket extends React.Component {
     // const update =
     // const docket = { docket: { metrics } }
     // console.log(id, docket)
-    // const update = {  //  Replace publication status only.
-    //   manifest: (prev, next) => prev
-    // }
-    // api.patch('manifest', { type: 'test' }, { id })
+    // const update = {  manifest: (prev, next) => prev }
+    //TODO: Update store to reflect toggling.
     api.patch('manifest', { docket: { metrics } }, { id })
     .then(message.success((metrics
       ? `${_.capitalize(record.type)} is now up for metrics!`
