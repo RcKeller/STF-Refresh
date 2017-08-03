@@ -58,34 +58,34 @@ class Docket extends React.Component {
   constructor (props) {
     super(props)
     this.columns = columnsWithoutScope
+    // const { manifests } = this.props
     this.columns.push({
       title: 'Metrics',
       dataIndex: 'docket.metrics',
       key: 'docket.metrics',
-      render: (text, record) => <Switch checked={text} onChange={(metrics) => this.handleToggleMetrics(metrics, record)} />,
+      // render: (text, record, index) => <Switch checked={this.props.manifests[index].docket.metrics || false} onChange={(metrics) => this.handleToggleMetrics(metrics, record, index)} />,
+      render: (text, record, index) => <Switch checked={text} onChange={(metrics) => this.handleToggleMetrics(metrics, record, index)} />,
       width: 75
     }, {
       title: 'Voting',
       dataIndex: 'docket.voting',
       key: 'docket.voting',
-      render: (text, record) => <Switch checked={text} onChange={(voting) => this.handleToggleVoting(voting, record)} />,
+      render: (text, record, index) => <Switch checked={text} onChange={(voting) => this.handleToggleVoting(voting, record, index)} />,
       width: 75
     })
   }
 
-  handleToggleMetrics = (metrics, record) => {
+  handleToggleMetrics = (metrics, record, index) => {
     const { api } = this.props
     const id = record._id
-    console.log('TOGGLE METRICS', id, metrics)
-    //  BUG: Failing. Perhaps it's because these aren't being  requested first?
-    // console.log(api, id, metrics, record)
-    // api.get('manifest', { id })
-    // const update =
-    // const docket = { docket: { metrics } }
-    // console.log(id, docket)
-    // const update = {  manifest: (prev, next) => prev }
-    //TODO: Update store to reflect toggling.
-    api.patch('manifest', { docket: { metrics } }, { id })
+    const update = { manifests: (prev, next) => {
+      let newManifest = Object.assign(prev[index], { docket: { metrics } })
+      prev[index] = newManifest
+      return prev
+    }}
+    //  TODO: Update store to reflect toggling.
+    //  BUG: Okay, props update, but the row does not rerender. How do we handle that?
+    api.patch('manifest', { docket: { metrics } }, { id, update })
     .then(message.success((metrics
       ? `${_.capitalize(record.type)} is now up for metrics!`
       : `${_.capitalize(record.type)} was taken down from metrics!`
@@ -96,8 +96,8 @@ class Docket extends React.Component {
     })
   }
 
-  handleToggleVoting = (voting, record) => {
-    console.log('TOGGLE VOTING', voting, record)
+  handleToggleVoting = (voting, record, index) => {
+    console.log('TOGGLE VOTING', voting, record, index)
   }
   render ({ manifests, screen } = this.props) {
     return (
