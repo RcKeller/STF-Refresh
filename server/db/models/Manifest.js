@@ -19,6 +19,11 @@ const ManifestSchema = new mongoose.Schema({
   items: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item', autopopulate: true }],
   // Total cost, should be calculated dynamically.
   total: { type: Number, required: true, default: 0 },
+  //  If the manifest is on the docket for a vote, and what kind.
+  docket: {
+    metrics: { type: Boolean, default: false },
+    voting: { type: Boolean, default: false },
+  },
   //  Decisions are issues on manifests, which are an author's ask.
   decision: { type: mongoose.Schema.Types.ObjectId, ref: 'Decision' }
 })
@@ -59,6 +64,7 @@ const dummyManifests = (min, ids) => {
             ids.item[i]
           ],
           total: faker.random.number()
+          //  By default, nothing's on the docket.
         })
         //  Some of these have been decided upon.
         if (faker.random.boolean()) {

@@ -2,14 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 
-import { compose } from 'redux'
+import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
 
 import { Link } from 'react-router'
-import { Spin, Table } from 'antd'
+import { Spin, Table, Switch } from 'antd'
 
 import styles from './Docket.css'
 
@@ -33,38 +33,51 @@ const columns = [
     dataIndex: 'type',
     key: 'type',
     render: (text) => <span>{_.capitalize(text)}</span>,
-    width: 90
-  },
-  {
-    title: 'Metrics',
-    dataIndex: 'docket.metrics',
-    key: 'docket.metrics',
-    // render: (text) => <span>{_.capitalize(text)}</span>,
-    width: 75
-  },
-  {
-    title: 'Voting',
-    dataIndex: 'type',
-    key: 'docket.voting',
-    // render: (text) => <span>{_.capitalize(text)}</span>,
-    width: 75
+    width: 120
   }
 ]
 
 @compose(
-  connect(state => ({
-    manifests: state.db.manifests,
-    screen: state.screen
-  })),
+  connect(
+    state => ({
+      manifests: state.db.manifests,
+      screen: state.screen
+    }),
+    dispatch => ({ api: bindActionCreators(api, dispatch) })
+),
   connectRequest(() => api.get('manifests', {
 
     //  BUG: Unpublished proposals can be pulled in docket creation.
     // where: { 'published': true },
     join: ['proposal']  //  Every manifest has a proposal, no need to check existence.
-    //TODO: Add docket: { metrics, voting } to manifest schema. No need to make a schema for voting only, it would only have two bools and a ref.
+    //  TODO: Add docket: { metrics, voting } to manifest schema. No need to make a schema for voting only, it would only have two bools and a ref.
   }))
 )
 class Docket extends React.Component {
+  constructor (props) {
+    super(props)
+    this.columns = columns
+    this.columns.push({
+      title: 'Metrics',
+      dataIndex: 'docket.metrics',
+      key: 'docket.metrics',
+      render: (text) => <Switch checked={text} onChange={this.handleToggleMetrics} />,
+      width: 75
+    }, {
+      title: 'Voting',
+      dataIndex: 'docket.voting',
+      key: 'docket.voting',
+      render: (text) => <Switch checked={text} onChange={this.handleToggleVoting} />,
+      width: 75
+    })
+  }
+
+  handleToggleMetrics = (value) => {
+    console.log('TOGGLE METRICS', value)
+  }
+  handleToggleVoting = (value) => {
+    console.log('TOGGLE VOTING', value)
+  }
   render ({ manifests, screen } = this.props) {
     return (
       <article className={styles['article']}>
@@ -72,7 +85,7 @@ class Docket extends React.Component {
           ? <Spin size='large' tip='Loading...' />
           : <Table dataSource={manifests} sort
             size={screen.lessThan.medium ? 'small' : ''}
-            columns={columns}
+            columns={this.columns}
             title={() => <div>
               <h1>Committee Docket</h1>
               <h6>Internal use only.</h6>

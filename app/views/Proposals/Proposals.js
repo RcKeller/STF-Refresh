@@ -129,23 +129,6 @@ class Proposals extends React.Component {
         <em>Any campus department or org can submit a proposal with a budget code. <Link to='/create'>Click Here!</Link></em>
       </div>
     )
-    // const footer = () => (
-    //   <div>
-    //     <ul>
-    //       {proposals &&
-    //         <div>
-    //           <h6>My Proposals</h6>
-    //           <Link to={`/proposals/${proposals[0].year}/${proposals[0].number}`}>
-    //             <li>{`${proposals[0].year}-${proposals[0].number}: ${proposals[0].title}`}</li>
-    //           </Link>
-    //         </div>
-    //       }
-    //       <li>My prop</li>
-    //       <li>My prop</li>
-    //     </ul>
-    //     <em>Any campus department or org can submit a proposal with a budget code. <Link to='/create'>Click Here!</Link></em>
-    //   </div>
-    // )
     console.log(myProposals)
     return (
       <article className={styles['article']}>

@@ -16,7 +16,7 @@ import styles from './Nav.css'
 @connect(state => ({
   //  NOTE: Do NOT try refactoring this selector. This is isomorphically generated, more specific selectors will break.
   routing: state.routing,
-  stf: state.user && state.user.stf
+  stf: (state.user && state.user.stf) || {}
 }))
 class Nav extends React.Component {
   render ({ routing, stf } = this.props) {
@@ -84,6 +84,6 @@ class Nav extends React.Component {
   }
 }
 Nav.propTypes = {
-  user: PropTypes.object
+  // user: PropTypes.object
 }
 export default Nav

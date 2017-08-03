@@ -38,7 +38,7 @@ class Blocks extends React.Component {
       <article className={styles['blocks']}>
         {!blocks
           ? <Spin size='large' tip='Loading...' />
-          : <Table dataSource={blocks} sort
+          : <Table dataSource={blocks} pagination={false}
             size={screen.lessThan.medium ? 'small' : ''}
             columns={screen.lessThan.medium ? columns.slice(1, 3) : columns}
             title={() => <h1>Continuous Funding Blocks</h1>}
