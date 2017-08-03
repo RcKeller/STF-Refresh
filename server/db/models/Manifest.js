@@ -50,8 +50,8 @@ const dummyManifests = (min, ids) => {
           proposal: ids.proposal[i],
           block: ids.block[i],
           report: ids.report[i],
-          // type
           contact: ids.contact[i],
+          type: faker.company.bsNoun(),
           title: faker.company.bsNoun(),
           body: faker.lorem.paragraph(),
           items: [
@@ -60,6 +60,10 @@ const dummyManifests = (min, ids) => {
           ],
           total: faker.random.number()
         })
+        //  Some of these have been decided upon.
+        if (faker.random.boolean()) {
+          fakes[i].decision = ids.decision[i]
+        }
       }
       //  Create will push our fakes into the DB.
       Manifest.create(fakes, (error) => {

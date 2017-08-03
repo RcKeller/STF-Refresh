@@ -82,7 +82,7 @@ import styles from './Proposals.css'
     user: state.user
   })),
   //  Execute necessary AJAX to load said entities
-  connectRequest((props) => api.get('proposals', {
+  connectRequest(() => api.get('proposals', {
     where: { published: true }
   }))
   // connectRequest((props) => api.getAll('proposals'))

@@ -16,10 +16,10 @@ import styles from './Nav.css'
 @connect(state => ({
   //  NOTE: Do NOT try refactoring this selector. This is isomorphically generated, more specific selectors will break.
   routing: state.routing,
-  user: state.user
+  stf: state.user && state.user.stf
 }))
 class Nav extends React.Component {
-  render ({ routing, user: { stf } } = this.props) {
+  render ({ routing, stf } = this.props) {
     const location = routing.locationBeforeTransitions ? routing.locationBeforeTransitions.pathname : '1'
     return (
       <Menu mode='inline'
@@ -27,27 +27,29 @@ class Nav extends React.Component {
         selectedKeys={[location]}
         onClick={(i) => i.key && browserHistory.push(i.key)}
       >
-        {true &&
+        {Object.keys(stf).length > 0 && // if associated in any way with STF
           <SubMenu key='sub1' title={<span><Icon type='safety' /><span>Committee</span></span>}>
             <Item key='/knowledge'>
               <Icon type='book' /><span className='nav-text'>Knowledge Base</span>
             </Item>
-            {true && <ItemGroup key='g1' title='Members'>
+            <ItemGroup key='g1' title='Members'>
               <Item key='/dashboard'>
                 <Icon type='team' /><span className='nav-text'>Dashboard</span>
               </Item>
               <Item key='/voting'>
                 <Icon type='check' /><span className='nav-text'>Voting</span>
               </Item>
-              </ItemGroup>}
-            {true && <ItemGroup key='g2' title='Admins'>
-              <Item key='/docket'>
-                <Icon type='schedule' /><span className='nav-text'>Docket</span>
-              </Item>
-              <Item key='/config'>
-                <Icon type='setting' /><span className='nav-text'>Site Config</span>
-              </Item>
-            </ItemGroup>}
+            </ItemGroup>
+            {stf.admin &&
+              <ItemGroup key='g2' title='Admins'>
+                <Item key='/docket'>
+                  <Icon type='schedule' /><span className='nav-text'>Docket</span>
+                </Item>
+                <Item key='/config'>
+                  <Icon type='setting' /><span className='nav-text'>Site Config</span>
+                </Item>
+              </ItemGroup>
+            }
           </SubMenu>
         }
         <Item key='/proposals'>
