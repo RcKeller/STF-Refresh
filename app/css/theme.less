@@ -75,10 +75,13 @@ ANT Design theme overrides
 @layout-header-background : @primary-color;
 //  Header shadows.
 .ant-layout-header {
+  display: flex;
+  align-items: center;
+  line-height: 0;
   height: 60px;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   @media (min-width: 768px) {
-    height: 90px;
+    // height: 90px;
   }
 }
 @layout-sider-background  : white;

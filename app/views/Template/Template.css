@@ -21,6 +21,11 @@
   max-height: 50px;
   margin-left: 16px;
 }
+.wordmark {
+  /*max-height: 50px;*/
+  display: flex;
+  align-items: center;
+}
 
 .breadcrumb {
   margin: 24px 0 0 0;

@@ -45,6 +45,7 @@ import Nav from './Nav/Nav'
 import coreStyles from '../../css/main'
 import styles from './Template.css'
 import stf from '../../images/logoname.png'
+import wordmark from '../../images/wordmark.png'
 
 /*
 https://ant.design/components/breadcrumb/#components-breadcrumb-demo-router
@@ -86,17 +87,21 @@ class Template extends React.Component {
             breakpoint='md'
             width={240} collapsedWidth='0'
           >
+            <div>
+              <img src={wordmark} className={styles['wordmark']} />
+            </div>
             <Login />
             <Nav />
           </Sider>
           <Layout className={styles['body']}>
             <Header>
-              <Icon className='trigger' style={{fontSize: 32, lineHeight: 'inherit', color: 'white'}}
+              <Icon className='trigger'
+                style={{fontSize: 32, lineHeight: 'inherit', color: 'white'}}
                 type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
                 onClick={this.toggle}
               />
               <Link to='/'>
-                <img src={stf} height={50} className={styles['logo']} />
+                <img src={stf} className={styles['logo']} />
               </Link>
             </Header>
             {children &&  //  Prevents returning 500 due to async load
