@@ -30,6 +30,7 @@ export default class Manifests extends REST {
   patch (id, data, query) {
     //  https://codexample.org/questions/306428/mongodb-mongoose-subdocuments-created-twice.c
     //  https://github.com/linnovate/mean/issues/511
+    //  BUG: Fails when trying to patch other data. Solution - call super() if there aren't any items?
     let { items } = data
     let manifest = _.omit(data, ['_v', 'items'])
     //  Keep track of item refs to update manifest.

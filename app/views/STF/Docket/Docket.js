@@ -74,12 +74,12 @@ class Docket extends React.Component {
   }
 
   handleToggleMetrics = (metrics, record) => {
-    console.log('TOGGLE METRICS', metrics, record)
     const { api } = this.props
     const id = record._id
+    console.log('TOGGLE METRICS', id, metrics)
     //  BUG: Failing. Perhaps it's because these aren't being  requested first?
-    console.log(api, id, metrics, record)
-    api.get('manifest', { id })
+    // console.log(api, id, metrics, record)
+    // api.get('manifest', { id })
     // const update =
     // const docket = { docket: { metrics } }
     // console.log(id, docket)
@@ -87,7 +87,7 @@ class Docket extends React.Component {
     //   manifest: (prev, next) => prev
     // }
     // api.patch('manifest', { type: 'test' }, { id })
-    api.patch('manifest', { docket: { metrics: true, voting: true } }, { id })
+    api.patch('manifest', { docket: { metrics } }, { id })
     .then(message.success((metrics
       ? `${_.capitalize(record.type)} is now up for metrics!`
       : `${_.capitalize(record.type)} was taken down from metrics!`
