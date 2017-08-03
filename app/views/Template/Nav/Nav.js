@@ -23,7 +23,8 @@ class Nav extends React.Component {
     const location = routing.locationBeforeTransitions ? routing.locationBeforeTransitions.pathname : '1'
     return (
       <Menu mode='inline'
-        defaultSelectedKeys={['1']}
+        // defaultSelectedKeys={['1']}
+        defaultOpenKeys={['/sub1']}
         selectedKeys={[location]}
         onClick={(i) => i.key && browserHistory.push(i.key)}
       >

@@ -5,6 +5,8 @@ import { connect } from 'react-redux'
 
 import { endSession } from '../../../services/authentication'
 
+// import { Avatar } from 'antd'
+
 import styles from './Login.css'
 @connect(
   state => ({ user: state.user }),
@@ -17,6 +19,7 @@ class Login extends React.Component {
         {!user.authenticated
           ? <a href='/auth/google'>
             <button className={styles['button']} >
+              {/* <Avatar size='large' shape='square' /> */}
               <strong>UW NetID</strong>
               <small>WEBLOGIN</small>
             </button>

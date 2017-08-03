@@ -1,12 +1,6 @@
 @import '../../css/layout';
 @import '../../css/colors';
 
-
-.template {
-  overflow-x: hidden;
-  height: 100%;
-}
-
 .nav {
   z-index: 999;
   background: var(--dark-gray);
@@ -39,5 +33,5 @@
 }
 
 .body {
-  @apply --body;
+  min-height: calc(100vh - 60px);
 }

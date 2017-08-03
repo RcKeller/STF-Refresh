@@ -34,6 +34,8 @@ const meta = [
 // Add to homescreen for Chrome on Android
 const link = [{ rel: 'icon', href: favicon }]
 
+import Headroom from 'react-headroom'
+
 import { LocaleProvider, Layout, Icon, Breadcrumb } from 'antd'
 import enUS from 'antd/lib/locale-provider/en_US'
 const { Sider, Header, Content } = Layout
@@ -75,24 +77,8 @@ class Template extends React.Component {
     // React-router is separated from redux store - too heavy to persist.
     return (
       <LocaleProvider locale={enUS}>
-        <Layout className={styles['template']}>
-          <Helmet
-            title='UW Student Tech Fee'
-            titleTemplate='%s - Student Tech Fee'
-            meta={meta} link={link}
-          />
-          <Sider trigger={null}
-            collapsible collapsed={this.state.collapsed}
-            breakpoint='md'
-            width={240} collapsedWidth='0'
-          >
-            <div>
-              <img src={wordmark} className={styles['wordmark']} />
-            </div>
-            <Login />
-            <Nav />
-          </Sider>
-          <Layout className={styles['body']}>
+        <Layout>
+          <Headroom disable={screen.greaterThan.large}>
             <Header>
               <Icon className='trigger'
                 style={{fontSize: 32, lineHeight: 'inherit', color: 'white'}}
@@ -103,17 +89,35 @@ class Template extends React.Component {
                 <img src={screen.is.extraSmall ? mobileLogo : desktopLogo} className={styles['logo']} />
               </Link>
             </Header>
-            {children &&  //  Prevents returning 500 due to async load
-              <Content>
-                {routes[1].path &&
-                  <Breadcrumb
-                    className={styles['breadcrumb']}
-                    routes={routes} itemRender={breadcrumbRenderFix}
-                  />
-                }
-                {children}
-              </Content>
-            }
+          </Headroom>
+          <Layout  className={styles['body']}>
+            <Helmet
+              title='UW Student Tech Fee'
+              titleTemplate='%s - Student Tech Fee'
+              meta={meta} link={link}
+            />
+            <Sider trigger={null}
+              collapsible collapsed={this.state.collapsed}
+              breakpoint='md'
+              width={240} collapsedWidth='0'
+            >
+              <img src={wordmark} className={styles['wordmark']} />
+              <Login />
+              <Nav />
+            </Sider>
+            <Layout>
+              {children &&  //  Prevents returning 500 due to async load
+                <Content>
+                  {routes[1].path &&
+                    <Breadcrumb
+                      className={styles['breadcrumb']}
+                      routes={routes} itemRender={breadcrumbRenderFix}
+                    />
+                  }
+                  {children}
+                </Content>
+              }
+            </Layout>
           </Layout>
         </Layout>
       </LocaleProvider>

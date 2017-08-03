@@ -67,6 +67,9 @@ ANT Design theme overrides
 @item-active-bg         : @primary-1;
 @item-hover-bg          : @secondary-1;
 @link-hover-color       : @metallic-gold;
+.ant-menu-inline .ant-menu-item, .ant-menu-vertical .ant-menu-item {
+     z-index: 0;
+}
 
 @input-hover-border-color    : @secondary-color;
 
@@ -79,6 +82,7 @@ ANT Design theme overrides
   align-items: center;
   line-height: 0;
   height: 60px;
+  z-index: 1020;
   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   @media (min-width: 768px) {
     // height: 90px;
