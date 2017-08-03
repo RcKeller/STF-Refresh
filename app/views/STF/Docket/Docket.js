@@ -9,11 +9,12 @@ import { connectRequest } from 'redux-query'
 import api from '../../../services'
 
 import { Link } from 'react-router'
-import { Spin, Table, Switch } from 'antd'
+import { Spin, Table, Switch, message } from 'antd'
 
 import styles from './Docket.css'
 
-const columns = [
+//  Our column config is split in two and combined in the constructor, since we need "this" component scope for callbacks.
+const columnsWithoutScope = [
   {
     title: 'ID',
     dataIndex: 'number',
@@ -56,27 +57,49 @@ const columns = [
 class Docket extends React.Component {
   constructor (props) {
     super(props)
-    this.columns = columns
+    this.columns = columnsWithoutScope
     this.columns.push({
       title: 'Metrics',
       dataIndex: 'docket.metrics',
       key: 'docket.metrics',
-      render: (text) => <Switch checked={text} onChange={this.handleToggleMetrics} />,
+      render: (text, record) => <Switch checked={text} onChange={(metrics) => this.handleToggleMetrics(metrics, record)} />,
       width: 75
     }, {
       title: 'Voting',
       dataIndex: 'docket.voting',
       key: 'docket.voting',
-      render: (text) => <Switch checked={text} onChange={this.handleToggleVoting} />,
+      render: (text, record) => <Switch checked={text} onChange={(voting) => this.handleToggleVoting(voting, record)} />,
       width: 75
     })
   }
 
-  handleToggleMetrics = (value) => {
-    console.log('TOGGLE METRICS', value)
+  handleToggleMetrics = (metrics, record) => {
+    console.log('TOGGLE METRICS', metrics, record)
+    const { api } = this.props
+    const id = record._id
+    //  BUG: Failing. Perhaps it's because these aren't being  requested first?
+    console.log(api, id, metrics, record)
+    api.get('manifest', { id })
+    // const update =
+    // const docket = { docket: { metrics } }
+    // console.log(id, docket)
+    // const update = {  //  Replace publication status only.
+    //   manifest: (prev, next) => prev
+    // }
+    // api.patch('manifest', { type: 'test' }, { id })
+    api.patch('manifest', { docket: { metrics: true, voting: true } }, { id })
+    .then(message.success((metrics
+      ? `${_.capitalize(record.type)} is now up for metrics!`
+      : `${_.capitalize(record.type)} was taken down from metrics!`
+    ), 10))
+    .catch(err => {
+      message.warning(`Failed to update - client error`)
+      console.warn(err)
+    })
   }
-  handleToggleVoting = (value) => {
-    console.log('TOGGLE VOTING', value)
+
+  handleToggleVoting = (voting, record) => {
+    console.log('TOGGLE VOTING', voting, record)
   }
   render ({ manifests, screen } = this.props) {
     return (
@@ -98,6 +121,7 @@ class Docket extends React.Component {
   }
 }
 Docket.propTypes = {
+  api: PropTypes.object,
   manifests: PropTypes.array,
   screen: PropTypes.object
 }

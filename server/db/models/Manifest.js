@@ -22,7 +22,7 @@ const ManifestSchema = new mongoose.Schema({
   //  If the manifest is on the docket for a vote, and what kind.
   docket: {
     metrics: { type: Boolean, default: false },
-    voting: { type: Boolean, default: false },
+    voting: { type: Boolean, default: false }
   },
   //  Decisions are issues on manifests, which are an author's ask.
   decision: { type: mongoose.Schema.Types.ObjectId, ref: 'Decision' }

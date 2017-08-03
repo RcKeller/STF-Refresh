@@ -75,7 +75,6 @@ class Settings extends React.Component {
     })
   }
   handleUAC = (uac) => {
-    console.log('UAC?', uac)
     const { api, id } = this.props
     const update = {  //  Replace publication status only.
       proposal: (prev, next) =>
@@ -102,7 +101,6 @@ class Settings extends React.Component {
     })
   }
   handlePublished = (published) => {
-    console.log('Published?', published)
     const { api, id } = this.props
     const update = {  //  Replace publication status only.
       proposal: (prev, next) =>
