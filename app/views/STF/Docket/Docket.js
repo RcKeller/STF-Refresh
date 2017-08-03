@@ -15,27 +15,7 @@ import styles from './Docket.css'
 
 //  Our column config is split in two and combined in the constructor, since we need "this" component scope for callbacks.
 const columnsWithoutScope = [
-  {
-    title: 'ID',
-    dataIndex: 'number',
-    key: 'number',
-    sorter: (a, b) => (a.proposal.year * a.proposal.number) - (b.proposal.year * b.proposal.number),
-    render: (text, record) => <Link to={`/proposals/${record.proposal.year}/${record.proposal.number}`}>{`${record.proposal.year}-${record.proposal.number}`}</Link>,
-    width: 90
-  },
-  {
-    title: 'Title',
-    dataIndex: 'proposal.title',
-    key: 'proposal.title',
-    render: (text, record) => <Link to={`/proposals/${record.proposal.year}/${record.proposal.number}`}>{text}</Link>
-  },
-  {
-    title: 'Motion',
-    dataIndex: 'type',
-    key: 'type',
-    render: (text) => <span>{_.capitalize(text)}</span>,
-    width: 120
-  }
+
 ]
 
 @compose(
@@ -57,9 +37,28 @@ const columnsWithoutScope = [
 class Docket extends React.Component {
   constructor (props) {
     super(props)
-    this.columns = columnsWithoutScope
-    // const { manifests } = this.props
-    this.columns.push({
+    this.columns = [{
+      title: 'ID',
+      dataIndex: 'number',
+      key: 'number',
+      sorter: (a, b) => (a.proposal.year * a.proposal.number) - (b.proposal.year * b.proposal.number),
+      render: (text, record) => <Link to={`/proposals/${record.proposal.year}/${record.proposal.number}`}>{`${record.proposal.year}-${record.proposal.number}`}</Link>,
+      width: 90
+    },
+    {
+      title: 'Title',
+      dataIndex: 'proposal.title',
+      key: 'proposal.title',
+      render: (text, record) => <Link to={`/proposals/${record.proposal.year}/${record.proposal.number}`}>{text}</Link>
+    },
+    {
+      title: 'Motion',
+      dataIndex: 'type',
+      key: 'type',
+      render: (text) => <span>{_.capitalize(text)}</span>,
+      width: 120
+    },
+    {
       title: 'Metrics',
       dataIndex: 'docket.metrics',
       key: 'docket.metrics',
@@ -72,19 +71,18 @@ class Docket extends React.Component {
       key: 'docket.voting',
       render: (text, record, index) => <Switch checked={text} onChange={(voting) => this.handleToggleVoting(voting, record, index)} />,
       width: 75
-    })
+    }]
   }
 
   handleToggleMetrics = (metrics, record, index) => {
     const { api } = this.props
     const id = record._id
+    //  Update the manifest at the correct index.
     const update = { manifests: (prev, next) => {
-      let newManifest = Object.assign(prev[index], { docket: { metrics } })
-      prev[index] = newManifest
-      return prev
+      let newData = prev.slice()
+      newData[index].docket.metrics = metrics
+      return newData
     }}
-    //  TODO: Update store to reflect toggling.
-    //  BUG: Okay, props update, but the row does not rerender. How do we handle that?
     api.patch('manifest', { docket: { metrics } }, { id, update })
     .then(message.success((metrics
       ? `${_.capitalize(record.type)} is now up for metrics!`
@@ -97,16 +95,37 @@ class Docket extends React.Component {
   }
 
   handleToggleVoting = (voting, record, index) => {
-    console.log('TOGGLE VOTING', voting, record, index)
+    const { api } = this.props
+    const id = record._id
+    //  Update the manifest at the correct index.
+    const update = { manifests: (prev, next) => {
+      let newData = prev.slice()
+      newData[index].docket.voting = voting
+      return newData
+    }}
+    api.patch('manifest', { docket: { voting } }, { id, update })
+    .then(message.success((voting
+      ? `${_.capitalize(record.type)} is now up for metrics!`
+      : `${_.capitalize(record.type)} was taken down from metrics!`
+    ), 10))
+    .catch(err => {
+      message.warning(`Failed to update - client error`)
+      console.warn(err)
+    })
   }
-  render ({ manifests, screen } = this.props) {
+  render (
+    { columns } = this,
+    { manifests, screen } = this.props
+  ) {
     return (
       <article className={styles['article']}>
         {!manifests
           ? <Spin size='large' tip='Loading...' />
           : <Table dataSource={manifests} sort
             size={screen.lessThan.medium ? 'small' : ''}
-            columns={this.columns}
+            // columns={columns}
+            // columns={screen.lessThan.medium ? columns.splice(1, 4) : columns}
+            columns={screen.lessThan.medium ? columns.filter(col => col.title !== 'Title') : columns}
             title={() => <div>
               <h1>Committee Docket</h1>
               <h6>Internal use only.</h6>
