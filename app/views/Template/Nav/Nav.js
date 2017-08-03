@@ -34,9 +34,9 @@ class Nav extends React.Component {
               <Icon type='book' /><span className='nav-text'>Knowledge Base</span>
             </Item>
             <ItemGroup key='g1' title='Members'>
-              <Item key='/dashboard'>
+              {/* <Item key='/dashboard'>
                 <Icon type='team' /><span className='nav-text'>Dashboard</span>
-              </Item>
+              </Item> */}
               <Item key='/voting'>
                 <Icon type='check' /><span className='nav-text'>Voting</span>
               </Item>
