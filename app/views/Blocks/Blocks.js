@@ -36,12 +36,12 @@ class Blocks extends React.Component {
   render ({ blocks, screen } = this.props) {
     return (
       <article className={styles['blocks']}>
+        <h1>Continuous Funding Blocks</h1>
         {!blocks
           ? <Spin size='large' tip='Loading...' />
           : <Table dataSource={blocks} pagination={false}
             size={screen.lessThan.medium ? 'small' : ''}
             columns={screen.lessThan.medium ? columns.slice(1, 3) : columns}
-            title={() => <h1>Continuous Funding Blocks</h1>}
           />
         }
       </article>

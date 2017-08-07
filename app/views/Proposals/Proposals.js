@@ -110,8 +110,6 @@ class Proposals extends React.Component {
     { proposals, screen } = this.props,
     { myProposals } = this.state
   ) {
-    //  Return mapped content with proposal data. Demonstrates data usage.
-    const title = () => <h1>STF Proposals</h1>
     const footer = () => (
       <div>
         {myProposals &&
@@ -129,24 +127,16 @@ class Proposals extends React.Component {
         <em>Any campus department or org can submit a proposal with a budget code. <Link to='/create'>Click Here!</Link></em>
       </div>
     )
-    console.log(myProposals)
     return (
       <article className={styles['article']}>
+        <h1>STF Proposals</h1>
         {!proposals
           ? <Spin size='large' tip='Loading...' />
-          : (screen.greaterThan.medium
-            ? <Table dataSource={proposals} sort
-              columns={columns}
-              title={title}
-              footer={footer}
-              />
-            : <Table dataSource={proposals} sort
-              size='small'
-              columns={columns.slice(0, 3)}
-              title={title}
-              footer={footer}
+          : <Table dataSource={proposals} sort
+            size={screen.lessThan.medium ? 'small' : ''}
+            columns={screen.lessThan.medium ? columns.slice(0, 3) : columns}
+            footer={footer}
             />
-          )
         }
       </article>
     )

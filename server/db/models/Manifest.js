@@ -56,7 +56,7 @@ const dummyManifests = (min, ids) => {
           block: ids.block[i],
           report: ids.report[i],
           contact: ids.contact[i],
-          type: faker.company.bsNoun(),
+          type: faker.random.boolean() ? 'original' : faker.company.bsNoun(),
           title: faker.company.bsNoun(),
           body: faker.lorem.paragraph(),
           items: [

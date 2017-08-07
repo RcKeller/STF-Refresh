@@ -13,11 +13,6 @@ import { Spin, Table, Switch, message } from 'antd'
 
 import styles from './Docket.css'
 
-//  Our column config is split in two and combined in the constructor, since we need "this" component scope for callbacks.
-const columnsWithoutScope = [
-
-]
-
 @compose(
   connect(
     state => ({
@@ -63,7 +58,10 @@ class Docket extends React.Component {
       dataIndex: 'docket.metrics',
       key: 'docket.metrics',
       // render: (text, record, index) => <Switch checked={this.props.manifests[index].docket.metrics || false} onChange={(metrics) => this.handleToggleMetrics(metrics, record, index)} />,
-      render: (text, record, index) => <Switch checked={text} onChange={(metrics) => this.handleToggleMetrics(metrics, record, index)} />,
+      render: (text, record, index) =>
+      record.type === 'original'  //  Supplementals don't go through metrics reviews
+        ? <Switch checked={text} onChange={(metrics) => this.handleToggleMetrics(metrics, record, index)} />
+        : <em>N/A</em>,
       width: 75
     }, {
       title: 'Voting',
@@ -105,8 +103,8 @@ class Docket extends React.Component {
     }}
     api.patch('manifest', { docket: { voting } }, { id, update })
     .then(message.success((voting
-      ? `${_.capitalize(record.type)} is now up for metrics!`
-      : `${_.capitalize(record.type)} was taken down from metrics!`
+      ? `${_.capitalize(record.type)} is now up for voting!`
+      : `${_.capitalize(record.type)} was taken down from voting!`
     ), 10))
     .catch(err => {
       message.warning(`Failed to update - client error`)
@@ -119,18 +117,14 @@ class Docket extends React.Component {
   ) {
     return (
       <article className={styles['article']}>
+        <h1>Committee Docket</h1>
+        <h6>Internal use only.</h6>
+        <p>Add proposals, partials and supplementals to QA and voting dockets.</p>
         {!manifests
           ? <Spin size='large' tip='Loading...' />
           : <Table dataSource={manifests} sort
             size={screen.lessThan.medium ? 'small' : ''}
-            // columns={columns}
-            // columns={screen.lessThan.medium ? columns.splice(1, 4) : columns}
             columns={screen.lessThan.medium ? columns.filter(col => col.title !== 'Title') : columns}
-            title={() => <div>
-              <h1>Committee Docket</h1>
-              <h6>Internal use only.</h6>
-              <p>Add proposals, partials and supplementals to QA and voting dockets.</p>
-            </div>}
           />
         }
       </article>

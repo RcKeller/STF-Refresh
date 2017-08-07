@@ -72,7 +72,6 @@ class Knowledge extends React.Component {
     { articles, screen } = this.props,
     { myArticles } = this.state
   ) {
-    const title = () => <h1>Knowledge Base Articles</h1>
     const footer = () => (
       <div>
         {myArticles &&
@@ -90,21 +89,14 @@ class Knowledge extends React.Component {
     )
     return (
       <article className={styles['article']}>
+        <h1>Knowledge Base Articles</h1>
         {!articles
           ? <Spin size='large' tip='Loading...' />
-          : (screen.greaterThan.medium
-            ? <Table dataSource={articles} sort
-              columns={columns}
-              title={title}
-              footer={footer}
-              />
-            : <Table dataSource={articles} sort
-              size='small'
-              columns={columns.slice(0, 3)}
-              title={title}
-              footer={footer}
-            />
-          )
+          : <Table dataSource={articles} sort
+            size={screen.lessThan.medium ? 'small' : ''}
+            columns={screen.lessThan.medium ? columns.slice(0, 3) : columns}
+            footer={footer}
+          />
         }
       </article>
     )
