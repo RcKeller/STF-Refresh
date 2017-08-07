@@ -19,7 +19,7 @@ class Endorsements extends React.Component {
     return (
       <div>
         <h1>Community Endorsements</h1>
-        <p>Anyone in the UW system can log in and endorse a proposal! We highly encourage our proposal authors to exemplify their community engagement by having their proposals endorsed by students and staff alike. You may endorse as many proposals as you like.</p>
+        <p>Anyone with a UW NetID can endorse a proposal! We highly encourage our proposal authors to exemplify their community engagement by having their proposals endorsed by students and staff alike. You may endorse as many proposals as you like.</p>
         <Row gutter={32}>
           {comments.map((c, i) =>
             <Col key={i} className='gutter-row' xs={24} md={12} xl={8} >

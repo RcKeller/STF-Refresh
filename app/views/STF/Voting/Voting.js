@@ -1,41 +1,81 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import _ from 'lodash'
 
-// import { compose, bindActionCreators } from 'redux'
+import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { connectRequest } from 'redux-query'
 
-// import api from '../../../services'
+import api from '../../../services'
 
-import { Tabs } from 'antd'
+import { Spin, Tabs } from 'antd'
 const TabPane = Tabs.TabPane
 
 import styles from './Voting.css'
-@connect(state => ({ user: state.user }))
+// @connect(state => ({ user: state.user }))
+@compose(
+  connect(
+    state => ({ manifests: state.db.manifests }),
+    dispatch => ({ api: bindActionCreators(api, dispatch) })
+),
+  connectRequest(() => api.get('manifests', {
+    //  BUG: Unpublished proposals can be pulled in docket creation.
+    // where: { 'docket': true },
+    // where: { 'docket.metrics': true },
+    join: ['proposal']  //  Every manifest has a proposal, no need to check existence.
+  }))
+)
 class Voting extends React.Component {
-  render ({ user } = this.props) {
+  constructor (props) {
+    super(props)
+    this.state = { docket: [] }
+  }
+  componentWillReceiveProps (nextProps) {
+    //  Check our manifests to see if they're on the docket
+    const { manifests } = nextProps
+    if (Array.isArray(manifests)) {
+      //  Filter out proposals containing the netID in contacts.
+      const docket = manifests.filter(manifest => {
+        return manifest.docket.metrics || manifest.docket.voting
+      })
+      this.setState({ docket })
+    }
+  }
+  render (
+    { user, manifests } = this.props,
+    { docket } = this.state
+  ) {
     return (
       <article className={styles['article']}>
         <h1>Reviews & Voting</h1>
-        <Tabs tabPosition='left'>
-          <TabPane tab={<span>Proposal<br />{'2017-25'}</span>} key='1'>
-            <ul>
-              <li>There are two kinds of meetings:</li>
-              <li>- QA meetings (metrics, no votes)</li>
-              <li>- Voting meetings (votes, may have metrics but probably not)</li>
-            </ul>
-          </TabPane>
-          <TabPane tab={<span>Partial<br />{'2017-17'}</span>} key='2'>
-            Content of Tab 2
-          </TabPane>
-          <TabPane tab={<span>Supplemental<br />{'2017-20'}</span>} key='3'>
-            Content of Tab 3
-          </TabPane>
-        </Tabs>
+        <ul>
+          <li>There are two kinds of meetings:</li>
+          <li>- QA meetings (metrics, no votes)</li>
+          <li>- Voting meetings (votes, may have metrics but probably not)</li>
+        </ul>
+        {!docket
+          ? <Spin size='large' tip='Loading...' />
+          : (docket.length >= 1
+            ? <Tabs tabPosition='left'>
+              {docket.map((manifest, i) => (
+                <TabPane key={i} tab={<span>
+                  {_.capitalize(manifest.type)}
+                  <br />
+                  {`${manifest.proposal.year}-${manifest.proposal.number}`}
+                </span>}
+                >
+                  {manifests[i].proposal.title}
+                </TabPane>
+              ))}
+            </Tabs>
+            : <p><em>Nothing is on the docket.</em></p>
+          )
+        }
       </article>
     )
   }
 }
 Voting.propTypes = {
-  user: PropTypes.object
+  manifests: PropTypes.array
 }
 export default Voting
