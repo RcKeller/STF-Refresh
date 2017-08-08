@@ -11,6 +11,8 @@ import api from '../../../services'
 import { Spin, Tabs } from 'antd'
 const TabPane = Tabs.TabPane
 
+import Vote from './Vote/Vote'
+
 import styles from './Voting.css'
 // @connect(state => ({ user: state.user }))
 @compose(
@@ -20,11 +22,8 @@ import styles from './Voting.css'
 ),
   connectRequest(() => api.get('manifests', {
     //  BUG: Unpublished proposals can be pulled in docket creation.
-    // where: { 'docket': true },
-    // where: { 'docket.metrics': true },
     force: true,
-    join: ['proposal.body'],  //  Every manifest has a proposal, no need to check existence.
-    // deepJoin: ['proposal.body']
+    join: ['proposal.body']
   }))
 )
 class Voting extends React.Component {
@@ -70,7 +69,8 @@ class Voting extends React.Component {
                     : `${manifest.proposal.year}-${manifest.proposal.number}`
                 }
                 >
-                  {manifests[i].proposal.title}
+                  {/* {manifests[i].proposal.title} */}
+                  <Vote index={i} />
                 </TabPane>
               ))}
             </Tabs>
@@ -81,14 +81,6 @@ class Voting extends React.Component {
     )
   }
 }
-/*
-tab={<span>
-  {manifest.type !== 'original' && <span>{_.capitalize(manifest.type)}<br /></span>}
-  {`${manifest.proposal.year}-${manifest.proposal.number}`}
-</span>}
-*/
-{/* {manifest.type !== 'original' && _.capitalize(manifest.type)}
-<br /> */}
 Voting.propTypes = {
   manifests: PropTypes.array
 }
