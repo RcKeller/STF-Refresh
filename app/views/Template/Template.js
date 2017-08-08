@@ -69,8 +69,18 @@ class Template extends React.Component {
   constructor (props) {
     super(props)
     const { screen } = this.props
-    let collapsed = screen.lessThan.medium
+    let collapsed = screen.lessThan.large
     this.state = { collapsed }
+  }
+  componentWillReceiveProps (nextProps) {
+    let oldScreen = this.props.screen
+    let {screen} = nextProps
+    if (oldScreen.greaterThan.medium && screen.lessThan.large) {
+      this.setState({ collapsed: true })
+    }
+    if (oldScreen.lessThan.large && screen.greaterThan.medium) {
+      this.setState({ collapsed: false })
+    }
   }
   toggle = () => this.setState({ collapsed: !this.state.collapsed })
   render ({ children, routes, screen } = this.props) {
