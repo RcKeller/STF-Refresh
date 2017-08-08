@@ -27,8 +27,9 @@ class Vote extends React.Component {
   ) {
     const { proposal } = manifest
     const { id, title, organization, uac, year, number, date, comments, body } = proposal
-    console.log(body)
-    body && Object.keys(body.plan).forEach((key, i) => console.log(body.plan[key].current, body.plan[key].future))
+    //  For reasons unknown, we can't use Object.keys to iterate and create panels. Map works though. Perhaps it's a FP issue?
+    const planKeys = Object.keys(body.plan)
+    const planTitles = ['State Analysis', 'Availability', 'Implementation Strategy', 'Outreach Efforts', 'Risk Assessment']
     return (
       <section>
         {!proposal
@@ -72,24 +73,16 @@ class Vote extends React.Component {
                   </Col>
                 </Row>
                 <h1>Project Plan</h1>
-                {body.plan &&
-                  <Collapse bordered={false} >
-                    {Object.keys(body.plan).forEach((key, i) => (
-                      <Panel header={i} key={i}>
-                        <div>
-                        <h3>Current</h3>
-                        <p>
-                          {body.plan[key].current}
-                        </p>
-                        <h3>Future</h3>
-                        <p>
-                          {body.plan[key].future}
-                        </p>
-                      </div>
-                      </Panel>
-                    ))}
-                  </Collapse>
-                }
+                <Collapse bordered={false} >
+                  {planKeys.map((area, i) => (
+                    <Panel header={planTitles[i]} key={i}>
+                      <h3>Current</h3>
+                      <p>{body.plan[area].current}</p>
+                      <h3>Future</h3>
+                      <p>{body.plan[area].future}</p>
+                    </Panel>
+                  ))}
+                </Collapse>
               </div>
             }
           </div>
