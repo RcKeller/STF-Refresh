@@ -81,6 +81,7 @@ class Docket extends React.Component {
       newData[index].docket.metrics = metrics
       return newData
     }}
+    console.log('RECORD DOCKET for METRICS', record.docket)
     api.patch('manifest', { docket: { metrics } }, { id, update })
     .then(message.success((metrics
       ? `${_.capitalize(record.type)} is now up for metrics!`
