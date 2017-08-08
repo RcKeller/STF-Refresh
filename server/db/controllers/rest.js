@@ -43,7 +43,15 @@ export default class REST {
   */
   queryHandler (model, query) {
     // JOIN aka populate, e.g. join=comments,reviews
-    if (query.join) model = model.populate(query.join.split(',').join(' '))
+    if (query.join) {
+      console.warn(query.join)
+      model = model.populate(query.join.split(',').join(' '))
+    }
+    if (query.deepJoin) {
+      console.warn(query.deepJoin)
+      let test = query.deepJoin.split('.')
+      console.log(test)
+    }
     // SELECT, gathering specific fields e.g. select=name
     if (query.select) model = model.select(query.select.split(',').join(' '))
     return model

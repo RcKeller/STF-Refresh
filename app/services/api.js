@@ -56,6 +56,10 @@ const endpoint = (model, options) => {
     url = `${url}${operator}join=${options.join}`
     operator = '&'
   }
+  if (options.deepJoin) {
+    url = `${url}${operator}deepJoin=${options.deepJoin}`
+    operator = '&'
+  }
   return url
 }
 
@@ -70,7 +74,8 @@ const get = (model, options = {}) => ({
   url: endpoint(model, options),
   options: { method: 'GET' },
   transform: res => ({ [model]: normalize(res) }),
-  update: options.update ? options.update : { [model]: (prev, next) => next }
+  update: options.update ? options.update : { [model]: (prev, next) => next },
+  force: options.force || false
 })
 
 /* *****

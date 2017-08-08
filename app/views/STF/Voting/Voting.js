@@ -22,7 +22,9 @@ import styles from './Voting.css'
     //  BUG: Unpublished proposals can be pulled in docket creation.
     // where: { 'docket': true },
     // where: { 'docket.metrics': true },
-    join: ['proposal']  //  Every manifest has a proposal, no need to check existence.
+    force: true,
+    join: ['proposal'],  //  Every manifest has a proposal, no need to check existence.
+    deepJoin: ['proposal.body']
   }))
 )
 class Voting extends React.Component {
@@ -58,11 +60,15 @@ class Voting extends React.Component {
           : (docket.length >= 1
             ? <Tabs tabPosition='left'>
               {docket.map((manifest, i) => (
-                <TabPane key={i} tab={<span>
-                  {_.capitalize(manifest.type)}
-                  <br />
-                  {`${manifest.proposal.year}-${manifest.proposal.number}`}
-                </span>}
+                <TabPane key={i} tab={
+                  manifest.type !== 'original'
+                    ? <span>
+                      {_.capitalize(manifest.type)}
+                      <br />
+                      {manifest.proposal.year}-{manifest.proposal.number}
+                    </span>
+                    : `${manifest.proposal.year}-${manifest.proposal.number}`
+                }
                 >
                   {manifests[i].proposal.title}
                 </TabPane>
@@ -75,6 +81,14 @@ class Voting extends React.Component {
     )
   }
 }
+/*
+tab={<span>
+  {manifest.type !== 'original' && <span>{_.capitalize(manifest.type)}<br /></span>}
+  {`${manifest.proposal.year}-${manifest.proposal.number}`}
+</span>}
+*/
+{/* {manifest.type !== 'original' && _.capitalize(manifest.type)}
+<br /> */}
 Voting.propTypes = {
   manifests: PropTypes.array
 }

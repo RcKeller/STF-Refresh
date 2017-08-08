@@ -44,7 +44,7 @@ const { Sider, Header, Content } = Layout
 import Login from './Login/Login'
 import Nav from './Nav/Nav'
 
-import coreStyles from '../../css/main'
+import '../../css/main'
 import styles from './Template.css'
 
 import mobileLogo from '../../images/mobileLogo.png'
@@ -83,7 +83,10 @@ class Template extends React.Component {
     }
   }
   toggle = () => this.setState({ collapsed: !this.state.collapsed })
-  render ({ children, routes, screen } = this.props) {
+  render (
+    { children, routes, screen } = this.props,
+    { collapsed } = this.state
+  ) {
     // React-router is separated from redux store - too heavy to persist.
     return (
       <LocaleProvider locale={enUS}>
@@ -100,14 +103,14 @@ class Template extends React.Component {
               </Link>
             </Header>
           </Headroom>
-          <Layout  className={styles['body']}>
+          <Layout className={styles['body']}>
             <Helmet
               title='UW Student Tech Fee'
               titleTemplate='%s - Student Tech Fee'
               meta={meta} link={link}
             />
             <Sider trigger={null}
-              collapsible collapsed={this.state.collapsed}
+              collapsible collapsed={collapsed}
               breakpoint='md'
               width={240} collapsedWidth='0'
             >
