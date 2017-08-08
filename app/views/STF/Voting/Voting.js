@@ -23,8 +23,8 @@ import styles from './Voting.css'
     // where: { 'docket': true },
     // where: { 'docket.metrics': true },
     force: true,
-    join: ['proposal'],  //  Every manifest has a proposal, no need to check existence.
-    deepJoin: ['proposal.body']
+    join: ['proposal.body'],  //  Every manifest has a proposal, no need to check existence.
+    // deepJoin: ['proposal.body']
   }))
 )
 class Voting extends React.Component {

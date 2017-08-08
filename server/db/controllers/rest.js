@@ -44,13 +44,23 @@ export default class REST {
   queryHandler (model, query) {
     // JOIN aka populate, e.g. join=comments,reviews
     if (query.join) {
-      console.warn(query.join)
-      model = model.populate(query.join.split(',').join(' '))
-    }
-    if (query.deepJoin) {
-      console.warn(query.deepJoin)
-      let test = query.deepJoin.split('.')
-      console.log(test)
+      //  Split comma-separated string into an array.
+      let joins = query.join.split(',')
+      //  Search for any deep joins, aka a population that has a child to populate as well.
+      for (let join of joins) {
+        //  If there's a subfield, it's a deep join -  Split and popilate the model's subfields
+        if (join.includes('.')) {
+          const paths = join.split('.')
+          model = model.populate({
+            path: paths[0],
+            populate: { path: paths[1] }
+          })
+          //  Mutate the array, removing the deep join
+          joins.splice(joins.indexOf(join), 1)
+        }
+      }
+      //  Join all fields w/o deep popilation
+      model = model.populate(joins.join(' '))
     }
     // SELECT, gathering specific fields e.g. select=name
     if (query.select) model = model.select(query.select.split(',').join(' '))

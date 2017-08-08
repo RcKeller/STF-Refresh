@@ -56,10 +56,6 @@ const endpoint = (model, options) => {
     url = `${url}${operator}join=${options.join}`
     operator = '&'
   }
-  if (options.deepJoin) {
-    url = `${url}${operator}deepJoin=${options.deepJoin}`
-    operator = '&'
-  }
   return url
 }
 
