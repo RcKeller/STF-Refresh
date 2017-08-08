@@ -57,56 +57,34 @@ class Docket extends React.Component {
       title: 'Metrics',
       dataIndex: 'docket.metrics',
       key: 'docket.metrics',
-      // render: (text, record, index) => <Switch checked={this.props.manifests[index].docket.metrics || false} onChange={(metrics) => this.handleToggleMetrics(metrics, record, index)} />,
       render: (text, record, index) =>
       record.type === 'original'  //  Supplementals don't go through metrics reviews
-        ? <Switch checked={text} onChange={(metrics) => this.handleToggleMetrics(metrics, record, index)} />
+        ? <Switch checked={text} onChange={(metrics) => this.handleToggle({ metrics }, record, index)} />
         : <em>N/A</em>,
       width: 75
     }, {
       title: 'Voting',
       dataIndex: 'docket.voting',
       key: 'docket.voting',
-      render: (text, record, index) => <Switch checked={text} onChange={(voting) => this.handleToggleVoting(voting, record, index)} />,
+      render: (text, record, index) => <Switch checked={text} onChange={(voting) => this.handleToggle({ voting }, record, index)} />,
       width: 75
     }]
   }
-
-  handleToggleMetrics = (metrics, record, index) => {
+  handleToggle = (change, record, index) => {
+    //  Change is an object that can be easily assigned, like { docket: true } or { voting: false }
+    //  We do this so we can accept a key/bool in one arg and use it in a one-liner, so we can share this toggle func.
     const { api } = this.props
-    const id = record._id
+    let { _id, docket } = record
+    docket = Object.assign(docket, change)
+    console.log('Change introduced', docket)
     //  Update the manifest at the correct index.
     const update = { manifests: (prev, next) => {
       let newData = prev.slice()
-      newData[index].docket.metrics = metrics
+      newData[index].docket = docket
       return newData
     }}
-    console.log('RECORD DOCKET for METRICS', record.docket)
-    api.patch('manifest', { docket: { metrics } }, { id, update })
-    .then(message.success((metrics
-      ? `${_.capitalize(record.type)} is now up for metrics!`
-      : `${_.capitalize(record.type)} was taken down from metrics!`
-    ), 10))
-    .catch(err => {
-      message.warning(`Failed to update - client error`)
-      console.warn(err)
-    })
-  }
-
-  handleToggleVoting = (voting, record, index) => {
-    const { api } = this.props
-    const id = record._id
-    //  Update the manifest at the correct index.
-    const update = { manifests: (prev, next) => {
-      let newData = prev.slice()
-      newData[index].docket.voting = voting
-      return newData
-    }}
-    api.patch('manifest', { docket: { voting } }, { id, update })
-    .then(message.success((voting
-      ? `${_.capitalize(record.type)} is now up for voting!`
-      : `${_.capitalize(record.type)} was taken down from voting!`
-    ), 10))
+    api.patch('manifest', { docket }, { id: _id, update })
+    .then(message.success(('Docket updated!', 10)))
     .catch(err => {
       message.warning(`Failed to update - client error`)
       console.warn(err)
