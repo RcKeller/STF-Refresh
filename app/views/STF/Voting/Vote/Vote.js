@@ -7,12 +7,16 @@ import { connect } from 'react-redux'
 import api from '../../../../services'
 
 import { Spin } from 'antd'
-// @connect(state => ({ user: state.user }))
+/*
+There are two kinds of meetings:
+- QA meetings (metrics, no votes)
+- Voting meetings (votes, may have metrics but probably not)
+*/
 @connect(
-    //  Might seem counterintuitive, but we're connecting to
+    //  Might seem counterintuitive, but we're connecting to a manifest and pulling its proposal data.
     (state, props) => ({
       manifest: state.db.manifests[props.index],
-      proposal: state.db.manifests[props.index].proposal
+      user: state.user
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
 )
@@ -27,8 +31,8 @@ class Vote extends React.Component {
         {!proposal
           ? <Spin size='large' tip='Loading...' />
           : <div>
-            {uac && <span><h2>Universal Access Committee</h2><hr /></span>}
-            <h1>{title}</h1>
+            <h1>{uac ? title : `${title} (UAC)`}</h1>
+            {uac && <h2>Universal Access Committee</h2>}
             <h3>For {organization}</h3>
             <h6 id={id}>{`ID: ${year}-${number}`}</h6>
           </div>
@@ -38,6 +42,7 @@ class Vote extends React.Component {
   }
 }
 Vote.propTypes = {
-  proposal: PropTypes.object
+  manifest: PropTypes.object,
+  user: PropTypes.object
 }
 export default Vote

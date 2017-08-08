@@ -49,11 +49,6 @@ class Voting extends React.Component {
     return (
       <article className={styles['article']}>
         <h1>Reviews & Voting</h1>
-        <ul>
-          <li>There are two kinds of meetings:</li>
-          <li>- QA meetings (metrics, no votes)</li>
-          <li>- Voting meetings (votes, may have metrics but probably not)</li>
-        </ul>
         {!docket
           ? <Spin size='large' tip='Loading...' />
           : (docket.length >= 1
@@ -69,7 +64,6 @@ class Voting extends React.Component {
                     : `${manifest.proposal.year}-${manifest.proposal.number}`
                 }
                 >
-                  {/* {manifests[i].proposal.title} */}
                   <Vote index={i} />
                 </TabPane>
               ))}
