@@ -52,7 +52,7 @@ class Voting extends React.Component {
         {!docket
           ? <Spin size='large' tip='Loading...' />
           : (docket.length >= 1
-            ? <Tabs tabPosition='left'>
+            ? <Tabs tabPosition='left' size='small'>
               {docket.map((manifest, i) => (
                 <TabPane key={i} tab={
                   manifest.type !== 'original'
