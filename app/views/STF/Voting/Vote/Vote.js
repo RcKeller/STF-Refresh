@@ -10,6 +10,8 @@ import { Spin, Tabs } from 'antd'
 const TabPane = Tabs.TabPane
 
 import SummaryPane from './SummaryPane/SummaryPane'
+import MetricsPane from './MetricsPane/MetricsPane'
+import VotingPane from './VotingPane/VotingPane'
 /*
 There are two kinds of meetings:
 - QA meetings (metrics, no votes)
@@ -53,12 +55,12 @@ class Vote extends React.Component {
               </TabPane>
               {metrics &&
                 <TabPane tab={<h3>Metrics</h3>} key='2'>
-                  Metrics
+                  <MetricsPane index={index} />
                 </TabPane>
               }
               {voting &&
                 <TabPane tab={<h3>Voting</h3>} key='3'>
-                  Voting
+                  <VotingPane index={index} />
                 </TabPane>
               }
             </Tabs>
