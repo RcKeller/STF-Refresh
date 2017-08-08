@@ -46,21 +46,26 @@ export default class REST {
     if (query.join) {
       //  Split comma-separated string into an array.
       let joins = query.join.split(',')
-      //  Search for any deep joins, aka a population that has a child to populate as well.
+      let shallowJoins = []
+      //  Make a collection of shallow joins. Search for any deep joins
       for (let join of joins) {
-        //  If there's a subfield, it's a deep join -  Split and popilate the model's subfields
+        //  If there's a subfield, it's a deep join -  Split and popilate the model's subfields now.
         if (join.includes('.')) {
           const paths = join.split('.')
           model = model.populate({
             path: paths[0],
             populate: { path: paths[1] }
           })
-          //  Mutate the array, removing the deep join
-          joins.splice(joins.indexOf(join), 1)
+        } else {
+          //  Otherwise, add to your list of shallow joins.
+          shallowJoins.push(join)
         }
       }
       //  Join all fields w/o deep popilation
-      model = model.populate(joins.join(' '))
+      //  Mongoose can do many simple joins with one function call, if separated by spaces.
+      if (shallowJoins.length > 0) {
+        model = model.populate(shallowJoins.join(' '))
+      }
     }
     // SELECT, gathering specific fields e.g. select=name
     if (query.select) model = model.select(query.select.split(',').join(' '))

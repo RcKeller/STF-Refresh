@@ -23,7 +23,7 @@ import styles from './Voting.css'
   connectRequest(() => api.get('manifests', {
     //  BUG: Unpublished proposals can be pulled in docket creation.
     force: true,
-    join: ['proposal.body']
+    join: ['proposal.body', 'proposal.contacts']
   }))
 )
 class Voting extends React.Component {
