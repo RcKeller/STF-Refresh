@@ -3,47 +3,96 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
-import { Row, Col, Alert } from 'antd'
+import _ from 'lodash'
+
+import { Row, Col, Alert, Collapse, Progress } from 'antd'
+const Panel = Collapse.Panel
 
 import Review from './Review/Review'
 // import styles from './Body.css'
 @connect(state => ({
   status: state.db.proposal.status,
-  decisions: state.db.proposal.decisions,
-  reviews: state.db.proposal.manifests[0].reviews
-  // reviews: state.db.proposal.reviews
+  //  Metrics are taken for the original proposal, associated with the first manifest or "ask".
+  metrics: state.db.proposal.manifests[0].reviews,
+  //  Decisions are selected if an approval is there.
+  manifests: state.db.proposal.manifests &&
+    state.db.proposal.manifests.filter(m => m.decision)
 }))
 class Reviews extends React.Component {
-  render ({ status, decision, reviews } = this.props) {
+  render ({ status, manifests, metrics } = this.props) {
     return (
       <section>
-        <h1>Committee Decision</h1>
+        <h1>Committee Reviews</h1>
         <h6>For internal use only.</h6>
-        {/* {decision
-          ? <Alert type={decision.approved ? 'success' : 'error'} showIcon
-            message={`Proposal ${decision.approved ? 'Approved' : 'Rejected'}`}
-            description={
-              <span>
-                <h6>Author: {decision.author.name} | {decision.date}</h6>
-                <p>{decision.body}</p>
-              </span>
-            }
-            />
-          : <em>No decision has been issued</em>
+        <h2>Decisions</h2>
+        {(manifests.length <= 0)
+          ? <em>Decisions have not been issued for this proposal.</em>
+          : <div>
+            {manifests.map((manifest, i) => (
+              <Alert key={i} type={manifest.decision.approved ? 'success' : 'warning'}
+                message={`${_.capitalize(manifest.type)} Proposal ${manifest.decision.approved ? 'Approved' : 'Rejected'}`}
+                description={
+                  <span>
+                    <h6>{`Author: ${manifest.decision.author.name} | ${manifest.decision.date.toLocaleString('en-US')}`}</h6>
+                    <p>{manifest.decision.body}</p>
+                  </span>
+                } />
+              ))}
+          </div>
         }
-        <h2>Reviews & Metrics</h2>
-        <Row gutter={32}>
-          {reviews && reviews.map((r, i) =>
-            <Col key={i} className='gutter-row' xs={24} md={12} xl={8} >
-              <Review index={i} />
-            </Col>
-          )}
-        </Row> */}
+        <h2>Metrics</h2>
+        {(metrics.length <= 0)
+          ? <em>Metrics have not been taken for the original budget.</em>
+          : <Row gutter={32}>
+            {metrics.map((review, i) => (
+              <Col key={i} className='gutter-row' xs={24} md={12} xl={8} >
+                <Alert type={review.approved ? 'success' : 'warning'} banner
+                  message={`${review.author.name}: ${review.approved ? 'Approved' : 'Rejected'} | ${review.date.toLocaleString('en-US')}`}
+                  description={
+                    <div>
+                      {review.body}
+                      <Collapse bordered={false} style={{background: 'inherit'}}>
+                        <Panel style={{border: 'none'}}header={<h6>{`Overall Score: ${review.score}%`}</h6>}>
+                          {review.ratings.map((r, i) =>
+                            <div key={i}>
+                              <em>{r.prompt}</em>
+                              <Progress percent={r.score} />
+                            </div>
+                          )}
+                        </Panel>
+                      </Collapse>
+                    </div>
+                  } />
+              </Col>
+              ))}
+          </Row>
+        }
       </section>
     )
   }
 }
-
+/*
+{decision
+  ? <Alert type={decision.approved ? 'success' : 'error'} showIcon
+    message={`Proposal ${decision.approved ? 'Approved' : 'Rejected'}`}
+    description={
+      <span>
+        <h6>Author: {decision.author.name} | {decision.date}</h6>
+        <p>{decision.body}</p>
+      </span>
+    }
+    />
+  : <em>No decision has been issued</em>
+}
+<h2>Reviews & Metrics</h2>
+<Row gutter={32}>
+  {reviews && reviews.map((r, i) =>
+    <Col key={i} className='gutter-row' xs={24} md={12} xl={8} >
+      <Review index={i} />
+    </Col>
+  )}
+</Row>
+*/
 Reviews.propTypes = {
   reviews: PropTypes.object
 }
