@@ -10,7 +10,7 @@ const ManifestSchema = new mongoose.Schema({
   report: { type: mongoose.Schema.Types.ObjectId, ref: 'Report' },
   //  Type: original, partial or supplemental
   type: String,
-  //  Data for supplementals
+  //  Data included for supplementals
   contact: { type: mongoose.Schema.Types.ObjectId, ref: 'Contact', autopopulate: true },
   title: String,
   body: String,
@@ -24,7 +24,9 @@ const ManifestSchema = new mongoose.Schema({
     metrics: { type: Boolean, default: false },
     voting: { type: Boolean, default: false }
   },
-  //  Decisions are issues on manifests, which are an author's ask.
+  //  Reviews are taken for manifests.
+  //  Decisions are issued for manifests (partial passed, supplemental passed), etc.
+  reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }],
   decision: { type: mongoose.Schema.Types.ObjectId, ref: 'Decision' }
 })
 ManifestSchema.plugin(autoref, [
@@ -32,6 +34,7 @@ ManifestSchema.plugin(autoref, [
   'report.manifest',
   'contact.manifest',
   'items.manifest',
+  'reviews.manifest',
   'decision.manifest'
 ])
 ManifestSchema.plugin(autopopulate)
@@ -56,9 +59,22 @@ const dummyManifests = (min, ids) => {
           block: ids.block[i],
           report: ids.report[i],
           contact: ids.contact[i],
-          type: faker.random.boolean() ? 'original' : faker.company.bsNoun(),
+          type: faker.random.boolean() ? 'original' : 'supplemental',
           title: faker.company.bsNoun(),
           body: faker.lorem.paragraph(),
+          items: [
+            ids.item[i],
+            ids.item[i]
+          ],
+          docket: {
+            metrics: false,
+            voting: false
+          },
+          reviews: [
+            ids.review[i],
+            ids.review[i]
+          ],
+          decision: ids.decision[i],
           items: [
             ids.item[i],
             ids.item[i]

@@ -43,18 +43,11 @@ const ProposalSchema = new mongoose.Schema({
   Then there are SUPPLEMENTALS, which are like mini awards made after the initial grant to meet unforseen needs.
   */
   manifests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Manifest' }],
-  reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }],
-  //  The decision contains details about the actual award, provisions, etc.
-  //  NOTE: Decisions relate to manifests for proposals, not directly to proposals.
-  decisions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Decision' }],
   /*
   Comments are user endorsements of a proposal. They're abstracted out
   so that we can view "feeds" of endorsements and examine trends in user activity.
   */
-  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }],
-  // TODO: Reports (they're unclear to me). Renders in another tab.
-  //  Edit: One proposal, one decision, one report.
-  reports: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Report' }]
+  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }]
 })
 /*
 Metadata
@@ -67,10 +60,7 @@ ProposalSchema.plugin(autoref, [
   'contacts.proposal',
   'body.proposal',
   'manifests.proposal',
-  'reviews.proposal',
-  'decisions.proposal',
-  'comments.proposal',
-  'reports.proposal'
+  'comments.proposal'
 ])
 // ProposalSchema.plugin(autopopulate)
 const Proposal = mongoose.model('Proposal', ProposalSchema)
@@ -120,14 +110,6 @@ const dummyProposals = (min, ids) => {
           reports: [
             ids.report[i],
             ids.report[i]
-          ],
-          decisions: [
-            ids.decision[i],
-            ids.decision[i]
-          ],
-          reviews: [
-            ids.review[i],
-            ids.review[i]
           ],
           comments: [
             ids.comment[i],

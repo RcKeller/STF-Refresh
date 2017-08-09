@@ -9,8 +9,9 @@ import Review from './Review/Review'
 // import styles from './Body.css'
 @connect(state => ({
   status: state.db.proposal.status,
-  decision: state.db.proposal.decision,
-  reviews: state.db.proposal.reviews
+  decisions: state.db.proposal.decisions,
+  reviews: state.db.proposal.manifests[0].reviews
+  // reviews: state.db.proposal.reviews
 }))
 class Reviews extends React.Component {
   render ({ status, decision, reviews } = this.props) {
@@ -18,7 +19,7 @@ class Reviews extends React.Component {
       <section>
         <h1>Committee Decision</h1>
         <h6>For internal use only.</h6>
-        {decision
+        {/* {decision
           ? <Alert type={decision.approved ? 'success' : 'error'} showIcon
             message={`Proposal ${decision.approved ? 'Approved' : 'Rejected'}`}
             description={
@@ -37,7 +38,7 @@ class Reviews extends React.Component {
               <Review index={i} />
             </Col>
           )}
-        </Row>
+        </Row> */}
       </section>
     )
   }

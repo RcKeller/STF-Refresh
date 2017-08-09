@@ -6,6 +6,7 @@ import faker from 'faker'
 const ReviewSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
   proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
+  manifest: { type: mongoose.Schema.Types.ObjectId, ref: 'Manifest' },
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', autopopulate: true },
   //  Comments included with the ratings. Equivalent of "notes"
   body: String,
@@ -20,7 +21,9 @@ const ReviewSchema = new mongoose.Schema({
   //  Pass or fail the proposal? This is separate, because we may pass things we don't agree with.
   approved: Boolean
 })
-ReviewSchema.plugin(autoref, ['proposal.reviews'])
+ReviewSchema.plugin(autoref, [
+  'manifest.reviews'
+])
 ReviewSchema.plugin(autopopulate)
 const Review = mongoose.model('Review', ReviewSchema)
 export default Review
@@ -47,6 +50,7 @@ const dummyReviews = (min, ids) => {
           _id: ids.review[i],
           date: faker.date.recent(),
           proposal: ids.proposal[i],
+          manifest: ids.manifest[i],
           author: ids.user[i],
           body: faker.lorem.paragraph(),
           ratings: [

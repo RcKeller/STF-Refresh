@@ -14,12 +14,12 @@ const DecisionSchema = new mongoose.Schema({
   //  Optional description that comes with the decision. "We liked..."
   body: String,
   //  Final decision
-  approved: { type: Boolean, required: true },
+  approved: Boolean,
   //  If this decision is an award, it will have a grant amount and associated report.
   grant: Number
 })
 DecisionSchema.plugin(autoref, [
-  'proposal.decision',
+  // 'proposal.decisions',
   'manifest.decision'
 ])
 DecisionSchema.plugin(autopopulate)
