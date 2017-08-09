@@ -49,17 +49,17 @@ class Vote extends React.Component {
               <li>Endorsements: {comments.length}</li>
             </ul>
             <hr />
-            <Tabs defaultActiveKey='1'>
-              <TabPane tab={<h3>Summary</h3>} key='1'>
+            <Tabs tabPosition='left' size='small' defaultActiveKey='1'>
+              <TabPane tab='Summary' key='1'>
                 <SummaryPane index={index} />
               </TabPane>
               {metrics &&
-                <TabPane tab={<h3>Metrics</h3>} key='2'>
+                <TabPane tab='Metrics' key='2'>
                   <MetricsPane index={index} />
                 </TabPane>
               }
               {voting &&
-                <TabPane tab={<h3>Voting</h3>} key='3'>
+                <TabPane tab='Voting' key='3'>
                   <VotingPane index={index} />
                 </TabPane>
               }
