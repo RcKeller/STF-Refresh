@@ -71,7 +71,6 @@ class Manifest extends React.Component {
       type: 'original',
       items
     }, { id: manifest._id, update })
-    // }, { id: manifest._id })
     : api.post('manifest', {
       proposal: parent,
       type: 'original',

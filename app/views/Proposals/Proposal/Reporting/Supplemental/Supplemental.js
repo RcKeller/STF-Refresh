@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Modal, Button, Form, Input, Select, message } from 'antd'
+import { Alert, Modal, Button, Form, Input, Select, message } from 'antd'
 const FormItem = Form.Item
 const Option = Select.Option
 const connectForm = Form.create()
@@ -60,9 +60,13 @@ class Supplemental extends React.Component {
   ) {
     return (
       <section>
-        <h1>Supplemental Awards</h1>
-        <h6>For proposals that face an unforseen increase in budgetary needs</h6>
-        <p>Lorem ipsum... </p>
+        <h1>Request Supplemental</h1>
+        <h6>For proposals that face an unforseen and minor increase in budgetary needs</h6>
+        <p>Supplemental awards help cover common scenarios where equipment models have changed or project needs have changed slightly in comparison to an original proposal. We understand that these things happen, so supplementals requests are how you can request more funding. These are voted on by the STF committee in a separate, less intensive process.</p>
+        <Alert type='info' banner showIcon={false}
+          message='Important Note reg. Award Supplements'
+          description='If you have underspent your award, there is no consequence - simply fill out the above budget report so we can log your spending. If your project has changed significantly, we ask that you create a new proposal instead of requesting a large supplement. By clicking "I agree", you signify that you understand these conditions.'
+        />
         <Button type='primary' onClick={this.showModal}>I Agree</Button>
         <Modal visible={modal}
           title='Request an Award Supplement'

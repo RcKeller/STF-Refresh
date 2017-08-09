@@ -1,13 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { bindActionCreators } from 'redux'
+import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { message } from 'antd'
 import api from '../../../../../services'
 import { layout } from '../../../../../util/form'
 import _ from 'lodash'
+
+import { Form, message } from 'antd'
+const FormItem = Form.Item
+const connectForm = Form.create()
 
 import SpreadSheet, { Editors } from '../../../../../components/SpreadSheet'
 const { SimpleNumber } = Editors
@@ -35,25 +38,27 @@ const columns = [{
   editor: SimpleNumber,
   width: 85
 }]
-
-@connect(
-  state => ({
-    parent: state.db.proposal._id,
-    budget: state.db.proposal.budget,
-    //  Use the most recent report (target document) and recent manifest (initial data)
-    // report: state.db.proposal.reports && state.db.proposal.reports.slice(-1)[0],
-    manifest: state.db.proposal.manifests && state.db.proposal.manifests.slice(-1)[0]
-  }),
-  dispatch => ({ api: bindActionCreators(api, dispatch) })
+@compose(
+  connect(
+    (state, props) => ({
+      proposal: state.db.proposal._id,
+      //  Use the most recent report (target document) and recent manifest (initial data)
+      manifest: state.db.proposal.manifests[props.indexInStore],
+      report: state.db.proposal.manifests[props.indexInStore].report
+    }),
+    dispatch => ({ api: bindActionCreators(api, dispatch) })
+  ),
+  connectForm
 )
 class Report extends React.Component {
   handleSubmit = (items) => {
-    let { api, budget, report } = this.props
-    report = { budget, items }
+    let { api, proposal, manifest, report } = this.props
+    report = { proposal, manifest: manifest._id, items }
     console.log('REPORT', report)
   }
-  render ({ budget, report, manifest } = this.props) {
-    //  Use the most recent manifest for initial data if report has not been created.
+
+  render ({ awardNumber, manifest, report } = this.props) {
+    //  Use the associated manifest for initial data if report has not been created.
     //  Make sure to omit mongo data, preventing the original from being mutated.
     let data = (report && report.items)
       ? report.items
@@ -61,9 +66,7 @@ class Report extends React.Component {
         _.omit(item, ['_id', '__v', 'manifest', 'description', 'priority', 'tax', 'report']))
     return (
       <section>
-        <h1>Budget Reporting</h1>
-        <h3>{`Organization Budget Code: ${budget}`}</h3>
-        <p>Here you can record your recent expenditures as part of the STF process...</p>
+        <h2>{`${_.capitalize(manifest.type)} Award (#${awardNumber})`}</h2>
         <SpreadSheet
           columns={columns}
           data={data}

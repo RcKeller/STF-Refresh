@@ -8,8 +8,6 @@ import _ from 'lodash'
 import { Row, Col, Alert, Collapse, Progress } from 'antd'
 const Panel = Collapse.Panel
 
-import Review from './Review/Review'
-// import styles from './Body.css'
 @connect(state => ({
   status: state.db.proposal.status,
   //  Metrics are taken for the original proposal, associated with the first manifest or "ask".
