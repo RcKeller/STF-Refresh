@@ -84,9 +84,6 @@ class Report extends React.Component {
         _.omit(item, ['_id', '__v', 'manifest', 'description', 'priority', 'tax', 'report']))
     return (
       <section>
-        <hr />
-        <h2>{`${_.capitalize(manifest.type)} Award (#${awardNumber})`}</h2>
-        <h3>Budget Number</h3>
         <FormItem label='Budget Number' {...layout} hasFeedback={feedback(form, 'budget')} help={help(form, 'budget')} >
           {form.getFieldDecorator('budget', rules.required)(
             <Input onPressEnter={(e) => this.handleBudget(e.target.value)} />
