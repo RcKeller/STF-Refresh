@@ -37,7 +37,7 @@ class Budgeting extends React.Component {
               <Tabs tabPosition='left' size='small' defaultActiveKey={`${approvedManifests.length - 1}`}>
                 {approvedManifests.map((indexInStore, i) => (
                   <TabPane key={i} tab={<span>{_.capitalize(manifests[indexInStore].type)}<br />{`Award (#${++i})`}</span>} >
-                  <p>Instructions...</p>
+                    <p>Instructions...</p>
                     <Report awardNumber={++i} indexInStore={indexInStore} />
                   </TabPane>
                 ))}

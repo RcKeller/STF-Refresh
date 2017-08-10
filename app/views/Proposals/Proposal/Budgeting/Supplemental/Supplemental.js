@@ -105,6 +105,10 @@ class Supplemental extends React.Component {
 }
 
 Supplemental.propTypes = {
-  report: PropTypes.object
+  form: PropTypes.object,
+  api: PropTypes.object,
+  report: PropTypes.object,
+  proposal: PropTypes.string,
+  budget: PropTypes.string
 }
 export default Supplemental

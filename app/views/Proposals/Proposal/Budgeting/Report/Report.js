@@ -52,8 +52,8 @@ const columns = [{
 )
 class Report extends React.Component {
   componentDidMount () {
-    const { form, report } = this.props.report
-    if (report.budget) {
+    const { form, report } = this.props
+    if (report) {
       const { budget } = report
       form.setFieldsValue({ budget })
     }
@@ -64,10 +64,21 @@ class Report extends React.Component {
     //  Verify that the budget number (and hopefully other data) is there, add it to what we know.
     form.validateFields((err, values) => {
       if (!err) {
+        items = items.map((item) => _.omit(item, ['_id', '__v']))
         let report = { proposal, manifest: manifest._id, items }
         //  Hydrate the report with form data
         report = Object.assign(report, values)
         console.log('REPORT', report)
+        this.props.report
+        ? api.patch('report', report, { id: this.props.report._id })
+        : api.post('report', report)
+        .then(message.success('Report updated!'))
+        .catch(err => {
+          message.warning('Report failed to update - Unexpected client error')
+          console.warn(err)
+        })
+      } else {
+        message.warning('We need the budget number for charging to this budget.')
       }
     })
   }
