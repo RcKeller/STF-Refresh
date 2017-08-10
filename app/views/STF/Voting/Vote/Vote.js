@@ -34,12 +34,25 @@ class Vote extends React.Component {
     const { id, title, organization, uac, year, number, date, comments } = proposal
     const { metrics, voting } = docket
     console.log('DOCKET', docket)
+    const Header = () => (
+      <div>
+        <h1>{uac ? title : `${title} (UAC)`}</h1>
+        {uac && <h2>Universal Access Committee</h2>}
+        <h3>For {organization}</h3>
+        <h6 id={id}>{`ID: ${year}-${number}`}</h6>
+        <ul>
+          <li>Date: {date}</li>
+          <li>Endorsements: {comments.length}</li>
+        </ul>
+        <hr />
+      </div>
+    )
     return (
       <section>
         {!proposal
           ? <Spin size='large' tip='Loading...' />
           : <div>
-            <hr />
+            <hr style={{ marginLeft: -24 }}/>
             <h1>{uac ? title : `${title} (UAC)`}</h1>
             {uac && <h2>Universal Access Committee</h2>}
             <h3>For {organization}</h3>
@@ -48,8 +61,7 @@ class Vote extends React.Component {
               <li>Date: {date}</li>
               <li>Endorsements: {comments.length}</li>
             </ul>
-            <hr />
-            <Tabs tabPosition='left' size='small' defaultActiveKey='1'>
+            <Tabs type='card' defaultActiveKey='1' style={{paddingLeft: 2}}>
               <TabPane tab='Summary' key='1'>
                 <SummaryPane index={index} />
               </TabPane>

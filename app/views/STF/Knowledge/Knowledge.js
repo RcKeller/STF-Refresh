@@ -74,7 +74,7 @@ class Knowledge extends React.Component {
   ) {
     const footer = () => (
       <div>
-        {myArticles &&
+        {myArticles.length > 0 &&
           <div>
             <h6>My KBA's</h6>
             {myArticles.map((a, i) =>

@@ -112,7 +112,7 @@ class Proposals extends React.Component {
   ) {
     const footer = () => (
       <div>
-        {myProposals &&
+        {myProposals.length > 0 &&
           <div>
             <h6>My Proposals</h6>
             <ul>

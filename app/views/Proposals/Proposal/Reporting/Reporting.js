@@ -33,9 +33,9 @@ class Reporting extends React.Component {
         <p>Here you can record your recent expenditures as part of the STF process...</p>
         {approvedManifests.length < 1
           ? <em>No awards dispersed, cannot fill budget reports.</em>
-          : <Tabs defaultActiveKey={`${approvedManifests.length - 1}`}>
+          : <Tabs tabPosition='left' size='small' defaultActiveKey={`${approvedManifests.length - 1}`}>
             {approvedManifests.map((indexInStore, i) => (
-              <TabPane key={i} tab={`${_.capitalize(manifests[indexInStore].type)} Award (#${++i})`} >
+              <TabPane key={i} tab={<span>{_.capitalize(manifests[indexInStore].type)}<br />{`Award (#${++i})`}</span>} >
                 <Report awardNumber={++i} indexInStore={indexInStore} />
               </TabPane>
             ))}
