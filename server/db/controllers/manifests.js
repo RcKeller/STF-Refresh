@@ -12,14 +12,11 @@ export default class Manifests extends REST {
     Modified to insertMany(<items>)
   ***** */
   post (data, query) {
+    //  Omit subdocs, create the parent, then patch it in order to create items
     let { items } = data
     let manifest = _.omit(data, ['_v', 'items'])
-    console.log(typeof items, items)
-    console.log(typeof manifest, manifest)
-
-    let model = this.model.create(manifest)
-    //  TODO: Any middleware needed?
-    return model.then(modelInstance => modelInstance)
+    return this.model.create(manifest)
+    .then(modelInstance => this.patch(modelInstance._id, { items }, query))
   }
 
   /* *****
@@ -34,10 +31,6 @@ export default class Manifests extends REST {
     if (!data.items) {
       return super.patch(id, data, query)
     } else {
-      let { items } = data
-      let manifest = _.omit(data, ['_v', 'items'])
-      //  Keep track of item refs to update manifest.
-      let itemRefs = []
       /*
       We're using findOneAndUpdate with upsertion (creation of documents if null is returned)
       HOWEVER, this does not automatically create a new objectID. So we do that part.
@@ -47,6 +40,9 @@ export default class Manifests extends REST {
       https://stackoverflow.com/questions/39761771/mongoose-findbyidandupdate-doesnt-generate-id-on-insert
       https://medium.skyrocketdev.com/es6-to-the-rescue-c832c286d28f
       */
+      //  Keep track of item refs to update manifest.
+      let { items } = data
+      let itemRefs = []
       for (let item of items) {
         item = _.omit(item, ['__v'])
         item.manifest = id

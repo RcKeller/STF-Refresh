@@ -17,11 +17,6 @@ export default class Reports extends REST {
     let report = _.omit(data, ['_v', 'items'])
     return this.model.create(report)
     .then(modelInstance => this.patch(modelInstance._id, { items }, query))
-    // console.log('MODEL from POST', model)
-    // //  TODO: Any middleware needed?
-    // return model.then(modelInstance => modelInstance)
-    // const id = new mongoose.Types.ObjectId()
-    // return this.patch(id, data, query)
   }
 
   /* *****
@@ -36,11 +31,6 @@ export default class Reports extends REST {
     if (!data.items) {
       return super.patch(id, data, query)
     } else {
-      let { items } = data
-      let report = _.omit(data, ['_v', 'items'])
-      //  Keep track of item refs to update report.
-      let itemRefs = []
-      console.log('PATCH', report)
       /*
       We're using findOneAndUpdate with upsertion (creation of documents if null is returned)
       HOWEVER, this does not automatically create a new objectID. So we do that part.
@@ -50,6 +40,9 @@ export default class Reports extends REST {
       https://stackoverflow.com/questions/39761771/mongoose-findbyidandupdate-doesnt-generate-id-on-insert
       https://medium.skyrocketdev.com/es6-to-the-rescue-c832c286d28f
       */
+      //  Keep track of item refs to update report.
+      let { items } = data
+      let itemRefs = []
       for (let item of items) {
         item = _.omit(item, ['__v'])
         item.report = id
@@ -60,7 +53,6 @@ export default class Reports extends REST {
         })
       }
       let model = this.model.findOne({ [this.key]: id })
-      console.log('MODEL', model)
       return model
        .then((modelInstance) => {
          for (var attribute in data) {
