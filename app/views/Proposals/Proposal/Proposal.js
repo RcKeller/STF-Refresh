@@ -7,7 +7,7 @@ import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
 
-import { Spin, Tabs, Badge } from 'antd'
+import { Spin, Tabs } from 'antd'
 const TabPane = Tabs.TabPane
 
 //  Public view
@@ -15,7 +15,7 @@ import View from './View/View'
 
 import Endorsements from './Endorsements/Endorsements'
 //  Contact view
-import Reporting from './Reporting/Reporting'
+import Budgeting from './Budgeting/Budgeting'
 import NextSteps from './NextSteps/NextSteps'
 import Update from './Update/Update'
 //  STF Memeber and admin views
@@ -23,13 +23,6 @@ import Reviews from './Reviews/Reviews'
 import Settings from './Settings/Settings'
 
 import styles from './Proposal.css'
-
-const style = {
-  badge: {
-    color: '#FFF',
-    backgroundColor: '#4CAF50'  //  green 500
-  }
-}
 /*
 NOTE: Bugs can be encountered when users navigate from proposals to /edit
 It's caused by data mismatches in the cached store nodes.
@@ -68,14 +61,12 @@ class Proposal extends React.Component {
             <TabPane tab='Proposal' key='1' className={styles['tab-pane']}>
               <View />
             </TabPane>
-            <TabPane tab={<Badge dot style={style.badge}>
-              <span style={{paddingRight: 4}}>Endorsements </span>
-            </Badge>} key='2' className={styles['tab-pane']}>
+            <TabPane tab='Endorsements' key='2' className={styles['tab-pane']}>
               <Endorsements />
             </TabPane>
             {(author || stf) &&
-              <TabPane tab='Reporting' key='3' className={styles['tab-pane']}>
-                <Reporting />
+              <TabPane tab='Budgeting' key='3' className={styles['tab-pane']}>
+                <Budgeting />
               </TabPane>
             }
             {(author || stf) &&

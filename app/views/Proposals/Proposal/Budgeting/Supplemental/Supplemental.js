@@ -11,7 +11,7 @@ const connectForm = Form.create()
 
 import api from '../../../../../services'
 
-import { layout, feedback, help, rules, disableSubmit } from '../../../../../util/form'
+import { layout, feedback, help, rules } from '../../../../../util/form'
 
 @compose(
   connect(

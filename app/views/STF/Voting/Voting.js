@@ -47,22 +47,21 @@ class Voting extends React.Component {
     { docket } = this.state
   ) {
     return (
-      <article className={styles['article']}>
-        <h1>Reviews & Voting</h1>
+      <article className={styles['tabbed-article']}>
         {!docket
           ? <Spin size='large' tip='Loading...' />
           : (docket.length >= 1
-            ? <Tabs tabPosition='left' size='small'>
+            ? <Tabs className='tab-container' type='card' >
+              <TabPane tab='Overview' key='1' className={styles['tab-pane']}>
+                <h1>Reviews & Voting</h1>
+                <p>Instructions here.</p>
+              </TabPane>
               {docket.map((manifest, i) => (
-                <TabPane key={i} tab={
-                  manifest.type !== 'original'
-                    ? <span>
-                      {_.capitalize(manifest.type)}
-                      <br />
-                      {manifest.proposal.year}-{manifest.proposal.number}
-                    </span>
-                    : `${manifest.proposal.year}-${manifest.proposal.number}`
-                }
+                <TabPane key={i} className={styles['tab-pane']}
+                  tab={
+                    `${manifest.proposal.year}-${manifest.proposal.number}
+                    ${manifest.type !== 'original' ? `(${_.capitalize(manifest.type)})` : ''}
+                  `}
                 >
                   <Vote index={i} />
                 </TabPane>

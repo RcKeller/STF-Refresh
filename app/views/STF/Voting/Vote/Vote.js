@@ -52,8 +52,7 @@ class Vote extends React.Component {
         {!proposal
           ? <Spin size='large' tip='Loading...' />
           : <div>
-            <hr style={{ marginLeft: -24 }}/>
-            <h1>{uac ? title : `${title} (UAC)`}</h1>
+            <h1>{title}</h1>
             {uac && <h2>Universal Access Committee</h2>}
             <h3>For {organization}</h3>
             <h6 id={id}>{`ID: ${year}-${number}`}</h6>
@@ -61,17 +60,17 @@ class Vote extends React.Component {
               <li>Date: {date}</li>
               <li>Endorsements: {comments.length}</li>
             </ul>
-            <Tabs type='card' defaultActiveKey='1' style={{paddingLeft: 2}}>
-              <TabPane tab='Summary' key='1'>
+            <Tabs defaultActiveKey='1'>
+              <TabPane tab={<b>Summary</b>} key='1'>
                 <SummaryPane index={index} />
               </TabPane>
               {metrics &&
-                <TabPane tab='Metrics' key='2'>
+                <TabPane tab={<b>Metrics</b>} key='2'>
                   <MetricsPane index={index} />
                 </TabPane>
               }
               {voting &&
-                <TabPane tab='Voting' key='3'>
+                <TabPane tab={<b>Voting</b>} key='3'>
                   <VotingPane index={index} />
                 </TabPane>
               }
