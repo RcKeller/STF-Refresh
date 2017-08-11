@@ -10,6 +10,7 @@ const TabPane = Tabs.TabPane
 import Report from './Report/Report'
 import Supplemental from './Supplemental/Supplemental'
 import Audit from './Audit/Audit'
+import Partial from './Partial/Partial'
 
 @connect(state => ({
   budget: state.db.proposal.budget,
@@ -21,7 +22,7 @@ class Budgeting extends React.Component {
     //  Reduce an array that contains all indexes for approved manifests, make a report for each.
     const approvedManifests = manifests.reduce((required, manifest) => {
       //  If approved, add the index of this manifest to an array. Pass to children so it can be selected in store.
-      if (manifest.decision.approved) {
+      if (manifest.decision && manifest.decision.approved) {
         required.push(manifests.indexOf(manifest))
       }
       return required
@@ -50,8 +51,13 @@ class Budgeting extends React.Component {
             </TabPane>
           }
           {stf && stf.admin &&
-            <TabPane tab={<b>Auditing (<em>STF-Only</em>)</b>} key='3'>
+            <TabPane tab={<b>Auditing (<em>Admin-Only</em>)</b>} key='3'>
               <Audit />
+            </TabPane>
+          }
+          {stf && stf.admin &&
+            <TabPane tab={<b>Create Partial Budget (<em>Admin-Only</em>)</b>} key='4'>
+              <Partial />
             </TabPane>
           }
         </Tabs>
