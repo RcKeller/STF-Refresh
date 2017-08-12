@@ -81,9 +81,11 @@ class Partial extends React.Component {
         <h4>{title}</h4> */}
         <Select value={index} style={{ width: '100%' }} onChange={this.handleChange}>
           {manifests.map((budget, i) => (
-            <Option key={i} value={i} >{`Budget #${i + 1} (${_.capitalize(budget.type)})`}</Option>
+            <Option key={i} value={i} ><h4>{
+              `Budget #${i + 1} (${_.capitalize(budget.type)}) ${budget.title ? ' - ' + budget.title : ''}`}</h4></Option>
           ))}
         </Select>
+        <h4>{title}</h4>
         <p>{body}</p>
         {/* <InputNumber min={1} max={manifests.length} value={selected} onChange={this.handleChange} /> */}
         <SpreadSheet

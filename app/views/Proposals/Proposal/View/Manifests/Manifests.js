@@ -67,7 +67,7 @@ class Manifests extends React.Component {
                 onChange={(value) => this.handleChange(value)}
               >
                 {manifests.map((m, i) =>
-                  <Option value={i.toString()}>{m.title}</Option>
+                  <Option value={i.toString()}><h4>{m.title}</h4></Option>
                 )}
               </Select>
             </div>
