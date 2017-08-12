@@ -8,7 +8,8 @@ import api from '../../../../../services'
 // import { layout, feedback, help, rules } from '../../../../../util/form'
 import _ from 'lodash'
 
-import { message } from 'antd'
+import { InputNumber, Select, message } from 'antd'
+const Option = Select.Option
 
 import SpreadSheet, { Editors } from '../../../../../components/SpreadSheet'
 const { SimpleNumber } = Editors
@@ -35,11 +36,20 @@ const columns = [{
     (state, props) => ({
       proposal: state.db.proposal._id,
       //  Use the most recent manifest as a baseline for this partial.
-      manifest: state.db.proposal.manifests.slice(-1)[0]
+      manifest: state.db.proposal.manifests.slice(-1)[0],
+      manifests: state.db.proposal.manifests
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   )
 class Partial extends React.Component {
+  constructor (props) {
+    super(props)
+    //  The user can specify the manifest they want to import items from.
+    //  We collect the index from them. To start, we use the most recent budget.
+    let index = this.props.manifests.length - 1 || 0
+    this.state = { index }
+  }
+  handleChange = (index) => this.setState({ index })
   handleSubmit = (items) => {
     const { api, proposal, manifest } = this.props
     console.log('ITEMS', items)
@@ -53,40 +63,29 @@ class Partial extends React.Component {
       message.warning(`Failed to create partial budget - Unexpected client error`)
       console.warn(err)
     })
-
-
-    //  Verify that the budget number (and hopefully other data) is there, add it to what we know.
-    // form.validateFields((err, values) => {
-    //   if (!err) {
-    //     items = items.map((item) => _.omit(item, ['_id', '__v']))
-    //     let report = { proposal, manifest: manifest._id, items }
-    //     //  Hydrate the report with form data
-    //     report = Object.assign(report, values)
-    //     console.log('REPORT', report)
-    //     this.props.report
-    //     ? api.patch('report', report, { id: this.props.report._id })
-    //     : api.post('report', report)
-    //     .then(message.success('Report updated!'))
-    //     .catch(err => {
-    //       message.warning('Report failed to update - Unexpected client error')
-    //       console.warn(err)
-    //     })
-    //   } else {
-    //     message.warning('We need the budget number for charging to this budget.')
-    //   }
-    // })
   }
-  //  NOTE: Good for testing:
-  //  http://localhost:3000/proposals/2017/39061
-  //  http://localhost:3000/proposals/2017/94939
-
-  render ({ manifest } = this.props) {
-    //  Use the associated manifest for initial data for creating a partial
-    let data = manifest.items.map((item) =>
-        _.omit(item, ['_id', '__v', 'manifest', 'report']))
-    console.log('DATA', data)
+  render (
+    { manifests } = this.props,
+    { index } = this.state
+  ) {
+    const { title, body, type, items } = manifests[index]
+    const data = items.length > 0
+      ? items.map(item => _.omit(item, ['_id', '__v', 'manifest', 'report']))
+      : []
+    console.log(data)
     return (
       <section>
+        <p>Partial budgets are how we fund specific elements of a budget. The process involves us pulling data from a prior budget you can select below (the original proposal, a different partial, or supplemental award), making your modifications, and submitting it.</p>
+        <p>When voting on a proposal, partials are a separate vote. This is for a variety of reasons, mostly so we can judge a proposal's merits objectively without factoring in any addenums that the committee has proposed.</p>
+        {/* <h4>{`Budget #${index + 1} (${_.capitalize(type)})`}</h4>
+        <h4>{title}</h4> */}
+        <Select value={index} style={{ width: '100%' }} onChange={this.handleChange}>
+          {manifests.map((budget, i) => (
+            <Option key={i} value={i} >{`Budget #${i + 1} (${_.capitalize(budget.type)})`}</Option>
+          ))}
+        </Select>
+        <p>{body}</p>
+        {/* <InputNumber min={1} max={manifests.length} value={selected} onChange={this.handleChange} /> */}
         <SpreadSheet
           columns={columns}
           data={data}
@@ -99,7 +98,8 @@ class Partial extends React.Component {
 
 Partial.propTypes = {
   api: PropTypes.object,
-  proposal: PropTypes.string, //  _id
-  manifest: PropTypes.object
+  //  Proposal ID
+  proposal: PropTypes.string,
+  manifests: PropTypes.array
 }
 export default Partial
