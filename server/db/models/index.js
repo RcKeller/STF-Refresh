@@ -4,6 +4,7 @@ Uses require() to pass the imports around as a func.
 */
 export default function loadModels () {
   //  Auth and User data
+  require('./config')
   require('./user')
   require('./stf')
   require('./contact')
@@ -26,7 +27,7 @@ export default function loadModels () {
 RESTful MODELS (and their dummy data generators)
 For express-restify-mongoose
 */
-
+import Config, { dummyConfigs } from './config'
 import User, { dummyUsers } from './user'
 import STF, { dummySTF } from './stf'
 import Contact, { dummyContacts } from './contact'
@@ -42,12 +43,12 @@ import Report, { dummyReports } from './report'
 import Article, { dummyArticles } from './article'
 //  Note that users are not here, that's bespoke.
 export {
-  User, STF, Contact, Comment,
+  Config, User, STF, Contact, Comment,
   Proposal, Project, Manifest, Item, Block,
   Review, Decision, Report, Article
 }
 export const restDummies = [
-  dummyUsers, dummySTF, dummyContacts, dummyComments,
+  dummyConfigs, dummyUsers, dummySTF, dummyContacts, dummyComments,
   dummyProposals, dummyProjects, dummyManifests, dummyItems, dummyBlocks,
   dummyReviews, dummyDecisions, dummyReports, dummyArticles
 ]

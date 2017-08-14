@@ -1,3 +1,4 @@
+import Configs from './configs'
 import Users from './users'
 import Contacts from './contacts'
 import STF from './stf'
@@ -13,6 +14,7 @@ import Reports from './reports'
 import Articles from './articles'
 
 const controllers = {
+  Configs,
   Users,
   STF,
   Contacts,

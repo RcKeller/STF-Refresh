@@ -10,6 +10,7 @@ export default (app) => {
   /*
   RESTful API
   */
+  app.use(`/${version}/configs`, new controllers.Configs().api())
   app.use(`/${version}/contacts`, new controllers.Contacts().api())
   app.use(`/${version}/stf`, new controllers.STF().api())
   app.use(`/${version}/comments`, new controllers.Comments().api())

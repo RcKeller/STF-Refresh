@@ -1,6 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { connectRequest } from 'redux-query'
+
+import api from '../../services'
 
 import { Link } from 'react-router'
 
@@ -64,7 +68,11 @@ function breadcrumbRenderFix (route, params, routes, paths) {
     : <Link to={path || '/'}>{route.breadcrumbName}</Link>
 }
 
-@connect(state => ({ screen: state.screen }))
+// @connect(state => ({ screen: state.screen }))
+@compose(
+  connect(state => ({ screen: state.screen })),
+  connectRequest(() => api.get('config'))
+)
 class Template extends React.Component {
   constructor (props) {
     super(props)

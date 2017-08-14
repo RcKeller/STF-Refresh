@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
 import { layout } from '../../../util/form'
@@ -18,18 +19,42 @@ import styles from './Config.css'
 @compose(
   connect(
     state => ({
-      user: state.user
-      //  Config, content, enums
+      user: state.user,
+      id: state.db.config && state.db.config._id,
+      submissions: state.db.config && state.db.config.submissions,
+      organizations: state.db.config && state.db.config.organizations,
+      announcements: state.db.config && state.db.config.announcements,
+      stage: state.db.config && state.db.config.stage
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
   connectForm
 )
 class Config extends React.Component {
-  handleSubmissions = (checked) => {
-    console.log(checked)
+  componentDidMount () {
+    //  Take contacts, make an object with role-to-signature bool, use this to set initial vals.
+    const { form, submissions } = this.props
+    if (form) {
+      form.setFieldsValue({ submissions })
+    }
   }
-  render ({ form } = this.props) {
+  handleSubmissions = (submissions) => {
+    console.log(submissions)
+    const { api, id } = this.props
+    const update = {
+      config: (prev, next) => Object.assign(prev, { submissions: next.submissions })
+    }
+    api.patch('config', { submissions }, { id, update })
+    .then(message.warning(`Proposal submissions are now ${submissions ? 'open' : 'closed'}!`), 10)
+    .catch(err => {
+      message.warning(`Failed to update - client error`)
+      console.warn(err)
+    })
+  }
+  handleOrganizations = (organizations) => {
+    console.warn(organizations)
+  }
+  render ({ form, organizations } = this.props) {
     return (
       <article className={styles['article']}>
         <h1>Web Configuration</h1>
@@ -50,9 +75,11 @@ class Config extends React.Component {
           </TabPane>
           <TabPane tab='Submissions' key='3'>
             <FormItem label='Submissions'>
-              <Switch onChange={(checked) => this.handleSubmissions(checked)}
-                checkedChildren='Open' unCheckedChildren='Closed'
-              />
+              {form.getFieldDecorator('submissions', { valuePropName: 'checked' })(
+                <Switch onChange={(checked) => this.handleSubmissions(checked)}
+                  checkedChildren='Open' unCheckedChildren='Closed'
+                />
+              )}
             </FormItem>
           </TabPane>
           <TabPane tab='STF Members' key='4'>
@@ -60,6 +87,14 @@ class Config extends React.Component {
           </TabPane>
           <TabPane tab='Organizations' key='5'>
             Add organization types
+            <Select mode='multiple' placeholder='Type the name of an organization to add'
+              style={{ width: '100%' }}
+              onChange={(organizations) => this.handleOrganizations(organizations)}
+            >
+              {organizations && organizations.map((org, i) => (
+                <Option key={i}>{org}</Option>
+              ))}
+            </Select>
           </TabPane>
         </Tabs>
       </article>
@@ -67,6 +102,12 @@ class Config extends React.Component {
   }
 }
 Config.propTypes = {
-  user: PropTypes.object
+  form: PropTypes.object,
+  api: PropTypes.object,
+  id: PropTypes.string,
+  submissions: PropTypes.array,
+  organizations: PropTypes.array,
+  announcements: PropTypes.array,
+  status: PropTypes.string
 }
 export default Config
