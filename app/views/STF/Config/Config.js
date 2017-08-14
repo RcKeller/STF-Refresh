@@ -39,7 +39,6 @@ class Config extends React.Component {
     }
   }
   handleSubmissions = (submissions) => {
-    console.log(submissions)
     const { api, id } = this.props
     const update = {
       config: (prev, next) => Object.assign(prev, { submissions: next.submissions })
@@ -52,20 +51,25 @@ class Config extends React.Component {
     })
   }
   handleOrganizations = (organizations) => {
-    console.warn(organizations)
+    const { api, id } = this.props
+    const update = {
+      config: (prev, next) => Object.assign(prev, { organizations: next.organizations })
+    }
+    api.patch('config', { organizations }, { id, update })
+    .then(message.warning(`Updated organizations!`), 10)
+    .catch(err => {
+      message.warning(`Failed to update - client error`)
+      console.warn(err)
+    })
   }
   render ({ form, organizations } = this.props) {
     return (
       <article className={styles['article']}>
         <h1>Web Configuration</h1>
         <h6>Here be dragons.</h6>
-        <ul>
-          <li>Modify announcements.</li>
-          <li>Open/Close voting</li>
-          <li>Edit STF committee</li>
-          <li>Change Organization Types</li>
-          <li>(?) Edit Q/A prompts</li>
-        </ul>
+        <p>Here you can update various configuration settings for the website, such as opening/closing proposal submissions, editing announcements, updating the pre-selected list of campus organizations, modifying access permissions for STF members, etc.</p>
+        <p>Please be advised that changes go into effect IMMEDIATELY, users will experience the change after refreshing their page.</p>
+        <h2>Announcements</h2>
         <FormItem label='Submissions' {...layout} >
           {form.getFieldDecorator('submissions', { valuePropName: 'checked' })(
             <Switch onChange={(checked) => this.handleSubmissions(checked)}
@@ -82,6 +86,7 @@ class Config extends React.Component {
             </Select>
           )}
         </FormItem>
+        <h2>Adjust Members</h2>
       </article>
     )
   }
