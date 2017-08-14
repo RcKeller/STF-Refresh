@@ -8,7 +8,7 @@ import api from '../../../../../services'
 // import { layout, feedback, help, rules } from '../../../../../util/form'
 import _ from 'lodash'
 
-import { InputNumber, Select, message } from 'antd'
+import { Select, message } from 'antd'
 const Option = Select.Option
 
 import SpreadSheet, { Editors } from '../../../../../components/SpreadSheet'
@@ -51,7 +51,7 @@ class Partial extends React.Component {
   }
   handleChange = (index) => this.setState({ index })
   handleSubmit = (items) => {
-    const { api, proposal, manifest } = this.props
+    const { api, proposal } = this.props
     console.log('ITEMS', items)
     const partial = { proposal, type: 'partial', items }
     //  Nullify the update for proposal data.
@@ -77,8 +77,6 @@ class Partial extends React.Component {
       <section>
         <p>Partial budgets are how we fund specific elements of a budget. The process involves us pulling data from a prior budget you can select below (the original proposal, a different partial, or supplemental award), making your modifications, and submitting it.</p>
         <p>When voting on a proposal, partials are a separate vote. This is for a variety of reasons, mostly so we can judge a proposal's merits objectively without factoring in any addenums that the committee has proposed.</p>
-        {/* <h4>{`Budget #${index + 1} (${_.capitalize(type)})`}</h4>
-        <h4>{title}</h4> */}
         <Select value={index} style={{ width: '100%' }} onChange={this.handleChange}>
           {manifests.map((budget, i) => (
             <Option key={i} value={i} ><h4>{
@@ -87,7 +85,6 @@ class Partial extends React.Component {
         </Select>
         <h4>{title}</h4>
         <p>{body}</p>
-        {/* <InputNumber min={1} max={manifests.length} value={selected} onChange={this.handleChange} /> */}
         <SpreadSheet
           columns={columns}
           data={data}

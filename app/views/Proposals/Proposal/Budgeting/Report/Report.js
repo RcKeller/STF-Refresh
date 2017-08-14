@@ -68,7 +68,6 @@ class Report extends React.Component {
         let report = { proposal, manifest: manifest._id, items }
         //  Hydrate the report with form data
         report = Object.assign(report, values)
-        console.log('REPORT', report)
         this.props.report
         ? api.patch('report', report, { id: this.props.report._id })
         : api.post('report', report)
@@ -104,6 +103,7 @@ class Report extends React.Component {
           columns={columns}
           data={data}
           onSubmit={this.handleSubmit}
+          // disabled={disableSubmit(form)}
         />
       </section>
     )

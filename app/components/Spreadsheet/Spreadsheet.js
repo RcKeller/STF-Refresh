@@ -22,7 +22,14 @@ class SpreadSheet extends React.Component {
     if (rows.length < 1) rows[0] = {...newData} || {}
     this.state = ({ rows })
   }
-
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.data) {
+      const { data, newData } = nextProps
+      let rows = data
+      if (rows.length < 1) rows[0] = {...newData} || {}
+      this.state = ({ rows })
+    }
+  }
   rowGetter = (i) =>
     this.state.rows[i]
 
@@ -56,8 +63,8 @@ class SpreadSheet extends React.Component {
   }
 
   render (
-    { rowGetter, handleGridRowsUpdated, handleAddRow, handleSubmit } = this,
-    { columns } = this.props,
+    // { rowGetter, handleGridRowsUpdated, handleAddRow, handleSubmit } = this,
+    { columns, disable } = this.props,
     { rows: { length } } = this.state
 ) {
     if (length < 1) this.insertRow(0)
@@ -75,11 +82,11 @@ class SpreadSheet extends React.Component {
           onRowInsertBelow={this.insertRowBelow}
         />}
         columns={columns}
-        rowGetter={rowGetter}
+        rowGetter={this.rowGetter}
         rowsCount={length}
-        onGridRowsUpdated={handleGridRowsUpdated}
+        onGridRowsUpdated={this.handleGridRowsUpdated}
       />
-      <Button size='large' type='primary' style={jss.button} onClick={handleSubmit}>
+      <Button size='large' type='primary' disable={disable} style={jss.button} onClick={this.handleSubmit}>
         <Icon type='upload' />Save
       </Button>
     </div>

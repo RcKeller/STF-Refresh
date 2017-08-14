@@ -57,7 +57,7 @@ class Voting extends React.Component {
                 <p>Instructions here.</p>
               </TabPane>
               {docket.map((manifest, i) => (
-                <TabPane key={i} className={styles['tab-pane']}
+                <TabPane key={manifest._id} className={styles['tab-pane']}
                   tab={
                     `${manifest.proposal.year}-${manifest.proposal.number}
                     ${manifest.type !== 'original' ? `(${_.capitalize(manifest.type)})` : ''}
