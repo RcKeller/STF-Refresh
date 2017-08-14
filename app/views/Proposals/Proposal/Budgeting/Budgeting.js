@@ -31,48 +31,31 @@ class Budgeting extends React.Component {
       <section>
         <h1>Budgeting</h1>
         <h3>{`Organization Budget Code: ${budget}`}</h3>
-        <p>Here you can record your recent expenditures as part of the STF process...</p>
+        {approvedManifests.length <= 0 &&
+          <em>This proposal has not received funding, so advanced budgeting tools are unavailable for now.</em>
+        }
         <Tabs>
-          {approvedManifests.length > 0 &&
-            <TabPane tab={<b>Report Expenditures</b>} key='1'>
-              <Tabs tabPosition='left' size='small' defaultActiveKey={`${approvedManifests.length - 1}`}>
-                {approvedManifests.map((indexInStore, i) => (
-                  <TabPane key={i} tab={<span>{_.capitalize(manifests[indexInStore].type)}<br />{`Award (#${++i})`}</span>} >
-                    <p>Instructions...</p>
-                    <Report awardNumber={++i} indexInStore={indexInStore} />
-                  </TabPane>
-                ))}
-              </Tabs>
-            </TabPane>
-          }
-          {approvedManifests.length > 0 &&
-            <TabPane tab={<b>Request Supplemental Funding</b>} key='2'>
-              <Supplemental />
-            </TabPane>
-          }
+          <TabPane disabled={approvedManifests.length <= 0} tab={<b>Expense Reporting</b>} key='1'>
+            <Tabs size='small' defaultActiveKey={`${approvedManifests.length - 1}`}>
+              {approvedManifests.map((indexInStore, i) => (
+                <TabPane key={i} tab={<span>{_.capitalize(manifests[indexInStore].type)}<br />{`Award (#${++i})`}</span>} >
+                  <Report awardNumber={++i} indexInStore={indexInStore} />
+                </TabPane>
+              ))}
+            </Tabs>
+          </TabPane>
+          <TabPane disabled={approvedManifests.length <= 0} tab={<b>Request Supplemental Funding</b>} key='2'>
+            <Supplemental indexInStore={approvedManifests.length - 1} />
+          </TabPane>
+          <TabPane tab={<b>Create Partial Budget</b>} key='3'>
+            <Partial />
+          </TabPane>
           {stf && stf.admin &&
-            <TabPane tab={<b>Auditing (<em>Admin-Only</em>)</b>} key='3'>
+            <TabPane tab={<b>Auditing (<em>Admin-Only</em>)</b>} key='4'>
               <Audit />
             </TabPane>
           }
-          {stf && stf.admin &&
-            <TabPane tab={<b>Create Partial Budget (<em>Admin-Only</em>)</b>} key='4'>
-              <Partial />
-            </TabPane>
-          }
         </Tabs>
-        {/* {approvedManifests.length < 1
-          ? <em>No awards dispersed, cannot fill budget reports.</em>
-          : <Tabs tabPosition='left' size='small' defaultActiveKey={`${approvedManifests.length - 1}`}>
-            {approvedManifests.map((indexInStore, i) => (
-              <TabPane key={i} tab={<span>{_.capitalize(manifests[indexInStore].type)}<br />{`Award (#${++i})`}</span>} >
-                <Report awardNumber={++i} indexInStore={indexInStore} />
-              </TabPane>
-            ))}
-          </Tabs>
-        }
-        {approvedManifests.length > 0 && <Supplemental />}
-        {stf && stf.admin && <Audit />} */}
       </section>
     )
   }

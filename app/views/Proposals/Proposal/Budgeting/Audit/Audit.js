@@ -13,7 +13,7 @@ class Audit extends React.Component {
       <section>
         <h1>Proposal Auditing</h1>
         <h6>For internal use only.</h6>
-        <p>Lorem ipsum...</p>
+        <p>This page is under construction and is a feature that will ship post-launch.</p>
       </section>
     )
   }

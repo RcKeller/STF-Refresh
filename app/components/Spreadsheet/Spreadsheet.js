@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import _ from 'lodash'
 
 import ReactDataGrid from 'react-data-grid'
 import { Alert, Button, Icon } from 'antd'
@@ -23,7 +24,8 @@ class SpreadSheet extends React.Component {
     this.state = ({ rows })
   }
   componentWillReceiveProps (nextProps) {
-    if (nextProps.data) {
+    //  FIXME: For some reason, this check is failing to work properly. Causes data tables to refresh when forms of parents are changed.
+    if (!_.isEqual(nextProps.data === this.props.data)) {
       const { data, newData } = nextProps
       let rows = data
       if (rows.length < 1) rows[0] = {...newData} || {}

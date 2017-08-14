@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import api from '../../../../../services'
-// import { layout, feedback, help, rules } from '../../../../../util/form'
+import { layout, feedback, help, rules } from '../../../../../util/form'
 import _ from 'lodash'
 
 import { Select, message } from 'antd'
@@ -75,12 +75,15 @@ class Partial extends React.Component {
     console.log(data)
     return (
       <section>
+        <h1>Partial Budgets</h1>
+        <h4>For alternative budget choices, partial awards, etc.</h4>
         <p>Partial budgets are how we fund specific elements of a budget. The process involves us pulling data from a prior budget you can select below (the original proposal, a different partial, or supplemental award), making your modifications, and submitting it.</p>
         <p>When voting on a proposal, partials are a separate vote. This is for a variety of reasons, mostly so we can judge a proposal's merits objectively without factoring in any addenums that the committee has proposed.</p>
+        <h4>Import items from:</h4>
         <Select value={index} style={{ width: '100%' }} onChange={this.handleChange}>
           {manifests.map((budget, i) => (
-            <Option key={i} value={i} ><h4>{
-              `Budget #${i + 1} (${_.capitalize(budget.type)}) ${budget.title ? ' - ' + budget.title : ''}`}</h4></Option>
+            <Option key={i} value={i} >{
+              `Budget #${i + 1} (${_.capitalize(budget.type)}) ${budget.title ? ' - ' + budget.title : ''}`}</Option>
           ))}
         </Select>
         <h4>{title}</h4>

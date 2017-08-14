@@ -94,6 +94,8 @@ class Report extends React.Component {
         _.omit(item, ['_id', '__v', 'manifest', 'description', 'priority', 'tax', 'report']))
     return (
       <section>
+        <h1>Expense Reporting</h1>
+        <p>A little how-to here...</p>
         <FormItem label='Budget Number' {...layout} hasFeedback={feedback(form, 'budget')} help={help(form, 'budget')} >
           {form.getFieldDecorator('budget', rules.required)(
             <Input onPressEnter={(e) => this.handleBudget(e.target.value)} />
