@@ -8,7 +8,7 @@ import { connectRequest } from 'redux-query'
 import api from '../../../services'
 import { layout } from '../../../util/form'
 
-import { Tabs, Form, Input, Select, Checkbox, Switch, Alert, message } from 'antd'
+import { Spin, Tabs, Form, Input, Select, Checkbox, Switch, Alert, message } from 'antd'
 const TabPane = Tabs.TabPane
 const Option = Select.Option
 const FormItem = Form.Item
@@ -21,21 +21,20 @@ import styles from './Config.css'
     state => ({
       user: state.user,
       id: state.db.config && state.db.config._id,
-      submissions: state.db.config && state.db.config.submissions,
-      organizations: state.db.config && state.db.config.organizations,
-      announcements: state.db.config && state.db.config.announcements,
-      stage: state.db.config && state.db.config.stage
+      config: state.db.config,
+      // member: state.db.stfs
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
+  // connectRequest(api.get('blocks')),
   connectForm
 )
 class Config extends React.Component {
   componentDidMount () {
     //  Take contacts, make an object with role-to-signature bool, use this to set initial vals.
-    const { form, submissions, organizations } = this.props
-    if (form) {
-      form.setFieldsValue({ submissions, organizations })
+    const { form, config } = this.props
+    if (form && config) {
+      form.setFieldsValue({...config})
     }
   }
   handleSubmissions = (submissions) => {
@@ -62,42 +61,48 @@ class Config extends React.Component {
       console.warn(err)
     })
   }
-  render ({ form, organizations } = this.props) {
+  render ({ form, config } = this.props) {
     return (
       <article className={styles['article']}>
-        <h1>Web Configuration</h1>
-        <h6>Here be dragons.</h6>
-        <p>Here you can update various configuration settings for the website, such as opening/closing proposal submissions, editing announcements, updating the pre-selected list of campus organizations, modifying access permissions for STF members, etc.</p>
-        <p>Please be advised that changes go into effect IMMEDIATELY, users will experience the change after refreshing their page.</p>
-        <h2>Announcements</h2>
-        <FormItem label='Submissions' {...layout} >
-          {form.getFieldDecorator('submissions', { valuePropName: 'checked' })(
-            <Switch onChange={(checked) => this.handleSubmissions(checked)}
-              checkedChildren='Open' unCheckedChildren='Closed'
-            />
-          )}
-        </FormItem>
-        <FormItem label='Organizations' {...layout} >
-          {form.getFieldDecorator('organizations')(
-            <Select mode='tags' placeholder='Type the name of an organization to add'
-              onChange={(organizations) => this.handleOrganizations(organizations)}
-            >
-              {organizations && organizations.map(org => <Option key={org}>{org}</Option>)}
-            </Select>
-          )}
-        </FormItem>
-        <h2>Adjust Members</h2>
+        {!config
+          ? <Spin size='large' tip='Loading...' />
+          : <div>
+              <h1>Web Configuration</h1>
+              <h6>Here be dragons...</h6>
+              <p>Here you can update various configuration settings for the website, such as opening/closing proposal submissions, editing announcements, updating the pre-selected list of campus organizations, modifying access permissions for STF members, etc.</p>
+              <p>Please be advised that changes go into effect IMMEDIATELY, users will experience the change after refreshing their page.</p>
+              <h2>Announcements</h2>
+              <FormItem label='Submissions' {...layout} >
+                {form.getFieldDecorator('submissions', { valuePropName: 'checked' })(
+                  <Switch onChange={(checked) => this.handleSubmissions(checked)}
+                    checkedChildren='Open' unCheckedChildren='Closed'
+                  />
+                )}
+              </FormItem>
+              <FormItem label='Organizations' {...layout} >
+                {form.getFieldDecorator('organizations')(
+                  <Select mode='tags' placeholder='Type the name of an organization to add'
+                    onChange={(organizations) => this.handleOrganizations(organizations)}
+                  >
+                    {config.organizations &&
+                        config.organizations.map(org => <Option key={org}>{org}</Option>)}
+                  </Select>
+                )}
+              </FormItem>
+              <h2>Adjust Members</h2>
+            </div>
+          }
       </article>
     )
   }
 }
-Config.propTypes = {
-  form: PropTypes.object,
-  api: PropTypes.object,
-  id: PropTypes.string,
-  submissions: PropTypes.array,
-  organizations: PropTypes.array,
-  announcements: PropTypes.array,
-  status: PropTypes.string
-}
+// Config.propTypes = {
+//   form: PropTypes.object,
+//   api: PropTypes.object,
+//   id: PropTypes.string,
+//   submissions: PropTypes.array,
+//   organizations: PropTypes.array,
+//   announcements: PropTypes.array,
+//   status: PropTypes.string
+// }
 export default Config
