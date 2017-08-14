@@ -33,9 +33,9 @@ import styles from './Config.css'
 class Config extends React.Component {
   componentDidMount () {
     //  Take contacts, make an object with role-to-signature bool, use this to set initial vals.
-    const { form, submissions } = this.props
+    const { form, submissions, organizations } = this.props
     if (form) {
-      form.setFieldsValue({ submissions })
+      form.setFieldsValue({ submissions, organizations })
     }
   }
   handleSubmissions = (submissions) => {
@@ -66,37 +66,22 @@ class Config extends React.Component {
           <li>Change Organization Types</li>
           <li>(?) Edit Q/A prompts</li>
         </ul>
-        <Tabs tabPosition='left' size='small'>
-          <TabPane tab='Announcements' key='1'>
-            Create announcements
-          </TabPane>
-          <TabPane tab='Content' key='2'>
-            Modify content (q.a. , prompts, tooltips etc).
-          </TabPane>
-          <TabPane tab='Submissions' key='3'>
-            <FormItem label='Submissions'>
-              {form.getFieldDecorator('submissions', { valuePropName: 'checked' })(
-                <Switch onChange={(checked) => this.handleSubmissions(checked)}
-                  checkedChildren='Open' unCheckedChildren='Closed'
-                />
-              )}
-            </FormItem>
-          </TabPane>
-          <TabPane tab='STF Members' key='4'>
-            Modify members
-          </TabPane>
-          <TabPane tab='Organizations' key='5'>
-            Add organization types
-            <Select mode='multiple' placeholder='Type the name of an organization to add'
-              style={{ width: '100%' }}
+        <FormItem label='Submissions' {...layout} >
+          {form.getFieldDecorator('submissions', { valuePropName: 'checked' })(
+            <Switch onChange={(checked) => this.handleSubmissions(checked)}
+              checkedChildren='Open' unCheckedChildren='Closed'
+            />
+          )}
+        </FormItem>
+        <FormItem label='Organizations' {...layout} >
+          {form.getFieldDecorator('organizations')(
+            <Select mode='tags' placeholder='Type the name of an organization to add'
               onChange={(organizations) => this.handleOrganizations(organizations)}
             >
-              {organizations && organizations.map((org, i) => (
-                <Option key={i}>{org}</Option>
-              ))}
+              {organizations && organizations.map(org => <Option key={org}>{org}</Option>)}
             </Select>
-          </TabPane>
-        </Tabs>
+          )}
+        </FormItem>
       </article>
     )
   }
