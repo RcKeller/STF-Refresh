@@ -59,14 +59,14 @@ class Docket extends React.Component {
       key: 'docket.metrics',
       render: (text, record, index) =>
       record.type === 'original'  //  Supplementals don't go through metrics reviews
-        ? <Switch checked={text} onChange={(metrics) => this.handleToggle({ metrics }, record, index)} />
+        ? <Switch checked={text} onChange={metrics => this.handleToggle({ metrics }, record, index)} />
         : <em>N/A</em>,
       width: 75
     }, {
       title: 'Voting',
       dataIndex: 'docket.voting',
       key: 'docket.voting',
-      render: (text, record, index) => <Switch checked={text} onChange={(voting) => this.handleToggle({ voting }, record, index)} />,
+      render: (text, record, index) => <Switch checked={text} onChange={voting => this.handleToggle({ voting }, record, index)} />,
       width: 75
     }]
   }
@@ -76,7 +76,7 @@ class Docket extends React.Component {
     const { api } = this.props
     let { _id, docket } = record
     docket = Object.assign(docket, change)
-    console.log('Change introduced', docket)
+    console.log('Change introduced', docket, record)
     //  Update the manifest at the correct index.
     const update = { manifests: (prev, next) => {
       let newData = prev.slice()
@@ -84,7 +84,7 @@ class Docket extends React.Component {
       return newData
     }}
     api.patch('manifest', { docket }, { id: _id, update })
-    .then(message.success(('Docket updated!', 10)))
+    .then(message.success(('Docket updated!'), 10))
     .catch(err => {
       message.warning(`Failed to update - client error`)
       console.warn(err)

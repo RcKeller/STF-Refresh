@@ -15,6 +15,9 @@ const connectForm = Form.create()
   connect(
     (state, props) => ({
       manifest: state.db.manifests[props.index],
+      review: state.db.manifests[props.index].reviews.filter(review =>
+          // review.author._id === state.user._id),
+          review.author._id === "5991d88bae3e6f4ad0669bbf")[0] || {},
       user: state.user
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })

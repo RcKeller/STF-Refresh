@@ -8,7 +8,7 @@ import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
 
-import { Spin, Tabs } from 'antd'
+import { Spin, Tabs, Alert } from 'antd'
 const TabPane = Tabs.TabPane
 
 import Vote from './Vote/Vote'
@@ -23,7 +23,7 @@ import styles from './Voting.css'
   connectRequest(() => api.get('manifests', {
     //  BUG: Unpublished proposals can be pulled in docket creation.
     force: true,
-    join: ['proposal.body', 'proposal.contacts']
+    join: ['proposal.body', 'proposal.contacts', 'reviews', 'decision']
   }))
 )
 class Voting extends React.Component {
@@ -37,8 +37,10 @@ class Voting extends React.Component {
     if (Array.isArray(manifests)) {
       //  Filter out proposals containing the netID in contacts.
       const docket = manifests.filter(manifest => {
-        return manifest.docket.metrics || manifest.docket.voting
+        // return manifest.docket.metrics || manifest.docket.voting
+        return (manifest.docket.metrics === true || manifest.docket.voting === true)
       })
+      console.warn('SETTING DOCKET', docket)
       this.setState({ docket })
     }
   }
@@ -55,6 +57,10 @@ class Voting extends React.Component {
               <TabPane tab='Overview' key='1' className={styles['tab-pane']}>
                 <h1>Reviews & Voting</h1>
                 <p>Instructions here.</p>
+                <Alert type='info' banner showIcon={false}
+                  message='Major Changes for Ex-Officios'
+                  description='Permissions have been expanded to allow Ex-Officios to review proposals, sans final voting. Officios also have read access to more content in general. We are grateful for their involvement and want the web platform to reflect that.'
+                />
               </TabPane>
               {docket.map((manifest, i) => (
                 <TabPane key={manifest._id} className={styles['tab-pane']}

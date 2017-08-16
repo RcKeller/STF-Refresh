@@ -13,9 +13,9 @@ if (fs.existsSync(manifestPath)) {
 
 const createAppScript = () => {
   return `
-    <script src="/assets/${manifest['common.js']}"></script>
-    <script src="/assets/${manifest['vendor.js']}"></script>
-    <script src="/assets/${manifest['app.js']}"></script>
+    <script async src="/assets/${manifest['common.js']}"></script>
+    <script async src="/assets/${manifest['vendor.js']}"></script>
+    <script async src="/assets/${manifest['app.js']}"></script>
   `
 }
 

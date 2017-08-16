@@ -3,9 +3,9 @@ let manifest = {'common.js': 'common.js', 'vendor.js': 'vendor.js', 'app.js': 'a
 
 const createAppScript = () => {
   return `
-    <script src="/assets/${manifest['common.js']}"></script>
-    <script src="/assets/${manifest['vendor.js']}"></script>
-    <script src="/assets/${manifest['app.js']}"></script>
+    <script async src="/assets/${manifest['common.js']}"></script>
+    <script async src="/assets/${manifest['vendor.js']}"></script>
+    <script async src="/assets/${manifest['app.js']}"></script>
   `
 }
 

@@ -21,7 +21,9 @@ There are two kinds of meetings:
     //  Might seem counterintuitive, but we're connecting to a manifest and pulling its proposal data.
     (state, props) => ({
       manifest: state.db.manifests[props.index],
-      // proposal: state.db.manifests[props.index].proposal,
+      review: state.db.manifests[props.index].reviews.filter(review =>
+          // review.author._id === state.user._id),
+          review.author._id === "5991d88bae3e6f4ad0669bbf")[0] || {},
       user: state.user
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
@@ -34,19 +36,6 @@ class Vote extends React.Component {
     const { id, title, organization, uac, year, number, date, comments } = proposal
     const { metrics, voting } = docket
     console.log('DOCKET', docket)
-    const Header = () => (
-      <div>
-        <h1>{uac ? title : `${title} (UAC)`}</h1>
-        {uac && <h2>Universal Access Committee</h2>}
-        <h3>For {organization}</h3>
-        <h6 id={id}>{`ID: ${year}-${number}`}</h6>
-        <ul>
-          <li>Date: {date}</li>
-          <li>Endorsements: {comments.length}</li>
-        </ul>
-        <hr />
-      </div>
-    )
     return (
       <section>
         {!proposal
@@ -64,16 +53,12 @@ class Vote extends React.Component {
               <TabPane tab={<b>Summary</b>} key='1'>
                 <SummaryPane index={index} />
               </TabPane>
-              {metrics &&
-                <TabPane tab={<b>Metrics</b>} key='2'>
-                  <MetricsPane index={index} />
-                </TabPane>
-              }
-              {voting &&
-                <TabPane tab={<b>Voting</b>} key='3'>
-                  <VotingPane index={index} />
-                </TabPane>
-              }
+              <TabPane disabled={!metrics} tab={<b>Metrics</b>} key='2'>
+                <MetricsPane index={index} />
+              </TabPane>
+              <TabPane disabled={!voting} tab={<b>Voting</b>} key='3'>
+                <VotingPane index={index} />
+              </TabPane>
             </Tabs>
           </div>
         }
