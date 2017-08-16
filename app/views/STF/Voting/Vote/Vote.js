@@ -9,9 +9,8 @@ import api from '../../../../services'
 import { Spin, Tabs } from 'antd'
 const TabPane = Tabs.TabPane
 
-import SummaryPane from './SummaryPane/SummaryPane'
-import MetricsPane from './MetricsPane/MetricsPane'
-import VotingPane from './VotingPane/VotingPane'
+import Summary from './Summary/Summary'
+import Review from './Review/Review'
 /*
 There are two kinds of meetings:
 - QA meetings (metrics, no votes)
@@ -21,9 +20,6 @@ There are two kinds of meetings:
     //  Might seem counterintuitive, but we're connecting to a manifest and pulling its proposal data.
     (state, props) => ({
       manifest: state.db.manifests[props.index],
-      review: state.db.manifests[props.index].reviews.filter(review =>
-          // review.author._id === state.user._id),
-          review.author._id === "5991d88bae3e6f4ad0669bbf")[0] || {},
       user: state.user
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
@@ -51,14 +47,14 @@ class Vote extends React.Component {
             </ul>
             <Tabs defaultActiveKey='1'>
               <TabPane tab={<b>Summary</b>} key='1'>
-                <SummaryPane index={index} />
+                <Summary index={index} />
               </TabPane>
-              <TabPane disabled={!metrics} tab={<b>Metrics</b>} key='2'>
-                <MetricsPane index={index} />
+              <TabPane disabled={!metrics && !voting} tab={<b>Review</b>} key='2'>
+                <Review index={index} />
               </TabPane>
-              <TabPane disabled={!voting} tab={<b>Voting</b>} key='3'>
+              {/* <TabPane disabled={!voting} tab={<b>Voting</b>} key='3'>
                 <VotingPane index={index} />
-              </TabPane>
+              </TabPane> */}
             </Tabs>
           </div>
         }

@@ -9,7 +9,7 @@ const Panel = Collapse.Panel
     //  Might seem counterintuitive, but we're connecting to a manifest and pulling its proposal data.
     (state, props) => ({ body: state.db.manifests[props.index].proposal.body })
 )
-class SummaryPane extends React.Component {
+class Summary extends React.Component {
   render (
     { body } = this.props
   ) {
@@ -60,8 +60,8 @@ class SummaryPane extends React.Component {
     )
   }
 }
-SummaryPane.propTypes = {
+Summary.propTypes = {
   manifest: PropTypes.object,
   user: PropTypes.object
 }
-export default SummaryPane
+export default Summary
