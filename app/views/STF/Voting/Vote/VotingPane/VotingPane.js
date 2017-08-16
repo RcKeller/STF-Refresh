@@ -68,12 +68,18 @@ class VotingPane extends React.Component {
     //  Create a set (array w/ unique values) by spreading all the review types we've filtered
     //  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set
     //  https://gist.github.com/telekosmos/3b62a31a5c43f40849bb#gistcomment-1830283
-    const summary = [...new Set([
+    const filteredReviews = [...new Set([
       ...reviews.admin,
       ...reviews.member,
       ...reviews.spectator
     ])]
-    console.warn('summary', summary)
+    console.warn('summary', filteredReviews)
+    const scores = filteredReviews.reduce(function (totals, score) {
+      console.log('TOTALS', totals)
+      console.log('SCORE', score)
+      return totals
+    }, {})
+    console.warn('SCORES', scores)
     return (
       <section>
         {!manifest
