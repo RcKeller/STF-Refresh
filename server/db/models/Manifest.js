@@ -22,7 +22,8 @@ const ManifestSchema = new mongoose.Schema({
   //  If the manifest is on the docket for a vote, and what kind.
   docket: {
     metrics: { type: Boolean, default: false },
-    voting: { type: Boolean, default: false }
+    voting: { type: Boolean, default: false },
+    decisions: { type: Boolean, default: false }
   },
   //  Reviews are taken for manifests.
   //  Decisions are issued for manifests (partial passed, supplemental passed), etc.

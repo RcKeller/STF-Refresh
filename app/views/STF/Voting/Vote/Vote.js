@@ -11,6 +11,7 @@ const TabPane = Tabs.TabPane
 
 import Summary from './Summary/Summary'
 import Review from './Review/Review'
+import Decision from './Decision/Decision'
 /*
 There are two kinds of meetings:
 - QA meetings (metrics, no votes)
@@ -30,7 +31,7 @@ class Vote extends React.Component {
   ) {
     const { proposal, docket } = manifest
     const { id, title, organization, uac, year, number, date, comments } = proposal
-    const { metrics, voting } = docket
+    const { metrics, voting, decisions } = docket
     console.log('DOCKET', docket)
     return (
       <section>
@@ -52,9 +53,9 @@ class Vote extends React.Component {
               <TabPane disabled={!metrics && !voting} tab={<b>Review</b>} key='2'>
                 <Review index={index} />
               </TabPane>
-              {/* <TabPane disabled={!voting} tab={<b>Voting</b>} key='3'>
-                <VotingPane index={index} />
-              </TabPane> */}
+              <TabPane disabled={!decisions} tab={<b>Decision</b>} key='3'>
+                <Decision index={index} />
+              </TabPane>
             </Tabs>
           </div>
         }

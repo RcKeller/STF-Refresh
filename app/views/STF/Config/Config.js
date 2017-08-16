@@ -67,30 +67,44 @@ class Config extends React.Component {
         {!config
           ? <Spin size='large' tip='Loading...' />
           : <div>
-              <h1>Web Configuration</h1>
-              <h6>Here be dragons...</h6>
-              <p>Here you can update various configuration settings for the website, such as opening/closing proposal submissions, editing announcements, updating the pre-selected list of campus organizations, modifying access permissions for STF members, etc.</p>
-              <p>Please be advised that changes go into effect IMMEDIATELY, users will experience the change after refreshing their page.</p>
-              <h2>Announcements</h2>
-              <FormItem label='Submissions' {...layout} >
-                {form.getFieldDecorator('submissions', { valuePropName: 'checked' })(
-                  <Switch onChange={(checked) => this.handleSubmissions(checked)}
-                    checkedChildren='Open' unCheckedChildren='Closed'
-                  />
-                )}
-              </FormItem>
-              <FormItem label='Organizations' {...layout} >
-                {form.getFieldDecorator('organizations')(
-                  <Select mode='tags' placeholder='Type the name of an organization to add'
-                    onChange={(organizations) => this.handleOrganizations(organizations)}
-                  >
-                    {config.organizations &&
-                        config.organizations.map(org => <Option key={org}>{org}</Option>)}
-                  </Select>
-                )}
-              </FormItem>
-              <h2>Adjust Members</h2>
-            </div>
+            <h1>Web Configuration</h1>
+            <h6>Here be dragons...</h6>
+            <p>Here you can update various configuration settings for the website, such as opening/closing proposal submissions, editing announcements, updating the pre-selected list of campus organizations, modifying access permissions for STF members, etc.</p>
+            <p>Please be advised that changes go into effect IMMEDIATELY, users will experience the change after refreshing their page.</p>
+            <hr />
+            <FormItem label='Announcement A' {...layout} >
+              {form.getFieldDecorator('announcements[0]')(
+                <Input type='textarea' rows={3} />
+              )}
+            </FormItem>
+            <FormItem label='Announcement B' {...layout} >
+              {form.getFieldDecorator('announcements[1]')(
+                <Input type='textarea' rows={3} />
+              )}
+            </FormItem>
+            <FormItem label='Announcement C' {...layout} >
+              {form.getFieldDecorator('announcements[2]')(
+                <Input type='textarea' rows={3} />
+              )}
+            </FormItem>
+            <FormItem label='Submissions' {...layout} >
+              {form.getFieldDecorator('submissions', { valuePropName: 'checked' })(
+                <Switch onChange={(checked) => this.handleSubmissions(checked)}
+                  checkedChildren='Open' unCheckedChildren='Closed'
+                />
+              )}
+            </FormItem>
+            <FormItem label='Organizations' {...layout} >
+              {form.getFieldDecorator('organizations')(
+                <Select mode='tags' placeholder='Type the name of an organization to add'
+                  onChange={(organizations) => this.handleOrganizations(organizations)}
+                >
+                  {config.organizations &&
+                      config.organizations.map(org => <Option key={org}>{org}</Option>)}
+                </Select>
+              )}
+            </FormItem>
+          </div>
           }
       </article>
     )

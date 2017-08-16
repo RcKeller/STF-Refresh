@@ -7,9 +7,18 @@ const ConfigSchema = new mongoose.Schema({
   //  Recognized campus orgs (mech engineering dept, etc)
   organizations: [{ type: String }],
   //  Frontpage announcements
-  announcements: [{ type: String }],
+  announcements: [{
+    type: String,
+    default: ['Announcement 0', 'Announcement 1', 'Announcement 2']
+  }],
   //  Stage: Where we are on the frontpage timeline (voting, deliberation, etc)
-  stage: String
+  stage: String,
+  questions: {
+    review: [{
+      type: String,
+      default: ['Placeholder A', 'Placeholder B']
+    }]
+  }
 })
 const Config = mongoose.model('Config', ConfigSchema)
 export default Config

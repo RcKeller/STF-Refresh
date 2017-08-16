@@ -15,15 +15,22 @@
   max-height: 50px;
   margin-left: 16px;
 }
+.clip {
+  /*Per branding, 15* clip: https://www.washington.edu/brand/graphic-elements/angled-background/ */
+  -webkit-clip-path: polygon(15% 0, 100% 0%, 100% 100%, 0% 100%);
+  clip-path: polygon(15% 0, 100% 0%, 100% 100%, 0% 100%);
+  height: var(--headerHeight, 60px);
+  width: 200px;
+  /*width: 100%;*/
+  background-color: white !important;
+  color: var(--metallic-gold, goldenrod);
+}
+
 .wordmark {
-  /*max-height: 50px;*/
-  /*display: flex;
-  align-items: center;*/
   width: 100%;
   max-width: 240px;
   margin: 8px 0;
   padding: 8px;
-
 }
 
 .breadcrumb {

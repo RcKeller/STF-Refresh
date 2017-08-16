@@ -150,14 +150,14 @@ class Review extends React.Component {
                     )}
                   </FormItem>
                 ))}
-                <FormItem label='Total Score' {...layout} >
+                <br />
+                <FormItem label={<b>Overall Score</b>} {...layout} >
                   {form.getFieldDecorator('score')(
-                    <InputNumber disabled={!metrics} min={0} max={100} />
+                    <SliderAndNumber disabled={!metrics} min={0} max={100} step={1} />
                   )}
                 </FormItem>
-                <h2>Final Decision</h2>
-                <h4>{voting ? 'Voting is now open. Be forewarned, these decisions are final' : 'Voting is currently closed'}</h4>
-                <FormItem label='I vote to approve this budget' {...layout}>
+                <h4>{voting ? 'Voting is now open. Be forewarned, these decisions are final!' : 'Voting is currently closed'}</h4>
+                <FormItem label={<b>Approve this budget</b>} {...layout}>
                   {form.getFieldDecorator('approved', { valuePropName: 'checked' })(
                     //  Valueprop is a selector for antd switches, it's in the docs.
                     <Checkbox disabled={!voting} size='large' />

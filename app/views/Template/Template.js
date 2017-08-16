@@ -38,8 +38,6 @@ const meta = [
 // Add to homescreen for Chrome on Android
 const link = [{ rel: 'icon', href: favicon }]
 
-import Headroom from 'react-headroom'
-
 import { LocaleProvider, Layout, Icon, Breadcrumb } from 'antd'
 import enUS from 'antd/lib/locale-provider/en_US'
 const { Sider, Header, Content } = Layout
@@ -99,18 +97,17 @@ class Template extends React.Component {
     return (
       <LocaleProvider locale={enUS}>
         <Layout>
-          <Headroom disable={screen.greaterThan.large}>
-            <Header>
-              <Icon className='trigger'
-                style={{fontSize: 32, lineHeight: 'inherit', color: 'white'}}
-                type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-                onClick={this.toggle}
-              />
-              <Link to='/'>
-                <img src={screen.is.extraSmall ? mobileLogo : desktopLogo} className={styles['logo']} />
-              </Link>
-            </Header>
-          </Headroom>
+          <Header>
+            <Icon className='trigger'
+              style={{fontSize: 32, lineHeight: 'inherit', color: 'white'}}
+              type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
+              onClick={this.toggle}
+            />
+            <Link to='/'>
+              <img src={screen.is.extraSmall ? mobileLogo : desktopLogo} className={styles['logo']} />
+            </Link>
+            {/* <div className={styles['clip']}>Clip</div> */}
+          </Header>
           <Layout className={styles['body']}>
             <Helmet
               title='UW Student Tech Fee'
