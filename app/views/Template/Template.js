@@ -98,14 +98,18 @@ class Template extends React.Component {
       <LocaleProvider locale={enUS}>
         <Layout>
           <Header>
-            <Icon className='trigger'
+            <Icon
               style={{fontSize: 32, lineHeight: 'inherit', color: 'white'}}
               type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
               onClick={this.toggle}
             />
-            <Link to='/'>
-              <img src={screen.is.extraSmall ? mobileLogo : desktopLogo} className={styles['logo']} />
-            </Link>
+            {/* <div className={styles['header-elements']}> */}
+              <Link to='/'>
+                {/* <img src={screen.is.extraSmall ? mobileLogo : desktopLogo} className={styles['logo']} /> */}
+                <img src={screen.lessThan.medium ? mobileLogo : desktopLogo} className={styles['logo']} />
+              </Link>
+              <Login />
+            {/* </div> */}
             {/* <div className={styles['clip']}>Clip</div> */}
           </Header>
           <Layout className={styles['body']}>
@@ -120,7 +124,6 @@ class Template extends React.Component {
               width={240} collapsedWidth='0'
             >
               <img src={wordmark} className={styles['wordmark']} />
-              <Login />
               <Nav />
             </Sider>
             <Layout>

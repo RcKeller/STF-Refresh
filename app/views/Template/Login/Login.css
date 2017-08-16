@@ -1,16 +1,18 @@
 @import '../../../css/layout';
 @import '../../../css/colors';
-
+.login {
+  margin-left: auto
+}
 .button {
+  /*Per branding, 15* clip: https://www.washington.edu/brand/graphic-elements/angled-background/ */
+  -webkit-clip-path: polygon(15% 0, 100% 0%, 100% 100%, 0% 100%);
+  clip-path: polygon(15% 0, 100% 0%, 100% 100%, 0% 100%);
+  height: var(--header-height, 60px);
   width: 196px;
-  margin: 8px 22px;
-  /*padding: 8px;*/
-  padding: 8px 8px 8px 60px !important;
+  padding: 4px 4px 4px 60px !important;
+  background-color: var(--metallic-gold, goldenrod);
   color: white;
-  background-color: var(--purple, purple);
-  border-radius: 4px;
-  border-color: none;
-  border-style: none;
+  border: none;
 }
 
 .button strong, small {
@@ -25,7 +27,7 @@
 }
 .button small {
   display: block;
-  color: #b3a4cc;
+  color: var(--light-gray, gray);
   font-size: 12px;
   font-weight: 300;
   line-height: 16px;

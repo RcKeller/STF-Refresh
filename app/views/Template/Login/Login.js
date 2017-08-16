@@ -15,11 +15,10 @@ import styles from './Login.css'
 class Login extends React.Component {
   render ({ user, signOut } = this.props) {
     return (
-      <div>
+      <div className={styles['login']}>
         {!user.authenticated
           ? <a href='/auth/google'>
             <button className={styles['button']} >
-              {/* <Avatar size='large' shape='square' /> */}
               <strong>UW NetID</strong>
               <small>WEBLOGIN</small>
             </button>
@@ -28,6 +27,7 @@ class Login extends React.Component {
             onClick={() => signOut()}
           >
             <strong>{user.netID}</strong>
+            <small>Signed In</small>
           </button>
         }
       </div>

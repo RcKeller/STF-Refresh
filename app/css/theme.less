@@ -74,11 +74,14 @@ ANT Design theme overrides
 @input-hover-border-color    : @secondary-color;
 
 // @layout-header-height     : 90px;
-@layout-header-padding    : 0 16px;
+// @layout-header-padding    : 0 16px;
+// @layout-header-padding    : 0;
+@layout-header-padding    : 0 0 0 16px;
 @layout-header-background : @primary-color;
 //  Header shadows.
 .ant-layout-header {
   display: flex;
+  justify-content: flex-start;
   align-items: center;
   line-height: 0;
   height: 60px;

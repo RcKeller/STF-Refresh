@@ -14,6 +14,7 @@
   vertical-align: middle;
   max-height: 50px;
   margin-left: 16px;
+  /*width: 100%;*/
 }
 .clip {
   /*Per branding, 15* clip: https://www.washington.edu/brand/graphic-elements/angled-background/ */
@@ -29,8 +30,11 @@
 .wordmark {
   width: 100%;
   max-width: 240px;
-  margin: 8px 0;
+  margin-top: 8px;
   padding: 8px;
+}
+.header-elements {
+  /*justify-content: space-between;*/
 }
 
 .breadcrumb {

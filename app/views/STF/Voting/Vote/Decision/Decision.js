@@ -39,25 +39,23 @@ class Decision extends React.Component {
     let { form, api, proposal, manifest, decision, user } = this.props
     form.validateFields((err, values) => {
       if (!err) {
-        console.warn('Submitting', values)
         const submission = Object.assign({
           proposal,
           manifest: manifest._id,
           author: user._id
         }, values)
-        console.warn('Review', submission)
         //  TODO: Add custom update func
-        review._id
-          ? api.patch('review', submission, { id: review._id })
-          .then(message.success('Review updated!'))
+        decision._id
+          ? api.patch('decision', submission, { id: decision._id })
+          .then(message.success('Decision updated!'))
           .catch(err => {
-            message.warning('Review failed to update - Unexpected client error')
+            message.warning('Decision failed to update - Unexpected client error')
             console.warn(err)
           })
-          : api.post('review', submission)
-          .then(message.success('Review posted!'))
+          : api.post('decision', submission)
+          .then(message.success('Decision posted!'))
           .catch(err => {
-            message.warning('Review failed to post - Unexpected client error')
+            message.warning('Decision failed to post - Unexpected client error')
             console.warn(err)
           })
       }
@@ -85,7 +83,7 @@ class Decision extends React.Component {
                 <Checkbox disabled={!decisions} size='large' />
               )}
             </FormItem>
-            <FormItem>
+            <FormItem label='Submit' {...layout}>
               <Button size='large' type='primary'
                 htmlType='submit' ghost disabled={!decisions}
                 >Issue Decision</Button>

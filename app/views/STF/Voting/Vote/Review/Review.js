@@ -142,6 +142,8 @@ class Review extends React.Component {
             <Row>
               <Col sm={24} xl={12}>
                 <h2>Your Review</h2>
+                <h4>{voting ? 'This proposal is up for review - you may score this proposal as you like (0-100).' : 'Review submissions are closed'}</h4>
+                <h4>{voting ? 'Voting is now open. Be forewarned, these decisions are final!' : 'Voting is currently closed'}</h4>
                 {questions.map(q => (
                   <FormItem key={q} label={q} {...layout} >
                     {form.getFieldDecorator(`metrics[${q}]`)(
@@ -156,14 +158,13 @@ class Review extends React.Component {
                     <SliderAndNumber disabled={!metrics} min={0} max={100} step={1} />
                   )}
                 </FormItem>
-                <h4>{voting ? 'Voting is now open. Be forewarned, these decisions are final!' : 'Voting is currently closed'}</h4>
                 <FormItem label={<b>Approve this budget</b>} {...layout}>
                   {form.getFieldDecorator('approved', { valuePropName: 'checked' })(
                     //  Valueprop is a selector for antd switches, it's in the docs.
                     <Checkbox disabled={!voting} size='large' />
                   )}
                 </FormItem>
-                <FormItem>
+                <FormItem label='Submit' {...layout}>
                   <Button size='large' type='primary'
                     htmlType='submit' ghost disabled={!metrics && !voting}
                     >Update your Review</Button>
