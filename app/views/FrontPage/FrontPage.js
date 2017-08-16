@@ -1,9 +1,14 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
 import { Row, Col, Card, Alert, Timeline, Carousel } from 'antd'
 const Item = Timeline.Item
 
 import styles from './FrontPage.css'
+@connect(state => ({
+  announcements: state.db.config.announcements,
+  stage: state.db.config.stage
+}))
 class FrontPage extends React.Component {
   constructor (props) {
     super(props)
@@ -14,7 +19,10 @@ class FrontPage extends React.Component {
     //  This timeout is a temp fix.
     setTimeout(() => this.setState({ loaded: true }), 250)
   }
-  render ({ loaded } = this.state) {
+  render (
+    { announcements, stage } = this.props,
+    { loaded } = this.state
+  ) {
     return (
       <article className={styles['page']}>
         {loaded &&
@@ -28,6 +36,12 @@ class FrontPage extends React.Component {
         <section className={styles['page-content']}>
           <Row gutter={16}>
             <Col className='gutter-row' xs={24}>
+              <Card title='supplementalal Reminder'>
+                  If you plan on writing a supplementalal, make sure to submit it when you are finished ('Submit supplementalal' on the Edit supplementalal page). If you are have any issues or questions, please email us.
+              </Card>
+              <Card title='supplementalal Reminder'>
+                  If you plan on writing a supplementalal, make sure to submit it when you are finished ('Submit supplementalal' on the Edit supplementalal page). If you are have any issues or questions, please email us.
+              </Card>
               <h1>About the STF Committee</h1>
               <p>The STF committee...</p>
               <h2>H2</h2>

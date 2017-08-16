@@ -32,7 +32,8 @@ class View extends React.Component {
                 description='This proposal has been withdrawn from publication by either an author or administrator. It exists for STF recordkeeping. For further inquiries, e-mail STFCweb@uw.edu'
               />
               : <div>
-                {isLegacy ? <Legacy /> : <div><Overview /><Body /></div>}
+                {isLegacy ? <Legacy /> : <div><Overview /><hr /><Body /></div>}
+                <hr />
                 <Manifests />
               </div>
             }

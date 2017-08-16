@@ -57,10 +57,10 @@ class Manifests extends React.Component {
         <h1>Budget</h1>
         {(manifests && manifests.length > 1) &&
           <Alert type='info' banner showIcon
-            message='Multiple Manifests'
+            message='Multiple Budgets'
             description={<div>
               <p>
-                This proposal has multiple manifests as a result of partial awards or supplementals. Use the dropdown below to browse through them all.
+                This proposal has multiple manifests as a result of partial awards or supplementals. The most recent one has automatically been selected. Feel free to select another below.
               </p>
               <Select size='large' style={{ width: '100%' }}
                 defaultValue={(manifests.length - 1).toString()}
