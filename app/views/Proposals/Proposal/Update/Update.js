@@ -40,8 +40,8 @@ class Update extends React.Component {
     return (
       <section>
         <h1>Post-Submission Updates</h1>
-        <Alert type='warning' showIcon
-          message='Grace Period for Revisions'
+        <Alert type='warning'
+          message='Grace Period'
           description={<span>
             As part of regulatory compliance, the content of a proposal cannot be edited once it undergoes review. However, since a proposal is never reviewed during the week it was submitted, we've added a one-week grace period for authors to make revisions. <Link to={`/edit/${id}`}>Click here!</Link>
           </span>}
@@ -78,14 +78,14 @@ class Update extends React.Component {
             )}
           </FormItem>
           <FormItem>
-            <Button size='large' type='primary' width='100%' style={{width: '100%'}}
+            <Button size='large' type='primary'
               htmlType='submit' disabled={disableSubmit(form)}
               >Update</Button>
           </FormItem>
         </Form>
-        <Alert type='warning' showIcon={false} banner
-          message='Future Enhancement'
-          description='In the future, you will be able to replace other contacts, but only if they consent. For any issues, e-mail STFCweb@uw.edu'
+        <Alert type='info' showIcon={false} banner
+          message='Minor Edits'
+          description='For typos and minor corrections, e-mail stfagent@uw.edu. For major corrections, we suggest withdrawing this proposal and re-submitting a new one.'
         />
       </section>
     )

@@ -5,9 +5,13 @@ import { Row, Col, Card, Alert, Timeline, Carousel } from 'antd'
 const Item = Timeline.Item
 
 import styles from './FrontPage.css'
+// @connect(state => ({
+//   announcements: state.db.config.announcements || [],
+//   stage: state.db.config.stage || 0
+// }))
 @connect(state => ({
-  announcements: state.db.config.announcements,
-  stage: state.db.config.stage
+  announcements: (state.db && state.db.config && state.db.config.announcements) || [],
+  stage: (state.db && state.db.config && state.db.config.stage) || 0
 }))
 class FrontPage extends React.Component {
   constructor (props) {

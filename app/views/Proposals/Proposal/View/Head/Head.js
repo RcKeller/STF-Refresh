@@ -30,19 +30,19 @@ class Head extends React.Component {
             <h1>{title}</h1>
             <h3>For {organization}</h3>
             <h6 id={id}>{`ID: ${year}-${number}`}</h6>
-            {uac && <Alert showIcon={false} type='warning' banner
+            {uac && <Alert type='warning' showIcon={false} banner
               style={{padding: '8px 0'}}
               message={<span><b>Tri-Campus</b>: This is a Universal Access Committe (UAC) proposal</span>}
             />}
             {decision
-              ? <Alert type={decision.approved ? 'success' : 'error'}
+              ? <Alert type={decision.approved ? 'success' : 'error'} showIcon={false}
                 message={<b>Proposal {decision.approved ? 'Approved' : 'Rejected'}</b>}
                 description={<span>
                   <h6>Author: {decision.author.name} | {decision.date}</h6>
                   <p>{decision.body}</p>
                 </span>}
               />
-              : <Alert type='info' showIcon banner
+              : <Alert type='info' showIcon={false} banner
                 message={`Status: ${status}`}
                 description='Lorem Ipsum'
               />

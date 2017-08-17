@@ -11,7 +11,7 @@ class Legacy extends React.Component {
     return (
       <div>
         <h1>Proposal</h1>
-        <Alert type='info' banner showIcon
+        <Alert type='info' banner showIcon={false}
           message='Legacy Format'
           description='Our proposal process has changed significantly since Summer 2017. To learn more about the current process, click here.'
         />

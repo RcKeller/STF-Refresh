@@ -33,7 +33,11 @@ const columns = [
   }
 ]
 
-const expandedRowRender = record => <p><h6>Description: </h6>{record.description}</p>
+// const expandedRowRender = record => <p><h6>Description: </h6>{record.description}</p>
+
+const expandedRowRender = record => record.description
+  ? <p><h6>Description: </h6>{record.description}</p>
+  : <em>No description provided.</em>
 
 @connect(state => ({
   manifests: state.db.proposal.manifests,
@@ -56,7 +60,7 @@ class Manifests extends React.Component {
       <div>
         <h1>Budget</h1>
         {(manifests && manifests.length > 1) &&
-          <Alert type='info' banner showIcon
+          <Alert type='info' banner showIcon={false}
             message='Multiple Budgets'
             description={<div>
               <p>
@@ -67,7 +71,12 @@ class Manifests extends React.Component {
                 onChange={(value) => this.handleChange(value)}
               >
                 {manifests.map((m, i) =>
-                  <Option value={i.toString()}><h4>{m.title}</h4></Option>
+                  <Option value={i.toString()}><h4>{`
+                    ${m.title ? m.title : 'Untitled'}
+                     by ${m.contact && m.contact.name ? m.contact.name : 'anonymous'}
+                     - ${m.decision ? m.decision.approved ? 'Approved' : 'Denied' : 'Proposed'}
+                  `
+                }</h4></Option>
                 )}
               </Select>
             </div>
