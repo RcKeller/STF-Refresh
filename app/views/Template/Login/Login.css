@@ -8,8 +8,10 @@
   -webkit-clip-path: polygon(15% 0, 100% 0%, 100% 100%, 0% 100%);
   clip-path: polygon(15% 0, 100% 0%, 100% 100%, 0% 100%);
   height: var(--header-height, 60px);
-  width: 196px;
-  padding: 4px 4px 4px 60px !important;
+  padding: 4px 8px 4px 16px;
+  @media (min-width: 992px) {
+    padding: 4px 30px 4px 60px;
+  }
   background-color: var(--metallic-gold, goldenrod);
   color: white;
   border: none;

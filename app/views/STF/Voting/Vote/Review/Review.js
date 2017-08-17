@@ -39,7 +39,8 @@ const questions = ['Proposal Quality', 'Academic Merit']
       review: state.db.manifests[props.index].reviews.find(review =>
           review.author._id === state.user._id
         ) || {},
-      user: state.user
+      user: state.user,
+      stf: state.user.stf
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
@@ -129,7 +130,7 @@ class Review extends React.Component {
     })
   }
   render (
-    { form, manifest } = this.props,
+    { form, manifest, user, stf } = this.props,
     { filter } = this.state
   ) {
     const { metrics, voting } = manifest.docket
@@ -139,54 +140,37 @@ class Review extends React.Component {
         {!manifest
           ? <Spin size='large' tip='Loading...' />
           : <Form onSubmit={this.handleSubmit}>
-            <Row>
-              <Col sm={24} xl={12}>
-                <h2>Your Review</h2>
-                <h4>{voting ? 'This proposal is up for review - you may score this proposal as you like (0-100).' : 'Review submissions are closed'}</h4>
-                <h4>{voting ? 'Voting is now open. Be forewarned, these decisions are final!' : 'Voting is currently closed'}</h4>
-                {questions.map(q => (
-                  <FormItem key={q} label={q} {...layout} >
-                    {form.getFieldDecorator(`metrics[${q}]`)(
-                      // FIXME: Disabling it causes the value to become null by default: disabled={!metrics}... or does it?
-                      <SliderAndNumber disabled={!metrics} min={0} max={100} step={1} />
-                    )}
-                  </FormItem>
-                ))}
-                <br />
-                <FormItem label={<b>Overall Score</b>} {...layout} >
-                  {form.getFieldDecorator('score')(
-                    <SliderAndNumber disabled={!metrics} min={0} max={100} step={1} />
-                  )}
-                </FormItem>
-                <FormItem label={<b>Approve this budget</b>} {...layout}>
-                  {form.getFieldDecorator('approved', { valuePropName: 'checked' })(
-                    //  Valueprop is a selector for antd switches, it's in the docs.
-                    <Checkbox disabled={!voting} size='large' />
-                  )}
-                </FormItem>
-                <FormItem label='Submit' {...layout}>
-                  <Button size='large' type='primary'
-                    htmlType='submit' ghost disabled={!metrics && !voting}
-                    >Update your Review</Button>
-                </FormItem>
-              </Col>
-              <Col sm={24} xl={12}>
-                <h2>Average Scores</h2>
-                <h4>Filter by Commitee Roles</h4>
-                <Switch checked={filter.admin}
-                  unCheckedChildren='Admins' checkedChildren='Admins'
-                  onChange={admin => this.handleFilter({ admin })}
-                />
-                <Switch checked={filter.member}
-                  unCheckedChildren='Members' checkedChildren='Members'
-                  onChange={member => this.handleFilter({ member })}
-                />
-                <Switch checked={filter.spectator}
-                  unCheckedChildren='Ex-Officios' checkedChildren='Ex-Officios'
-                  onChange={spectator => this.handleFilter({ spectator })}
-                />
-              </Col>
-            </Row>
+            <h2>Your Review</h2>
+            <h4>{voting ? 'This proposal is up for review - you may score this proposal as you like (0-100).' : 'Review submissions are closed'}</h4>
+            <h4>{voting ? 'Voting is now open. Be forewarned, these decisions are final!' : 'Voting is currently closed'}</h4>
+            {questions.map(q => (
+              <FormItem key={q} label={q} {...layout} >
+                {form.getFieldDecorator(`metrics[${q}]`)(
+                  // FIXME: Disabling it causes the value to become null by default: disabled={!metrics}... or does it?
+                  <SliderAndNumber disabled={!metrics} min={0} max={100} step={1} />
+                )}
+              </FormItem>
+            ))}
+            <br />
+            <FormItem label={<b>Overall Score</b>} {...layout} >
+              {form.getFieldDecorator('score')(
+                <SliderAndNumber disabled={!metrics} min={0} max={100} step={1} />
+              )}
+            </FormItem>
+            {stf.member
+              ? <FormItem label={<b>Approve this budget</b>} {...layout}>
+                {form.getFieldDecorator('approved', { valuePropName: 'checked' })(
+                  //  Valueprop is a selector for antd switches, it's in the docs.
+                  <Checkbox disabled={!voting} size='large' />
+                )}
+              </FormItem>
+              : <em>As a non-voting member, you may review a proposal which helps inform our decisions, but final votes may only be taken by appointed members.</em>
+            }
+            <FormItem label='Submit' {...layout}>
+              <Button size='large' type='primary'
+                htmlType='submit' ghost disabled={!metrics && !voting}
+                >Update your Review</Button>
+            </FormItem>
           </Form>
           }
       </section>

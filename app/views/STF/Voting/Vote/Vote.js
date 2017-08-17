@@ -10,6 +10,7 @@ import { Spin, Tabs } from 'antd'
 const TabPane = Tabs.TabPane
 
 import Summary from './Summary/Summary'
+import Metrics from './Metrics/Metrics'
 import Review from './Review/Review'
 import Decision from './Decision/Decision'
 /*
@@ -50,10 +51,13 @@ class Vote extends React.Component {
               <TabPane tab={<b>Summary</b>} key='1'>
                 <Summary index={index} />
               </TabPane>
-              <TabPane disabled={!metrics && !voting} tab={<b>Review</b>} key='2'>
+              <TabPane tab={<b>Metrics</b>} key='2'>
+                <Metrics index={index} />
+              </TabPane>
+              <TabPane disabled={!metrics && !voting} tab={<b>Review</b>} key='3'>
                 <Review index={index} />
               </TabPane>
-              <TabPane disabled={!decisions} tab={<b>Decision</b>} key='3'>
+              <TabPane disabled={!decisions} tab={<b>Decision</b>} key='4'>
                 <Decision index={index} />
               </TabPane>
             </Tabs>
