@@ -8,7 +8,7 @@ import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
 
-import { Spin, Tabs, Alert } from 'antd'
+import { Spin, Tabs, Alert, Button, Icon } from 'antd'
 const TabPane = Tabs.TabPane
 
 import Vote from './Vote/Vote'
@@ -45,7 +45,7 @@ class Voting extends React.Component {
     }
   }
   render (
-    { user, manifests } = this.props,
+    { user, manifests, forceRequest } = this.props,
     { docket } = this.state
   ) {
     return (
@@ -53,7 +53,13 @@ class Voting extends React.Component {
         {!docket
           ? <Spin size='large' tip='Loading...' />
           : (docket.length >= 1
-            ? <Tabs className='tab-container' type='card' >
+            ? <Tabs className='tab-container' type='card'
+                tabBarExtraContent={
+                  <Button type='ghost' icon='reload' onClick={() => forceRequest()}>
+                    Refresh
+                  </Button>
+                }
+              >
               <TabPane tab='Overview' key='1' className={styles['tab-pane']}>
                 <h1>Reviews & Voting</h1>
                 <p>Instructions here.</p>

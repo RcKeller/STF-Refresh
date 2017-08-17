@@ -7,7 +7,7 @@ import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
 
-import { Spin, Tabs } from 'antd'
+import { Spin, Tabs, Button } from 'antd'
 const TabPane = Tabs.TabPane
 
 //  Public view
@@ -49,7 +49,7 @@ connectRequest will force a query if there's a mismatch.
   }))
 )
 class Proposal extends React.Component {
-  render ({ proposal, id, published, user } = this.props) {
+  render ({ proposal, id, published, user, forceRequest } = this.props) {
     const author = true // TODO
     const stf = user && user.stf
     const admin = stf && stf.admin
@@ -57,7 +57,13 @@ class Proposal extends React.Component {
       <article className={styles['tabbed-article']} >
         {!id
           ? <Spin size='large' tip='Loading...' />
-          : <Tabs className='tab-container' type='card' >
+          : <Tabs className='tab-container' type='card'
+              tabBarExtraContent={
+                <Button type='ghost' icon='reload' onClick={forceRequest}>
+                  Refresh
+                </Button>
+              }
+            >
             <TabPane tab='Proposal' key='1' className={styles['tab-pane']}>
               <View />
             </TabPane>
