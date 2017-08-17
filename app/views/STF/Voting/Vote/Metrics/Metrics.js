@@ -5,9 +5,8 @@ import { connect } from 'react-redux'
 
 import { layout } from '../../../../../util/form'
 
-import { Spin, Form, Row, Col, Switch, Checkbox, Slider, InputNumber, Button, message } from 'antd'
+import { Spin, Form, Switch, Progress, message } from 'antd'
 const FormItem = Form.Item
-const connectForm = Form.create()
 
 @ connect(
     (state, props) => ({
@@ -16,7 +15,7 @@ const connectForm = Form.create()
       review: state.db.manifests[props.index].reviews.find(review =>
           review.author._id === state.user._id
         ) || {},
-      user: state.user,
+      user: state.user
     })
 )
 class Review extends React.Component {
@@ -80,15 +79,16 @@ class Review extends React.Component {
     Object.keys(metrics).forEach((key, i) => {
       metrics[key] = metrics[key].score / metrics[key].count
     })
-    console.warn('pass, fail and metrics', pass, fail, metrics)
-    return metrics
+    //  Final return, assign as const { a,  b, c } =...
+    return { pass, fail, metrics }
   }
   render (
     { form, manifest, user } = this.props,
     { filter } = this.state
   ) {
-    const { metrics, voting } = manifest.docket
-    const total = this.filterReviews()
+    const { pass, fail, metrics } = this.filterReviews()
+    console.warn('pass, fail and metrics', pass, fail, metrics)
+    // const { pass, fail, total = this.filterReviews()
     return (
       <section>
         {!manifest
@@ -108,10 +108,16 @@ class Review extends React.Component {
               unCheckedChildren='Ex-Officios' checkedChildren='Ex-Officios'
               onChange={spectator => this.handleFilter({ spectator })}
             />
-            {/* <br />
-            <span>Approve: {total.approved.for}</span>
-            <br />
-            <span>Against: {total.approved.against}</span> */}
+            <hr />
+            <Progress type='circle' width={200}
+              percent={(pass / (pass + fail)) * 100}
+              format={percent => <span>
+                {!Number.isNaN(percent) ? `${parseInt(percent)}%` : <small>Undetermined</small>}
+                <br />
+                <h6>{`${pass} for, ${fail} against`}</h6>
+              </span>
+              }
+            />
           </div>
           }
       </section>
