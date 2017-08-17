@@ -1,12 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
 import { connect } from 'react-redux'
 
-import { layout } from '../../../../../util/form'
+import { Spin, Row, Col, Switch, Progress, Table } from 'antd'
 
-import { Spin, Form, Switch, Progress, message } from 'antd'
-const FormItem = Form.Item
+const columns = [
+  { title: 'Prompt', dataIndex: 'prompt', key: 'prompt' },
+  { title: 'Score', dataIndex: 'score', key: 'score', width: 100 }
+]
 
 @ connect(
     (state, props) => ({
@@ -18,7 +19,7 @@ const FormItem = Form.Item
       user: state.user
     })
 )
-class Review extends React.Component {
+class Metrics extends React.Component {
   constructor (props) {
     super(props)
     const filter = { admin: true, member: true, spectator: true }
@@ -87,14 +88,15 @@ class Review extends React.Component {
     { filter } = this.state
   ) {
     const { pass, fail, metrics } = this.filterReviews()
-    console.warn('pass, fail and metrics', pass, fail, metrics)
-    // const { pass, fail, total = this.filterReviews()
+    const dataSource = Object.keys(metrics).map(key => {
+      return { prompt: key, score: metrics[key] }
+    })
     return (
       <section>
         {!manifest
           ? <Spin size='large' tip='Loading...' />
           : <div>
-            <h2>Scores & Metrics</h2>
+            <h1>Scores & Metrics</h1>
             <h4>Filter by Commitee Roles</h4>
             <Switch checked={filter.admin}
               unCheckedChildren='Admins' checkedChildren='Admins'
@@ -108,23 +110,33 @@ class Review extends React.Component {
               unCheckedChildren='Ex-Officios' checkedChildren='Ex-Officios'
               onChange={spectator => this.handleFilter({ spectator })}
             />
-            <hr />
-            <Progress type='circle' width={200}
-              percent={(pass / (pass + fail)) * 100}
-              format={percent => <span>
-                {!Number.isNaN(percent) ? `${parseInt(percent)}%` : <small>Undetermined</small>}
-                <br />
-                <h6>{`${pass} for, ${fail} against`}</h6>
-              </span>
-              }
-            />
+            <Row type="flex" justify="space-around" align="middle">
+              <Col span={24} lg={8}>
+                <h2>Approval Rating</h2>
+                <Progress type='circle' width={200}
+                  percent={(pass / (pass + fail)) * 100}
+                  format={percent => <span>
+                    {!Number.isNaN(percent) ? `${parseInt(percent)}%` : <small>Undetermined</small>}
+                    <br />
+                    <h6>{`${pass} for, ${fail} against`}</h6>
+                  </span>
+                  }
+                />
+              </Col>
+              <Col span={24} lg={16}>
+                  <h2>Review Breakdown</h2>
+                  <Table dataSource={dataSource} pagination={false}
+                    columns={columns}
+                  />
+              </Col>
+            </Row>
           </div>
           }
       </section>
     )
   }
 }
-Review.propTypes = {
+Metrics.propTypes = {
   form: PropTypes.object,
   api: PropTypes.object,
   proposal: PropTypes.string,
@@ -132,4 +144,4 @@ Review.propTypes = {
   review: PropTypes.object,
   user: PropTypes.object
 }
-export default Review
+export default Metrics
