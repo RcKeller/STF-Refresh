@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { connectRequest } from 'redux-query'
+import { connectRequest, requestAsync, mutateAsync } from 'redux-query'
 
 import api from '../../../../services'
 
@@ -40,6 +40,19 @@ const InputGroup = Input.Group
       __v: 0
     },
 */
+const getMembers = () => ({
+  url: `${api.endpoint}/stf?join=user`,
+  update: { stf: (prev, next) => next },
+  transform: res => ({ stf: res }),
+  force: true
+})
+const toggle = (id, body, update) => mutateAsync({
+  url: `${api.endpoint}/stf/${id}`,
+  options: { method: 'PATCH' },
+  transform: res => ({ stf: res }),
+  body,
+  update
+})
 
 @compose(
   connect(
@@ -47,14 +60,21 @@ const InputGroup = Input.Group
       screen: state.screen,
       committee: state.db.stf
     }),
-    dispatch => ({ api: bindActionCreators(api, dispatch) })
+    dispatch => ({
+      api: bindActionCreators(api, dispatch),
+      toggle: bindActionCreators(toggle, dispatch)
+      // bindActionCreators(api, dispatch),
+    })
+    // dispatch => ({ api: bindActionCreators(api, dispatch) })
 ),
   //  NOTE: Raw query to deal with plurality and namespace fuzziness.
-  connectRequest(() => api.query('stf?join=user', {
-    update: { stf: (prev, next) => next },
-    transform: res => ({ stf: res }),
-    force: true
-  }))
+  connectRequest(getMembers)
+  // connectRequest(() => api.get('users')),
+  // connectRequest(() => api.query('stf?join=user', {
+  //   update: { stf: (prev, next) => next },
+  //   transform: res => ({ stf: res }),
+  //   force: true
+  // }))
 )
 class Membership extends React.Component {
   constructor (props) {
@@ -91,12 +111,42 @@ class Membership extends React.Component {
     ]
   }
   handleAddMember = (netID) => {
-    const member = { netID, spectator: false, member: false, admin: false }
-    console.log(member)
+    const { api, committee } = this.props
+    const body = { netID, spectator: false, member: false, admin: false }
+    //  Check for existing STF member to patch if necessary
+    // const existing = committee.find(member => member.user.netID == netID)
+    // const update = { stf: (prev, next) => {
+    //   let newData = prev.slice()
+    //   newData[length] = next
+    //   return newData
+    // }}
+    // console.log(body, existing)
+    api.getAsync('users')
+    // const request = api.get('users')
+    // requestAsync(request)
+    // requestAsync({
+    //   url: `${target}/users`
+    // })
+    // requestAsync(api.get('users', { update: { users: (prev, next) => next } }))
+    // requestAsync(api.get('users', { update: { users: (prev, next) => next } }))
+    // existing && existing._id
+    //   ? message.warning(`Member already exists! (${netID})`, 10)
+    //   : message.error('This function is under construction', 10)
+    //   api.mutate(`stf`, {
+    //   options: { method: 'POST' },
+    //   transform: res => ({ stf: res }),
+    //   body,
+    //   update
+    // })
+    // .then(message.success(('Authorization for user updated!'), 10))
+    // .catch(err => {
+    //   message.warning(`Failed to update user - client error`)
+    //   console.warn(err)
+    // })
   }
   handleToggle = (change, record, index) => {
     //  Assign the change to a body, send it to the server.
-    const { api } = this.props
+    const { api, toggle } = this.props
     let body = Object.assign(record, change)
     const id = body._id
     // Update the record at the table's index
@@ -106,17 +156,18 @@ class Membership extends React.Component {
       return newData
     }}
     //  NOTE: Raw query to deal with plurality and namespace fuzziness.
-    api.mutate(`stf/${id}`, {
-      options: { method: 'PATCH' },
-      transform: res => ({ stf: res }),
-      body,
-      update
-    })
-    .then(message.success(('Authorization for user updated!'), 10))
-    .catch(err => {
-      message.warning(`Failed to update user - client error`)
-      console.warn(err)
-    })
+    // api.mutate(`stf/${id}`, {
+    //   options: { method: 'PATCH' },
+    //   transform: res => ({ stf: res }),
+    //   body,
+    //   update
+    // })
+    toggle(id, body, update)
+    // .then(message.success(('Authorization for user updated!'), 10))
+    // .catch(err => {
+    //   message.warning(`Failed to update user - client error`)
+    //   console.warn(err)
+    // })
   }
   render (
     { columns } = this,

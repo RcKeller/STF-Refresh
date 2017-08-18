@@ -1,8 +1,8 @@
 import { API, version } from './environment'
 //  API Mutators are wrapped with async middleware
-import { mutateAsync } from 'redux-query'
+import { requestAsync, mutateAsync } from 'redux-query'
 import pluralize from 'pluralize'
-
+const endpoint = `${API}/${version}`
 /*
 https://amplitude.github.io/redux-query/#/
 FOREWARD:
@@ -43,9 +43,9 @@ input:
 output:
 ...v1/block?query={"number":"70692"}&populate={"path":"contacts"}
 */
-const endpoint = (model, options) => {
+const target = (model, options) => {
   //  Base URL, e.g. ...host/v1/proposals/:id
-  let url = `${API}/${version}/${pluralize(model)}/${options.id ? options.id : ''}`
+  let url = `${endpoint}/${pluralize(model)}/${options.id ? options.id : ''}`
   //  Operator to prefix query string for joins, queries, ID specification etc
   let operator = '?'
   if (options.where) {
@@ -67,7 +67,14 @@ const normalize = (res) => (Array.isArray(res) && res.length === 1) ? res[0] : r
 GET (ALL)
 ***** */
 const get = (model, options = {}) => ({
-  url: endpoint(model, options),
+  url: target(model, options),
+  options: { method: 'GET' },
+  transform: res => ({ [model]: normalize(res) }),
+  update: options.update ? options.update : { [model]: (prev, next) => next },
+  force: options.force || false
+})
+const getAsync = (model, options = {}) => requestAsync({
+  url: target(model, options),
   options: { method: 'GET' },
   transform: res => ({ [model]: normalize(res) }),
   update: options.update ? options.update : { [model]: (prev, next) => next },
@@ -80,7 +87,7 @@ Pass the object in as the body arg
 ex: api.post('report', {})
 ***** */
 const post = (model, body = {}, options = {}) => mutateAsync({
-  url: endpoint(model, options),
+  url: target(model, options),
   options: { method: 'POST' },
   transform: res => ({ [model]: normalize(res) }),
   body,
@@ -93,7 +100,7 @@ ex: api.put('report', '594b49998dabd50e2c7176bf',
 { date: "2000-06-21T07:15:10.746Z" })
 ***** */
 const patch = (model, body = {}, options = {}) => mutateAsync({
-  url: endpoint(model, options),
+  url: target(model, options),
   options: { method: 'PATCH' },
   transform: res => ({ [model]: normalize(res) }),
   body,
@@ -106,7 +113,7 @@ ex: api.remove('report', '594b49998dabd50e2c7176bf')
 note: The 'delete' namespace is a JS keyword.
 ***** */
 const remove = (model, options = {}) => mutateAsync({
-  url: endpoint(options),
+  url: target(options),
   options: { method: 'DELETE' },
   transform: res => ({ [model]: normalize(res) }),
   update: options.update ? options.update : { [model]: (prev, next) => next }
@@ -114,25 +121,28 @@ const remove = (model, options = {}) => mutateAsync({
 
 /* *****
 CUSTOM QUERY
-Allows you to directly specify the endpoint w/o helpers.
+Allows you to directly specify the target w/o helpers.
 Good for very specific or buggy queries, currently only used by Membership.js
 ***** */
-const query = (endpoint, options) => ({
-  url: `${API}/${version}/${endpoint}`,
+const query = (target, options) => ({
+  url: `${API}/${version}/${target}`,
   // transform: res => ({ [model]: normalize(res) }),
   ...options
 })
-const mutate = (endpoint, options) => mutateAsync({
-  url: `${API}/${version}/${endpoint}`,
+const mutate = (target, options) => mutateAsync({
+  url: `${API}/${version}/${target}`,
   // transform: res => ({ [model]: normalize(res) }),
   ...options
 })
 
 export default {
+  endpoint,
   get,
+  getAsync,
   post,
   patch,
   remove,
+  // target,
   query,
   mutate
 }
