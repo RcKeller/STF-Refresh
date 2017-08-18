@@ -9,47 +9,13 @@ import { connectRequest, requestAsync, mutateAsync } from 'redux-query'
 import api from '../../../../services'
 
 import { Link } from 'react-router'
-import { Spin, Table, Switch, Input, Icon, message } from 'antd'
-const InputGroup = Input.Group
+import { Spin, Table, Switch, AutoComplete, message } from 'antd'
+const Option = AutoComplete.Option
 
-// import styles from './Membership.css'
-
-/*
-[
-    {
-      _id: '5991d88bae3e6f4ad0669bc4',
-      user: {
-        _id: '5991d88bae3e6f4ad0669bbf',
-        netID: 'jane20',
-        email: 'makenna93@yahoo.com',
-        stf: {
-          _id: '5991d88bae3e6f4ad0669bc4',
-          user: '5991d88bae3e6f4ad0669bbf',
-          spectator: true,
-          member: true,
-          admin: true,
-          __v: 0
-        },
-        __v: 0,
-        tokens: [],
-        name: 'Lupe Nolan'
-      },
-      spectator: true,
-      member: true,
-      admin: true,
-      __v: 0
-    },
-*/
-const getMembers = () => ({
-  url: `${api.endpoint}/stf?join=user`,
-  update: { stf: (prev, next) => next },
-  transform: res => ({ stf: res }),
-  force: true
-})
 const toggle = (id, body, update) => mutateAsync({
   url: `${api.endpoint}/stf/${id}`,
   options: { method: 'PATCH' },
-  transform: res => ({ stf: res }),
+  transform: res => ({ users: res }),
   body,
   update
 })
@@ -57,112 +23,87 @@ const toggle = (id, body, update) => mutateAsync({
 @compose(
   connect(
     state => ({
-      screen: state.screen,
-      committee: state.db.stf
+      //  Committee members vs. potential members to add.
+      committee: Array.isArray(state.db.users)
+      ? state.db.users.filter(user => user.stf !== null)
+      : [],
+      users: Array.isArray(state.db.users)
+        ? state.db.users.filter(user => user.stf === null)
+        : []
     }),
     dispatch => ({
-      api: bindActionCreators(api, dispatch),
-      toggle: bindActionCreators(toggle, dispatch)
-      // bindActionCreators(api, dispatch),
+      //  NOTE: Bind custom mutators to deal with plurality constraints for the 'stf' controller.
+      api: bindActionCreators({toggle, ...api}, dispatch)
     })
-    // dispatch => ({ api: bindActionCreators(api, dispatch) })
 ),
-  //  NOTE: Raw query to deal with plurality and namespace fuzziness.
-  connectRequest(getMembers)
-  // connectRequest(() => api.get('users')),
-  // connectRequest(() => api.query('stf?join=user', {
-  //   update: { stf: (prev, next) => next },
-  //   transform: res => ({ stf: res }),
-  //   force: true
-  // }))
+  connectRequest(() => api.get('users'))
 )
 class Membership extends React.Component {
   constructor (props) {
     super(props)
     this.columns = [{
       title: 'Name',
-      dataIndex: 'user.name',
-      key: 'user.name'
+      dataIndex: 'name',
+      key: 'name'
     }, {
       title: 'NetID',
-      dataIndex: 'user.netID',
-      key: 'proposal.title',
+      dataIndex: 'netID',
+      key: 'netID',
       width: 100
-    },
-    {
+    }, {
       title: 'Officio',
-      dataIndex: 'spectator',
-      key: 'spectator',
+      dataIndex: 'stf.spectator',
+      key: 'stf.spectator',
       render: (text, record, index) => <Switch checked={text} onChange={spectator => this.handleToggle({ spectator }, record, index)} />,
       width: 65
     }, {
       title: 'Member',
-      dataIndex: 'member',
-      key: 'member',
+      dataIndex: 'stf.member',
+      key: 'stf.member',
       render: (text, record, index) => <Switch checked={text} onChange={member => this.handleToggle({ member }, record, index)} />,
       width: 80
     }, {
       title: 'Admin',
-      dataIndex: 'admin',
-      key: 'admin',
+      dataIndex: 'stf.admin',
+      key: 'stf.admin',
       render: (text, record, index) => <Switch checked={text} onChange={admin => this.handleToggle({ admin }, record, index)} />,
       width: 65
     }
     ]
   }
-  handleAddMember = (netID) => {
-    const { api, committee } = this.props
-    const body = { netID, spectator: false, member: false, admin: false }
-    //  Check for existing STF member to patch if necessary
-    // const existing = committee.find(member => member.user.netID == netID)
-    // const update = { stf: (prev, next) => {
-    //   let newData = prev.slice()
-    //   newData[length] = next
-    //   return newData
-    // }}
-    // console.log(body, existing)
-    api.getAsync('users')
-    // const request = api.get('users')
-    // requestAsync(request)
-    // requestAsync({
-    //   url: `${target}/users`
-    // })
-    // requestAsync(api.get('users', { update: { users: (prev, next) => next } }))
-    // requestAsync(api.get('users', { update: { users: (prev, next) => next } }))
-    // existing && existing._id
-    //   ? message.warning(`Member already exists! (${netID})`, 10)
-    //   : message.error('This function is under construction', 10)
-    //   api.mutate(`stf`, {
-    //   options: { method: 'POST' },
-    //   transform: res => ({ stf: res }),
-    //   body,
-    //   update
-    // })
-    // .then(message.success(('Authorization for user updated!'), 10))
-    // .catch(err => {
-    //   message.warning(`Failed to update user - client error`)
-    //   console.warn(err)
-    // })
+  handleAddMember = (user) => {
+    const { api } = this.props
+    const body = { user, spectator: false, member: false, admin: false }
+    console.log(body)
+    const update = { users: (prev, next) => {
+      console.log(prev, next)
+      let newData = prev.slice()
+      if (typeof next === 'object') newData.push(next)
+      return newData
+    }}
+    api.post('users', body, { update })
   }
   handleToggle = (change, record, index) => {
     //  Assign the change to a body, send it to the server.
-    const { api, toggle } = this.props
-    let body = Object.assign(record, change)
+    console.warn(change, record, index)
+    const { api } = this.props
+    const body = Object.assign(record.stf, change)
     const id = body._id
-    // Update the record at the table's index
-    const update = { stf: (prev, next) => {
-      let newData = prev.slice()
-      newData[index] = body
-      return newData
+    // // Update the record at the table's index
+    // const update = { stf: (prev, next) => {
+    //   let newData = prev.slice()
+    //   newData[index] = body
+    //   return newData
+    // }}
+    const update = { users: (prev, next) => {
+      console.log(prev, next)
+      // let newData = prev.slice()
+      // newData[index] = body
+      // return newData
+      return prev
     }}
-    //  NOTE: Raw query to deal with plurality and namespace fuzziness.
-    // api.mutate(`stf/${id}`, {
-    //   options: { method: 'PATCH' },
-    //   transform: res => ({ stf: res }),
-    //   body,
-    //   update
-    // })
-    toggle(id, body, update)
+    console.warn('body', body)
+    api.toggle(id, body, update)
     // .then(message.success(('Authorization for user updated!'), 10))
     // .catch(err => {
     //   message.warning(`Failed to update user - client error`)
@@ -171,8 +112,9 @@ class Membership extends React.Component {
   }
   render (
     { columns } = this,
-    { screen, committee } = this.props
+    { committee, users } = this.props
   ) {
+    // const UserOptions = users.map(user => <Option key={user._id}>{`${user.name} (${user.netID})`}</Option>)
     return (
       <section>
         <h1>Committee Membership</h1>
@@ -183,11 +125,19 @@ class Membership extends React.Component {
           : <Table dataSource={committee} sort pagination={false}
             size='middle'
             columns={columns}
-            footer={() => (
-              <Input label='Add a member by netID' prefix={<Icon type='user' />}
-                onPressEnter={(e) => this.handleAddMember(e.target.value)}
-            />
-            )}
+            footer={() =>
+              <AutoComplete style={{ width: 250 }}
+                placeholder='Add a user to the STF...'
+                onSelect={this.handleAddMember}
+              >
+                {users.map(user => <Option key={user._id}>{`${user.name} (${user.netID})`}</Option>)}
+              </AutoComplete>
+            }
+            // footer={() => (
+            //   <Input label='Add a member by netID' prefix={<Icon type='user' />}
+            //     onPressEnter={(e) => this.handleAddMember(e.target.value)}
+            // />
+            // )}
           />
         }
       </section>

@@ -141,10 +141,7 @@ export default {
   getAsync,
   post,
   patch,
-  remove,
-  // target,
-  query,
-  mutate
+  remove
 }
 
 /*

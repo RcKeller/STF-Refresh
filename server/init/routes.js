@@ -26,9 +26,11 @@ export default (app) => {
   console.log(`REST: API live for all ${Object.keys(controllers).length - 1} core models.`)
 
   // USER PROFILE ROUTES
-  if (controllers.Users) {
-    app.delete('/sessions', controllers.Users.logout)
-  } else { console.warn('Error: DB unable to handle user routes.') }
+  const Users = new controllers.Users()
+  app.use(`/${version}/users`, Users.api())
+  app.delete('/sessions', Users.logout)
+  console.log(`REST: API live for Users.`)
+  // } else { console.warn('Error: DB unable to handle user routes.') }
   //  PRODUCTION AUTH
   if (db.passport && config.has('uw')) {
     console.warn('WARNING: UW Shib specified in config, but routes/API not ready yet.')
