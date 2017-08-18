@@ -14,6 +14,8 @@ const Option = Select.Option
 const FormItem = Form.Item
 const connectForm = Form.create()
 
+import Membership from './Membership/Membership'
+
 import styles from './Config.css'
 // @connect(state => ({ user: state.user }))
 @compose(
@@ -32,6 +34,7 @@ import styles from './Config.css'
 class Config extends React.Component {
   componentDidMount () {
     //  Take contacts, make an object with role-to-signature bool, use this to set initial vals.
+    // super.componentDidMount()
     const { form, config } = this.props
     if (form && config) {
       form.setFieldsValue({...config})
@@ -104,6 +107,7 @@ class Config extends React.Component {
                 </Select>
               )}
             </FormItem>
+            <Membership />
           </div>
           }
       </article>

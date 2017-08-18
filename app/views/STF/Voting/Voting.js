@@ -54,11 +54,7 @@ class Voting extends React.Component {
           ? <Spin size='large' tip='Loading...' />
           : (docket.length >= 1
             ? <Tabs className='tab-container' type='card'
-                tabBarExtraContent={
-                  <Button type='ghost' icon='reload' onClick={() => forceRequest()}>
-                    Refresh
-                  </Button>
-                }
+              tabBarExtraContent={<Button type='ghost' icon='reload' onClick={forceRequest}>Refresh</Button>}
               >
               <TabPane tab='Overview' key='1' className={styles['tab-pane']}>
                 <h1>Reviews & Voting</h1>

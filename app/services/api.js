@@ -112,11 +112,29 @@ const remove = (model, options = {}) => mutateAsync({
   update: options.update ? options.update : { [model]: (prev, next) => next }
 })
 
+/* *****
+CUSTOM QUERY
+Allows you to directly specify the endpoint w/o helpers.
+Good for very specific or buggy queries, currently only used by Membership.js
+***** */
+const query = (endpoint, options) => ({
+  url: `${API}/${version}/${endpoint}`,
+  // transform: res => ({ [model]: normalize(res) }),
+  ...options
+})
+const mutate = (endpoint, options) => mutateAsync({
+  url: `${API}/${version}/${endpoint}`,
+  // transform: res => ({ [model]: normalize(res) }),
+  ...options
+})
+
 export default {
   get,
   post,
   patch,
-  remove
+  remove,
+  query,
+  mutate
 }
 
 /*
