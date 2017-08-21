@@ -12,6 +12,13 @@ import { Link } from 'react-router'
 import { Spin, Table, Switch, AutoComplete, message } from 'antd'
 const Option = AutoComplete.Option
 
+const addAuth = (body, update) => mutateAsync({
+  url: `${api.endpoint}/stf/`,
+  options: { method: 'POST' },
+  transform: res => ({ users: res }),
+  body,
+  update
+})
 const toggle = (id, body, update) => mutateAsync({
   url: `${api.endpoint}/stf/${id}`,
   options: { method: 'PATCH' },
@@ -22,8 +29,8 @@ const toggle = (id, body, update) => mutateAsync({
 
 @compose(
   connect(
+    //  Committee members vs. potential members to add.
     state => ({
-      //  Committee members vs. potential members to add.
       committee: Array.isArray(state.db.users)
       ? state.db.users.filter(user => user.stf !== null)
       : [],
@@ -31,9 +38,9 @@ const toggle = (id, body, update) => mutateAsync({
         ? state.db.users.filter(user => user.stf === null)
         : []
     }),
+    //  NOTE: Bind custom mutators to deal with plurality constraints for the 'stf' controller.
     dispatch => ({
-      //  NOTE: Bind custom mutators to deal with plurality constraints for the 'stf' controller.
-      api: bindActionCreators({toggle, ...api}, dispatch)
+      api: bindActionCreators({toggle, addAuth, ...api}, dispatch)
     })
 ),
   connectRequest(() => api.get('users'))
@@ -76,12 +83,26 @@ class Membership extends React.Component {
     const body = { user, spectator: false, member: false, admin: false }
     console.log(body)
     const update = { users: (prev, next) => {
-      console.log(prev, next)
+      // console.log(prev, next)
       let newData = prev.slice()
-      if (typeof next === 'object') newData.push(next)
+      //  If we got a valid response (contains an STF auth object)
+      if (typeof next === 'object') {
+        //  Find the user's data within our list of members. Complete the object via merge, add to our user list
+        // let userData = prev.find(member => member._id === next.user)
+        // Object.assign(userData, next)
+        // console.warn(userData, newData)
+        // newData.push(userData)
+        let index = newData.findIndex(member => member._id === next.user)
+        console.warn(newData[index])
+        // newData[index].stf = next
+        Object.assign(newData[index], { stf: next })
+        // Object.assign(userData, next)
+        // console.warn(userData, newData)
+        // newData.push(userData)
+      }
       return newData
     }}
-    api.post('users', body, { update })
+    api.addAuth(body, update)
   }
   handleToggle = (change, record, index) => {
     //  Assign the change to a body, send it to the server.
@@ -96,7 +117,7 @@ class Membership extends React.Component {
     //   return newData
     // }}
     const update = { users: (prev, next) => {
-      console.log(prev, next)
+      // console.log(prev, next)
       // let newData = prev.slice()
       // newData[index] = body
       // return newData
