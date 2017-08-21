@@ -21,7 +21,8 @@ There are two kinds of meetings:
 @connect(
     //  Might seem counterintuitive, but we're connecting to a manifest and pulling its proposal data.
     (state, props) => ({
-      manifest: state.db.manifests[props.index],
+      manifest: state.db.manifests
+        .find(manifest => manifest._id === props.id) || {},
       user: state.user
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
@@ -30,7 +31,7 @@ class Vote extends React.Component {
   render (
     { index, manifest } = this.props
   ) {
-    const { proposal, docket } = manifest
+    const { _id, proposal, docket } = manifest
     const { id, title, organization, uac, year, number, date, comments } = proposal
     const { metrics, voting, decisions } = docket
     console.log('DOCKET', docket)
@@ -38,7 +39,7 @@ class Vote extends React.Component {
       <section>
         {!proposal
           ? <Spin size='large' tip='Loading...' />
-          : <div>
+          : <div id={_id} >
             <h1>{title}</h1>
             {uac && <h2>Universal Access Committee</h2>}
             <h3>For {organization}</h3>
@@ -49,16 +50,16 @@ class Vote extends React.Component {
             </ul>
             <Tabs defaultActiveKey='1'>
               <TabPane tab={<b>Summary</b>} key='1'>
-                <Summary index={index} />
+                <Summary id={_id} />
               </TabPane>
               <TabPane tab={<b>Metrics</b>} key='2'>
-                <Metrics index={index} />
+                <Metrics id={_id} />
               </TabPane>
               <TabPane disabled={!metrics && !voting} tab={<b>Review</b>} key='3'>
-                <Review index={index} />
+                <Review id={_id} />
               </TabPane>
               <TabPane disabled={!decisions} tab={<b>Decision</b>} key='4'>
-                <Decision index={index} />
+                <Decision id={_id} />
               </TabPane>
             </Tabs>
           </div>

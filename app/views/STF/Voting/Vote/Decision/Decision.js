@@ -17,9 +17,12 @@ const questions = ['Proposal Quality', 'Academic Merit']
 @compose(
   connect(
     (state, props) => ({
-      proposal: state.db.manifests[props.index].proposal._id,
-      manifest: state.db.manifests[props.index],
-      decision: state.db.manifests[props.index].decision,
+      proposal: state.db.manifests
+        .find(manifest => manifest._id === props.id).proposal._id || '',
+      manifest: state.db.manifests
+        .find(manifest => manifest._id === props.id) || {},
+      decision: state.db.manifests
+        .find(manifest => manifest._id === props.id).decision || {},
       user: state.user
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })

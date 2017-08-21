@@ -38,7 +38,10 @@ class Voting extends React.Component {
       //  Filter out proposals containing the netID in contacts.
       const docket = manifests.filter(manifest => {
         // return manifest.docket.metrics || manifest.docket.voting
-        return (manifest.docket.metrics === true || manifest.docket.voting === true || manifest.docket.decisions === true)
+        return (
+          manifest.docket.metrics === true ||
+          manifest.docket.voting === true ||
+          manifest.docket.decisions === true)
       })
       console.warn('SETTING DOCKET', docket)
       this.setState({ docket })
@@ -71,7 +74,7 @@ class Voting extends React.Component {
                     ${manifest.type !== 'original' ? `(${_.capitalize(manifest.type)})` : ''}
                   `}
                 >
-                  <Vote index={i} />
+                  <Vote index={i} id={manifest._id} />
                 </TabPane>
               ))}
             </Tabs>

@@ -34,11 +34,13 @@ const questions = ['Proposal Quality', 'Academic Merit']
 @compose(
   connect(
     (state, props) => ({
-      proposal: state.db.manifests[props.index].proposal._id,
-      manifest: state.db.manifests[props.index],
-      review: state.db.manifests[props.index].reviews.find(review =>
-          review.author._id === state.user._id
-        ) || {},
+      proposal: state.db.manifests
+        .find(manifest => manifest._id === props.id).proposal._id,
+      manifest: state.db.manifests
+        .find(manifest => manifest._id === props.id),
+      review: state.db.manifests
+        .find(manifest => manifest._id === props.id).reviews
+        .find(review => review.author._id === state.user._id) || {},
       user: state.user,
       stf: state.user.stf
     }),

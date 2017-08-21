@@ -7,7 +7,10 @@ import { Row, Col, Spin, Collapse } from 'antd'
 const Panel = Collapse.Panel
 @connect(
     //  Might seem counterintuitive, but we're connecting to a manifest and pulling its proposal data.
-    (state, props) => ({ body: state.db.manifests[props.index].proposal.body })
+    (state, props) => ({
+      body: state.db.manifests
+        .find(manifest => manifest._id === props.id).proposal.body
+    })
 )
 class Summary extends React.Component {
   render (
