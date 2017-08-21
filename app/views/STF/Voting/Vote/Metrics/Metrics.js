@@ -35,53 +35,57 @@ class Metrics extends React.Component {
   filterReviews = () => {
     const { manifest } = this.props
     const { filter } = this.state
-    //  FILTER REVIEWS BY ROLE
-    //  All reviews, filtered and sorted by type (will have duplicates across keys, STF members have many roles)
-    const reviews = {
-      admin: manifest.reviews.filter(rev => filter.admin && rev.author.stf.admin === true),
-      member: manifest.reviews.filter(rev => filter.member && rev.author.stf.member === true),
-      spectator: manifest.reviews.filter(rev => filter.spectator && rev.author.stf.spectator === true)
-    }
-    //  Create a set (array w/ unique values) by spreading all the review types we've filtered
-    //  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set
-    //  https://gist.github.com/telekosmos/3b62a31a5c43f40849bb#gistcomment-1830283
-    const filteredReviews = [...new Set([
-      ...reviews.admin,
-      ...reviews.member,
-      ...reviews.spectator
-    ])]
-    console.warn('summary', filteredReviews)
-
-    //  CALCULATE AVERAGE SCORES
+    //  Initialize returns. If reviews exist, we filter, otherwise just return defaults.
     let pass = 0
     let fail = 0
-    let metrics = filteredReviews.reduce((total, votes) => {
-      //  Assign approvals, accounting for null/undef
-      if (votes.approved === true) pass++
-      if (votes.approved === false) fail++
-      //  Loop over unique ratings
-      for (const i in votes.ratings) {
-        const { prompt, score } = votes.ratings[i]
-        //  If they're complete records, record them
-        if (prompt && Number.isInteger(score)) {
-          //  Initialize field for prompt if necessary
-          const promptAccountedFor = total[prompt]
-          if (!promptAccountedFor) total[prompt] = {}
-          //  Add score and increment count
-          Number.isInteger(total[prompt].score)
-            ? (total[prompt].score += score)
-            : (total[prompt].score = score)
-          Number.isInteger(total[prompt].count)
-            ? (total[prompt].count ++)
-            : (total[prompt].count = 1)
-        }
+    let metrics = []
+    if (manifest.reviews && manifest.reviews.length > 0) {
+      //  FILTER REVIEWS BY ROLE
+      //  All reviews, filtered and sorted by type (will have duplicates across keys, STF members have many roles)
+      const reviews = {
+        admin: manifest.reviews.filter(rev => filter.admin && rev.author.stf.admin === true),
+        member: manifest.reviews.filter(rev => filter.member && rev.author.stf.member === true),
+        spectator: manifest.reviews.filter(rev => filter.spectator && rev.author.stf.spectator === true)
       }
-      return total
-    }, {})
-    //  Now we have a list of scores and counts keyed by their prompt. Calc the average.
-    Object.keys(metrics).forEach((key, i) => {
-      metrics[key] = metrics[key].score / metrics[key].count
-    })
+      //  Create a set (array w/ unique values) by spreading all the review types we've filtered
+      //  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set
+      //  https://gist.github.com/telekosmos/3b62a31a5c43f40849bb#gistcomment-1830283
+      const filteredReviews = [...new Set([
+        ...reviews.admin,
+        ...reviews.member,
+        ...reviews.spectator
+      ])]
+      console.warn('summary', filteredReviews)
+
+      //  CALCULATE AVERAGE SCORES
+      metrics = filteredReviews.reduce((total, votes) => {
+        //  Assign approvals, accounting for null/undef
+        if (votes.approved === true) pass++
+        if (votes.approved === false) fail++
+        //  Loop over unique ratings
+        for (const i in votes.ratings) {
+          const { prompt, score } = votes.ratings[i]
+          //  If they're complete records, record them
+          if (prompt && Number.isInteger(score)) {
+            //  Initialize field for prompt if necessary
+            const promptAccountedFor = total[prompt]
+            if (!promptAccountedFor) total[prompt] = {}
+            //  Add score and increment count
+            Number.isInteger(total[prompt].score)
+              ? (total[prompt].score += score)
+              : (total[prompt].score = score)
+            Number.isInteger(total[prompt].count)
+              ? (total[prompt].count ++)
+              : (total[prompt].count = 1)
+          }
+        }
+        return total
+      }, {})
+      //  Now we have a list of scores and counts keyed by their prompt. Calc the average.
+      Object.keys(metrics).forEach((key, i) => {
+        metrics[key] = metrics[key].score / metrics[key].count
+      })
+    }
     //  Final return, assign as const { a,  b, c } =...
     return { pass, fail, metrics }
   }
@@ -89,21 +93,7 @@ class Metrics extends React.Component {
     { form, manifest, user } = this.props,
     { filter } = this.state
   ) {
-    //  BUG: Admin is undefined:
-    /*
-    Uncaught TypeError: Cannot read property 'admin' of null
-    at eval (Metrics.js:248)
-    at Array.filter (<anonymous>)
-    at Metrics.filterReviews (Metrics.js:247)
-    at Metrics.render (Metrics.js:138)
-    at eval (ReactCompositeComponent.js:796)
-    at measureLifeCyclePerf (ReactCompositeComponent.js:75)
-    at ReactCompositeComponentWrapper._renderValidatedComponentWithoutOwnerOrContext (
-    */
-    // const { pass, fail, metrics } = this.filterReviews()
-    const pass = true
-    const fail = true
-    const metrics = []
+    const { pass, fail, metrics } = this.filterReviews()
     const dataSource = Object.keys(metrics).map(key => {
       return { prompt: key, score: metrics[key] }
     })
@@ -140,10 +130,10 @@ class Metrics extends React.Component {
                 />
               </Col>
               <Col span={24} lg={16}>
-                  <h2>Review Breakdown</h2>
-                  <Table dataSource={dataSource} pagination={false}
-                    columns={columns}
-                  />
+                <h2>Review Breakdown</h2>
+                <Table dataSource={dataSource} pagination={false}
+                  columns={columns}
+                />
               </Col>
             </Row>
           </div>
@@ -155,6 +145,7 @@ class Metrics extends React.Component {
 Metrics.propTypes = {
   form: PropTypes.object,
   api: PropTypes.object,
+  id: PropTypes.string.isRequired,
   proposal: PropTypes.string,
   manifest: PropTypes.object,
   review: PropTypes.object,

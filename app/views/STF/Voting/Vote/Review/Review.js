@@ -49,35 +49,6 @@ const questions = ['Proposal Quality', 'Academic Merit']
   connectForm
 )
 class Review extends React.Component {
-  constructor (props) {
-    super(props)
-    const filter = { admin: true, member: true, spectator: true }
-    this.state = { filter }
-  }
-  handleFilter = (checked) => {
-    // console.log(checked)
-    const filter = Object.assign(this.state.filter, checked)
-    this.setState({ filter })
-  }
-  filterReviews = () => {
-    const { form, manifest } = this.props
-    const { filter } = this.state
-    //  All reviews, filtered and sorted by type (will have duplicates across keys, STF members have many roles)
-    const reviews = {
-      admin: manifest.reviews.filter(rev => filter.admin && rev.author.stf.admin === true),
-      member: manifest.reviews.filter(rev => filter.member && rev.author.stf.member === true),
-      spectator: manifest.reviews.filter(rev => filter.spectator && rev.author.stf.spectator === true)
-    }
-    //  Create a set (array w/ unique values) by spreading all the review types we've filtered
-    //  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set
-    //  https://gist.github.com/telekosmos/3b62a31a5c43f40849bb#gistcomment-1830283
-    const filteredReviews = [...new Set([
-      ...reviews.admin,
-      ...reviews.member,
-      ...reviews.spectator
-    ])]
-    console.warn('summary', filteredReviews)
-  }
   componentDidMount () {
     const { form, review } = this.props
     if (form && review) {
@@ -86,8 +57,10 @@ class Review extends React.Component {
       //  Dynamic fields - metric prompts change all the time. Normalize
       //  rc-form format: { metrics: { prompt: score }}
       let metrics = { }
-      for (const q of review.ratings) {
-        metrics[q.prompt] = q.score
+      if (review.ratings && review.ratings.length > 0) {
+        for (const q of review.ratings) {
+          metrics[q.prompt] = q.score
+        }
       }
       let fields = { score, approved, metrics }
       form.setFieldsValue(fields)
@@ -132,11 +105,9 @@ class Review extends React.Component {
     })
   }
   render (
-    { form, manifest, user, stf } = this.props,
-    { filter } = this.state
+    { form, manifest, user, stf } = this.props
   ) {
     const { metrics, voting } = manifest.docket
-    this.filterReviews()
     return (
       <section>
         {!manifest
@@ -182,6 +153,7 @@ class Review extends React.Component {
 Review.propTypes = {
   form: PropTypes.object,
   api: PropTypes.object,
+  id: PropTypes.string.isRequired,
   proposal: PropTypes.string,
   manifest: PropTypes.object,
   review: PropTypes.object,

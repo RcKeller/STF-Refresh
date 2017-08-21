@@ -100,6 +100,7 @@ class Decision extends React.Component {
 Decision.propTypes = {
   form: PropTypes.object,
   api: PropTypes.object,
+  id: PropTypes.string.isRequired,
   proposal: PropTypes.string,
   manifest: PropTypes.object,
   review: PropTypes.object,

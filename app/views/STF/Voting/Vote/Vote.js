@@ -69,6 +69,7 @@ class Vote extends React.Component {
   }
 }
 Vote.propTypes = {
+  id: PropTypes.string.isRequired,
   manifest: PropTypes.object,
   user: PropTypes.object
 }
