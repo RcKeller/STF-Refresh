@@ -12,6 +12,7 @@ import Contacts from './Contacts/Contacts'
 import ProposalBody from './ProposalBody/ProposalBody'
 import Manifest from './Manifest/Manifest'
 import Signatures from './Signatures/Signatures'
+import Publish from './Publish/Publish'
 
 import { Icon, Spin, Tabs } from 'antd'
 const TabPane = Tabs.TabPane
@@ -153,7 +154,7 @@ class Edit extends React.Component {
               {complete &&
                 <TabPane key='6'
                   tab={<span><Icon type='rocket' />Publish !</span>}>
-                  <Signatures />
+                  <Publish />
                 </TabPane>
               }
             </Tabs>
