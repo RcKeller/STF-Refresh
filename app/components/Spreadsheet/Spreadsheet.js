@@ -19,7 +19,7 @@ class SpreadSheet extends React.Component {
     for (let col of columns) {
       col.resizable = true
     }
-    let rows = data
+    let rows = data || []
     if (rows.length < 1) rows[0] = {...newData} || {}
     this.state = ({ rows })
   }
@@ -27,7 +27,7 @@ class SpreadSheet extends React.Component {
     //  FIXME: For some reason, this check is failing to work properly. Causes data tables to refresh when forms of parents are changed.
     if (!_.isEqual(nextProps.data === this.props.data)) {
       const { data, newData } = nextProps
-      let rows = data
+      let rows = data || []
       if (rows.length < 1) rows[0] = {...newData} || {}
       this.state = ({ rows })
     }
@@ -67,9 +67,11 @@ class SpreadSheet extends React.Component {
   render (
     // { rowGetter, handleGridRowsUpdated, handleAddRow, handleSubmit } = this,
     { columns, disable } = this.props,
-    { rows: { length } } = this.state
+    { rows } = this.state || {}
 ) {
-    if (length < 1) this.insertRow(0)
+    if (rows && Number.isInteger(rows.length) && rows.length < 1) {
+      this.insertRow(0)
+    }
     return <div>
       <Alert type='warning' banner showIcon={false} closable
         style={jss.alert}
@@ -85,10 +87,10 @@ class SpreadSheet extends React.Component {
         />}
         columns={columns}
         rowGetter={this.rowGetter}
-        rowsCount={length}
+        rowsCount={(rows && rows.length) || 0}
         onGridRowsUpdated={this.handleGridRowsUpdated}
       />
-      <Button size='large' type='primary' disable={disable} style={jss.button} onClick={this.handleSubmit}>
+      <Button size='large' type='primary' disabled={disable} style={jss.button} onClick={this.handleSubmit}>
         <Icon type='upload' />Save
       </Button>
     </div>

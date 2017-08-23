@@ -27,7 +27,8 @@ import styles from './Edit.css'
   })),
   connectRequest(props => api.get('proposal', {
     id: props.params.id,
-    join: ['contacts', 'body', 'manifests']
+    join: ['contacts', 'body', 'manifests'],
+    force: true
   }))
 )
 class Edit extends React.Component {
@@ -101,8 +102,17 @@ class Edit extends React.Component {
   }
   render (
     { forceRequest, proposal, user } = this.props,
-    { valid: { introduction, contacts, body, manifest, signatures } } = this.state
+    { valid } = this.state
   ) {
+    const { introduction, contacts, body, manifest, signatures } = valid
+    // const complete = Object.keys(valid).reduce((accumulator, key) => {
+    //   console.log(key, accumulator)
+    //   if (key === true) {
+    //     accumulator += 1
+    //   }
+    // }, 0)
+    const complete = Object.keys(valid).every(k => valid[k] === true)
+    console.warn('COMPLETE', complete)
     //  Once proposals have loaded, redirect unaffiliated users.
     //  You can remove your netID and push an update, but if you leave the page after that, it locks you out.
     // proposal && proposal.contacts && redirectUnaffiliated(user, proposal.contacts)
@@ -112,9 +122,9 @@ class Edit extends React.Component {
       <article className={styles['page']}>
         {!proposal
           ? <Spin size='large' tip='Loading...' />
-          : <div>
+          : <div id={proposal._id}>
             <h1>{`Editing: ${proposal.title || 'New Proposal'}`}</h1>
-            <h6>{`ID: ${proposal._id}`}</h6>
+            <h6>{`Draft ID: ${proposal._id}`}</h6>
             <hr />
             <Tabs tabPosition='right' defaultActiveKey='1'
               onChange={forceRequest}
@@ -140,7 +150,14 @@ class Edit extends React.Component {
                 tab={<span><Icon type='edit' />Signatures</span>}>
                 <Signatures />
               </TabPane>
+              {complete &&
+                <TabPane key='6'
+                  tab={<span><Icon type='rocket' />Publish !</span>}>
+                  <Signatures />
+                </TabPane>
+              }
             </Tabs>
+            {!complete && <em>Once all sections are complete (indicated by the tab turning green), the publish option will appear.</em>}
           </div>
         }
       </article>

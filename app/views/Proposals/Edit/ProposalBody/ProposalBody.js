@@ -125,15 +125,22 @@ class ProposalBody extends React.Component {
     form.validateFields((err, values) => {
       if (!err) {
         //  Update if the document exists, otherwise create it anew.
+        console.warn(values)
+        const update = { proposal: (prev, next) => {
+          let newData = prev
+          Object.assign(newData.body, values)
+          return newData
+        }}
         body
         ? api.patch(
           'project',
           { proposal: parent, ...values },
-          { id: body._id }
+          { id: body._id, update }
         )
         : api.post(
           'project',
-          { proposal: parent, ...values }
+          { proposal: parent, ...values },
+          { update }
         )
         .then(message.success('Proposal Body updated!'))
         .catch(err => {

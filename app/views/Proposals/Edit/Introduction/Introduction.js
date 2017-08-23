@@ -37,9 +37,13 @@ class Introduction extends React.Component {
     let { form, api, parent } = this.props
     form.validateFields((err, values) => {
       if (!err) {
+        const update = { proposal: (prev, next) => {
+          let newData = Object.assign(prev, values)
+          return newData
+        }}
         api.patch('proposal',
           { proposal: parent, ...values },
-          { id: parent }
+          { id: parent, update }
         )
         .then(message.success('Introduction updated!'))
         .catch(err => {
