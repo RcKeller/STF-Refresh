@@ -14,7 +14,7 @@ Instead of instantiating 4 different forms for a single field, we're using AntD'
 API for submission, but using connectForm to instantiate initial values.
 */
 @connect(state => ({
-  proposal: state.db.proposal._id,
+  id: state.db.proposal._id,
   published: state.db.proposal.published,
   user: state.user
 }),
@@ -22,11 +22,18 @@ API for submission, but using connectForm to instantiate initial values.
 )
 class Publish extends React.Component {
   handlePublish = () => {
-    const { api, proposal } = this.props
+    const { api, id } = this.props
+    const body = {
+      published: true,
+      //  TODO: Using connectRequest, get all proposals, filter current year and get the number. Use that to determine proposal number.
+      number: 999999,
+      year: 99999,
+      quarter: 'Spring'
+    }
     const update = { proposal: (prev, next) =>
       Object.assign(prev, { published: next.published })
     }
-    api.patch('proposal', { published: true }, { id: proposal, update })
+    api.patch('proposal', body, { id, update })
     .then(message.warning(`Proposal is now live!`), 10)
     .catch(err => {
       message.warning(`Failed to update - client error`)
@@ -66,9 +73,8 @@ class Publish extends React.Component {
   }
 }
 Publish.propTypes = {
-  form: PropTypes.object,
   api: PropTypes.object,
-  contacts: PropTypes.array,
-  user: PropTypes.object
+  id: PropTypes.string,
+  published: PropTypes.bool
 }
 export default Publish

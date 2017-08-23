@@ -24,7 +24,7 @@ const columns = [
     title: 'Q',
     dataIndex: 'quarter',
     key: 'quarter',
-    render: (text) => <span>{text.substr(0, 2)}</span>,
+    render: (text) => <span>{text ? text.substr(0, 2) : ''}</span>,
     filters: [
       { text: 'Autumn', value: 'Au' },
       { text: 'Fall', value: 'Fa' },
