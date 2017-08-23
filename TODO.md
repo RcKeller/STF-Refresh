@@ -4,8 +4,8 @@ Client side:
 -Only members can vote
 -Edit announcments & frontpage UI
 -Once over of proposal submission, add categories
--Update contacts.
--Update STF members
+<!-- -Update contacts. -->
+<!-- -Update STF members -->
 -Table search strings
 -Drawer responsiveness
 

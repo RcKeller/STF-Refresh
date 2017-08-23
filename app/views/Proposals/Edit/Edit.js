@@ -16,6 +16,8 @@ import Signatures from './Signatures/Signatures'
 import { Icon, Spin, Tabs } from 'antd'
 const TabPane = Tabs.TabPane
 
+const green = '#00a854 !important'
+
 import styles from './Edit.css'
 @compose(
   connect(state => ({
@@ -56,16 +58,51 @@ class Edit extends React.Component {
     this.setState({ valid })
     console.log('VALID', valid)
   }
-  validateIntroduction = (...args) => {
-    //  Valid if  all args have content.
-    let validFields = args.filter((a) => a.length >= 0)
-    return validFields.length === args.length
+  validateIntroduction = (title, category, organization) => {
+    return (title && category && organization) ? true : false // eslint-disable-line
   }
-  validateContacts = (contacts) => true
-  validateBody = () => true
-  validateManifest = () => true
-  validateSignatures = () => true
-  render ({ forceRequest, proposal, user } = this.props) {
+  validateContacts = (contacts) => {
+    let valid = 0
+    for (const { role } of contacts) {
+      if (role === 'organization' || role === 'budget' || role === 'primary') valid++
+    }
+    return valid >= 3
+  }
+  validateBody = ({ overview, plan } = {}) => {
+    let valid = 0
+    //  Overview is valid if three prompts as well as the three impact types are filled
+    if (overview) {
+      const { abstract, justification, objectives, impact } = overview
+      if (abstract && justification && objectives) valid++
+      if (impact && Object.keys(impact).length >= 3) valid++
+    }
+    //  Project plan is valid if each of the 5 valid subcategories has a current and future state.
+    if (plan) {
+      let validCategories = 0
+      for (const key of Object.keys(plan)) {
+        if (plan[key] && plan[key].current && plan[key].future) validCategories++
+      }
+      if (validCategories >= 5) valid++
+    }
+    return valid >= 3
+  }
+  validateManifest = ({ items } = {}) => {
+    //  Keeping the validation simple here due to anticipated future enhancement of server side pre/post processing.
+    return Array.isArray(items) && items.length >= 1
+  }
+  validateSignatures = (contacts) => {
+    let valid = 0
+    for (const { role, signature } of contacts) {
+      if (role === 'organization' || role === 'budget' || role === 'primary') {
+        if (signature) valid++
+      }
+    }
+    return valid >= 3
+  }
+  render (
+    { forceRequest, proposal, user } = this.props,
+    { valid: { introduction, contacts, body, manifest, signatures } } = this.state
+  ) {
     //  Once proposals have loaded, redirect unaffiliated users.
     //  You can remove your netID and push an update, but if you leave the page after that, it locks you out.
     // proposal && proposal.contacts && redirectUnaffiliated(user, proposal.contacts)
@@ -82,19 +119,25 @@ class Edit extends React.Component {
             <Tabs tabPosition='right' defaultActiveKey='1'
               onChange={forceRequest}
             >
-              <TabPane key='1' tab={<span><Icon type='team' />Introduction</span>}>
+              <TabPane key='1'
+                tabBarStyle={{ backgroundColor: introduction ? green : 'inherit' }}
+                tab={<span><Icon type='file' />Introduction</span>}>
                 <Introduction validate={this.validateIntroduction} />
               </TabPane>
-              <TabPane key='2' tab={<span><Icon type='team' />Contacts</span>}>
+              <TabPane key='2'
+                tab={<span><Icon type='team' />Contacts</span>}>
                 <Contacts />
               </TabPane>
-              <TabPane key='3' tab={<span><Icon type='book' />Proposal Body</span>}>
+              <TabPane key='3'
+                tab={<span><Icon type='book' />Project Plan</span>}>
                 <ProposalBody />
               </TabPane>
-              <TabPane key='4' tab={<span><Icon type='wallet' />Manifest</span>}>
+              <TabPane key='4'
+                tab={<span><Icon type='wallet' />Budget</span>}>
                 <Manifest />
               </TabPane>
-              <TabPane key='5' tab={<span><Icon type='edit' />Signatures</span>}>
+              <TabPane key='5'
+                tab={<span><Icon type='edit' />Signatures</span>}>
                 <Signatures />
               </TabPane>
             </Tabs>

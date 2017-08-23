@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Row, Col } from 'antd'
+import { Row, Col, Alert } from 'antd'
 
 import Contact from './Contact/Contact'
 
@@ -29,6 +29,11 @@ class Contacts extends React.Component {
     return (
       <div>
         <h1>Contact Information</h1>
+        <Alert type='warning'
+          message='Contact Responsibilities'
+          description='
+          As a contact, you will be responsible for the project during its lifecycle, which includes maintaining rapport with the committee and selecting a replacement contact should your university affilitation change (changes in leadership, graduation, etc). After this proposal is published, you will be responsible for selecting a replacement contact should the need arise via the "update" panel.'
+        />
         <Row gutter={32}>
           {contactFields.map((c, i) => (
             <Col key={i} className='gutter-row' xs={24} md={12} lg={6} >

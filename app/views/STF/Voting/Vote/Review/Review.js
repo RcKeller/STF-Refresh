@@ -90,7 +90,7 @@ class Review extends React.Component {
         //  TODO: Add custom update func
         review._id
           ? api.patch('review', submission, { id: review._id })
-          .then(message.success('Review updated!'))
+          .then(message.success('Review updated!'), 10)
           .catch(err => {
             message.warning('Review failed to update - Unexpected client error')
             console.warn(err)
