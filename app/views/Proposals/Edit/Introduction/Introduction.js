@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Form, Input, Checkbox, Button, Alert, message } from 'antd'
+import { Form, Input, AutoComplete, Checkbox, Button, Alert, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
@@ -18,6 +18,9 @@ import api from '../../../../services'
       title: state.db.proposal.title,
       category: state.db.proposal.category,
       organization: state.db.proposal.organization,
+      categories: state.db.config
+        ? state.db.config.enums.categories
+        : [],
       uac: state.db.proposal.uac
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
@@ -54,7 +57,7 @@ class Introduction extends React.Component {
     })
   }
 
-  render ({ form, title, category, organization, uac } = this.props) {
+  render ({ form, categories, title, category, organization, uac } = this.props) {
     return (
       <div>
         <h1>Introduction</h1>
@@ -66,12 +69,7 @@ class Introduction extends React.Component {
           </FormItem>
           <FormItem label='Category' {...layout} hasFeedback={feedback(form, 'category')} help={help(form, 'category')} >
             {form.getFieldDecorator('category', rules.required)(
-              <Input />
-            )}
-          </FormItem>
-          <FormItem label='Organization' {...layout} hasFeedback={feedback(form, 'organization')} help={help(form, 'organization')} >
-            {form.getFieldDecorator('organization', rules.required)(
-              <Input />
+              <AutoComplete dataSource={categories} />
             )}
           </FormItem>
           <Alert type='warning'

@@ -9,7 +9,7 @@ import { redirectUnaffiliated } from '../../../util/selectors'
 
 import Introduction from './Introduction/Introduction'
 import Contacts from './Contacts/Contacts'
-import ProposalBody from './ProposalBody/ProposalBody'
+import ProjectPlan from './ProjectPlan/ProjectPlan'
 import Manifest from './Manifest/Manifest'
 import Signatures from './Signatures/Signatures'
 import Publish from './Publish/Publish'
@@ -141,7 +141,7 @@ class Edit extends React.Component {
               </TabPane>
               <TabPane key='3'
                 tab={<span><Icon type='book' />Project Plan</span>}>
-                <ProposalBody />
+                <ProjectPlan />
               </TabPane>
               <TabPane key='4'
                 tab={<span><Icon type='wallet' />Budget</span>}>

@@ -9,9 +9,10 @@ import api from '../../../services'
 
 import { layout, feedback, help, rules, disableSubmit } from '../../../util/form'
 
-import { Modal, Button, Form, Input, Select, message } from 'antd'
+import { Modal, Button, Form, Input, AutoComplete, Select, message } from 'antd'
 const FormItem = Form.Item
 const Option = Select.Option
+const AutoCompleteOption = AutoComplete.Option
 const connectForm = Form.create()
 
 import Agreements from './Agreements/Agreements'
@@ -20,7 +21,8 @@ import styles from './Create.css'
 @compose(
   connect(
     state => ({
-      user: state.user
+      user: state.user,
+      organizations: (state.db.config && state.db.config.enums.organizations) || {}
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
@@ -43,8 +45,8 @@ class Create extends React.Component {
       //  Create Proposal w/ budget code if valid
       if (!err) {
         this.setState({ confirmLoading: true })
-        const { budget, role, title } = values
-        api.post('proposal', { budget })
+        const { organization, budget, role, title } = values
+        api.post('proposal', { organization, budget })
         .then(res => {
           //  Save yourself as a new, related contact with the new proposal ID.
           const parent = res.body._id
@@ -77,8 +79,14 @@ class Create extends React.Component {
     console.log('Clicked cancel button')
     this.setState({ modal: false })
   }
+  handleOrganizationSelect = (key) => {
+    const { form, organizations } = this.props
+    const budget = organizations[key]
+    console.log('ORG', organizations, key, budget)
+    form.setFieldsValue({ budget })
+  }
   render (
-    { form } = this.props,
+    { form, organizations } = this.props,
     { modal, confirmLoading, ModalText } = this.state
   ) {
     return (
@@ -88,11 +96,6 @@ class Create extends React.Component {
           The Student Technology Fee Committee was created to ensure the best return on collected student dollars. By proposing to the committee, you agree to follow all requirements, current and future, set by the STFC. Included below are particularly relevant documents, along with brief summary and their full text.
         </p>
         <Agreements />
-        {/* <Button size='large' type='primary'
-          onClick={() => this.initializeProposal()}
-        >
-          I Agree<Icon type='right' />
-        </Button> */}
         <Button type='primary' onClick={this.showModal}>I Agree</Button>
         <Modal visible={modal}
           title='Create a Proposal - Initial Contact Information'
@@ -124,6 +127,17 @@ class Create extends React.Component {
             <FormItem label='Job Title' {...layout} hasFeedback={feedback(form, 'title')} help={help(form, 'title')} >
               {form.getFieldDecorator('title', rules.required)(
                 <Input />
+              )}
+            </FormItem>
+            <FormItem label='Organization' {...layout} hasFeedback={feedback(form, 'organization')} help={help(form, 'organization')} >
+              {form.getFieldDecorator('organization', rules.required)(
+                <AutoComplete onSelect={this.handleOrganizationSelect}>
+                  {Object.keys(organizations).map(org => (
+                    <AutoCompleteOption key={org}>
+                      {`${org} - Budget ${organizations[org]}`}
+                    </AutoCompleteOption>
+                  ))}
+                </AutoComplete>
               )}
             </FormItem>
             <FormItem label='Budget' {...layout} hasFeedback={feedback(form, 'budget')} help={help(form, 'budget')} >

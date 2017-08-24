@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Row, Col, Form, Input, Button, message } from 'antd'
+import { Row, Col, Alert, Form, Input, Button, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
@@ -110,7 +110,7 @@ const projectFields = [
   ),
   connectForm
 )
-class ProposalBody extends React.Component {
+class ProjectPlan extends React.Component {
   componentDidMount () {
     const { form, body } = this.props
     if (body) {
@@ -157,6 +157,10 @@ class ProposalBody extends React.Component {
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
+          <Alert type='info'
+            message='Project Plan Format'
+            description='We are using a traditional project plan format for our proposals going forward. The committee has decided on this because it covers the questions traditionally addressed in Q&A, and ensures that proposals are comprehensive, covering the full lifecycle of the project. We understand that a lot of these questions may not apply directly to all cases, so for those fields, feel free to write "N/A".'
+          />
           <h1>Overview</h1>
           <FormItem label='Abstract' {...layout} hasFeedback={feedback(form, 'overview.abstract')} help={help(form, 'overview.abstract')} >
             {form.getFieldDecorator('overview.abstract', rules.required)(
@@ -226,10 +230,10 @@ class ProposalBody extends React.Component {
   }
 }
 
-ProposalBody.propTypes = {
+ProjectPlan.propTypes = {
   form: PropTypes.object,
   api: PropTypes.object,
   parent: PropTypes.string,
   body: PropTypes.object
 }
-export default ProposalBody
+export default ProjectPlan

@@ -21,7 +21,8 @@ const connectForm = Form.create()
       budget: state.db.proposal.budget,
       uac: state.db.proposal.uac,
       status: state.db.proposal.status,
-      published: state.db.proposal.published
+      published: state.db.proposal.published,
+      enums: state.db.config.enums
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
@@ -113,7 +114,7 @@ class Settings extends React.Component {
       console.warn(err)
     })
   }
-  render ({ form } = this.props) {
+  render ({ form, enums } = this.props) {
     return (
       <section>
         <h1>Proposal Settings</h1>
@@ -126,18 +127,18 @@ class Settings extends React.Component {
           <FormItem label='Category' {...layout} >
             {form.getFieldDecorator('category')(
               <Select onChange={this.handleCategory}>
-                <Option value='a'>Placeholder A</Option>
-                <Option value='b'>Placeholder B</Option>
-                <Option value='c'>Placeholder C</Option>
+                {enums.categories.map(category => (
+                  <Option value={category}>{category}</Option>
+                ))}
               </Select>
             )}
           </FormItem>
           <FormItem label='Organization' {...layout} >
             {form.getFieldDecorator('organization')(
               <Select onChange={this.handleOrganization}>
-                <Option value='a'>Placeholder A</Option>
-                <Option value='b'>Placeholder B</Option>
-                <Option value='c'>Placeholder C</Option>
+                {Object.keys(enums.organizations).map(org => (
+                  <Option value={org}>{org}</Option>
+                ))}
               </Select>
             )}
           </FormItem>
@@ -154,9 +155,9 @@ class Settings extends React.Component {
           <FormItem label='Status' {...layout} >
             {form.getFieldDecorator('status')(
               <Select onChange={this.handleStatus}>
-                <Option value='a'>Placeholder A</Option>
-                <Option value='b'>Placeholder B</Option>
-                <Option value='c'>Placeholder C</Option>
+                {enums.statuses.map(s => (
+                  <Option value={s}>{s}</Option>
+                ))}
               </Select>
             )}
           </FormItem>
