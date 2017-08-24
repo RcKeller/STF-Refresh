@@ -40,7 +40,8 @@ const link = [{ rel: 'icon', href: favicon }]
 
 import { LocaleProvider, Layout, Icon, Breadcrumb } from 'antd'
 import enUS from 'antd/lib/locale-provider/en_US'
-const { Sider, Header, Content } = Layout
+const { Header, Content } = Layout
+import Drawer from 'rc-drawer'
 
 // import Header from './Header/Header'
 import Login from './Login/Login'
@@ -74,61 +75,64 @@ function breadcrumbRenderFix (route, params, routes, paths) {
 class Template extends React.Component {
   constructor (props) {
     super(props)
-    const { screen } = this.props
-    let collapsed = screen.lessThan.large
-    this.state = { collapsed }
+    // const { screen } = this.props
+    // let open = screen.lessThan.large
+    this.state = { open: false }
   }
-  componentWillReceiveProps (nextProps) {
-    let oldScreen = this.props.screen
-    let {screen} = nextProps
-    if (oldScreen.greaterThan.medium && screen.lessThan.large) {
-      this.setState({ collapsed: true })
-    }
-    if (oldScreen.lessThan.large && screen.greaterThan.medium) {
-      this.setState({ collapsed: false })
-    }
-  }
-  toggle = () => this.setState({ collapsed: !this.state.collapsed })
+  // componentWillReceiveProps (nextProps) {
+  //   let oldScreen = this.props.screen
+  //   let {screen} = nextProps
+  //   if (oldScreen.greaterThan.medium && screen.lessThan.large) {
+  //     this.setState({ open: true })
+  //   }
+  //   if (oldScreen.lessThan.large && screen.greaterThan.medium) {
+  //     this.setState({ open: false })
+  //   }
+  // }
+  handleToggle = () => this.setState({ open: !this.state.open })
   render (
     { children, routes, screen } = this.props,
-    { collapsed } = this.state
+    { open } = this.state
   ) {
     // React-router is separated from redux store - too heavy to persist.
     return (
       <LocaleProvider locale={enUS}>
-        <Layout>
+        <div>
+          <Helmet
+            title='UW Student Tech Fee'
+            titleTemplate='%s - Student Tech Fee'
+            meta={meta} link={link}
+          />
           <Header>
-            <Icon
-              style={{fontSize: 32, lineHeight: 'inherit', color: 'white'}}
-              type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}
-              onClick={this.toggle}
-            />
-            {/* <div className={styles['header-elements']}> */}
-              <Link to='/'>
-                {/* <img src={screen.is.extraSmall ? mobileLogo : desktopLogo} className={styles['logo']} /> */}
-                <img src={screen.lessThan.medium ? mobileLogo : desktopLogo} className={styles['logo']} />
-              </Link>
-              <Login />
-            {/* </div> */}
-            {/* <div className={styles['clip']}>Clip</div> */}
+            {screen.lessThan.large
+              ? <Icon
+                style={{fontSize: 32, lineHeight: 'inherit', color: 'white'}}
+                type={this.state.open ? 'menu-unfold' : 'menu-fold'}
+                onClick={this.handleToggle}
+              />
+              : <span>UW</span>
+            }
+            <Link to='/'>
+              <img src={screen.lessThan.medium ? mobileLogo : desktopLogo} className={styles['logo']} />
+            </Link>
+            <Login />
           </Header>
-          <Layout className={styles['body']}>
-            <Helmet
-              title='UW Student Tech Fee'
-              titleTemplate='%s - Student Tech Fee'
-              meta={meta} link={link}
-            />
-            <Sider trigger={null}
-              collapsible collapsed={collapsed}
-              breakpoint='md'
-              width={240} collapsedWidth='0'
-            >
-              <img src={wordmark} className={styles['wordmark']} />
-              <Nav />
-            </Sider>
-            <Layout>
+          {/* <Nav /> */}
+          <Drawer
+            // style={{ overflow: 'auto' }}
+            position={screen.greaterThan.medium ? 'top' : 'left'}
+            docked={screen.greaterThan.medium}
+            open={!screen.greaterThan.medium && open}
+            transitions
+            touch
+            onOpenChange={this.handleToggle}
+            enableDragHandle={false}
+            dragToggleDistance={30}
+            sidebar={<Nav />}
+           >
+            <Layout className={styles['body']}>
               {children &&  //  Prevents returning 500 due to async load
-                <Content>
+                <div>
                   {routes[1].path &&
                     <Breadcrumb
                       className={styles['breadcrumb']}
@@ -136,11 +140,11 @@ class Template extends React.Component {
                     />
                   }
                   {children}
-                </Content>
+                </div>
               }
             </Layout>
-          </Layout>
-        </Layout>
+          </Drawer>
+        </div>
       </LocaleProvider>
     )
   }

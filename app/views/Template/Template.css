@@ -38,14 +38,16 @@
 }
 
 .breadcrumb {
-  margin: 24px 0 0 0;
-  padding: 0 48px;
+  margin-top: 24px;
+  padding: 0 16px;
+  /*padding: 0 24px;*/
   @media (min-width: 992px) {
-    margin: 24px 48px;
+    margin: 24px 48px 0 48px;
     padding: 0;
   }
 }
 
 .body {
-  min-height: calc(100vh - 60px);
+  /*min-height: calc(100vh - 60px);*/
+  /*min-height: calc(100vh - 110px)*/
 }

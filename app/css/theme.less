@@ -1,4 +1,5 @@
 @import "~antd/dist/antd.less";
+@import "~rc-drawer/assets/index.css";
 /*
 WARNING:
 This file is for ant-design themes only.
@@ -74,6 +75,9 @@ ANT Design theme overrides
 @input-hover-border-color    : @secondary-color;
 
 // @layout-header-height     : 90px;
+.rc-drawer-top .rc-drawer-docked {
+  top: 90px !important;
+}
 // @layout-header-padding    : 0 16px;
 // @layout-header-padding    : 0;
 @layout-header-padding    : 0 0 0 16px;
@@ -91,6 +95,22 @@ ANT Design theme overrides
     // height: 90px;
   }
 }
+.ant-menu-horizontal {
+  display: flex;
+  justify-content: center;
+  // Overflow is caused by borders
+  overflow: hidden;
+}
+//  Fix rc-drawer, make it responsive to the header
+.rc-drawer {
+  top: 60px;
+}
+.rc-drawer-sidebar {
+  background: white;
+}
+// .rc-drawer-top {
+//   top: 60px !important;
+// }
 @layout-sider-background  : white;
 // .ant-layout-sider {
 //   box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
@@ -98,6 +118,7 @@ ANT Design theme overrides
 @media (min-width: 768px) {
   @layout-header-height     : 90px;
 }
+
 @layout-body-background   : @light-gray;
 
 @outline-color          : @secondary-color;
