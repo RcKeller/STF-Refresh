@@ -38,9 +38,9 @@ const meta = [
 // Add to homescreen for Chrome on Android
 const link = [{ rel: 'icon', href: favicon }]
 
-import { LocaleProvider, Layout, Icon, Breadcrumb } from 'antd'
 import enUS from 'antd/lib/locale-provider/en_US'
-const { Header, Content } = Layout
+import { LocaleProvider, Spin, Layout, Icon, Breadcrumb } from 'antd'
+const { Header } = Layout
 import Drawer from 'rc-drawer'
 
 // import Header from './Header/Header'
@@ -53,7 +53,7 @@ import styles from './Template.css'
 import mobileLogo from '../../images/mobileLogo.png'
 import desktopLogo from '../../images/desktopLogo.png'
 
-import wordmark from '../../images/wordmark.png'
+import WordmarkWhite from '../../images/WordmarkWhite.png'
 
 /*
 https://ant.design/components/breadcrumb/#components-breadcrumb-demo-router
@@ -75,20 +75,8 @@ function breadcrumbRenderFix (route, params, routes, paths) {
 class Template extends React.Component {
   constructor (props) {
     super(props)
-    // const { screen } = this.props
-    // let open = screen.lessThan.large
     this.state = { open: false }
   }
-  // componentWillReceiveProps (nextProps) {
-  //   let oldScreen = this.props.screen
-  //   let {screen} = nextProps
-  //   if (oldScreen.greaterThan.medium && screen.lessThan.large) {
-  //     this.setState({ open: true })
-  //   }
-  //   if (oldScreen.lessThan.large && screen.greaterThan.medium) {
-  //     this.setState({ open: false })
-  //   }
-  // }
   handleToggle = () => this.setState({ open: !this.state.open })
   render (
     { children, routes, screen } = this.props,
@@ -106,20 +94,20 @@ class Template extends React.Component {
           <Header>
             {screen.lessThan.large
               ? <Icon
-                style={{fontSize: 32, lineHeight: 'inherit', color: 'white'}}
+                style={{fontSize: 32, lineHeight: 'inherit', color: 'white', marginRight: 16}}
                 type={this.state.open ? 'menu-unfold' : 'menu-fold'}
                 onClick={this.handleToggle}
               />
-              : <span>UW</span>
+              : <a href='http://www.washington.edu/'>
+                <img src={WordmarkWhite} className={styles['uw-logo']} />
+              </a>
             }
             <Link to='/'>
-              <img src={screen.lessThan.medium ? mobileLogo : desktopLogo} className={styles['logo']} />
+              <img src={screen.lessThan.medium ? mobileLogo : desktopLogo} className={styles['stf-logo']} />
             </Link>
             <Login />
           </Header>
-          {/* <Nav /> */}
           <Drawer
-            // style={{ overflow: 'auto' }}
             position={screen.greaterThan.medium ? 'top' : 'left'}
             docked={screen.greaterThan.medium}
             open={!screen.greaterThan.medium && open}
@@ -130,19 +118,15 @@ class Template extends React.Component {
             dragToggleDistance={30}
             sidebar={<Nav />}
            >
-            <Layout className={styles['body']}>
-              {children &&  //  Prevents returning 500 due to async load
-                <div>
-                  {routes[1].path &&
-                    <Breadcrumb
-                      className={styles['breadcrumb']}
-                      routes={routes} itemRender={breadcrumbRenderFix}
-                    />
-                  }
-                  {children}
-                </div>
-              }
-            </Layout>
+            <div className={styles['body']}>
+              {routes[1].path &&
+                <Breadcrumb
+                  className={styles['breadcrumb']}
+                  routes={routes} itemRender={breadcrumbRenderFix}
+                 />
+               }
+              {children || <Spin size='large' tip='Loading Page...' />}
+            </div>
           </Drawer>
         </div>
       </LocaleProvider>

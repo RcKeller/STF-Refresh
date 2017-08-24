@@ -9,7 +9,7 @@
   clip-path: polygon(15% 0, 100% 0%, 100% 100%, 0% 100%);
   height: var(--header-height, 60px);
   padding: 4px 8px 4px 16px;
-  @media (min-width: 992px) {
+  @media (min-width: 768px) {
     padding: 4px 30px 4px 60px;
   }
   background-color: var(--metallic-gold, goldenrod);

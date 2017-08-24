@@ -10,11 +10,16 @@
   border-radius: 4px !important;
 }
 
-.logo {
+
+.uw-logo {
+  vertical-align: middle;
+  max-height: 35px;
+  margin-right: 16px;
+}
+.stf-logo {
   vertical-align: middle;
   max-height: 50px;
-  margin-left: 16px;
-  /*width: 100%;*/
+  margin-right: 16px;
 }
 .clip {
   /*Per branding, 15* clip: https://www.washington.edu/brand/graphic-elements/angled-background/ */
@@ -48,6 +53,7 @@
 }
 
 .body {
+  /*background: #d9d9d9;*/
   /*min-height: calc(100vh - 60px);*/
   /*min-height: calc(100vh - 110px)*/
 }
