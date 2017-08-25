@@ -11,7 +11,6 @@ import Blocks from './blocks'
 import Reviews from './reviews'
 import Decisions from './decisions'
 import Reports from './reports'
-import Articles from './articles'
 
 const controllers = {
   Configs,
@@ -26,7 +25,6 @@ const controllers = {
   Blocks,
   Reviews,
   Decisions,
-  Reports,
-  Articles
+  Reports
 }
 export default controllers

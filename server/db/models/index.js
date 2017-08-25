@@ -20,7 +20,6 @@ export default function loadModels () {
   require('./review')
   require('./decision')
   require('./report')
-  require('./article')
 }
 
 /*
@@ -40,15 +39,14 @@ import Block, { dummyBlocks } from './block'
 import Review, { dummyReviews } from './review'
 import Decision, { dummyDecisions } from './decision'
 import Report, { dummyReports } from './report'
-import Article, { dummyArticles } from './article'
 //  Note that users are not here, that's bespoke.
 export {
   Config, User, STF, Contact, Comment,
   Proposal, Project, Manifest, Item, Block,
-  Review, Decision, Report, Article
+  Review, Decision, Report
 }
 export const restDummies = [
   dummyConfigs, dummyUsers, dummySTF, dummyContacts, dummyComments,
   dummyProposals, dummyProjects, dummyManifests, dummyItems, dummyBlocks,
-  dummyReviews, dummyDecisions, dummyReports, dummyArticles
+  dummyReviews, dummyDecisions, dummyReports
 ]

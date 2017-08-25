@@ -20,9 +20,6 @@ const SplitProposals = (l, c) => require.ensure([], () => c(null, require('./vie
 const SplitProposal = (l, c) => require.ensure([], () => c(null, require('./views/Proposals/Proposal/Proposal').default))
 const SplitBlocks = (l, c) => require.ensure([], () => c(null, require('./views/Blocks/Blocks').default))
 const SplitBlock = (l, c) => require.ensure([], () => c(null, require('./views/Blocks/Block/Block').default))
-const SplitKnowledge = (l, c) => require.ensure([], () => c(null, require('./views/STF/Knowledge/Knowledge').default))
-const SplitArticle = (l, c) => require.ensure([], () => c(null, require('./views/STF/Knowledge/Article/Article').default))
-const SplitDashboard = (l, c) => require.ensure([], () => c(null, require('./views/STF/Dashboard/Dashboard').default))
 const SplitVoting = (l, c) => require.ensure([], () => c(null, require('./views/STF/Voting/Voting').default))
 const SplitDocket = (l, c) => require.ensure([], () => c(null, require('./views/STF/Docket/Docket').default))
 const SplitConfig = (l, c) => require.ensure([], () => c(null, require('./views/STF/Config/Config').default))
@@ -90,19 +87,6 @@ export default (store) => {
       <Route path='/edit/:id'
         onEnter={requireAuth}
         breadcrumbName='Edit Proposal' getComponent={SplitEdit}
-      />
-
-      <Route path='/knowledge'
-        onEnter={requireSTF}
-        breadcrumbName='Knowledge Base' getComponent={SplitKnowledge}
-      />
-      <Route path='/knowledge/:number'
-        onEnter={requireSTF}
-        breadcrumbName='Knowledge Base Article' getComponent={SplitArticle}
-      />
-      <Route path='/dashboard'
-        onEnter={requireSTF}
-        breadcrumbName='Dashboard' getComponent={SplitDashboard}
       />
       <Route path='/voting'
         onEnter={requireSTF}

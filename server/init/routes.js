@@ -22,7 +22,6 @@ export default (app) => {
   app.use(`/${version}/reviews`, new controllers.Reviews().api())
   app.use(`/${version}/decisions`, new controllers.Decisions().api())
   app.use(`/${version}/reports`, new controllers.Reports().api())
-  app.use(`/${version}/articles`, new controllers.Articles().api())
   console.log(`REST: API live for all ${Object.keys(controllers).length - 1} core models.`)
 
   // USER PROFILE ROUTES

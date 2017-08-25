@@ -51,9 +51,6 @@ class Nav extends React.Component {
         </SubMenu>
         {Object.keys(stf).length > 0 && // if associated in any way with STF
           <SubMenu key='sub1' title={<span><Icon type='safety' /><span>Committee</span></span>}>
-            <Item key='/knowledge'>
-              <Icon type='book' /><span className='nav-text'>Knowledge Base</span>
-            </Item>
             <ItemGroup key='g1' title='Members'>
               {/* <Item key='/dashboard'>
                 <Icon type='team' /><span className='nav-text'>Dashboard</span>
