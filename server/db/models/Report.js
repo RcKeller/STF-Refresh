@@ -13,6 +13,7 @@ const ReportSchema = new mongoose.Schema({
   proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
   //  Autopopulate the original manifest.
   manifest: { type: mongoose.Schema.Types.ObjectId, ref: 'Manifest', autopopulate: true },
+  author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', autopopulate: true },
   /*
   Grants come with a brand new budget NUMBER for tracking expenditures
   We need this for Planning and Budgeting to check
@@ -47,6 +48,7 @@ const dummyReports = (min, ids) => {
           date: faker.date.recent(),
           proposal: ids.proposal[i],
           manifest: ids.manifest[i],
+          author: ids.user[i],
           budget: faker.random.number(),
           items: [
             ids.item[i],

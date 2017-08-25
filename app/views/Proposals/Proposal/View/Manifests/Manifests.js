@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import _ from 'lodash'
 
 import { connect } from 'react-redux'
 
@@ -36,7 +37,7 @@ const columns = [
 // const expandedRowRender = record => <p><h6>Description: </h6>{record.description}</p>
 
 const expandedRowRender = record => record.description
-  ? <p><h6>Description: </h6>{record.description}</p>
+  ? <div><h6>Description: </h6>{record.description}</div>
   : <em>No description provided.</em>
 
 @connect(state => ({
@@ -72,8 +73,8 @@ class Manifests extends React.Component {
               >
                 {manifests.map((m, i) =>
                   <Option value={i.toString()}><h4>{`
-                    ${m.title ? m.title : 'Untitled'}
-                     by ${m.contact && m.contact.name ? m.contact.name : 'anonymous'}
+                    ${m.title ? m.title : _.capitalize(m.type)}
+                     by ${m.author && m.author.name ? m.author.name : 'anonymous'}
                      - ${m.decision ? m.decision.approved ? 'Approved' : 'Denied' : 'Proposed'}
                   `
                 }</h4></Option>

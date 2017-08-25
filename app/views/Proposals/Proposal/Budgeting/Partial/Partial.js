@@ -37,7 +37,8 @@ const columns = [{
       proposal: state.db.proposal._id,
       //  Use the most recent manifest as a baseline for this partial.
       manifest: state.db.proposal.manifests.slice(-1)[0],
-      manifests: state.db.proposal.manifests
+      manifests: state.db.proposal.manifests,
+      user: state.user._id
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   )
@@ -51,9 +52,9 @@ class Partial extends React.Component {
   }
   handleChange = (index) => this.setState({ index })
   handleSubmit = (items) => {
-    const { api, proposal } = this.props
+    const { api, proposal, user } = this.props
     console.log('ITEMS', items)
-    const partial = { proposal, type: 'partial', items }
+    const partial = { proposal, type: 'partial', author: user, items }
     //  Nullify the update for proposal data.
     const update = { proposal: (prev, next) => prev }
     //  Post it - partials are a one-time deal, they aren't patched after the fact.
@@ -100,7 +101,8 @@ class Partial extends React.Component {
 
 Partial.propTypes = {
   api: PropTypes.object,
-  //  Proposal ID
+  //  Proposal / Author-User ID
+  user: PropTypes.string,
   proposal: PropTypes.string,
   manifests: PropTypes.array
 }

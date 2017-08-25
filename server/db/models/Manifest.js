@@ -11,7 +11,7 @@ const ManifestSchema = new mongoose.Schema({
   //  Type: original, partial or supplemental
   type: String,
   //  Data included for supplementals
-  contact: { type: mongoose.Schema.Types.ObjectId, ref: 'Contact', autopopulate: true },
+  author: { type: mongoose.Schema.Types.ObjectId, ref: 'User', autopopulate: true },
   title: String,
   body: String,
   // Is this the initial proposition? If not, it's a "partial" manifest for what was actually funded.
@@ -33,7 +33,6 @@ const ManifestSchema = new mongoose.Schema({
 ManifestSchema.plugin(autoref, [
   'proposal.manifests',
   'report.manifest',
-  'contact.manifest',
   'items.manifest',
   'reviews.manifest',
   'decision.manifest'
@@ -59,14 +58,10 @@ const dummyManifests = (min, ids) => {
           proposal: ids.proposal[i],
           block: ids.block[i],
           report: ids.report[i],
-          contact: ids.contact[i],
+          user: ids.user[i],
           type: faker.random.boolean() ? 'original' : 'supplemental',
           title: faker.company.bsNoun(),
           body: faker.lorem.paragraph(),
-          items: [
-            ids.item[i],
-            ids.item[i]
-          ],
           docket: {
             metrics: false,
             voting: false

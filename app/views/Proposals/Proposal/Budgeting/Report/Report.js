@@ -44,7 +44,8 @@ const columns = [{
       proposal: state.db.proposal._id,
       //  Use the most recent report (target document) and recent manifest (initial data)
       manifest: state.db.proposal.manifests[props.indexInStore],
-      report: state.db.proposal.manifests[props.indexInStore].report
+      report: state.db.proposal.manifests[props.indexInStore].report,
+      user: state.user._id
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
@@ -60,12 +61,12 @@ class Report extends React.Component {
     form.validateFields()
   }
   handleSubmit = (items) => {
-    let { form, api, proposal, manifest } = this.props
+    let { form, api, proposal, manifest, user } = this.props
     //  Verify that the budget number (and hopefully other data) is there, add it to what we know.
     form.validateFields((err, values) => {
       if (!err) {
         items = items.map((item) => _.omit(item, ['_id', '__v']))
-        let report = { proposal, manifest: manifest._id, items }
+        let report = { proposal, manifest: manifest._id, author: user, items }
         //  Hydrate the report with form data
         report = Object.assign(report, values)
         this.props.report
@@ -117,6 +118,7 @@ Report.propTypes = {
   form: PropTypes.object,
   api: PropTypes.object,
   proposal: PropTypes.string, //  _id
+  user: PropTypes.string,
   manifest: PropTypes.object,
   report: PropTypes.object
 }
