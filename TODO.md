@@ -15,3 +15,9 @@ Server side
 <!-- -Autogenerate proposal numbers / quarters etc -->
 -Totals calculations
 <!-- -Publish proposals with >3 sigs -->
+Endorse a proposal only once.
+
+Known issues:
+-Breadcrumbs not allowed to nest
+-Supplemental requests coming through w/o items, even when they are submitted (post or patch).
+-Proposal refresh not working

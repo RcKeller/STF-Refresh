@@ -75,9 +75,10 @@ class Summary extends React.Component {
             <h2>Impact</h2>
             <Collapse bordered={false} defaultActiveKey={['0', '1', '2']}>
               {impactKeys.map((area, i) => (
-                <Panel header={impactTitles[i]} key={i}>
+                <div key={i}>
+                  <h6>{impactTitles[i]}</h6>
                   <p>{body.overview.impact[area]}</p>
-                </Panel>
+                </div>
               ))}
             </Collapse>
             <h1>Project Plan</h1>
@@ -93,8 +94,10 @@ class Summary extends React.Component {
             </Collapse>
           </div>
           }
-        {items &&
-          <Table dataSource={items} sort
+        <h1>Proposed Budget</h1>
+        {!items
+          ? <Spin size='large' tip='Loading...' />
+          : <Table dataSource={items} sort
             size='middle'
             columns={columns}
             rowKey={record => record._id}
