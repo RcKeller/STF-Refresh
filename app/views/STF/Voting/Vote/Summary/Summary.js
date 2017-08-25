@@ -3,18 +3,52 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
-import { Row, Col, Spin, Collapse } from 'antd'
+import { Row, Col, Spin, Collapse, Table } from 'antd'
 const Panel = Collapse.Panel
+
+const columns = [
+  {
+    title: 'Priority',
+    dataIndex: 'priority',
+    key: 'priority',
+    sorter: (a, b) => (a.priority) - (b.priority),
+    width: 90
+  },
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name'
+  },
+  { title: 'Price',
+    dataIndex: 'price',
+    key: 'price',
+    render: (text, record) => <span>{`${record.price} x ${record.tax}`}</span>,
+    sorter: (a, b) => (a.price * a.tax) - (b.price * b.tax),
+    width: 120
+  },
+  { title: 'Quantity',
+    dataIndex: 'quantity',
+    key: 'quantity',
+    width: 90
+  }
+]
+
+const expandedRowRender = record => record.description
+  ? <div><h6>Description: </h6>{record.description}</div>
+  : <em>No description provided.</em>
+
 @connect(
     //  Might seem counterintuitive, but we're connecting to a manifest and pulling its proposal data.
     (state, props) => ({
       body: state.db.manifests
-        .find(manifest => manifest._id === props.id).proposal.body
+        .find(manifest => manifest._id === props.id).proposal.body || {},
+      items: state.db.manifests
+        .find(manifest => manifest._id === props.id).items || []
     })
 )
 class Summary extends React.Component {
   render (
-    { body } = this.props
+    { body, items } = this.props
   ) {
     //  For reasons unknown, we can't use Object.keys to iterate and create panels. Map works though. Perhaps it's a FP issue?
     const impactKeys = Object.keys(body.overview.impact)
@@ -59,6 +93,16 @@ class Summary extends React.Component {
             </Collapse>
           </div>
           }
+        {items &&
+          <Table dataSource={items} sort
+            size='middle'
+            columns={columns}
+            rowKey={record => record._id}
+            //  The above will throw an error if using faker data, since duplicates are involved.
+            expandedRowRender={expandedRowRender}
+            pagination={false}
+          />
+        }
       </section>
     )
   }

@@ -99,7 +99,7 @@ ANT Design theme overrides
   display: flex;
   justify-content: center;
   // Overflow is caused by borders
-  overflow: hidden;
+  // overflow: hidden;
 }
 .ant-menu-inline {
   min-width: 230px;
@@ -110,6 +110,7 @@ ANT Design theme overrides
 }
 .rc-drawer-sidebar {
   background: white;
+  overflow-y: visible;
 }
 // .rc-drawer-top {
 //   top: 60px !important;
@@ -135,7 +136,9 @@ body {
 @table-header-bg: @secondary-1;
 
 // Max out the zIndex for message (alert) components, otherwise they are obsfucated
-@zindex-message         : 9999;
+@zindex-message         : 9998;
+@zindex-dropdown        : 9999;
+
 
 @back-top-color: @metallic-gold;
 

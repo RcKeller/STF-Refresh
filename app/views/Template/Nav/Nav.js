@@ -15,18 +15,15 @@ const keyserver = 'http://itconnect.uw.edu/wares/acquiring-software-and-hardware
 import styles from './Nav.css'
 @connect(state => ({
   //  NOTE: Do NOT try refactoring this selector. This is isomorphically generated, more specific selectors will break.
-  screen: state.screen,
   routing: state.routing,
   stf: (state.user && state.user.stf) || {}
 }))
 class Nav extends React.Component {
-  render ({ screen, routing, stf } = this.props) {
+  render ({ routing, stf } = this.props) {
     const location = routing.locationBeforeTransitions ? routing.locationBeforeTransitions.pathname : '1'
     return (
       <Menu
-        mode={screen.greaterThan.medium ? 'horizontal' : 'inline'}
-        // defaultSelectedKeys={['1']}
-        // defaultOpenKeys={['stf']}
+        mode='horizontal'
         selectedKeys={[location]}
         onClick={(i) => i.key && browserHistory.push(i.key)}
       >
@@ -53,7 +50,7 @@ class Nav extends React.Component {
           </Item>
         </SubMenu>
         {Object.keys(stf).length > 0 && // if associated in any way with STF
-          <SubMenu key='stf' title={<span><Icon type='safety' /><span>Committee</span></span>}>
+          <SubMenu key='sub1' title={<span><Icon type='safety' /><span>Committee</span></span>}>
             <Item key='/knowledge'>
               <Icon type='book' /><span className='nav-text'>Knowledge Base</span>
             </Item>
