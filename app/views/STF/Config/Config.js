@@ -41,7 +41,9 @@ class Config extends React.Component {
         enums: { organizations, categories },
         questions: { review }
       } = this.props.config
-      form.setFieldsValue({organizations, categories, review})
+      const orgCodeMap = Object.keys(organizations).map(key => `${key}:${organizations[key]}`)
+      form.setFieldsValue({ categories, review, organizations: orgCodeMap })
+      // form.setFieldsValue({organizations, categories, review})
       // form.setFieldsValue({...config})
     }
   }
@@ -89,7 +91,7 @@ class Config extends React.Component {
                 />
               )}
             </FormItem>
-            {/* <FormItem {...layout} label={<Label title='Organizations'
+            <FormItem {...layout} label={<Label title='Organizations'
               message={'This includes budget codes as well, separated by a colon. Format: <name>:<budgetcode>'} />}
             >
               {form.getFieldDecorator('organizations')(
@@ -97,13 +99,13 @@ class Config extends React.Component {
                 >
                   {Object.keys(enums.organizations)
                     .map(key => (
-                      <Option key={key}>
-                        {key}
+                      <Option key={`${key}:${enums.organizations[key]}`}>
+                        {`${key}:${enums.organizations[key]}`}
                       </Option>
                     ))}
                 </Select>
               )}
-            </FormItem> */}
+            </FormItem>
             <FormItem {...layout} label={<Label title='Categories'
               message={'Proposal categories. Adding categories is irreversible'} />}
             >
