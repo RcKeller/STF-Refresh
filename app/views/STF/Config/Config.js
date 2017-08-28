@@ -6,9 +6,9 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
-import { layout } from '../../../util/form'
+import { layout, Label } from '../../../util/form'
 
-import { Spin, Tabs, Form, Input, Select, Checkbox, Switch, Alert, message } from 'antd'
+import { Spin, Tabs, Form, Icon, Tooltip, Input, Select, Checkbox, Switch, Alert, message } from 'antd'
 const TabPane = Tabs.TabPane
 const Option = Select.Option
 const FormItem = Form.Item
@@ -37,7 +37,12 @@ class Config extends React.Component {
     // super.componentDidMount()
     const { form, config } = this.props
     if (form && config) {
-      form.setFieldsValue({...config})
+      const {
+        enums: { organizations, categories },
+        questions: { review }
+      } = this.props.config
+      form.setFieldsValue({organizations, categories, review})
+      // form.setFieldsValue({...config})
     }
   }
   handleSubmissions = (submissions) => {
@@ -65,6 +70,8 @@ class Config extends React.Component {
     })
   }
   render ({ form, config } = this.props) {
+    const { enums, questions } = config
+    console.warn(enums, questions)
     return (
       <article className={styles['article']}>
         {!config
@@ -75,20 +82,53 @@ class Config extends React.Component {
             <p>Here you can update various configuration settings for the website, such as opening/closing proposal submissions, editing announcements, updating the pre-selected list of campus organizations, modifying access permissions for STF members, etc.</p>
             <p>Please be advised that changes go into effect IMMEDIATELY, users will experience the change after refreshing their page.</p>
             <hr />
-            <FormItem label='Submissions' {...layout} >
+            <FormItem {...layout} label='Submissions'>
               {form.getFieldDecorator('submissions', { valuePropName: 'checked' })(
                 <Switch onChange={(checked) => this.handleSubmissions(checked)}
                   checkedChildren='Open' unCheckedChildren='Closed'
                 />
               )}
             </FormItem>
-            <FormItem label='Organizations' {...layout} >
+            {/* <FormItem {...layout} label={<Label title='Organizations'
+              message={'This includes budget codes as well, separated by a colon. Format: <name>:<budgetcode>'} />}
+            >
               {form.getFieldDecorator('organizations')(
                 <Select mode='tags' placeholder='Type the name of an organization to add'
+                >
+                  {Object.keys(enums.organizations)
+                    .map(key => (
+                      <Option key={key}>
+                        {key}
+                      </Option>
+                    ))}
+                </Select>
+              )}
+            </FormItem> */}
+            <FormItem {...layout} label={<Label title='Categories'
+              message={'Proposal categories. Adding categories is irreversible'} />}
+            >
+              {form.getFieldDecorator('categories')(
+                <Select mode='tags'
                   onChange={(organizations) => this.handleOrganizations(organizations)}
                 >
-                  {config.organizations &&
-                      config.organizations.map(org => <Option key={org}>{org}</Option>)}
+                  {enums.categories && enums.categories
+                    .map(cat => (
+                      <Option key={cat}>{cat}</Option>
+                    ))}
+                </Select>
+              )}
+            </FormItem>
+            <FormItem {...layout} label={<Label title='Review Questions'
+              message={'Add or remove review / metrics questions. These are best kept brief, without symbols.'} />}
+            >
+              {form.getFieldDecorator('review')(
+                <Select mode='tags'
+                  onChange={(organizations) => this.handleOrganizations(organizations)}
+                >
+                  {questions.review && questions.review
+                    .map(prompt => (
+                      <Option key={prompt}>{prompt}</Option>
+                    ))}
                 </Select>
               )}
             </FormItem>

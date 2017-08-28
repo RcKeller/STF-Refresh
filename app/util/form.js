@@ -1,3 +1,5 @@
+import React from 'react'
+import { Tooltip, Icon } from 'antd'
 /*
 ANTD / RC-FORM UTILS
 Ant uses a very cumbersome controlled form wrapper. To use it, you have to do the following:
@@ -56,11 +58,32 @@ const rules = {
 //  <Button htmlType='submit' disabled={disableSubmit(form)} />
 const disableSubmit = (form) => hasErrors(form.getFieldsError())
 
+const Label = ({title, message}) => (
+  <span>
+    {title}&nbsp;
+    <Tooltip title={message}>
+      <Icon type='question-circle-o' />
+    </Tooltip>
+  </span>
+)
+
+/*
+label={
+  <span>
+    Organizations&nbsp;
+    <Tooltip title='This includes budget codes as well, separated by a colon. Format: <name>:<budgetcode>'>
+      <Icon type='question-circle-o' />
+    </Tooltip>
+  </span>
+  }
+*/
+
 export {
   layout,
   hasErrors,
   feedback,
   help,
   rules,
-  disableSubmit
+  disableSubmit,
+  Label
 }

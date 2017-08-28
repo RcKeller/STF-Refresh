@@ -127,7 +127,7 @@ class Edit extends React.Component {
             <h1>{`Editing: ${proposal.title || 'New Proposal'}`}</h1>
             <h6>{`Draft ID: ${proposal._id}`}</h6>
             <hr />
-            <Tabs tabPosition='right' defaultActiveKey='1'
+            <Tabs tabPosition='top' defaultActiveKey='1'
               onChange={forceRequest}
             >
               <TabPane key='1'
@@ -151,12 +151,10 @@ class Edit extends React.Component {
                 tab={<span><Icon type='edit' />Signatures</span>}>
                 <Signatures />
               </TabPane>
-              {complete &&
-                <TabPane key='6'
-                  tab={<span><Icon type='rocket' />Publish !</span>}>
-                  <Publish />
-                </TabPane>
-              }
+              <TabPane key='6' disabled={!complete}
+                tab={<span><Icon type='rocket' />Publish !</span>}>
+                <Publish />
+              </TabPane>
             </Tabs>
             {!complete && <em>Once all sections are complete (indicated by the tab turning green), the publish option will appear.</em>}
           </div>
