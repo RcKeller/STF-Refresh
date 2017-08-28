@@ -15,15 +15,16 @@ const keyserver = 'http://itconnect.uw.edu/wares/acquiring-software-and-hardware
 import styles from './Nav.css'
 @connect(state => ({
   //  NOTE: Do NOT try refactoring this selector. This is isomorphically generated, more specific selectors will break.
+  screen: state.screen,
   routing: state.routing,
   stf: (state.user && state.user.stf) || {}
 }))
 class Nav extends React.Component {
-  render ({ routing, stf } = this.props) {
+  render ({ screen, routing, stf } = this.props) {
     const location = routing.locationBeforeTransitions ? routing.locationBeforeTransitions.pathname : '1'
     return (
       <Menu
-        mode='horizontal'
+        mode={screen.lessThan.large ? 'inline' : 'horizontal'}
         selectedKeys={[location]}
         onClick={(i) => i.key && browserHistory.push(i.key)}
       >
