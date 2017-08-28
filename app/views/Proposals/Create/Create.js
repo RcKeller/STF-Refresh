@@ -49,17 +49,13 @@ class Create extends React.Component {
         api.post('proposal', { organization, budget })
         .then(res => {
           //  Save yourself as a new, related contact with the new proposal ID.
-          const parent = res.body._id
-          api.post('contact', {
-            proposal: parent,
-            name: user.name,
-            netID: user.netID,
-            role,
-            title
-          })
+          const { name, netID } = user
+          const proposal = res.body._id
+          const initialContact = { proposal, name, netID, role, title }
+          api.post('contact', initialContact)
           .then(() => {
             message.success(`Proposal Created! Share the link with your team! ID: ${parent}`, 10)
-            browserHistory.push(`/edit/${res.body._id}`)
+            browserHistory.push(`/edit/${proposal}`)
           })
         })
         .catch(err => {

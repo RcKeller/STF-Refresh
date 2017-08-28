@@ -17,7 +17,7 @@ export default class Proposals extends REST {
     const quarter = this.determineQuarter(date)
     let hydratedData = Object.assign(data, { year, quarter })
     //  Number is determined upon publication in patch.
-    super.post(hydratedData, query)
+    return super.post(hydratedData, query)
   }
 
   /* *****

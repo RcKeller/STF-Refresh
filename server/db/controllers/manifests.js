@@ -15,6 +15,7 @@ export default class Manifests extends REST {
     //  Omit subdocs, create the parent, then patch it in order to create items
     let { items } = data
     let manifest = _.omit(data, ['_v', 'items'])
+    //  NOTE: Should I assign a model var and return model.patch?
     return this.model.create(manifest)
     .then(modelInstance => this.patch(modelInstance._id, { items }, query))
   }
