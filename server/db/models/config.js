@@ -9,20 +9,8 @@ const ConfigSchema = new mongoose.Schema({
   submissions: { type: Boolean, default: true },
   //  Stage: Where we are on the frontpage timeline (voting, deliberation, etc)
   stage: String,
-  //  ENUMERATIONS
-  questions: {
-    review: [{
-      type: String,
-      default: ['Placeholder A', 'Placeholder B']
-    }]
-  },
-  //  Recognized campus orgs (mech engineering dept, etc)
-  //  There's a mapping between orgs and their budget codes.
   enums: {
-    organizations: {
-      type: Object,
-      default: {'Org A': '000', 'Org B': '111', 'Org C': '222'}
-    },
+    //  Basic arrays
     categories: {
       type: Array,
       default: ['Research', 'Computer Labs', 'Frontier Technology']
@@ -36,6 +24,20 @@ const ConfigSchema = new mongoose.Schema({
         'Revisions Requested',
         'Denied'
       ]
+    },
+    //  Recognized campus orgs (mech engineering dept, etc)
+    //  There's a mapping between orgs and their budget codes.
+    organizations: {
+      type: Object,
+      default: {'Org A': '000', 'Org B': '111', 'Org C': '222'}
+      //  NOTE: Use Object.keys(orgs).map(key => ...) to iterate
+    },
+    //  Questions, in object form for scalability
+    questions: {
+      review: {
+        type: Array,
+        default: ['Placeholder A', 'Placeholder B']
+      }
     }
   }
 })

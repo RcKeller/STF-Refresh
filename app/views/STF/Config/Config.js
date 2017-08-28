@@ -23,8 +23,7 @@ import styles from './Config.css'
     state => ({
       user: state.user,
       id: state.db.config && state.db.config._id,
-      config: state.db.config,
-      // member: state.db.stfs
+      enums: state.db.config && state.db.config.enums
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
@@ -35,18 +34,19 @@ class Config extends React.Component {
   componentDidMount () {
     //  Take contacts, make an object with role-to-signature bool, use this to set initial vals.
     // super.componentDidMount()
-    const { form, config } = this.props
-    if (form && config) {
-      const {
-        enums: { organizations, categories },
-        questions: { review }
-      } = this.props.config
+    const { form, enums } = this.props
+    if (form && enums) {
+      const { organizations, categories, questions } = enums
       const orgCodeMap = Object.keys(organizations).map(key => `${key}:${organizations[key]}`)
-      form.setFieldsValue({ categories, review, organizations: orgCodeMap })
+      form.setFieldsValue({
+        categories,
+        reviewQuestions: questions.review,
+        organizations: orgCodeMap
+      })
       // form.setFieldsValue({organizations, categories, review})
-      // form.setFieldsValue({...config})
     }
   }
+
   handleSubmissions = (submissions) => {
     const { api, id } = this.props
     const update = {
@@ -59,26 +59,47 @@ class Config extends React.Component {
       console.warn(err)
     })
   }
-  handleOrganizations = (organizations) => {
-    const { api, id } = this.props
-    const update = {
-      config: (prev, next) => Object.assign(prev, { organizations: next.organizations })
+
+  handleOrganizations = (encodedOrgData) => {
+    //  De-encode org data, transform into obj
+    const organizations = {}
+    for (const encoded of encodedOrgData) {
+      console.log(encoded)
+      const [org, code] = encoded.split(':')
+      organizations[org] = code || ''
     }
-    api.patch('config', { organizations }, { id, update })
+    console.warn('orgs', organizations)
+    const { api, id } = this.props
+    // const update = {
+    //   config: (prev, next) => Object.assign({}, prev, { organizations: next.organizations })
+    // }
+    //  FIXME: Issues patching configs.
+    api.patch('config', { enums: organizations }, { id })
     .then(message.warning(`Updated organizations!`), 10)
     .catch(err => {
       message.warning(`Failed to update - client error`)
       console.warn(err)
     })
   }
-  render ({ form, config } = this.props) {
-    const { enums, questions } = config
-    console.warn(enums, questions)
+
+  // handleOrganizations = (organizations) => {
+  //   const { api, id } = this.props
+  //   const update = {
+  //     config: (prev, next) => Object.assign(prev, { organizations: next.organizations })
+  //   }
+  //   api.patch('config', { organizations }, { id, update })
+  //   .then(message.warning(`Updated organizations!`), 10)
+  //   .catch(err => {
+  //     message.warning(`Failed to update - client error`)
+  //     console.warn(err)
+  //   })
+  // }
+  render ({ form, id, enums } = this.props) {
     return (
       <article className={styles['article']}>
-        {!config
+        {!id
           ? <Spin size='large' tip='Loading...' />
-          : <div>
+          : <div id={id}>
             <h1>Web Configuration</h1>
             <h6>Here be dragons...</h6>
             <p>Here you can update various configuration settings for the website, such as opening/closing proposal submissions, editing announcements, updating the pre-selected list of campus organizations, modifying access permissions for STF members, etc.</p>
@@ -96,8 +117,10 @@ class Config extends React.Component {
             >
               {form.getFieldDecorator('organizations')(
                 <Select mode='tags' placeholder='Type the name of an organization to add'
+                  onChange={(encodedOrgData) => this.handleOrganizations(encodedOrgData)}
                 >
-                  {Object.keys(enums.organizations)
+                  { //  Organizations are encoded as a string map for ease of use.
+                    Object.keys(enums.organizations)
                     .map(key => (
                       <Option key={`${key}:${enums.organizations[key]}`}>
                         {`${key}:${enums.organizations[key]}`}
@@ -111,7 +134,7 @@ class Config extends React.Component {
             >
               {form.getFieldDecorator('categories')(
                 <Select mode='tags'
-                  onChange={(organizations) => this.handleOrganizations(organizations)}
+                  onChange={(value) => console.log(value)}
                 >
                   {enums.categories && enums.categories
                     .map(cat => (
@@ -123,11 +146,11 @@ class Config extends React.Component {
             <FormItem {...layout} label={<Label title='Review Questions'
               message={'Add or remove review / metrics questions. These are best kept brief, without symbols.'} />}
             >
-              {form.getFieldDecorator('review')(
+              {form.getFieldDecorator('reviewQuestions')(
                 <Select mode='tags'
-                  onChange={(organizations) => this.handleOrganizations(organizations)}
+                  onChange={(value) => console.log(value)}
                 >
-                  {questions.review && questions.review
+                  {enums.questions.review && enums.questions.review
                     .map(prompt => (
                       <Option key={prompt}>{prompt}</Option>
                     ))}
