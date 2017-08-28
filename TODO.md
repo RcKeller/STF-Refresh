@@ -1,8 +1,8 @@
 # TODO list
 Client side:
 1: Config: Edit Org codes and metrics questions
-1: Responsiveness fix (see lego project code)
-1: Endorse a proposal only once.
+<!-- 1: Responsiveness fix (see lego project code) -->
+<!-- 1: Endorse a proposal only once. & proper update function -->
 2: Table search strings
 Enhancements:
   3: Frontpage

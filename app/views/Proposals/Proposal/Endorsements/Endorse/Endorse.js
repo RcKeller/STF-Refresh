@@ -15,8 +15,8 @@ import api from '../../../../../services'
 @compose(
   connect(
     state => ({
-      parent: state.db.proposal._id,
-      user: state.user
+      proposal: state.db.proposal._id,
+      user: state.user._id
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
@@ -27,25 +27,25 @@ class Endorse extends React.Component {
   componentDidMount () { this.props.form.validateFields() }
   handleSubmit = (e) => {
     e.preventDefault()
-    let { parent, user, api, form } = this.props
+    let { proposal, user, api, form } = this.props
     form.validateFields((err, values) => {
       if (!err) {
-        api.post('comments', {
-          proposal: parent,
-          user: user._id,
-          ...values
-        })
-        // update: { 'proposal.comments': (prev, next) => console.log(prev, next) && next }
-        .then(message.success('Draft updated!'))
+        const comment = { proposal, user, ...values }
+        //  Immutable update.
+        const update = { proposal: (prev, next) =>
+            Object.assign({}, prev, { comments: [...prev.comments, comment] })
+        }
+        api.post('comments', comment, { update })
+        .then(message.success('Endorsement posted!'))
         .catch(err => {
-          message.error('An error occured - Draft failed to update')
+          message.error('An error occured - Failed to post endorsement.')
           console.warn(err)
         })
       }
     })
   }
 
-  render ({ user, form } = this.props) {
+  render ({ form } = this.props) {
     return (
       <div>
         <h1>Endorse this proposal!</h1>
@@ -72,8 +72,8 @@ class Endorse extends React.Component {
 }
 
 Endorse.propTypes = {
-  parent: PropTypes.string,
-  user: PropTypes.object,
+  proposal: PropTypes.string,
+  user: PropTypes.string,
   api: PropTypes.object,
   form: PropTypes.object
 }
