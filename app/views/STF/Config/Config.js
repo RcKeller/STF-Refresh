@@ -31,6 +31,20 @@ import styles from './Config.css'
   connectForm
 )
 class Config extends React.Component {
+  static propTypes = {
+    form: PropTypes.object,
+    api: PropTypes.object,
+    id: PropTypes.string,
+    status: PropTypes.string,
+    submissions: PropTypes.bool,
+    enums: PropTypes.shape({
+      categories: PropTypes.array,
+      organizations: PropTypes.object,
+      questions: PropTypes.shape({
+        review: PropTypes.array
+      })
+    })
+  }
   componentDidMount () {
     //  Take contacts, make an object with role-to-signature bool, use this to set initial vals.
     // super.componentDidMount()
@@ -49,10 +63,12 @@ class Config extends React.Component {
 
   handleSubmissions = (submissions) => {
     const { api, id } = this.props
-    const update = {
-      config: (prev, next) => Object.assign(prev, { submissions: next.submissions })
-    }
-    api.patch('config', { submissions }, { id, update })
+    // const update = {
+    //   config: (prev, next) => Object.assign(prev, { submissions: next.submissions })
+    // }
+    //  http://localhost:3000/v1/configs/59a482b6910c753d50b76953
+    console.log(id, submissions)
+    api.patch('configs', { submissions }, { id })
     .then(message.warning(`Proposal submissions are now ${submissions ? 'open' : 'closed'}!`), 10)
     .catch(err => {
       message.warning(`Failed to update - client error`)
@@ -64,17 +80,15 @@ class Config extends React.Component {
     //  De-encode org data, transform into obj
     const organizations = {}
     for (const encoded of encodedOrgData) {
-      console.log(encoded)
       const [org, code] = encoded.split(':')
       organizations[org] = code || ''
     }
-    console.warn('orgs', organizations)
     const { api, id } = this.props
-    // const update = {
-    //   config: (prev, next) => Object.assign({}, prev, { organizations: next.organizations })
-    // }
+    let enums = Object.assign({}, this.props.enums)
+    enums.organizations = organizations
+    console.warn('NEW ENUMS', enums)
     //  FIXME: Issues patching configs.
-    api.patch('config', { enums: organizations }, { id })
+    api.patch('configs', { enums }, { id })
     .then(message.warning(`Updated organizations!`), 10)
     .catch(err => {
       message.warning(`Failed to update - client error`)
@@ -138,7 +152,7 @@ class Config extends React.Component {
                 >
                   {enums.categories && enums.categories
                     .map(cat => (
-                      <Option key={cat}>{cat}</Option>
+                      <Option disabled key={cat}>{cat}</Option>
                     ))}
                 </Select>
               )}
@@ -164,13 +178,4 @@ class Config extends React.Component {
     )
   }
 }
-// Config.propTypes = {
-//   form: PropTypes.object,
-//   api: PropTypes.object,
-//   id: PropTypes.string,
-//   submissions: PropTypes.array,
-//   organizations: PropTypes.array,
-//   announcements: PropTypes.array,
-//   status: PropTypes.string
-// }
 export default Config
