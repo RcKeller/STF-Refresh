@@ -42,13 +42,15 @@ const expandedRowRender = record => record.description
     (state, props) => ({
       body: state.db.manifests
         .find(manifest => manifest._id === props.id).proposal.body || {},
+      manifest: state.db.manifests
+        .find(manifest => manifest._id === props.id) || {},
       items: state.db.manifests
         .find(manifest => manifest._id === props.id).items || []
     })
 )
 class Summary extends React.Component {
   render (
-    { body, items } = this.props
+    { body, manifest } = this.props
   ) {
     //  For reasons unknown, we can't use Object.keys to iterate and create panels. Map works though. Perhaps it's a FP issue?
     const impactKeys = Object.keys(body.overview.impact)
@@ -94,10 +96,17 @@ class Summary extends React.Component {
             </Collapse>
           </div>
           }
+        {manifest && manifest.type === 'supplemental' &&
+        <div>
+          <h1>Supplemental Information</h1>
+          <h3>{manifest.title || 'Untitled Supplemental'}</h3>
+          <p>{manifest.body || 'No information provided by the author'}</p>
+        </div>
+        }
         <h1>Proposed Budget</h1>
-        {!items
+        {!manifest
           ? <Spin size='large' tip='Loading...' />
-          : <Table dataSource={items} sort
+          : <Table dataSource={manifest.items || []} sort
             size='middle'
             columns={columns}
             rowKey={record => record._id}

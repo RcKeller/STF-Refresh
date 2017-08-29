@@ -55,31 +55,33 @@ class Voting extends React.Component {
       <article className={styles['tabbed-article']}>
         {!docket
           ? <Spin size='large' tip='Loading...' />
-          : (docket.length >= 1
-            ? <Tabs className='tab-container' type='card'
-              tabBarExtraContent={<Button type='ghost' icon='reload' onClick={forceRequest}>Refresh</Button>}
+          : <Tabs className='tab-container' type='card'
+            tabBarExtraContent={<Button type='ghost' icon='reload' onClick={forceRequest}>Refresh</Button>}
+            >
+            <TabPane tab='Overview' key='1' className={styles['tab-pane']}>
+              <h1>Reviews & Voting</h1>
+              {docket.length >= 1 &&
+                <h3><em>
+                  Note: Nothing has been put on the docket yet.
+                </em></h3>
+              }
+              <p>Instructions here.</p>
+              <Alert type='info' banner showIcon={false}
+                message='Major Changes for Ex-Officios'
+                description='Permissions have been expanded to allow Ex-Officios to review proposals, sans final voting. Officios also have read access to more content in general. We are grateful for their involvement and want the web platform to reflect that.'
+              />
+            </TabPane>
+            {docket.map((manifest, i) => (
+              <TabPane key={manifest._id} className={styles['tab-pane']}
+                tab={
+                  `${manifest.proposal.year}-${manifest.proposal.number}
+                  ${manifest.type !== 'original' ? `(${_.capitalize(manifest.type)})` : ''}
+                `}
               >
-              <TabPane tab='Overview' key='1' className={styles['tab-pane']}>
-                <h1>Reviews & Voting</h1>
-                <p>Instructions here.</p>
-                <Alert type='info' banner showIcon={false}
-                  message='Major Changes for Ex-Officios'
-                  description='Permissions have been expanded to allow Ex-Officios to review proposals, sans final voting. Officios also have read access to more content in general. We are grateful for their involvement and want the web platform to reflect that.'
-                />
+                <Vote index={i} id={manifest._id} />
               </TabPane>
-              {docket.map((manifest, i) => (
-                <TabPane key={manifest._id} className={styles['tab-pane']}
-                  tab={
-                    `${manifest.proposal.year}-${manifest.proposal.number}
-                    ${manifest.type !== 'original' ? `(${_.capitalize(manifest.type)})` : ''}
-                  `}
-                >
-                  <Vote index={i} id={manifest._id} />
-                </TabPane>
-              ))}
-            </Tabs>
-            : <p><em>Nothing is on the docket.</em></p>
-          )
+            ))}
+          </Tabs>
         }
       </article>
     )
