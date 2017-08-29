@@ -17,7 +17,10 @@ import Publish from './Publish/Publish'
 import { Icon, Spin, Tabs } from 'antd'
 const TabPane = Tabs.TabPane
 
-const green = '#00a854 !important'
+const colors = {
+  green: '#00a854',
+  gold: '#85754d'
+}
 
 import styles from './Edit.css'
 @compose(
@@ -131,24 +134,33 @@ class Edit extends React.Component {
               onChange={forceRequest}
             >
               <TabPane key='1'
-                tabBarStyle={{ backgroundColor: introduction ? green : 'inherit' }}
-                tab={<span><Icon type='file' />Introduction</span>}>
+                tab={<span style={{ color: introduction ? colors.green : colors.gold }}>
+                  <Icon type='file' />Introduction</span>
+                }>
                 <Introduction validate={this.validateIntroduction} />
               </TabPane>
               <TabPane key='2'
-                tab={<span><Icon type='team' />Contacts</span>}>
+                tab={<span style={{ color: contacts ? colors.green : colors.gold }}>
+                  <Icon type='team' />Contacts</span>
+                }>
                 <Contacts />
               </TabPane>
               <TabPane key='3'
-                tab={<span><Icon type='book' />Project Plan</span>}>
+                tab={<span style={{ color: body ? colors.green : colors.gold }}>
+                  <Icon type='book' />Project Plan</span>
+                }>
                 <ProjectPlan />
               </TabPane>
               <TabPane key='4'
-                tab={<span><Icon type='wallet' />Budget</span>}>
+                tab={<span style={{ color: manifest ? colors.green : colors.gold }}>
+                  <Icon type='wallet' />Budget</span>
+                }>
                 <Manifest />
               </TabPane>
               <TabPane key='5'
-                tab={<span><Icon type='edit' />Signatures</span>}>
+                tab={<span style={{ color: signatures ? colors.green : colors.gold }}>
+                  <Icon type='edit' />Signatures</span>
+                }>
                 <Signatures />
               </TabPane>
               <TabPane key='6' disabled={!complete}

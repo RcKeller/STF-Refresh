@@ -23,7 +23,8 @@ import styles from './Config.css'
     state => ({
       user: state.user,
       id: state.db.config && state.db.config._id,
-      enums: state.db.config && state.db.config.enums
+      enums: state.db.config && state.db.config.enums,
+      submissions: state.db.config && state.db.config.submissions
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
@@ -49,17 +50,16 @@ class Config extends React.Component {
     const { form, enums, submissions } = this.props
     if (form && enums) {
       const { organizations, categories, questions } = enums
-      const orgCodeMap = Object.keys(organizations).map(key => `${key}:${organizations[key]}`)
+      const orgCodeMap = Object.keys(organizations)
+        .map(key => `${key}:${organizations[key]}`)
       form.setFieldsValue({
         submissions,
         categories,
         reviewQuestions: questions.review,
         organizations: orgCodeMap
       })
-      //  BUG: Does not load if this is the landing page, how do I trigger this func as intial props come in?
     }
   }
-
   handleSubmissions = (submissions) => {
     const { api, id } = this.props
     console.log('sub', { submissions })
@@ -117,7 +117,11 @@ class Config extends React.Component {
     })
   }
 
-  render ({ form, id, enums } = this.props) {
+  render ({ router, form, id, enums } = this.props) {
+    if (!id) {
+      message.warning('For security, the config panel cannot be a landing page.', 10)
+      router.push('/')
+    }
     return (
       <article className={styles['article']}>
         {!id

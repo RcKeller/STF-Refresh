@@ -22,13 +22,21 @@ import styles from './Create.css'
   connect(
     state => ({
       user: state.user,
-      organizations: (state.db.config && state.db.config.enums.organizations) || {}
+      organizations: (state.db.config && state.db.config.enums.organizations) || {},
+      submissions: state.db.config && state.db.config.submissions
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
   connectForm
 )
 class Create extends React.Component {
+  static propTypes = {
+    form: PropTypes.object,
+    api: PropTypes.object,
+    user: PropTypes.object,
+    organizations: PropTypes.object,
+    submissions: PropTypes.bool
+  }
   constructor (props) {
     super(props)
     this.state = { modal: false }
@@ -54,6 +62,7 @@ class Create extends React.Component {
           const initialContact = { proposal, name, netID, role, title }
           api.post('contact', initialContact)
           .then(() => {
+            console.warn(res.body._id, res.body)
             message.success(`Proposal Created! Share the link with your team! ID: ${parent}`, 10)
             browserHistory.push(`/edit/${proposal}`)
           })
@@ -82,7 +91,7 @@ class Create extends React.Component {
     form.setFieldsValue({ budget })
   }
   render (
-    { form, organizations } = this.props,
+    { form, organizations, submissions } = this.props,
     { modal, confirmLoading, ModalText } = this.state
   ) {
     return (
@@ -92,7 +101,7 @@ class Create extends React.Component {
           The Student Technology Fee Committee was created to ensure the best return on collected student dollars. By proposing to the committee, you agree to follow all requirements, current and future, set by the STFC. Included below are particularly relevant documents, along with brief summary and their full text.
         </p>
         <Agreements />
-        <Button type='primary' onClick={this.showModal}>I Agree</Button>
+        <Button type='primary' disabled={!submissions} onClick={this.showModal}>{submissions ? 'I Agree' : 'Submissions are closed'}</Button>
         <Modal visible={modal}
           title='Create a Proposal - Initial Contact Information'
           okText='Create Proposal'
@@ -148,10 +157,4 @@ class Create extends React.Component {
     )
   }
 }
-Create.propTypes = {
-  form: PropTypes.object,
-  api: PropTypes.object,
-  user: PropTypes.object
-}
-
 export default Create
