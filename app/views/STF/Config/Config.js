@@ -46,29 +46,25 @@ class Config extends React.Component {
     })
   }
   componentDidMount () {
-    //  Take contacts, make an object with role-to-signature bool, use this to set initial vals.
-    // super.componentDidMount()
-    const { form, enums } = this.props
+    const { form, enums, submissions } = this.props
     if (form && enums) {
       const { organizations, categories, questions } = enums
       const orgCodeMap = Object.keys(organizations).map(key => `${key}:${organizations[key]}`)
       form.setFieldsValue({
+        submissions,
         categories,
         reviewQuestions: questions.review,
         organizations: orgCodeMap
       })
-      // form.setFieldsValue({organizations, categories, review})
+      //  BUG: Does not load if this is the landing page, how do I trigger this func as intial props come in?
     }
   }
 
   handleSubmissions = (submissions) => {
     const { api, id } = this.props
-    // const update = {
-    //   config: (prev, next) => Object.assign(prev, { submissions: next.submissions })
-    // }
-    //  http://localhost:3000/v1/configs/59a482b6910c753d50b76953
-    console.log(id, submissions)
+    console.log('sub', { submissions })
     api.patch('configs', { submissions }, { id })
+    //  BUG: Why does this not patch properly?
     .then(message.warning(`Proposal submissions are now ${submissions ? 'open' : 'closed'}!`), 10)
     .catch(err => {
       message.warning(`Failed to update - client error`)
@@ -84,30 +80,43 @@ class Config extends React.Component {
       organizations[org] = code || ''
     }
     const { api, id } = this.props
+    //  Immutability magic
     let enums = Object.assign({}, this.props.enums)
     enums.organizations = organizations
-    console.warn('NEW ENUMS', enums)
-    //  FIXME: Issues patching configs.
     api.patch('configs', { enums }, { id })
-    .then(message.warning(`Updated organizations!`), 10)
+    .then(message.success(`Updated organizations!`), 10)
     .catch(err => {
       message.warning(`Failed to update - client error`)
       console.warn(err)
     })
   }
 
-  // handleOrganizations = (organizations) => {
-  //   const { api, id } = this.props
-  //   const update = {
-  //     config: (prev, next) => Object.assign(prev, { organizations: next.organizations })
-  //   }
-  //   api.patch('config', { organizations }, { id, update })
-  //   .then(message.warning(`Updated organizations!`), 10)
-  //   .catch(err => {
-  //     message.warning(`Failed to update - client error`)
-  //     console.warn(err)
-  //   })
-  // }
+  handleCategories = (categories) => {
+    const { api, id } = this.props
+    //  Immutability magic
+    let enums = Object.assign({}, this.props.enums)
+    enums.categories = categories
+    api.patch('configs', { enums }, { id })
+    .then(message.success(`Updated categories!`), 10)
+    .catch(err => {
+      message.warning(`Failed to update - client error`)
+      console.warn(err)
+    })
+  }
+
+  handleQuestions = (questions) => {
+    const { api, id } = this.props
+    //  Immutability magic
+    let enums = Object.assign({}, this.props.enums)
+    enums.questions.review = questions
+    api.patch('configs', { enums }, { id })
+    .then(message.success(`Updated review questions!`), 10)
+    .catch(err => {
+      message.warning(`Failed to update - client error`)
+      console.warn(err)
+    })
+  }
+
   render ({ form, id, enums } = this.props) {
     return (
       <article className={styles['article']}>
@@ -121,7 +130,7 @@ class Config extends React.Component {
             <hr />
             <FormItem {...layout} label='Submissions'>
               {form.getFieldDecorator('submissions', { valuePropName: 'checked' })(
-                <Switch onChange={(checked) => this.handleSubmissions(checked)}
+                <Switch onChange={this.handleSubmissions}
                   checkedChildren='Open' unCheckedChildren='Closed'
                 />
               )}
@@ -130,9 +139,7 @@ class Config extends React.Component {
               message={'This includes budget codes as well, separated by a colon. Format: <name>:<budgetcode>'} />}
             >
               {form.getFieldDecorator('organizations')(
-                <Select mode='tags' placeholder='Type the name of an organization to add'
-                  onChange={(encodedOrgData) => this.handleOrganizations(encodedOrgData)}
-                >
+                <Select mode='tags' placeholder='Type the name of an organization to add' onChange={this.handleOrganizations}>
                   { //  Organizations are encoded as a string map for ease of use.
                     Object.keys(enums.organizations)
                     .map(key => (
@@ -148,7 +155,7 @@ class Config extends React.Component {
             >
               {form.getFieldDecorator('categories')(
                 <Select mode='tags'
-                  onChange={(value) => console.log(value)}
+                  onChange={this.handleCategories}
                 >
                   {enums.categories && enums.categories
                     .map(cat => (
@@ -162,7 +169,7 @@ class Config extends React.Component {
             >
               {form.getFieldDecorator('reviewQuestions')(
                 <Select mode='tags'
-                  onChange={(value) => console.log(value)}
+                  onChange={this.handleQuestions}
                 >
                   {enums.questions.review && enums.questions.review
                     .map(prompt => (
