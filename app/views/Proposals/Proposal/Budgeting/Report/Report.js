@@ -93,6 +93,7 @@ class Report extends React.Component {
       ? report.items
       : manifest.items.map((item) =>
         _.omit(item, ['_id', '__v', 'manifest', 'description', 'priority', 'tax', 'report']))
+    const newData = { tax: 10.1, quantity: 1, price: 0 }
     return (
       <section>
         <h1>Expense Reporting</h1>
@@ -116,7 +117,8 @@ class Report extends React.Component {
           columns={columns}
           data={data}
           onSubmit={this.handleSubmit}
-          // disabled={disableSubmit(form)}
+          newData={newData}
+          disabled={disableSubmit(form)}
         />
       </section>
     )

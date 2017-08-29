@@ -7,10 +7,6 @@ import { Alert, Button, Icon } from 'antd'
 
 import Menu from './Menu'
 
-const jss = {
-  alert: { padding: 8 },
-  button: { width: '100%', borderRadius: '0 0 inherit inherit' }
-}
 class SpreadSheet extends React.Component {
   constructor (props) {
     super(props)
@@ -24,11 +20,10 @@ class SpreadSheet extends React.Component {
     this.state = ({ rows })
   }
   componentWillReceiveProps (nextProps) {
-    //  FIXME: For some reason, this check is failing to work properly. Causes data tables to refresh when forms of parents are changed.
-    if (!_.isEqual(nextProps.data === this.props.data)) {
-      const { data, newData } = nextProps
+    //  NOTE: Fixed a bug here with prop updates, check later for future enhancement.
+    const { data } = nextProps
+    if (Array.isArray(data) && data.length >= 1) {
       let rows = data || []
-      if (rows.length < 1) rows[0] = {...newData} || {}
       this.state = ({ rows })
     }
   }
@@ -66,7 +61,7 @@ class SpreadSheet extends React.Component {
 
   render (
     // { rowGetter, handleGridRowsUpdated, handleAddRow, handleSubmit } = this,
-    { columns, disable } = this.props,
+    { columns, disabled } = this.props,
     { rows } = this.state || {}
 ) {
     if (rows && Number.isInteger(rows.length) && rows.length < 1) {
@@ -74,9 +69,7 @@ class SpreadSheet extends React.Component {
     }
     return <div>
       <Alert type='warning' banner showIcon={false} closable
-        style={jss.alert}
-        message='Excel Datatable'
-        description='This table can be edited! Remember to save your data when you are done'
+        message='This table can be edited! Remember to save your data when you are done'
         />
       <ReactDataGrid
         enableCellSelect cellNavigationMode='changeRow'
@@ -90,7 +83,9 @@ class SpreadSheet extends React.Component {
         rowsCount={(rows && rows.length) || 0}
         onGridRowsUpdated={this.handleGridRowsUpdated}
       />
-      <Button size='large' type='primary' disabled={disable} style={jss.button} onClick={this.handleSubmit}>
+      <Button size='large' type='primary' disabled={disabled}
+        style={{ width: '100%', borderRadius: '0 0 inherit inherit' }}
+        onClick={this.handleSubmit}>
         <Icon type='upload' />Save
       </Button>
     </div>

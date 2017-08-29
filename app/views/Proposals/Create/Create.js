@@ -62,8 +62,7 @@ class Create extends React.Component {
           const initialContact = { proposal, name, netID, role, title }
           api.post('contact', initialContact)
           .then(() => {
-            console.warn(res.body._id, res.body)
-            message.success(`Proposal Created! Share the link with your team! ID: ${parent}`, 10)
+            message.success(`Proposal Created! Share the link with your team! ID: ${proposal}`, 10)
             browserHistory.push(`/edit/${proposal}`)
           })
         })

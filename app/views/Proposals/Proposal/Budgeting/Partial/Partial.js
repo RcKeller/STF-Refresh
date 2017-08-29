@@ -73,7 +73,7 @@ class Partial extends React.Component {
     const data = items.length > 0
       ? items.map(item => _.omit(item, ['_id', '__v', 'manifest', 'report']))
       : []
-    console.log(data)
+    const newData = { tax: 10.1, quantity: 1, price: 0 }
     return (
       <section>
         <h1>Partial Budgets</h1>
@@ -92,6 +92,7 @@ class Partial extends React.Component {
         <SpreadSheet
           columns={columns}
           data={data}
+          newData={newData}
           onSubmit={this.handleSubmit}
         />
       </section>

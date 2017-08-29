@@ -1,7 +1,7 @@
 # TODO list
 Client side:
-1: Config: Edit Org codes and metrics questions
----Issue with questions being hardcoded in review.js?
+<!-- 1: Config: Edit Org codes and metrics questions -->
+<!-- ---Issue with questions being hardcoded in review.js? -->
 <!-- 1: Responsiveness fix (see lego project code) -->
 <!-- 1: Endorse a proposal only once. & proper update function -->
 2: Table search strings
@@ -40,3 +40,9 @@ Update by-law documents (old, not the curr approved version)
 Annual reports ??
 Most recently approved bylaws
 Currently have May 31 2016
+
+Errors:
+-Props resetting spreadsheets when they are patched.
+
+3: Update ask/received dynamically and as necessary.
+3: Proposal numbering is off.

@@ -64,7 +64,7 @@ class Manifest extends React.Component {
         ? Object.assign(prev, { manifests: next.manifests })
         : prev
     }
-    // console.log(manifest)
+
     manifest
     ? api.patch('manifest', {
       proposal: parent,
@@ -86,14 +86,14 @@ class Manifest extends React.Component {
   render ({ manifest } = this.props) {
     console.log('LOADED MANIFEST', manifest)
     const data = manifest ? manifest.items : []
+    const newData = { tax: 10.1, quantity: 1, price: 0 }
     return (
       <div>
         <p>Enter your budget requirements here. Tax MUST be included and will automatically default at 10.1% (Seattle's tax rate)</p>
         <SpreadSheet
           columns={columns}
           data={data}
-          // data={testData}
-          newData={{tax: 10.1}}
+          newData={newData}
           onSubmit={this.handleSubmit}
         />
       </div>

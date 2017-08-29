@@ -87,6 +87,7 @@ class Supplemental extends React.Component {
       ? manifest.items.map((item) =>
         _.omit(item, ['_id', '__v', 'manifest', 'description', 'priority', 'tax', 'report']))
       : []
+    const newData = { tax: 10.1, quantity: 1, price: 0 }
     return (
       <section>
         <h1>Request Supplemental</h1>
@@ -96,11 +97,6 @@ class Supplemental extends React.Component {
           message='Important Note reg. Award Supplements'
           description='If you have underspent your award, there is no consequence - simply fill out the above budget report so we can log your spending. If your project has changed significantly, we ask that you create a new proposal instead of requesting a large supplement. By clicking "I agree", you signify that you understand these conditions.'
         />
-        {/* <FormItem label='Budget Number' {...layout} hasFeedback={feedback(form, 'budget')} help={help(form, 'budget')} >
-          {form.getFieldDecorator('budget', rules.required)(
-            <Input onPressEnter={(e) => this.handleBudget(e.target.value)} />
-          )}
-        </FormItem> */}
         <FormItem label='Request Title' {...layout} >
           {form.getFieldDecorator('title')(
             <Input />
@@ -114,6 +110,7 @@ class Supplemental extends React.Component {
         <SpreadSheet
           columns={columns}
           data={data}
+          newData={newData}
           onSubmit={this.handleSubmit}
         />
       </section>

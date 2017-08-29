@@ -9,7 +9,16 @@ import { connectRequest } from 'redux-query'
 import api from '../../services'
 
 import { Link } from 'react-router'
-import { Spin, Table, Progress, Badge } from 'antd'
+import { Spin, Table, Progress, Badge, Button } from 'antd'
+
+//  Status indicator mapping for badge components
+const indicators = {
+  'In Review': 'default',
+  'Fully Funded': 'success',
+  'Partially Funded': 'success',
+  'Revisions Requested': 'warning',
+  'Denied': 'error'
+}
 
 const columns = [
   {
@@ -50,7 +59,9 @@ const columns = [
     title: 'Status',
     dataIndex: 'status',
     key: 'status',
-    render: (text) => <Badge status='success' text={text} />
+    // render: (text) => <Badge status={indicators[text] || 'default'} text={text} />
+
+    render: (text) => <Badge status={indicators[text] || 'default'} text={<b>{text}</b>} />
   },
   {
     title: 'Asked',
@@ -62,8 +73,10 @@ const columns = [
     title: 'Received',
     dataIndex: 'received',
     key: 'received',
-    render: (text, record) => <Progress type='circle' width={70}
-      percent={parseInt(record.asked / record.received * 100)} />,
+    render: (text, record) => record.received
+      ? <Progress type='circle' width={70}
+        percent={parseInt(record.asked / record.received * 100)} />
+      : <span />,
     sorter: (a, b) => (a.asked / a.received * 100) - (b.asked / b.received * 100),
     width: 100
     // render: (text, record) => <Progress percent={parseInt(record.asked / record.received * 100)} status='active' />
@@ -88,6 +101,11 @@ import styles from './Proposals.css'
   // connectRequest((props) => api.getAll('proposals'))
 )
 class Proposals extends React.Component {
+  static propTypes = {
+    proposals: PropTypes.array,
+    screen: PropTypes.object,
+    user: PropTypes.object
+  }
   constructor (props) {
     super(props)
     this.state = { myProposals: [] }
@@ -141,14 +159,5 @@ class Proposals extends React.Component {
       </article>
     )
   }
-}
-
-//  Proptypes are an idiomatic way of defining expected values.
-//  Flow typing and typescript work well with React, but I'd like to stay unopinionated.
-Proposals.propTypes = {
-  proposals: PropTypes.array,
-  screen: PropTypes.object,
-  user: PropTypes.object
-
 }
 export default Proposals
