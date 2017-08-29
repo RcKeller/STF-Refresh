@@ -147,12 +147,18 @@ class Membership extends React.Component {
             size='middle'
             columns={columns}
             footer={() =>
-              <AutoComplete style={{ width: 250 }}
-                placeholder='Add a user to the STF...'
-                onSelect={this.handleAddMember}
-              >
-                {users.map(user => <Option key={user._id}>{`${user.name} (${user.netID})`}</Option>)}
-              </AutoComplete>
+              <div>
+                <h6>Add Members:</h6>
+                <AutoComplete style={{ width: 250 }}
+                  placeholder='Add a user to the STF...'
+                  onSelect={this.handleAddMember}
+                  >
+                    {users.map(user => <Option key={user._id}>{`${user.name} (${user.netID})`}</Option>)}
+                  </AutoComplete>
+                <p>
+                  You may add any user to the committee (not necessarily with any auth level), as long as they have logged into the website before. This is irreversible.
+                </p>
+            </div>
             }
             // footer={() => (
             //   <Input label='Add a member by netID' prefix={<Icon type='user' />}

@@ -19,6 +19,9 @@ const ReportSchema = new mongoose.Schema({
   We need this for Planning and Budgeting to check
   */
   budget: String,
+  //  Optional fields for authors to explain their expenditures
+  title: String,
+  body: String,
   items: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item', autopopulate: true }],
   total: { type: Number, required: true, default: 0 }
 })

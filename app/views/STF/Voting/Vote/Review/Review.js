@@ -29,7 +29,7 @@ class SliderAndNumber extends React.Component {
 }
 
 //  Questions to ask for metrics
-const questions = ['Proposal Quality', 'Academic Merit']
+// const questions = ['Proposal Quality', 'Academic Merit']
 
 @compose(
   connect(
@@ -42,6 +42,7 @@ const questions = ['Proposal Quality', 'Academic Merit']
         .find(manifest => manifest._id === props.id).reviews
         .find(review => review.author._id === state.user._id) || {},
       user: state.user,
+      questions: state.db.config.enums.questions.review || [],
       stf: state.user.stf
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
@@ -105,7 +106,7 @@ class Review extends React.Component {
     })
   }
   render (
-    { form, manifest, user, stf } = this.props
+    { form, manifest, user, stf, questions } = this.props
   ) {
     const { metrics, voting } = manifest.docket
     return (
@@ -131,10 +132,10 @@ class Review extends React.Component {
               )}
             </FormItem>
             {stf.member
-              ? <FormItem label={<b>Approve this budget</b>} {...layout}>
+              ? <FormItem label={<b>Final Vote</b>} {...layout}>
                 {form.getFieldDecorator('approved', { valuePropName: 'checked' })(
                   //  Valueprop is a selector for antd switches, it's in the docs.
-                  <Checkbox disabled={!voting} size='large' />
+                  <Switch disabled={!voting} checkedChildren='APPROVE' unCheckedChildren='DENY' />
                 )}
               </FormItem>
               : <em>As a non-voting member, you may review a proposal which helps inform our decisions, but final votes may only be taken by appointed members.</em>

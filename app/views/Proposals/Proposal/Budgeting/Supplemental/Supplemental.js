@@ -108,7 +108,7 @@ class Supplemental extends React.Component {
         </FormItem>
         <FormItem label='Reasoning' {...layout} >
           {form.getFieldDecorator('body')(
-            <Input type='textarea' />
+            <Input type='textarea' rows={6} />
           )}
         </FormItem>
         <SpreadSheet

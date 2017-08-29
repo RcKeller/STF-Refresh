@@ -55,8 +55,8 @@ class Report extends React.Component {
   componentDidMount () {
     const { form, report } = this.props
     if (report) {
-      const { budget } = report
-      form.setFieldsValue({ budget })
+      const { budget, title, body } = report
+      form.setFieldsValue({ budget, title, body })
     }
     form.validateFields()
   }
@@ -99,7 +99,17 @@ class Report extends React.Component {
         <p>A little how-to here...</p>
         <FormItem label='Budget Number' {...layout} hasFeedback={feedback(form, 'budget')} help={help(form, 'budget')} >
           {form.getFieldDecorator('budget', rules.required)(
-            <Input onPressEnter={(e) => this.handleBudget(e.target.value)} />
+            <Input />
+          )}
+        </FormItem>
+        <FormItem label='Brief Summary' {...layout}>
+          {form.getFieldDecorator('title')(
+            <Input />
+          )}
+        </FormItem>
+        <FormItem label='Details' {...layout}>
+          {form.getFieldDecorator('body')(
+            <Input type='textarea' rows={6} />
           )}
         </FormItem>
         <SpreadSheet
