@@ -16,7 +16,7 @@ export default class Proposals extends REST {
     const year = date.getFullYear()
     const quarter = this.determineQuarter(date)
     let hydratedData = Object.assign(data, { year, quarter })
-    //  Number is determined upon publication in patch.
+    //  NOTE: Number is determined upon publication in patch.
     return super.post(hydratedData, query)
   }
 
@@ -26,21 +26,31 @@ export default class Proposals extends REST {
   ***** */
   patch (id, data, query) {
     //  If this was just published And the proposal isn't numbered yet
+    console.warn('data')
     if (data.published) {
-      this.model.findOne({ [this.key]: id })
+      this.model
+        .findOne({ [this.key]: id })
         .then(model => {
           if (!model.number) {
             //  Determine the next sequential number per year, assign to data.
             const year = new Date().getFullYear()
-            this.model.find({ year })
+            this.model
+              .find({ year })
+              .select('number')
               .then(models => {
-                //  Sort by number, reverse since lodash sorts by ascending.
-                const sorted = _.sortBy(models, 'number').reverse()
-                console.log(sorted)
-                data.number = sorted.length >= 1
-                  ? sorted[0].number + 1
+                //  Extract numbers, reverse sort, highest value + 1
+                const sorted = models
+                  .map(proposal =>
+                      Number.isInteger(proposal.number)
+                      ? proposal.number
+                      : proposal.number
+                    )
+                  .sort((a, b) => b - a)
+                const number = Number.isInteger(sorted[0])
+                  ? sorted[0] + 1
                   : 1
-                return super.patch(id, data, query)
+                const newData = Object.assign({}, data, { number })
+                return super.patch(id, newData, query)
               })
           } else {
             return super.patch(id, data, query)

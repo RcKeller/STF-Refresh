@@ -50,14 +50,22 @@ export default class Manifests extends REST {
       */
       //  Keep track of item refs to update manifest.
       let { items } = data
+      let total = 0
       let itemRefs = []
       for (let item of items) {
         item = _.omit(item, ['__v'])
         item.manifest = id
-        let _id = item._id ? item._id : new mongoose.Types.ObjectId()
-        Item.findOneAndUpdate({ _id }, item, { upsert: true, setDefaultsOnInsert: true, new: true })
+        let _id = item._id || new mongoose.Types.ObjectId()
+        const mongoOptions = { upsert: true, setDefaultsOnInsert: true, new: true }
+        Item
+        .findOneAndUpdate({ _id }, item, mongoOptions)
         .exec((err, doc) => {
-          if (!err && doc) itemRefs.push(doc._id)
+          if (!err && doc) {
+            //  Save item ref so we can update parent manifest.
+            itemRefs.push(doc._id)
+            const itemCost = doc.price * doc.tax * doc.quantity
+            if (!Number.isNaN(itemCost)) total += itemCost
+          }
         })
       }
       let model = this.model.findOne({ [this.key]: id })
@@ -69,7 +77,8 @@ export default class Manifests extends REST {
            }
          }
          // Update the manifest with the new child refs. Replace the entire thing to handle deleted records.
-         modelInstance['items'] = itemRefs
+         modelInstance.items = itemRefs
+         modelInstance.total = total
          return modelInstance.save()
        })
        .then(modelInstance => modelInstance)
