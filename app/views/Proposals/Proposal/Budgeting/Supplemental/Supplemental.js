@@ -107,7 +107,7 @@ class Supplemental extends React.Component {
             <Input type='textarea' rows={6} />
           )}
         </FormItem>
-        <SpreadSheet
+        <SpreadSheet financial
           columns={columns}
           data={data}
           newData={newData}

@@ -10,14 +10,17 @@ import Menu from './Menu'
 class SpreadSheet extends React.Component {
   constructor (props) {
     super(props)
-    const { columns, data, newData } = this.props
+    const { columns, data, newData, financial } = this.props
     this.columns = columns
     for (let col of columns) {
       col.resizable = true
     }
     let rows = data || []
     if (rows.length < 1) rows[0] = {...newData} || {}
-    this.state = ({ rows })
+    let state = { rows }
+    //  If this is a financial spreadsheet, initialize total
+    if (financial) state.total = 0
+    this.state = state
   }
   componentWillReceiveProps (nextProps) {
     //  NOTE: Fixed a bug here with prop updates, check later for future enhancement.
@@ -32,10 +35,25 @@ class SpreadSheet extends React.Component {
 
   handleGridRowsUpdated = ({ fromRow, toRow, updated }) => {
     let { rows } = this.state
+    const { financial, columns } = this.props
     for (let i = fromRow; i <= toRow; i++) {
       Object.assign(rows[i], updated)
     }
-    this.setState({ rows })
+    //  For financial sheets, update subtotal. Check cols passed in to see if we need to calc tax too.
+    //  We do this because reporting may include tax data.
+    let state = { rows }
+    const recordsWithTax = columns.filter(col => col.key === 'tax').length > 0
+    if (financial) {
+      let total = 0
+      for (const record of rows) {
+        const cost = recordsWithTax
+          ? record.price * record.tax * record.quantity
+          : record.price * record.quantity
+        if (!Number.isNaN(cost)) total += cost
+      }
+      state.total = total
+    }
+    this.setState(state)
   }
 
   deleteRow = (e, { rowIdx }) => {
@@ -61,12 +79,13 @@ class SpreadSheet extends React.Component {
 
   render (
     // { rowGetter, handleGridRowsUpdated, handleAddRow, handleSubmit } = this,
-    { columns, disabled } = this.props,
-    { rows } = this.state || {}
+    { columns, financial, disabled } = this.props,
+    { rows, total } = this.state || {}
 ) {
     if (rows && Number.isInteger(rows.length) && rows.length < 1) {
       this.insertRow(0)
     }
+    const currency = number => number.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
     return <div>
       <Alert type='warning' banner showIcon={false} closable
         message='This table can be edited! Remember to save your data when you are done'
@@ -83,6 +102,7 @@ class SpreadSheet extends React.Component {
         rowsCount={(rows && rows.length) || 0}
         onGridRowsUpdated={this.handleGridRowsUpdated}
       />
+      {financial && <h2>Total Cost: {currency(total)}</h2>}
       <Button size='large' type='primary' disabled={disabled}
         style={{ width: '100%', borderRadius: '0 0 inherit inherit' }}
         onClick={this.handleSubmit}>
@@ -106,7 +126,9 @@ SpreadSheet.propTypes = {
   //  NewData is a prop representing what a brand new field / row should be like (defaults).
   newData: PropTypes.object,
   //  onSubmit is your callback for receiving well formed data.
-  onSubmit: PropTypes.func.isRequired
+  onSubmit: PropTypes.func.isRequired,
+  //  Financial will calculate and show subtotals as necessary
+  financial: PropTypes.bool
 }
 
 export default SpreadSheet

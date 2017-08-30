@@ -113,7 +113,7 @@ class Report extends React.Component {
             <Input type='textarea' rows={6} />
           )}
         </FormItem>
-        <SpreadSheet
+        <SpreadSheet financial
           columns={columns}
           data={data}
           onSubmit={this.handleSubmit}

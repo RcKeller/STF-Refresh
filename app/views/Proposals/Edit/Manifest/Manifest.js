@@ -90,7 +90,7 @@ class Manifest extends React.Component {
     return (
       <div>
         <p>Enter your budget requirements here. Tax MUST be included and will automatically default at 10.1% (Seattle's tax rate)</p>
-        <SpreadSheet
+        <SpreadSheet financial
           columns={columns}
           data={data}
           newData={newData}

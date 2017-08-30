@@ -89,7 +89,7 @@ class Partial extends React.Component {
         </Select>
         <h4>{title}</h4>
         <p>{body}</p>
-        <SpreadSheet
+        <SpreadSheet financial
           columns={columns}
           data={data}
           newData={newData}

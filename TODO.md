@@ -15,9 +15,9 @@
 <!-- 2*: Test Reports -->
 <!-- 2*: Test Supplements -->
 3: Table search Strings.
-3: Totals calculation for manifests. (include in patch code?)
+3: Totals calculation for manifests. (include in patch code?) - working on it
 3: Update ask/received dynamically and as necessary.
-3: Proposal numbering is off.
+<!-- 3: Proposal numbering is off. -->
 Enhancements:
   4: Frontpage
   4: Contacts
