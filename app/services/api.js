@@ -119,22 +119,6 @@ const remove = (model, options = {}) => mutateAsync({
   update: options.update ? options.update : { [model]: (prev, next) => next }
 })
 
-/* *****
-CUSTOM QUERY
-Allows you to directly specify the target w/o helpers.
-Good for very specific or buggy queries, currently only used by Membership.js
-***** */
-const query = (target, options) => ({
-  url: `${API}/${version}/${target}`,
-  // transform: res => ({ [model]: normalize(res) }),
-  ...options
-})
-const mutate = (target, options) => mutateAsync({
-  url: `${API}/${version}/${target}`,
-  // transform: res => ({ [model]: normalize(res) }),
-  ...options
-})
-
 export default {
   endpoint,
   get,

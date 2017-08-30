@@ -1,7 +1,5 @@
 import REST from './rest'
 import { Proposal } from '../models'
-import mongoose from 'mongoose'
-import _ from 'lodash'
 
 export default class Proposals extends REST {
   constructor () {

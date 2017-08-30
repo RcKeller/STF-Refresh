@@ -23,10 +23,10 @@ module.exports = ({ production = false, browser = false } = {}) => {
       // put the webpackjsonp manifest in a common chunk
       // this makes sure that chunks hashes doesn't change too often
       new webpack.optimize.CommonsChunkPlugin({
-          path: PATHS.assets,
-          names: ['vendor', 'common'],
-          filename: '[name].js',
-          minChuncks: Infinity
+        path: PATHS.assets,
+        names: ['vendor', 'common'],
+        filename: '[name].js',
+        minChuncks: Infinity
       }),
       new webpack.optimize.MinChunkSizePlugin({minChunkSize: 10000}),
       new webpack.EnvironmentPlugin(['NODE_ENV']),
@@ -48,18 +48,18 @@ module.exports = ({ production = false, browser = false } = {}) => {
   if (production && browser) {
     return [
       new ManifestPlugin({
-          fileName: 'app-manifest.json',
-          stripSrc: true
+        fileName: 'app-manifest.json',
+        stripSrc: true
       }),
 
       // create a common chunk in the vendor entry, and
       // put the webpackjsonp manifest in a common chunk
       // this makes sure that chunks hashes doesn't change too often
       new webpack.optimize.CommonsChunkPlugin({
-          path: PATHS.assets,
-          names: ['vendor', 'common'],
-          filename: '[name].[chunkhash].chunk.js',
-          minChuncks: Infinity
+        path: PATHS.assets,
+        names: ['vendor', 'common'],
+        filename: '[name].[chunkhash].chunk.js',
+        minChuncks: Infinity
       }),
       new webpack.optimize.MinChunkSizePlugin({minChunkSize: 10000}),
       new webpack.EnvironmentPlugin(['NODE_ENV']),

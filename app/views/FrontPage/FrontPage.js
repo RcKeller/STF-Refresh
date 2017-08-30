@@ -1,53 +1,38 @@
 import React from 'react'
 import Helmet from 'react-helmet'
+import { compose } from 'redux'
 import { connect } from 'react-redux'
+import { connectRequest } from 'redux-query'
 
-import { Row, Col, Card, Alert, Timeline, Carousel } from 'antd'
+import api from '../../services'
+
+import { Row, Col, Card, Timeline, Carousel } from 'antd'
 const Item = Timeline.Item
 
 import styles from './FrontPage.css'
-// @connect(state => ({
-//   announcements: state.db.config.announcements || [],
-//   stage: state.db.config.stage || 0
-// }))
-@connect(state => ({
-  announcements: (state.db && state.db.config && state.db.config.announcements) || [],
-  stage: (state.db && state.db.config && state.db.config.stage) || 0
-}))
+@compose(
+  connect(state => ({
+    stage: state.db.config && state.db.config.stage,
+    endorsements: state.db.comments
+  })),
+  connectRequest(() => api.get('comments'))
+)
 class FrontPage extends React.Component {
-  constructor (props) {
-    super(props)
-    this.state = { loaded: false }
-  }
-  componentDidMount () {
-    //  BUG: The nav must slide out first in order for size to properly calculate.
-    //  This timeout is a temp fix.
-    setTimeout(() => this.setState({ loaded: true }), 250)
-  }
   render (
-    { announcements, stage } = this.props,
-    { loaded } = this.state
+    { endorsements } = this.props
   ) {
     return (
       <article className={styles['page']}>
         <Helmet title='Home' />
-        {loaded &&
-          <Carousel autoplay effect='fade' >
-            <div><h3>1</h3></div>
-            <div><h3>2</h3></div>
-            <div><h3>3</h3></div>
-            <div><h3>4</h3></div>
-          </Carousel>
-        }
+        <Carousel autoplay vertical >
+          <div><h3>1</h3></div>
+          <div><h3>2</h3></div>
+          <div><h3>3</h3></div>
+          <div><h3>4</h3></div>
+        </Carousel>
         <section className={styles['page-content']}>
-          <Row gutter={16}>
-            <Col className='gutter-row' xs={24}>
-              <Card title='supplementalal Reminder'>
-                  If you plan on writing a supplementalal, make sure to submit it when you are finished ('Submit supplementalal' on the Edit supplementalal page). If you are have any issues or questions, please email us.
-              </Card>
-              <Card title='supplementalal Reminder'>
-                  If you plan on writing a supplementalal, make sure to submit it when you are finished ('Submit supplementalal' on the Edit supplementalal page). If you are have any issues or questions, please email us.
-              </Card>
+          <Row type="flex" justify="space-around" >
+            <Col className='gutter-row' span={24} md={8}>
               <h1>About the STF Committee</h1>
               <p>The STF committee...</p>
               <h2>H2</h2>
@@ -60,37 +45,21 @@ class FrontPage extends React.Component {
               <p>The STF committee...</p>
               <h6>H6</h6>
             </Col>
-          </Row>
-          <Row gutter={16}>
-            <Col className='gutter-row' xs={24} md={18}>
-              <h1>Announcements</h1>
-              <Row gutter={16}>
-                <Col xs={24} sm={12} xl={8}>
-                  <Card title='supplementalal Reminder'>
-                      If you plan on writing a supplementalal, make sure to submit it when you are finished ('Submit supplementalal' on the Edit supplementalal page). If you are have any issues or questions, please email us.
-                  </Card>
-                </Col>
-                <Col xs={24} sm={12} xl={8}>
-                  <Card title='Upcoming Workshops'>
-                    Workshops are a great oppurtunity to meet STF leadership, ask questions in a low-stakes setting, and craft a proposal. We are holding workshops on March 10th, 14th, and 29th. View our calendar for details.
-                  </Card>
-                </Col>
-              </Row>
+            <Col className='gutter-row' span={24} md={8}>
+              <h2>Announcements</h2>
+              <p>Lorem ipsum, instructions, etc.</p>
+              <Timeline pending='See more'>
+                <Item color='green'>Process A</Item>
+                <Item color='green'>Process B</Item>
+                <Item color='blue'>Hearing Proposals</Item>
+              </Timeline>
             </Col>
-            <Col className='gutter-row' xs={24} lg={6}>
-              <Alert type='success'
-                message='Hearing Spring Proposals'
-                description='The committee is in the process of hearing Spring proposals. Please wait for an email from techfee@uw.edu detailing your proposal date.'
-              />
-              <section>
-                <Timeline>
-                  <Item color='blue'>Process A</Item>
-                  <Item color='blue'>Process B</Item>
-                  <Item color='green'>Hearing Proposals</Item>
-                  <Item color='blue'>Awards Disbursed</Item>
-                </Timeline>
-              </section>
-            </Col>
+            <Col className='gutter-row' span={24} md={8}>
+
+              <Card bordered={false} title={<h4>See what people are saying...</h4>}>
+                Lorem ipsum...
+              </Card>
+            </Col >
           </Row>
         </section>
       </article>
