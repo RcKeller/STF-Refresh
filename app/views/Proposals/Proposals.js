@@ -19,6 +19,7 @@ const indicators = {
   'Revisions Requested': 'warning',
   'Denied': 'error'
 }
+const currency = number => number.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
 
 const columns = [
   {
@@ -67,6 +68,7 @@ const columns = [
     title: 'Asked',
     dataIndex: 'asked',
     key: 'asked',
+    render: (text) => <span>{text ? currency(text) : '0'}</span>,
     sorter: (a, b) => (a.asked) - (b.asked)
   },
   {

@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import _ from 'lodash'
 
 import ReactDataGrid from 'react-data-grid'
 import { Alert, Button, Icon } from 'antd'
@@ -43,7 +42,6 @@ class SpreadSheet extends React.Component {
     //  We do this because reporting may include tax data.
     let state = { rows }
     const recordsWithTax = columns.filter(col => col.key === 'tax').length > 0
-    console.warn('withTax', recordsWithTax)
     if (financial) {
       let total = 0
       for (const record of rows) {
@@ -87,7 +85,6 @@ class SpreadSheet extends React.Component {
       this.insertRow(0)
     }
     const currency = number => number.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
-    console.warn('initial total', total)
     return <div>
       <Alert type='warning' banner showIcon={false} closable
         message='This table can be edited! Remember to save your data when you are done'

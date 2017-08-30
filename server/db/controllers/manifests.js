@@ -16,13 +16,9 @@ export default class Manifests extends REST {
     let { items } = data
     let manifest = _.omit(data, ['_v', 'items'])
     //  NOTE: Should I assign a model var and return model.patch?
-    // let model = this.model.create(manifest).then(modelInstance => modelInstance)
-    // console.warn('NEW MODEL', model)
-    // return this.patch(model._id, { items }, query)
     return this.model
       .create(manifest)
       .then(modelInstance => {
-        console.warn('NEW MODEL', modelInstance)
         this.patch(modelInstance._id, { items }, query)
       })
   }
@@ -35,7 +31,6 @@ export default class Manifests extends REST {
   patch (id, data, query) {
     //  https://codexample.org/questions/306428/mongodb-mongoose-subdocuments-created-twice.c
     //  https://github.com/linnovate/mean/issues/511
-    //  BUG: Fails when trying to patch other data. Solution - call super() if there aren't any items?
     if (!data.items) {
       return super.patch(id, data, query)
     } else {
@@ -50,7 +45,6 @@ export default class Manifests extends REST {
       */
       //  Keep track of item refs to update manifest.
       let { items } = data
-      let total = 0
       let itemRefs = []
       for (let item of items) {
         item = _.omit(item, ['__v'])
@@ -58,15 +52,13 @@ export default class Manifests extends REST {
         let _id = item._id || new mongoose.Types.ObjectId()
         const mongoOptions = { upsert: true, setDefaultsOnInsert: true, new: true }
         Item
-        .findOneAndUpdate({ _id }, item, mongoOptions)
-        .exec((err, doc) => {
-          if (!err && doc) {
-            //  Save item ref so we can update parent manifest.
-            itemRefs.push(doc._id)
-            const itemCost = doc.price * doc.tax * doc.quantity
-            if (!Number.isNaN(itemCost)) total += itemCost
-          }
-        })
+          .findOneAndUpdate({ _id }, item, mongoOptions)
+          .exec((err, doc) => {
+            if (!err && doc) {
+              //  Save item ref so we can update parent manifest.
+              itemRefs.push(doc._id)
+            }
+          })
       }
       let model = this.model.findOne({ [this.key]: id })
       return model
@@ -78,7 +70,6 @@ export default class Manifests extends REST {
          }
          // Update the manifest with the new child refs. Replace the entire thing to handle deleted records.
          modelInstance.items = itemRefs
-         modelInstance.total = total
          return modelInstance.save()
        })
        .then(modelInstance => modelInstance)

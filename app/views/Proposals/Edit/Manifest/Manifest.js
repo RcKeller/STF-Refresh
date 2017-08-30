@@ -74,6 +74,12 @@ class Manifest extends React.Component {
       message.warning(`Failed to update budget manifest - Unexpected client error`)
       console.warn(err)
     })
+    //  Silent update of the proposal ask
+    api.patch('proposal', { asked: total }, { id: proposal, update })
+    .catch(err => {
+      message.warning(`Failed to update proposal data - Unexpected client error`)
+      console.warn(err)
+    })
   }
   render ({ manifest } = this.props) {
     const data = manifest ? manifest.items : []
