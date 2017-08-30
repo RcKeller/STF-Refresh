@@ -1,4 +1,5 @@
 import React from 'react'
+import Helmet from 'react-helmet'
 import { connect } from 'react-redux'
 
 import { Row, Col, Card, Alert, Timeline, Carousel } from 'antd'
@@ -29,6 +30,7 @@ class FrontPage extends React.Component {
   ) {
     return (
       <article className={styles['page']}>
+        <Helmet title='Home' />
         {loaded &&
           <Carousel autoplay effect='fade' >
             <div><h3>1</h3></div>

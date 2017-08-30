@@ -1,4 +1,5 @@
 import React from 'react'
+import Helmet from 'react-helmet'
 
 import { Row, Col } from 'antd'
 import Bio from './Bio/Bio'
@@ -101,6 +102,7 @@ const GPSS = [
 import styles from './About.css'
 const About = () => (
   <article className={styles['about']}>
+    <Helmet title='About' />
     <Row gutter={16}>
       <Col xs={24} sm={12}>
         <h1>The Student Tech Fee</h1>

@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Helmet from 'react-helmet'
 
 import { compose } from 'redux'
 import { connect } from 'react-redux'
@@ -36,6 +37,7 @@ class Blocks extends React.Component {
   render ({ blocks, screen } = this.props) {
     return (
       <article className={styles['blocks']}>
+        <Helmet title='Block Funding' />
         <h1>Continuous Funding Blocks</h1>
         {!blocks
           ? <Spin size='large' tip='Loading...' />

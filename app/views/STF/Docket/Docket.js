@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Helmet from 'react-helmet'
 import _ from 'lodash'
 
 import { compose, bindActionCreators } from 'redux'
@@ -102,6 +103,7 @@ class Docket extends React.Component {
   ) {
     return (
       <article className={styles['article']}>
+        <Helmet title='Docket' />
         <h1>Committee Docket</h1>
         <h6>Internal use only.</h6>
         <p>Add proposals, partials and supplementals to QA and voting dockets.</p>

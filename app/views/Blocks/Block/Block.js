@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Helmet from 'react-helmet'
 
 import { compose } from 'redux'
 import { connect } from 'react-redux'
@@ -24,6 +25,7 @@ class Block extends React.Component {
   render ({ block } = this.props) {
     return (
       <article className={styles['article']}>
+        <Helmet title={block ? block.title : 'Block'} />
         {!block
           ? <Spin size='large' tip='Loading...' />
           : <div>

@@ -1,6 +1,7 @@
 //  React and its typechecking
 import React from 'react'
 import PropTypes from 'prop-types'
+import Helmet from 'react-helmet'
 import _ from 'lodash'
 //  Redux utils
 import { compose } from 'redux'
@@ -269,6 +270,7 @@ Proposals extends React.Component {
     return (
       <article className={styles['article']}>
         <h1>STF Proposals</h1>
+        <Helmet title='Proposals' />
         {!proposals
             ? <Spin size='large' tip='Loading...' />
             : <Table

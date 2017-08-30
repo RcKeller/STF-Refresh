@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Helmet from 'react-helmet'
 
 import { compose } from 'redux'
 import { connect } from 'react-redux'
@@ -32,6 +33,7 @@ connectRequest will force a query if there's a mismatch.
 @compose(
   connect(state => ({
     id: state.db.proposal && state.db.proposal._id,
+    title: state.db.proposal && state.db.proposal.title,
     published: state.db.proposal && state.db.proposal.published,
     user: state.user
   })),
@@ -49,12 +51,13 @@ connectRequest will force a query if there's a mismatch.
   }))
 )
 class Proposal extends React.Component {
-  render ({ proposal, id, published, user, forceRequest } = this.props) {
+  render ({ proposal, id, title, published, user, forceRequest } = this.props) {
     const author = true // TODO
     const stf = user && user.stf
     const admin = stf && stf.admin
     return (
       <article className={styles['tabbed-article']} >
+        <Helmet title={title || 'Proposal'} />
         {!id
           ? <Spin size='large' tip='Loading...' />
           : <Tabs className='tab-container' type='card'

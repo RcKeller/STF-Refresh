@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Helmet from 'react-helmet'
 
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -124,6 +125,7 @@ class Config extends React.Component {
     }
     return (
       <article className={styles['article']}>
+        <Helmet title='Site Config' />
         {!id
           ? <Spin size='large' tip='Loading...' />
           : <div id={id}>

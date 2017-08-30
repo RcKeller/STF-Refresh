@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import Helmet from 'react-helmet'
 import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
@@ -124,6 +125,7 @@ class Edit extends React.Component {
     //  This ensures all fields populate() completely and changes reflect other subsections (contact changes update sigs, etc)
     return (
       <article className={styles['page']}>
+        <Helmet title='New Proposal' />
         {!proposal
           ? <Spin size='large' tip='Loading...' />
           : <div id={proposal._id}>

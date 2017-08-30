@@ -1,4 +1,5 @@
 import React from 'react'
+import Helmet from 'react-helmet'
 
 import { Collapse } from 'antd'
 const Panel = Collapse.Panel
@@ -51,6 +52,7 @@ const authorContent = [
 import styles from './FAQ.css'
 const FAQ = () => (
   <article className={styles['faq']}>
+    <Helmet title='FAQ' />
     <h1>General Questions</h1>
     <Collapse bordered={false} >
       {generalContent.map((qa, i) => (

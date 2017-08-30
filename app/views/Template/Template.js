@@ -75,8 +75,8 @@ class Template extends React.Component {
       <LocaleProvider locale={enUS}>
         <div>
           <Helmet
-            title='UW Student Tech Fee'
-            titleTemplate='%s - Student Tech Fee'
+            // title='Home'
+            titleTemplate='%s - UW Student Tech'
             meta={meta} link={link}
           />
           <Header>

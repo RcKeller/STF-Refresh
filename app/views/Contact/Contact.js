@@ -1,4 +1,5 @@
 import React from 'react'
+import Helmet from 'react-helmet'
 import { Link } from 'react-router'
 
 import { Row, Col, Card } from 'antd'
@@ -26,6 +27,7 @@ const leadership = [
 import styles from './Contact.css'
 const Contact = () => (
   <article className={styles['contact']}>
+    <Helmet title='Contact Us' />
     <h1>Contact Us</h1>
     <p>
       We're here if you need us. Before reaching out, please consider learning more <Link to='/about'>about the STF</Link> first, and then viewing our <Link to='/faq'>Frequently Asked Questions</Link>. Otherwise, feel free to contact us at any of the locations below.
