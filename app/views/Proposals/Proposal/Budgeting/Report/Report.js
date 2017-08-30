@@ -60,13 +60,13 @@ class Report extends React.Component {
     }
     form.validateFields()
   }
-  handleSubmit = (items) => {
+  handleSubmit = (items, total) => {
     let { form, api, proposal, manifest, user } = this.props
     //  Verify that the budget number (and hopefully other data) is there, add it to what we know.
     form.validateFields((err, values) => {
       if (!err) {
         items = items.map((item) => _.omit(item, ['_id', '__v']))
-        let report = { proposal, manifest: manifest._id, author: user, items }
+        let report = { proposal, manifest: manifest._id, author: user, items, total }
         //  Hydrate the report with form data
         report = Object.assign(report, values)
         this.props.report
@@ -94,6 +94,7 @@ class Report extends React.Component {
       : manifest.items.map((item) =>
         _.omit(item, ['_id', '__v', 'manifest', 'description', 'priority', 'tax', 'report']))
     const newData = { tax: 10.1, quantity: 1, price: 0 }
+    const total = report && report.total
     return (
       <section>
         <h1>Expense Reporting</h1>
@@ -119,6 +120,7 @@ class Report extends React.Component {
           onSubmit={this.handleSubmit}
           newData={newData}
           disabled={disableSubmit(form)}
+          total={total}
         />
       </section>
     )

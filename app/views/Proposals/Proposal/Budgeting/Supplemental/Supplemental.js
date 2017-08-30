@@ -13,7 +13,7 @@ const FormItem = Form.Item
 const connectForm = Form.create()
 
 import SpreadSheet, { Editors } from '../../../../../components/SpreadSheet'
-const { SimpleNumber } = Editors
+const { SimpleNumber, TaxRate } = Editors
 
 //  BUG: Selectors cannot select child props. Is this case handled in the data-grid docs?
 const columns = [{
@@ -37,6 +37,12 @@ const columns = [{
   editable: true,
   editor: SimpleNumber,
   width: 85
+}, {
+  name: 'Tax',
+  key: 'tax',
+  editable: true,
+  editor: TaxRate,
+  width: 85
 }]
 @compose(
   connect(
@@ -58,17 +64,16 @@ class Supplemental extends React.Component {
     // }
     form.validateFields()
   }
-  handleSubmit = (items) => {
+  handleSubmit = (items, total) => {
     let { form, api, proposal, manifest } = this.props
     //  Verify that the budget number (and hopefully other data) is there, add it to what we know.
     form.validateFields((err, values) => {
       if (!err) {
         items = items.map((item) => _.omit(item, ['_id', '__v']))
-        let supplemental = { proposal, type: 'supplemental', items }
+        let supplemental = { proposal, type: 'supplemental', items, total }
         //  Hydrate the supplement with form data (title/body, totally optional)
         supplemental = Object.assign(supplemental, values)
         const update = { proposal: (prev, next) => prev }
-        console.warn(supplemental)
         api.post('manifest', supplemental, { update })
         .then(message.success('Supplemental request submitted!'))
         .catch(err => {
@@ -88,6 +93,7 @@ class Supplemental extends React.Component {
         _.omit(item, ['_id', '__v', 'manifest', 'description', 'priority', 'tax', 'report']))
       : []
     const newData = { tax: 10.1, quantity: 1, price: 0 }
+    const total = manifest && manifest.total
     return (
       <section>
         <h1>Request Supplemental</h1>
@@ -112,6 +118,7 @@ class Supplemental extends React.Component {
           data={data}
           newData={newData}
           onSubmit={this.handleSubmit}
+          total={total}
         />
       </section>
     )

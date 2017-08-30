@@ -49,34 +49,26 @@ const columns = [{
 //  TODO: Testing with http://localhost:3000/edit/596e8a522465c05140e07d8f
 @connect(
   state => ({
-    parent: state.db.proposal._id,
+    proposal: state.db.proposal._id,
     manifest: state.db.proposal.manifests[0]
   }),
   dispatch => ({ api: bindActionCreators(api, dispatch) })
 )
 class Manifest extends React.Component {
-  handleSubmit = (items) => {
-    console.log('HANDLE SUBMIT', items)
-    let { api, parent, manifest } = this.props
+  handleSubmit = (items, total) => {
+    console.log('HANDLE SUBMIT', items, total)
+    let { api, proposal, manifest } = this.props
+    const budget = { proposal, type: 'original', items, total }
+    const id = manifest && manifest._id
     const update = {  //  Replace publication status only.
       proposal: (prev, next) =>
         next && next.manifests
         ? Object.assign(prev, { manifests: next.manifests })
         : prev
     }
-
     manifest
-    ? api.patch('manifest', {
-      proposal: parent,
-      type: 'original',
-      items
-    }, { id: manifest._id, update })
-    : api.post('manifest', {
-      proposal: parent,
-      type: 'original',
-      items
-    }, { update }
-  )
+    ? api.patch('manifest', budget, { id, update })
+    : api.post('manifest', budget, { update })
     .then(message.success(`Updated budget manifest!`))
     .catch(err => {
       message.warning(`Failed to update budget manifest - Unexpected client error`)
@@ -84,9 +76,9 @@ class Manifest extends React.Component {
     })
   }
   render ({ manifest } = this.props) {
-    console.log('LOADED MANIFEST', manifest)
     const data = manifest ? manifest.items : []
     const newData = { tax: 10.1, quantity: 1, price: 0 }
+    const total = manifest && manifest.total
     return (
       <div>
         <p>Enter your budget requirements here. Tax MUST be included and will automatically default at 10.1% (Seattle's tax rate)</p>
@@ -95,6 +87,7 @@ class Manifest extends React.Component {
           data={data}
           newData={newData}
           onSubmit={this.handleSubmit}
+          total={total}
         />
       </div>
     )
@@ -102,7 +95,7 @@ class Manifest extends React.Component {
 }
 Manifest.propTypes = {
   api: PropTypes.object,
-  parent: PropTypes.string,
+  proposal: PropTypes.string,
   manifest: PropTypes.object
 }
 export default Manifest

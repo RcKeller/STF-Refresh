@@ -10,7 +10,7 @@ import Menu from './Menu'
 class SpreadSheet extends React.Component {
   constructor (props) {
     super(props)
-    const { columns, data, newData, financial } = this.props
+    const { columns, data, newData, financial, total } = this.props
     this.columns = columns
     for (let col of columns) {
       col.resizable = true
@@ -19,7 +19,7 @@ class SpreadSheet extends React.Component {
     if (rows.length < 1) rows[0] = {...newData} || {}
     let state = { rows }
     //  If this is a financial spreadsheet, initialize total
-    if (financial) state.total = 0
+    if (financial) state.total = total || 0
     this.state = state
   }
   componentWillReceiveProps (nextProps) {
@@ -27,7 +27,7 @@ class SpreadSheet extends React.Component {
     const { data } = nextProps
     if (Array.isArray(data) && data.length >= 1) {
       let rows = data || []
-      this.state = ({ rows })
+      this.setState({ rows })
     }
   }
   rowGetter = (i) =>
@@ -43,6 +43,7 @@ class SpreadSheet extends React.Component {
     //  We do this because reporting may include tax data.
     let state = { rows }
     const recordsWithTax = columns.filter(col => col.key === 'tax').length > 0
+    console.warn('withTax', recordsWithTax)
     if (financial) {
       let total = 0
       for (const record of rows) {
@@ -72,9 +73,9 @@ class SpreadSheet extends React.Component {
   insertRowBelow = (e, { rowIdx }) => this.insertRow(++rowIdx)
 
   handleSubmit = () => {
-    let { rows } = this.state
+    let { rows, total } = this.state
     const { onSubmit } = this.props
-    onSubmit(rows)
+    onSubmit(rows, total)
   }
 
   render (
@@ -86,6 +87,7 @@ class SpreadSheet extends React.Component {
       this.insertRow(0)
     }
     const currency = number => number.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+    console.warn('initial total', total)
     return <div>
       <Alert type='warning' banner showIcon={false} closable
         message='This table can be edited! Remember to save your data when you are done'
@@ -102,7 +104,7 @@ class SpreadSheet extends React.Component {
         rowsCount={(rows && rows.length) || 0}
         onGridRowsUpdated={this.handleGridRowsUpdated}
       />
-      {financial && <h2>Total Cost: {currency(total)}</h2>}
+      {financial && <h2>Total Cost: {total ? currency(total) : '$0.00'}</h2>}
       <Button size='large' type='primary' disabled={disabled}
         style={{ width: '100%', borderRadius: '0 0 inherit inherit' }}
         onClick={this.handleSubmit}>
@@ -128,7 +130,9 @@ SpreadSheet.propTypes = {
   //  onSubmit is your callback for receiving well formed data.
   onSubmit: PropTypes.func.isRequired,
   //  Financial will calculate and show subtotals as necessary
-  financial: PropTypes.bool
+  financial: PropTypes.bool,
+  //  Initial total, disposed of once rows update.
+  total: PropTypes.number
 }
 
 export default SpreadSheet

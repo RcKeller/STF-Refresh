@@ -12,7 +12,7 @@ import { Select, message } from 'antd'
 const Option = Select.Option
 
 import SpreadSheet, { Editors } from '../../../../../components/SpreadSheet'
-const { SimpleNumber } = Editors
+const { SimpleNumber, TaxRate } = Editors
 
 //  BUG: Selectors cannot select child props. Is this case handled in the data-grid docs?
 const columns = [{
@@ -30,6 +30,12 @@ const columns = [{
   key: 'price',
   editable: true,
   editor: SimpleNumber,
+  width: 85
+}, {
+  name: 'Tax',
+  key: 'tax',
+  editable: true,
+  editor: TaxRate,
   width: 85
 }]
 @connect(
@@ -51,10 +57,9 @@ class Partial extends React.Component {
     this.state = { index }
   }
   handleChange = (index) => this.setState({ index })
-  handleSubmit = (items) => {
+  handleSubmit = (items, total) => {
     const { api, proposal, user } = this.props
-    console.log('ITEMS', items)
-    const partial = { proposal, type: 'partial', author: user, items }
+    const partial = { proposal, type: 'partial', author: user, items, total }
     //  Nullify the update for proposal data.
     const update = { proposal: (prev, next) => prev }
     //  Post it - partials are a one-time deal, they aren't patched after the fact.
@@ -69,7 +74,7 @@ class Partial extends React.Component {
     { manifests } = this.props,
     { index } = this.state
   ) {
-    const { title, body, type, items } = manifests[index]
+    const { title, body, type, items, total } = manifests[index]
     const data = items.length > 0
       ? items.map(item => _.omit(item, ['_id', '__v', 'manifest', 'report']))
       : []
@@ -94,6 +99,7 @@ class Partial extends React.Component {
           data={data}
           newData={newData}
           onSubmit={this.handleSubmit}
+          total={total}
         />
       </section>
     )
