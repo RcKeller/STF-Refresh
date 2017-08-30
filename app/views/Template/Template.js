@@ -39,7 +39,7 @@ const meta = [
 const link = [{ rel: 'icon', href: favicon }]
 
 import enUS from 'antd/lib/locale-provider/en_US'
-import { LocaleProvider, Spin, Layout, Icon, Breadcrumb } from 'antd'
+import { LocaleProvider, Spin, Layout, Icon } from 'antd'
 const { Header } = Layout
 import Drawer from 'rc-drawer'
 
@@ -55,18 +55,6 @@ import desktopLogo from '../../images/desktopLogo.png'
 
 import WordmarkWhite from '../../images/WordmarkWhite.png'
 
-/*
-https://ant.design/components/breadcrumb/#components-breadcrumb-demo-router
-Modified so that undefined links to home (glitch?)
-*/
-function breadcrumbRenderFix (route, params, routes, paths) {
-  const last = routes.indexOf(route) === routes.length - 1
-  const path = paths.join('/')
-  return last
-    ? <span>{route.breadcrumbName}</span>
-    : <Link to={path || '/'}>{route.breadcrumbName}</Link>
-}
-
 // @connect(state => ({ screen: state.screen }))
 @compose(
   connect(state => ({ screen: state.screen })),
@@ -79,7 +67,7 @@ class Template extends React.Component {
   }
   handleToggle = () => this.setState({ open: !this.state.open })
   render (
-    { children, routes, screen } = this.props,
+    { children, screen } = this.props,
     { open } = this.state
   ) {
     // React-router is separated from redux store - too heavy to persist.
@@ -119,12 +107,6 @@ class Template extends React.Component {
             sidebar={<Nav />}
            >
             <div className={styles['body']}>
-              {routes[1].path &&
-                <Breadcrumb
-                  className={styles['breadcrumb']}
-                  routes={routes} itemRender={breadcrumbRenderFix}
-                 />
-               }
               {children || <Spin size='large' tip='Loading Page...' />}
             </div>
           </Drawer>
@@ -135,8 +117,6 @@ class Template extends React.Component {
 }
 Template.propTypes = {
   children: PropTypes.object.isRequired,
-  router: PropTypes.object.isRequired,
-  routes: PropTypes.array.isRequired,
   screen: PropTypes.object
 }
 export default Template

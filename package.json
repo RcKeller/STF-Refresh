@@ -41,7 +41,7 @@
     "node": ">=6.x"
   },
   "dependencies": {
-    "antd": "^2.11.1",
+    "antd": "^2.12.8",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
