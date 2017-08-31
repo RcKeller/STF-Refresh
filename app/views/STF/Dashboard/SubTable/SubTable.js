@@ -109,6 +109,7 @@ class SubTable extends React.Component {
               pagination={false}
               bordered={false}
             />
+            <h2>{`Total: ${currency(manifest.total)}`}</h2>
           </Col>
           {report
             ? <Col className='gutter-row' span={24} lg={12}>
@@ -119,6 +120,7 @@ class SubTable extends React.Component {
                 pagination={false}
                 bordered={false}
               />
+              <h2>{`Total: ${currency(report.total)}`}</h2>
             </Col>
             : <em>The author has not reported any expenditures.</em>
           }

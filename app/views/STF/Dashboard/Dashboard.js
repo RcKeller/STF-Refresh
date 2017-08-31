@@ -120,14 +120,6 @@ class Dashboard extends React.Component {
       2000,
       new Date().getFullYear() + 1
     )
-    //  Columns are defined in render because they have many data dependencies.
-    // const due = (date) => {
-    //   let localDate = new Date(date)
-    //   //  Date is in the future, display due date.
-    //   return Date.now() - localDate.getTime()
-    //     ? localDate.toLocaleDateString('en-US', { timeZone: 'UTC' })
-    //     : ''
-    // }
     const columns = [
       {
         title: 'ID',
@@ -144,8 +136,7 @@ class Dashboard extends React.Component {
         onFilter: (value, record) =>
           record.proposal.year.toString().includes(value),
         width: 90
-      },
-      {
+      }, {
         title: 'Q',
         dataIndex: 'proposal.quarter',
         key: 'quarter',
@@ -158,16 +149,26 @@ class Dashboard extends React.Component {
         ],
         onFilter: (value, record) => record.proposal.quarter.includes(value),
         width: 50
-      },
-      {
+      }, {
+        title: 'Type',
+        dataIndex: 'manifest.type',
+        key: 'manifest.type',
+        render: text => <span>{_.capitalize(text)}</span>,
+        filters: [
+          { text: 'Original Proposal', value: 'Original' },
+          { text: 'Supplemental Award', value: 'Supplemental' },
+          { text: 'Partial Funding', value: 'Partial' }
+        ],
+        onFilter: (value, record) => record.manifest.type.includes(value),
+        width: 120
+      }, {
         title: 'Title',
         dataIndex: 'proposal.title',
         key: 'proposal.title',
         render: (text, record) => (
           <span>
             <Link to={`/proposals/${record.proposal.year}/${record.proposal.number}`}>
-              <b>{`${_.capitalize(record.manifest.type)}: `}</b>
-              <span>{record.proposal.title}</span>
+              {record.proposal.title}
             </Link>
             <br />
             <em>{record.proposal.category}</em>
@@ -220,12 +221,10 @@ class Dashboard extends React.Component {
           : [],
         onFilter: (value, record) => record.proposal.category === value,
         width: 150
-      },
-      {
+      }, {
         title: 'Awarded',
         dataIndex: 'proposal.received',
         key: 'proposal.received',
-        // render: text => <span>{text ? currency(text) : '0'}</span>,
         render: (text, record) => (
           <span>
             {text ? currency(text) : '$0'}
@@ -233,23 +232,37 @@ class Dashboard extends React.Component {
             <Badge status={indicators[record.proposal.status] || 'default'} text={record.proposal.status} />
           </span>
         ),
-        sorter: (a, b) => a.proposal.received - b.proposal.received,
-        filters: enums
-          ? enums.statuses.map(status => {
-            return { text: status, value: status }
-          })
-          : [],
-        onFilter: (value, record) => record.proposal.status === value
-      },
-      {
+        sorter: (a, b) => a.proposal.received - b.proposal.received
+      }, {
+        title: 'Spent',
+        dataIndex: 'manifest.report.total',
+        key: 'manifest.report.total',
+        render: (text, record) => {
+          let percentage = Number.parseInt(record.manifest.report.total / record.proposal.received)
+          if (Number.isNaN(percentage)) percentage = 0
+          else if (percentage > 100) percentage = 100
+          return (
+            <span>
+              {text ? currency(text) : 'N/A'}
+              <br />
+              <div style={{ width: 100 }}>
+                <Progress
+                  percent={percentage}
+                  strokeWidth={5} />
+              </div>
+            </span>
+          )
+        },
+        sorter: (a, b) => a.manifest.report.total - b.manifest.report.total
+      }, {
         title: 'Budget #',
         dataIndex: 'manifest.report.budget',
-        key: 'manifest.report.budget'
+        key: 'manifest.report.budget',
+        width: 100
       }, {
         title: 'Report / Due',
         dataIndex: 'manifest.report.due',
         key: 'manifest.report.due',
-        // render: text => <span>{text ? currency(text) : '0'}</span>,
         render: (text, record) => (
           <span>
             {text
@@ -259,7 +272,8 @@ class Dashboard extends React.Component {
             }
           </span>
         ),
-        sorter: (a, b) => a.report.due - b.report.due
+        sorter: (a, b) => a.report.due - b.report.due,
+        width: 130
       }
     ]
     return (
