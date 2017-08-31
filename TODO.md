@@ -8,7 +8,7 @@ Enhancements:
 
 
 Known issues:
--Frontpage feed
+<!-- -Frontpage feed -->
 <!-- -Update total received -->
 -Update review page
 -Update contacts update page

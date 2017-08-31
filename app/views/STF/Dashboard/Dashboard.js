@@ -260,7 +260,7 @@ class Dashboard extends React.Component {
         key: 'manifest.report.budget',
         width: 100
       }, {
-        title: 'Report / Due',
+        title: 'Report Due',
         dataIndex: 'manifest.report.due',
         key: 'manifest.report.due',
         render: (text, record) => (

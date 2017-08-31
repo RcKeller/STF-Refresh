@@ -46,7 +46,7 @@ const reportColumns = [{
   dataIndex: 'price',
   key: 'price',
   render: (text, record) => <span>{currency(text) || '$0'}</span>,
-  sorter: (a, b) => a.price - b.price,
+  sorter: (a, b) => a.price - b.price
 }, {
   title: 'Quantity',
   dataIndex: 'quantity',
@@ -55,7 +55,7 @@ const reportColumns = [{
 }, {
   title: 'Subtotal',
   render: (text, record) => <span>{currency(record.price * record.quantity) || '$0'}</span>,
-  sorter: (a, b) => (a.price * a.quantity) - (b.price * b.quantity),
+  sorter: (a, b) => (a.price * a.quantity) - (b.price * b.quantity)
 }
 ]
 
@@ -66,41 +66,25 @@ class SubTable extends React.Component {
     { contacts, manifest, report } = this.props
   ) {
     return (
-      <div>
-      <Row type="flex" justify="space-between" align="bottom">
-        <Col className='gutter-row' span={24} lg={12}>
-          <h2>Award</h2>
-          <h6><em>{`${_.capitalize(manifest.type)} Proposal`}</em></h6>
-          <h5>{manifest.title}</h5>
-          <p>{manifest.body}</p>
-        </Col>
-        <Col className='gutter-row' span={24} lg={12}>
-          {report &&
+      <div style={{ backgroundColor: '#fff' }}>
+        <Row type='flex' justify='space-between' align='bottom'>
+          <Col className='gutter-row' span={24} lg={12}>
+            <h2>Award</h2>
+            <h6><em>{`${_.capitalize(manifest.type)} Proposal`}</em></h6>
+            <h5>{manifest.title}</h5>
+            <p>{manifest.body}</p>
+          </Col>
+          <Col className='gutter-row' span={24} lg={12}>
+            {report &&
             <div>
               <h2>Expenditures</h2>
               <h5>{report.title}</h5>
               <p>{report.body}</p>
             </div>
           }
-        </Col>
-      </Row>
-        {/* <Collapse bordered={false} >
-          {contacts.map((c, i) => (
-            <Panel key={i} header={
-              <span>
-                {`${_.capitalize(c.role)} Contact: `}
-                <em>{`${c.name}, ${c.title}`}</em>
-              </span>
-            }>
-              <ul>
-                <li>NetID: {c.netID}</li>
-                <li>Phone: {c.phone}</li>
-                <li>Mailbox: {c.mailbox}</li>
-              </ul>
-            </Panel>
-          ))}
-        </Collapse> */}
-        <Row type="flex" justify="space-between" align="bottom">
+          </Col>
+        </Row>
+        <Row type='flex' justify='space-between' align='bottom'>
           <Col className='gutter-row' span={24} lg={12}>
             <Table id={manifest._id}
               columns={manifestColumns}
@@ -125,6 +109,23 @@ class SubTable extends React.Component {
             : <em>The author has not reported any expenditures.</em>
           }
         </Row>
+        <hr />
+        <Collapse bordered={false} >
+          {contacts.map((c, i) => (
+            <Panel key={i} header={
+              <span>
+                {`${_.capitalize(c.role)} Contact: `}
+                <em>{`${c.name}, ${c.title}`}</em>
+              </span>
+            }>
+              <ul>
+                <li>NetID: {c.netID}</li>
+                <li>Phone: {c.phone}</li>
+                <li>Mailbox: {c.mailbox}</li>
+              </ul>
+            </Panel>
+          ))}
+        </Collapse>
       </div>
     )
   }
