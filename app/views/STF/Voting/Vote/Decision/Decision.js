@@ -48,14 +48,15 @@ class Decision extends React.Component {
           author: user._id
         }, values)
         //  TODO: Add custom update func
-        decision._id
-          ? api.patch('decision', submission, { id: decision._id })
-          .then(message.success('Decision updated!'))
-          .catch(err => {
-            message.warning('Decision failed to update - Unexpected client error')
-            console.warn(err)
-          })
-          : api.post('decision', submission)
+        // decision._id
+        //   ? api.patch('decision', submission, { id: decision._id })
+        //   .then(message.success('Decision updated!'))
+        //   .catch(err => {
+        //     message.warning('Decision failed to update - Unexpected client error')
+        //     console.warn(err)
+        //   })
+        //   : api.post('decision', submission)
+        api.post('decision', submission)
           .then(message.success('Decision posted!'))
           .catch(err => {
             message.warning('Decision failed to post - Unexpected client error')
