@@ -9,5 +9,9 @@
     "clientSecret": "6cKCWD75gHgzCvM4VQyR5_TU",
     "callbackURL": "/auth/google/callback"
   },
+  "slack": {
+    "token": "xoxb-235361904727-5DyC1qvmDuYMAPq0KtkrAaWN",
+    "name": "Calcifer"
+  },
   "version": "v1"
 }

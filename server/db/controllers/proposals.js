@@ -1,5 +1,6 @@
 import REST from './rest'
 import { Proposal } from '../models'
+import { Slack } from '../../integrations'
 
 export default class Proposals extends REST {
   constructor () {
@@ -48,7 +49,14 @@ export default class Proposals extends REST {
                   ? sorted[0] + 1
                   : 1
                 const newData = Object.assign({}, data, { number })
-                return super.patch(id, newData, query)
+                return super
+                  .patch(id, newData, query)
+                  .then(doc => {
+                    // Slack.post('test', JSON.stringify(doc))
+                    // Slack.announceNewProposal(doc)
+                    this.announceNew(id)
+                    return doc
+                  })
               })
           } else {
             return super.patch(id, data, query)
@@ -98,5 +106,12 @@ export default class Proposals extends REST {
         break
     }
     return quarter
+  }
+  announceNew (id) {
+    return this.model
+      .findById(id)
+      .populate('body contacts')
+      .then(doc => Slack.announceNewProposal(doc))
+      .catch(err => console.warn(err))
   }
 }
