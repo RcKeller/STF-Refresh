@@ -8,7 +8,19 @@ const ConfigSchema = new mongoose.Schema({
   //  Submissions: Open or closed (default to open)
   submissions: { type: Boolean, default: true },
   //  Stage: Where we are on the frontpage timeline (voting, deliberation, etc)
-  stage: String,
+  news: {
+    type: String,
+    default: faker.lorem.paragraph()
+  },
+  timeline: {
+    type: Array,
+    default: [
+      faker.company.bsNoun(),
+      faker.company.bsNoun(),
+      faker.company.bsNoun(),
+      faker.company.bsNoun()
+    ]
+  },
   enums: {
     //  Basic arrays
     categories: {
@@ -59,12 +71,7 @@ const dummyConfigs = (min, ids) => {
         organizations: [
           faker.company.bsNoun(),
           faker.company.bsNoun()
-        ],
-        announcements: [
-          faker.lorem.paragraph(),
-          faker.lorem.paragraph()
-        ],
-        stage: faker.company.bsNoun()
+        ]
       })
       Config.create(fake, (error) => {
         if (!error) { console.log(`SEED: Created fake Config scheme`) }

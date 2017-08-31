@@ -6,25 +6,29 @@ import { connectRequest } from 'redux-query'
 
 import api from '../../services'
 import { Link } from 'react-router'
-import { Row, Col, Card, Timeline, Carousel, Collapse, Avatar } from 'antd'
+import { Row, Col, Spin, Card, Timeline, Carousel, Collapse, Avatar } from 'antd'
 const Item = Timeline.Item
 const Panel = Collapse.Panel
 
 import styles from './FrontPage.css'
 @compose(
   connect(state => ({
+    endorsements: state.db.comments,
     stage: state.db.config && state.db.config.stage,
-    endorsements: state.db.comments
+    news: state.db.config && state.db.config.news,
+    timeline: state.db.config && state.db.config.timeline
   })),
   // connectRequest(() => api.get('comments'))
   connectRequest(() => api.get('comments', {
-      join: ['proposal']
+    join: ['proposal']
   }))
 )
 class FrontPage extends React.Component {
   render (
-    { endorsements } = this.props
+    { news, timeline, endorsements } = this.props
   ) {
+    let past = Array.isArray(timeline) ? timeline.slice() : []
+    let future = past.pop()
     return (
       <article className={styles['page']}>
         <Helmet title='Home' />
@@ -51,34 +55,31 @@ class FrontPage extends React.Component {
             </Col>
             <Col className='gutter-row' span={24} md={8}>
               <h2>Announcements</h2>
-              <p>Lorem ipsum, instructions, etc.</p>
-              <Timeline pending='See more'>
-                <Item color='green'>Process A</Item>
-                <Item color='green'>Process B</Item>
-                <Item color='blue'>Hearing Proposals</Item>
-              </Timeline>
+              <p>{news || 'No news for now.'}</p>
+              {past && future
+                ? <Timeline pending={future}>
+                  {past.map((e, i) => (
+                    <Item key={i} color='green'>{e}</Item>
+                  ))}
+                </Timeline>
+                : <em>We are currently developing our schedule.</em>
+              }
             </Col>
             <Col className='gutter-row' span={24} md={8}>
               <h4>See what people are saying...</h4>
-                <Collapse accordion bordered={false} defaultActiveKey={['0']}>
-                  {endorsements && endorsements.map((m, i) => (
-                    <Panel key={i} header={`${m.user.name} (${m.user.netID})`} key={i}>
+              <Collapse accordion bordered={false} defaultActiveKey={['0']}>
+                {endorsements
+                  ? endorsements.map((m, i) => (
+                    <Panel key={i} header={`${m.user.name} (${m.user.netID})`}>
                       <span>
-                        <p>
-                          {m.body}
-                        </p>
+                        <p>{m.body}</p>
                         <em>For <Link to={`${m.proposal.year}/${m.proposal.number}`}>{m.proposal.title}</Link></em>
                       </span>
                     </Panel>
-                  ))}
-                  {/* {endorsements && endorsements.map(m => (
-                    <Panel header='This is panel header 1' key='1'>
-                    <div key={m._id}>
-                      <span>{`${m.user.name} (${m.user.netID})`}</span>
-                      <em>For <Link to={`${m.proposal.year}/${m.proposal.number}`}></Link></em>
-                    </div>
-                  ))} */}
-                </Collapse>
+                  ))
+                  : <Spin size='large' tip='Loading...' />
+                }
+              </Collapse>
             </Col >
           </Row>
         </section>

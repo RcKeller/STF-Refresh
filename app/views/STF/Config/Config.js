@@ -25,7 +25,9 @@ import styles from './Config.css'
       user: state.user,
       id: state.db.config && state.db.config._id,
       enums: state.db.config && state.db.config.enums,
-      submissions: state.db.config && state.db.config.submissions
+      submissions: state.db.config && state.db.config.submissions,
+      news: state.db.config && state.db.config.news,
+      timeline: state.db.config && state.db.config.timeline
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
@@ -48,13 +50,15 @@ class Config extends React.Component {
     })
   }
   componentDidMount () {
-    const { form, enums, submissions } = this.props
+    const { form, enums, submissions, news, timeline } = this.props
     if (form && enums) {
       const { organizations, categories, questions } = enums
       const orgCodeMap = Object.keys(organizations)
         .map(key => `${key}:${organizations[key]}`)
       form.setFieldsValue({
         submissions,
+        news,
+        timeline,
         categories,
         reviewQuestions: questions.review,
         organizations: orgCodeMap
@@ -63,10 +67,27 @@ class Config extends React.Component {
   }
   handleSubmissions = (submissions) => {
     const { api, id } = this.props
-    console.log('sub', { submissions })
     api.patch('configs', { submissions }, { id })
-    //  BUG: Why does this not patch properly?
     .then(message.warning(`Proposal submissions are now ${submissions ? 'open' : 'closed'}!`), 10)
+    .catch(err => {
+      message.warning(`Failed to update - client error`)
+      console.warn(err)
+    })
+  }
+  handleNews = (news) => {
+    const { api, id } = this.props
+    api.patch('configs', { news }, { id })
+    .then(message.warning(`News updated!`), 10)
+    .catch(err => {
+      message.warning(`Failed to update - client error`)
+      console.warn(err)
+    })
+  }
+
+  handleTimeline = (timeline) => {
+    const { api, id } = this.props
+    api.patch('configs', { timeline }, { id })
+    .then(message.warning(`News updated!`), 10)
     .catch(err => {
       message.warning(`Failed to update - client error`)
       console.warn(err)
@@ -141,11 +162,23 @@ class Config extends React.Component {
                 />
               )}
             </FormItem>
+            <FormItem {...layout} label='News'>
+              {form.getFieldDecorator('news')(
+                <Input type='textarea' rows={6} onPressEnter={(e) => this.handleNews(e.target.value)} />
+              )}
+            </FormItem>
+            <FormItem {...layout} label={<Label title='Timeline Points'
+              message={'Add or remove timeline points from the frontpage. The last elementa added is shown as the pending or upcoming event..'} />}
+            >
+              {form.getFieldDecorator('timeline')(
+                <Select mode='tags' onChange={this.handleTimeline} />
+              )}
+            </FormItem>
             <FormItem {...layout} label={<Label title='Organizations'
               message={'This includes budget codes as well, separated by a colon. Format: <name>:<budgetcode>'} />}
             >
               {form.getFieldDecorator('organizations')(
-                <Select mode='tags' placeholder='Type the name of an organization to add' onChange={this.handleOrganizations}>
+                <Select mode='tags' onChange={this.handleOrganizations}>
                   { //  Organizations are encoded as a string map for ease of use.
                     Object.keys(enums.organizations)
                     .map(key => (

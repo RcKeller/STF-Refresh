@@ -83,22 +83,12 @@ class Membership extends React.Component {
     const body = { user, spectator: false, member: false, admin: false }
     console.log(body)
     const update = { users: (prev, next) => {
-      // console.log(prev, next)
       let newData = prev.slice()
       //  If we got a valid response (contains an STF auth object)
       if (typeof next === 'object') {
         //  Find the user's data within our list of members. Complete the object via merge, add to our user list
-        // let userData = prev.find(member => member._id === next.user)
-        // Object.assign(userData, next)
-        // console.warn(userData, newData)
-        // newData.push(userData)
         let index = newData.findIndex(member => member._id === next.user)
-        console.warn(newData[index])
-        // newData[index].stf = next
         Object.assign(newData[index], { stf: next })
-        // Object.assign(userData, next)
-        // console.warn(userData, newData)
-        // newData.push(userData)
       }
       return newData
     }}
@@ -106,36 +96,19 @@ class Membership extends React.Component {
   }
   handleToggle = (change, record, index) => {
     //  Assign the change to a body, send it to the server.
-    console.warn(change, record, index)
     const { api } = this.props
     const body = Object.assign(record.stf, change)
     const id = body._id
     // // Update the record at the table's index
-    // const update = { stf: (prev, next) => {
-    //   let newData = prev.slice()
-    //   newData[index] = body
-    //   return newData
-    // }}
     const update = { users: (prev, next) => {
-      // console.log(prev, next)
-      // let newData = prev.slice()
-      // newData[index] = body
-      // return newData
       return prev
     }}
-    console.warn('body', body)
     api.toggle(id, body, update)
-    // .then(message.success(('Authorization for user updated!'), 10))
-    // .catch(err => {
-    //   message.warning(`Failed to update user - client error`)
-    //   console.warn(err)
-    // })
   }
   render (
     { columns } = this,
     { committee, users } = this.props
   ) {
-    // const UserOptions = users.map(user => <Option key={user._id}>{`${user.name} (${user.netID})`}</Option>)
     return (
       <section>
         <h1>Committee Membership</h1>
@@ -153,18 +126,13 @@ class Membership extends React.Component {
                   placeholder='Add a user to the STF...'
                   onSelect={this.handleAddMember}
                   >
-                    {users.map(user => <Option key={user._id}>{`${user.name} (${user.netID})`}</Option>)}
-                  </AutoComplete>
+                  {users.map(user => <Option key={user._id}>{`${user.name} (${user.netID})`}</Option>)}
+                </AutoComplete>
                 <p>
                   You may add any user to the committee (not necessarily with any auth level), as long as they have logged into the website before. This is irreversible.
                 </p>
-            </div>
+              </div>
             }
-            // footer={() => (
-            //   <Input label='Add a member by netID' prefix={<Icon type='user' />}
-            //     onPressEnter={(e) => this.handleAddMember(e.target.value)}
-            // />
-            // )}
           />
         }
       </section>
