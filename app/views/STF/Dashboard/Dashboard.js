@@ -21,6 +21,8 @@ import {
   Icon
 } from 'antd'
 
+import SubTable from './SubTable/SubTable'
+
 //  Status indicator mapping for badge components
 const indicators = {
   'In Review': 'default',
@@ -34,6 +36,12 @@ const currency = number =>
     style: 'currency',
     currency: 'USD'
   })
+
+const expandedRowRender = (record, i) => {
+  console.log(record, i)
+  return <SubTable manifest={record.manifest} report={record.manifest && record.manifest.report} />
+  // return <span key={record._id}>test</span>
+}
 
 //  Import modular CSS. Needs to run through JS because styles are hashed.
 import styles from './Dashboard.css'
@@ -113,6 +121,13 @@ class Dashboard extends React.Component {
       new Date().getFullYear() + 1
     )
     //  Columns are defined in render because they have many data dependencies.
+    // const due = (date) => {
+    //   let localDate = new Date(date)
+    //   //  Date is in the future, display due date.
+    //   return Date.now() - localDate.getTime()
+    //     ? localDate.toLocaleDateString('en-US', { timeZone: 'UTC' })
+    //     : ''
+    // }
     const columns = [
       {
         title: 'ID',
@@ -149,9 +164,13 @@ class Dashboard extends React.Component {
         dataIndex: 'proposal.title',
         key: 'proposal.title',
         render: (text, record) => (
-          <Link to={`/proposals/${record.proposal.year}/${record.proposal.number}`}>
-            {record.proposal.title}
-          </Link>
+          <span>
+            <Link to={`/proposals/${record.proposal.year}/${record.proposal.number}`}>
+              {record.proposal.title}
+            </Link>
+            <br />
+            <em>{record.proposal.category}</em>
+          </span>
         ),
         filterDropdown: (
           <Input
@@ -220,6 +239,24 @@ class Dashboard extends React.Component {
           })
           : [],
         onFilter: (value, record) => record.proposal.status === value
+      },
+      {
+        title: 'Report / Due',
+        dataIndex: 'manifest.report.budget',
+        key: 'manifest.report.budget',
+        // render: text => <span>{text ? currency(text) : '0'}</span>,
+        render: (text, record) => (
+          <span>
+            {text || 'N/A'}
+            <br />
+            <em>{record.manifest.report
+              ? new Date(record.manifest.report.due)
+                .toLocaleDateString('en-US', { timeZone: 'UTC' })
+              : 'N/A'
+            }</em>
+          </span>
+        ),
+        // sorter: (a, b) => a.report.due - b.report.due
       }
     ]
     return (
@@ -233,6 +270,8 @@ class Dashboard extends React.Component {
               sort
               size={screen.lessThan.medium ? 'small' : 'middle'}
               columns={columns}
+              rowKey={record => record._id}
+              expandedRowRender={expandedRowRender}
             />
             }
       </article>
