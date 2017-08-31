@@ -37,11 +37,11 @@ const currency = number =>
     currency: 'USD'
   })
 
-const expandedRowRender = (record, i) => {
-  console.log(record, i)
-  return <SubTable manifest={record.manifest} report={record.manifest && record.manifest.report} />
-  // return <span key={record._id}>test</span>
-}
+const expandedRowRender = (record, i) => <SubTable
+  contacts={record.proposal && record.proposal.contacts}
+  manifest={record.manifest}
+  report={record.manifest && record.manifest.report}
+/>
 
 //  Import modular CSS. Needs to run through JS because styles are hashed.
 import styles from './Dashboard.css'
@@ -241,28 +241,30 @@ class Dashboard extends React.Component {
         onFilter: (value, record) => record.proposal.status === value
       },
       {
-        title: 'Report / Due',
+        title: 'Budget #',
         dataIndex: 'manifest.report.budget',
-        key: 'manifest.report.budget',
+        key: 'manifest.report.budget'
+      }, {
+        title: 'Report / Due',
+        dataIndex: 'manifest.report.due',
+        key: 'manifest.report.due',
         // render: text => <span>{text ? currency(text) : '0'}</span>,
         render: (text, record) => (
           <span>
-            {text || 'N/A'}
-            <br />
-            <em>{record.manifest.report
-              ? new Date(record.manifest.report.due)
+            {text
+              ? new Date(text)
                 .toLocaleDateString('en-US', { timeZone: 'UTC' })
               : 'N/A'
-            }</em>
+            }
           </span>
         ),
-        // sorter: (a, b) => a.report.due - b.report.due
+        sorter: (a, b) => a.report.due - b.report.due
       }
     ]
     return (
       <article className={styles['article']}>
-        <h1>STF Proposals</h1>
-        <Helmet title='Proposals' />
+        <h1>Budgeting Dashboard</h1>
+        <Helmet title='Dashboard' />
         {!awards
             ? <Spin size='large' tip='Loading...' />
             : <Table
