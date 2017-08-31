@@ -166,7 +166,8 @@ class Dashboard extends React.Component {
         render: (text, record) => (
           <span>
             <Link to={`/proposals/${record.proposal.year}/${record.proposal.number}`}>
-              {record.proposal.title}
+              <b>{`${_.capitalize(record.manifest.type)}: `}</b>
+              <span>{record.proposal.title}</span>
             </Link>
             <br />
             <em>{record.proposal.category}</em>
