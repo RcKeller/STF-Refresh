@@ -9,7 +9,7 @@ Enhancements:
 
 Known issues:
 -Frontpage feed
--Update total received
+<!-- -Update total received -->
 -Update review page
 -Update contacts update page
 POST of a new proposal's manifest is failing to go through, though no errors are logged.

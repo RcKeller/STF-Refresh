@@ -20,6 +20,7 @@ const SplitProposals = (l, c) => require.ensure([], () => c(null, require('./vie
 const SplitProposal = (l, c) => require.ensure([], () => c(null, require('./views/Proposals/Proposal/Proposal').default))
 const SplitBlocks = (l, c) => require.ensure([], () => c(null, require('./views/Blocks/Blocks').default))
 const SplitBlock = (l, c) => require.ensure([], () => c(null, require('./views/Blocks/Block/Block').default))
+const SplitDashboard = (l, c) => require.ensure([], () => c(null, require('./views/STF/Dashboard/Dashboard').default))
 const SplitVoting = (l, c) => require.ensure([], () => c(null, require('./views/STF/Voting/Voting').default))
 const SplitDocket = (l, c) => require.ensure([], () => c(null, require('./views/STF/Docket/Docket').default))
 const SplitConfig = (l, c) => require.ensure([], () => c(null, require('./views/STF/Config/Config').default))
@@ -65,41 +66,26 @@ export default (store) => {
   }
 
   return (
-    <Route path='/' breadcrumbName='Home' component={Template} >
+    <Route path='/' component={Template} >
       <IndexRoute getComponent={SplitFrontPage} />
-      {/* <Route path='*' breadcrumbName='404 - Page Not Found' getComponent={SplitNotFound} /> */}
 
-      <Route path='/faq' breadcrumbName='F.A.Q.' getComponent={SplitFAQ} />
-      <Route path='/about' breadcrumbName='About' getComponent={SplitAbout} />
-      <Route path='/contact' breadcrumbName='Contact Us' getComponent={SplitContact} />
+      <Route path='/faq' getComponent={SplitFAQ} />
+      <Route path='/about' getComponent={SplitAbout} />
+      <Route path='/contact' getComponent={SplitContact} />
 
-      <Route path='/proposals' breadcrumbName='Proposals' getComponent={SplitProposals} />
-      <Route path='/proposals/:year/:number' breadcrumbName='View Proposal' getComponent={SplitProposal} />
-      <Route path='/blocks' breadcrumbName='Blocks' getComponent={SplitBlocks} />
-      <Route path='/blocks/:number'
-        breadcrumbName='Block' getComponent={SplitBlock}
-      />
+      <Route path='/proposals' getComponent={SplitProposals} />
+      <Route path='/proposals/:year/:number' getComponent={SplitProposal} />
+      <Route path='/blocks' getComponent={SplitBlocks} />
+      <Route path='/blocks/:number' getComponent={SplitBlock} />
 
-      <Route path='/create'
-        onEnter={requireAuth}
-        breadcrumbName='Create Proposal' getComponent={SplitCreate}
-      />
-      <Route path='/edit/:id'
-        onEnter={requireAuth}
-        breadcrumbName='Edit Proposal' getComponent={SplitEdit}
-      />
-      <Route path='/voting'
-        onEnter={requireSTF}
-        breadcrumbName='Voting' getComponent={SplitVoting}
-      />
-      <Route path='/docket'
-        onEnter={requireSTF}
-        breadcrumbName='Set Docket' getComponent={SplitDocket}
-      />
-      <Route path='/config'
-        onEnter={requireSTF}
-        breadcrumbName='Site Config' getComponent={SplitConfig}
-      />
+      <Route path='/create' onEnter={requireAuth} getComponent={SplitCreate} />
+      <Route path='/edit/:id' onEnter={requireAuth} getComponent={SplitEdit} />
+      <Route path='/dashboard' onEnter={requireSTF} getComponent={SplitDashboard} />
+      <Route path='/voting' onEnter={requireSTF} getComponent={SplitVoting} />
+      <Route path='/docket' onEnter={requireSTF} getComponent={SplitDocket} />
+      <Route path='/config' onEnter={requireSTF} getComponent={SplitConfig} />
+
+      {/* <Route path='*' 404 - Page Not Found' getComponent={SplitNotFound} /> */}
     </Route>
   )
 }

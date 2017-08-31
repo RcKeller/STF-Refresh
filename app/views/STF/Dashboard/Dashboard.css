@@ -1,0 +1,6 @@
+@import '../../../css/layout';
+
+.article {
+  @apply --page;
+  padding: 0;
+}
