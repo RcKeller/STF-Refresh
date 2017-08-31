@@ -5,9 +5,10 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
 import api from '../../services'
-
-import { Row, Col, Card, Timeline, Carousel } from 'antd'
+import { Link } from 'react-router'
+import { Row, Col, Card, Timeline, Carousel, Collapse, Avatar } from 'antd'
 const Item = Timeline.Item
+const Panel = Collapse.Panel
 
 import styles from './FrontPage.css'
 @compose(
@@ -15,7 +16,10 @@ import styles from './FrontPage.css'
     stage: state.db.config && state.db.config.stage,
     endorsements: state.db.comments
   })),
-  connectRequest(() => api.get('comments'))
+  // connectRequest(() => api.get('comments'))
+  connectRequest(() => api.get('comments', {
+      join: ['proposal']
+  }))
 )
 class FrontPage extends React.Component {
   render (
@@ -31,7 +35,7 @@ class FrontPage extends React.Component {
           <div><h3>4</h3></div>
         </Carousel>
         <section className={styles['page-content']}>
-          <Row type="flex" justify="space-around" >
+          <Row type='flex' justify='space-around' >
             <Col className='gutter-row' span={24} md={8}>
               <h1>About the STF Committee</h1>
               <p>The STF committee...</p>
@@ -55,10 +59,26 @@ class FrontPage extends React.Component {
               </Timeline>
             </Col>
             <Col className='gutter-row' span={24} md={8}>
-
-              <Card bordered={false} title={<h4>See what people are saying...</h4>}>
-                Lorem ipsum...
-              </Card>
+              <h4>See what people are saying...</h4>
+                <Collapse accordion bordered={false} defaultActiveKey={['0']}>
+                  {endorsements && endorsements.map((m, i) => (
+                    <Panel key={i} header={`${m.user.name} (${m.user.netID})`} key={i}>
+                      <span>
+                        <p>
+                          {m.body}
+                        </p>
+                        <em>For <Link to={`${m.proposal.year}/${m.proposal.number}`}>{m.proposal.title}</Link></em>
+                      </span>
+                    </Panel>
+                  ))}
+                  {/* {endorsements && endorsements.map(m => (
+                    <Panel header='This is panel header 1' key='1'>
+                    <div key={m._id}>
+                      <span>{`${m.user.name} (${m.user.netID})`}</span>
+                      <em>For <Link to={`${m.proposal.year}/${m.proposal.number}`}></Link></em>
+                    </div>
+                  ))} */}
+                </Collapse>
             </Col >
           </Row>
         </section>

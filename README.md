@@ -1,11 +1,14 @@
+![Alt text](app/images/logo.png?raw=true "Title")
+
 # UW STF Web Refresh
 
-<img src="https://uwstf.org/img/logoname.png" alt="University of Washington Student Tech Fee" align="center" />
-
-![title](https://travis-ci.org/rykeller/STF-Refresh.svg?branch=v1.0.0)
 [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
-- [Original Repo](https://github.com/BBKolton/STF)
+![title](https://travis-ci.org/rykeller/STF-Refresh.svg?branch=v1.0.0)
+[![Code Climate](https://codeclimate.com/github/RcKeller/STF-Refresh/badges/gpa.svg)](https://codeclimate.com/github/RcKeller/STF-Refresh)
+[![Test Coverage](https://codeclimate.com/github/RcKeller/STF-Refresh/badges/coverage.svg)](https://codeclimate.com/github/RcKeller/STF-Refresh/coverage)
+
 - [Based on reactGo](https://github.com/reactGo/reactGo/) (adapted and optimized)
+- [Original Repo](https://github.com/BBKolton/STF)
 
 This is a full refresh of the technology behind uwstf.org. Built using modern best practices, automated testing and the intent of being run as a containerized, isolated process, this introduces a code base built-to-last and should put an end to churn in technologies and databases.
 
