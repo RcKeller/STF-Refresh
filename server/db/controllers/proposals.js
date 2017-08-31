@@ -111,7 +111,7 @@ export default class Proposals extends REST {
     return this.model
       .findById(id)
       .populate('body contacts')
-      .then(doc => Slack.announceNewProposal(doc))
+      .then(doc => Slack.announceProposal(doc))
       .catch(err => console.warn(err))
   }
 }

@@ -1,7 +1,9 @@
 import REST from './rest'
-import { Manifest, Item } from '../models'
+import { Manifest, Item, Proposal } from '../models'
 import mongoose from 'mongoose'
 import _ from 'lodash'
+
+import { Slack } from '../../integrations'
 
 export default class Manifests extends REST {
   constructor () {
@@ -18,8 +20,18 @@ export default class Manifests extends REST {
     //  NOTE: Should I assign a model var and return model.patch?
     return this.model
       .create(manifest)
-      .then(modelInstance => {
-        this.patch(modelInstance._id, { items }, query)
+      .then(model => {
+        switch (model.type) {
+          case 'supplemental':
+            Proposal
+              .findById(model.proposal)
+              .then(proposal => Slack.announceSupplemental(model, proposal))
+              .catch(err => console.warn(err))
+          case 'partial':
+              Slack.announcePartial(model)
+          default:
+            return this.patch(model._id, { items }, query)
+        }
       })
   }
 
