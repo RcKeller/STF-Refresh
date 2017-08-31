@@ -28,7 +28,10 @@ export default class Manifests extends REST {
               .then(proposal => Slack.announceSupplemental(model, proposal))
               .catch(err => console.warn(err))
           case 'partial':
-              Slack.announcePartial(model)
+            Proposal
+              .findById(model.proposal)
+              .then(proposal => Slack.announcePartial(model, proposal))
+              .catch(err => console.warn(err))
           default:
             return this.patch(model._id, { items }, query)
         }

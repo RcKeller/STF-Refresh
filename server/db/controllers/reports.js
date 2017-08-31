@@ -61,7 +61,8 @@ export default class Reports extends REST {
            }
          }
          // Update the report with the new child refs. Replace the entire thing to handle deleted records.
-         modelInstance['items'] = itemRefs
+         modelInstance.items = itemRefs
+         // Check for overexpenditure here
          return modelInstance.save()
        })
        .then(modelInstance => modelInstance)
