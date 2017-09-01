@@ -20,6 +20,8 @@ class Bot {
   constructor (token, name) {
     this.Bot = new SlackBot({ token, name })
     this.color = '#4b2e83'
+    //  Bot avatar
+    this.icon_emoji = ':calcifer:'
     //  Users to mention in announcements
     this.proposalOfficer = '@stfagent'
     this.financeManager = '@techfee'
@@ -33,7 +35,9 @@ class Bot {
     const { year, number, title, category, uac, organization, body, contacts, asked } = proposal
     const contact = contacts.find(contact => contact.role === 'primary')
     const message = 'A new proposal has been published!'
+    const { icon_emoji } = this
     const params = {
+      icon_emoji,
       attachments: [{
         title: `${year}-${number}: ${title} ${uac ? '(UAC)' : ''}`,
         title_link: `https://uwstf.org/proposal/${year}/${number}/`,
@@ -55,7 +59,9 @@ class Bot {
     const { total, body } = manifest
     const { year, number, title, uac, asked, received } = proposal
     const message = 'A new supplemental request was received!'
+    const { icon_emoji } = this
     const params = {
+      icon_emoji,
       attachments: [{
         pretext: this.proposalOfficer,
         title: `${year}-${number}: ${title} ${uac ? '(UAC)' : ''}`,
@@ -81,8 +87,10 @@ class Bot {
     const { total } = manifest
     const { year, number, title, uac, asked } = proposal
     const message = 'New partial (or "alternate") budget!'
+    const { icon_emoji } = this
     const params = {
       attachments: [{
+        icon_emoji,
         pretext: this.proposalOfficer,
         title: `${year}-${number}: ${title} ${uac ? '(UAC)' : ''}`,
         title_link: `https://uwstf.org/proposal/${year}/${number}/`,
@@ -104,7 +112,9 @@ class Bot {
     const awarded = manifest.total
     const reported = report.total
     const message = `WARNING: An overexpenditure was just reported!`
+    const { icon_emoji } = this
     const params = {
+      icon_emoji,
       attachments: [{
         pretext: this.financeManager,
         title: `${year}-${number}: ${title} ${uac ? '(UAC)' : ''}`,
