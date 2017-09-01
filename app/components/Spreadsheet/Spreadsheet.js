@@ -46,7 +46,8 @@ class SpreadSheet extends React.Component {
       let total = 0
       for (const record of rows) {
         const cost = recordsWithTax
-          ? record.price * record.tax * record.quantity
+          //  Tax isn't stored as a float, making that adjustment here.
+          ? record.price * record.quantity * (record.tax / 100)
           : record.price * record.quantity
         if (!Number.isNaN(cost)) total += cost
       }

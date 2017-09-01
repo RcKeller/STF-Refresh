@@ -14,3 +14,6 @@ Known issues:
 -Update contacts update page
 POST of a new proposal's manifest is failing to go through, though no errors are logged.
 Proposal refresh not working
+
+What should the initial value for supplements be?
+Flag for marking reports as finished.

@@ -1,7 +1,9 @@
 import REST from './rest'
-import { Report, Item } from '../models'
+import { Report, Item, Manifest } from '../models'
 import mongoose from 'mongoose'
 import _ from 'lodash'
+
+import { Slack } from '../../integrations'
 
 export default class Reports extends REST {
   constructor () {
@@ -63,6 +65,14 @@ export default class Reports extends REST {
          // Update the report with the new child refs. Replace the entire thing to handle deleted records.
          modelInstance.items = itemRefs
          // Check for overexpenditure here
+         if (!Number.isNaN(data.total) && data.manifest) {
+           Manifest
+            .findById(data.manifest)
+            .populate('author')
+            .then(manifest => {
+              if (data.total > manifest.total) Slack.announceOverexpenditure(data, manifest)
+            })
+         }
          return modelInstance.save()
        })
        .then(modelInstance => modelInstance)
