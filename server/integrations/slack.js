@@ -89,7 +89,7 @@ class Bot {
         fields: [
           { title: 'Original Ask', value: currency(asked), short: true },
           { title: 'Revised Ask', value: currency(total), short: true },
-          { title: '% of Original Ask', value: percentage(total / asked), short: true }
+          { title: '% of Original', value: percentage(total / asked), short: true }
         ],
         color: 'good'
       }
@@ -113,7 +113,7 @@ class Bot {
           { title: 'Awarded', value: currency(awarded), short: true },
           { title: 'Reported', value: currency(reported), short: true },
           { title: 'Overexpenditure', value: currency(reported - awarded), short: true },
-          { title: '% Overexpended', value: percentage(reported / awarded), short: true }
+          { title: 'Overexpended', value: percentage(reported / awarded), short: true }
         ],
         color: 'danger'
       }

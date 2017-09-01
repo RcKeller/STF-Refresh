@@ -68,7 +68,8 @@ export default class Reports extends REST {
          if (!Number.isNaN(data.total) && data.manifest) {
            Manifest
             .findById(data.manifest)
-            .populate('author')
+            .populate('proposal')
+            .exec()
             .then(manifest => {
               if (data.total > manifest.total) Slack.announceOverexpenditure(data, manifest)
             })
