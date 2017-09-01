@@ -10,7 +10,8 @@ class SimpleNumber extends EditorBase {
     Object.keys(updated).forEach((prop, i) => {
       let parsedProp = parseInt(updated[prop])
       //  Non-castable values become NaN. Convert those cases to 0.
-      if (isNaN(parsedProp)) parsedProp = 0
+      if (isNaN(parsedProp) || parsedProp < 0) parsedProp = 0
+      console.log('PARSEDPROP', parsedProp)
       updated[prop] = parsedProp
     })
     return updated
@@ -22,6 +23,7 @@ class SimpleNumber extends EditorBase {
   ) {
     return (
       <input type='text' className='form-control'
+        min={0}
         ref={ref}
         defaultValue={value}
         onBlur={onBlur}

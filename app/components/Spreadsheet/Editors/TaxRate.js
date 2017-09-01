@@ -3,14 +3,14 @@ import PropTypes from 'prop-types'
 
 import EditorBase from './EditorBase'
 
-class SimpleNumber extends EditorBase {
+class TaxRate extends EditorBase {
   getValue () {
     let updated = super.getValue()
     //  Multiple values can be updated. Cast all object props to ints.
     Object.keys(updated).forEach((prop, i) => {
-      let parsedProp = parseInt(updated[prop])
+      let parsedProp = parseFloat(updated[prop])
       //  Non-castable values become NaN. Convert those cases to 0.
-      if (isNaN(parsedProp)) parsedProp = 0
+      if (isNaN(parsedProp) || parsedProp < 0) parsedProp = 0
       updated[prop] = parsedProp
     })
     return updated
@@ -30,4 +30,4 @@ class SimpleNumber extends EditorBase {
   }
 }
 
-export default SimpleNumber
+export default TaxRate
