@@ -225,6 +225,7 @@ class Dashboard extends React.Component {
         title: 'Awarded',
         dataIndex: 'proposal.received',
         key: 'proposal.received',
+        //  FIXME: Use manifest.total instead, using decision to qualify if it's N/A or not.
         render: (text, record) => (
           <span>
             {text ? currency(text) : '$0'}
@@ -238,7 +239,10 @@ class Dashboard extends React.Component {
         dataIndex: 'manifest.report.total',
         key: 'manifest.report.total',
         render: (text, record) => {
-          let percentage = Number.parseInt(record.manifest.report.total / record.proposal.received)
+          let percentage = record.manifest.report.total > 0
+            ? Number.parseInt(record.manifest.report.total / record.proposal.received * 100)
+            : 0
+          // let percentage = Number.parseInt(record.proposal.received / record.manifest.report.total)
           if (Number.isNaN(percentage)) percentage = 0
           else if (percentage > 100) percentage = 100
           return (
@@ -272,7 +276,7 @@ class Dashboard extends React.Component {
             }
           </span>
         ),
-        sorter: (a, b) => a.report.due - b.report.due,
+        sorter: (a, b) => Date.parse(a.manifest.report.due) - Date.parse(b.manifest.report.due),
         width: 130
       }
     ]
