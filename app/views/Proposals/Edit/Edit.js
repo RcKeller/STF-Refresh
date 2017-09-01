@@ -11,7 +11,7 @@ import { redirectUnaffiliated } from '../../../util/selectors'
 import Introduction from './Introduction/Introduction'
 import Contacts from './Contacts/Contacts'
 import ProjectPlan from './ProjectPlan/ProjectPlan'
-import Manifest from './Manifest/Manifest'
+import Budget from './Budget/Budget'
 import Signatures from './Signatures/Signatures'
 import Publish from './Publish/Publish'
 
@@ -155,7 +155,7 @@ class Edit extends React.Component {
                 tab={<span style={{ color: manifest ? colors.green : colors.gold }}>
                   <Icon type='wallet' />Budget</span>
                 }>
-                <Manifest />
+                <Budget />
               </TabPane>
               <TabPane key='5'
                 tab={<span style={{ color: signatures ? colors.green : colors.gold }}>

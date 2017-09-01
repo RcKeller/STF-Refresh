@@ -78,7 +78,9 @@ class Signatures extends React.Component {
                     {form.getFieldDecorator(c.role, { valuePropName: 'checked' })(
                       //  Valueprop is a selector for antd switches, it's in the docs.
                       <Checkbox size='large'
-                        disabled={c.netID !== user.netID}
+                        //  FIXME: I've disabled the below validator for small scale live testing
+                        // disabled={c.netID !== user.netID}
+                        disabled={false}
                         onChange={(e) => this.handleToggle(e.target.checked, c)}
                       >
                         <span className={styles['checkbox-text']}>

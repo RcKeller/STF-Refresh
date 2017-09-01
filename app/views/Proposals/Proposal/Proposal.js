@@ -87,7 +87,7 @@ class Proposal extends React.Component {
               </TabPane>
             }
             {(author || stf) &&
-              <TabPane tab='Update' key='5' className={styles['tab-pane']}>
+              <TabPane tab='Update Contacts' key='5' className={styles['tab-pane']}>
                 <Update />
               </TabPane>
             }

@@ -29,3 +29,10 @@ Security features intentionally disabled for testing:
 
 Features up for debate:
   - Metrics currently do not refresh, upon update, since I want to capture a "snapshot" in time when you load the page. We could have this be real time, but we lose the benefit of being  able to compare before-after voting meetings.
+
+Known issues:
+  Refresh buttons
+
+Quirks of note:
+  Occasionally, when creating a new proposal, initial budgets that are submitted are dropped. I need help tracing the circumstances behind this.
+  To enforce consistency in the editing page, we pull data from the server every time a tab is selected. This prevents a erroneous field on the client side from being pushed and propegating multiple times, enforcing some integrity.

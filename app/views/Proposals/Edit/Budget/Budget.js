@@ -54,7 +54,7 @@ const columns = [{
   }),
   dispatch => ({ api: bindActionCreators(api, dispatch) })
 )
-class Manifest extends React.Component {
+class Budget extends React.Component {
   static propTypes = {
     api: PropTypes.object,
     proposal: PropTypes.string,
@@ -104,4 +104,4 @@ class Manifest extends React.Component {
     )
   }
 }
-export default Manifest
+export default Budget
