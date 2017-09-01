@@ -21,6 +21,11 @@ API for submission, but using connectForm to instantiate initial values.
   dispatch => ({ api: bindActionCreators(api, dispatch) })
 )
 class Publish extends React.Component {
+  static propTypes = {
+    api: PropTypes.object,
+    id: PropTypes.string,
+    published: PropTypes.bool
+  }
   handlePublish = () => {
     const { api, id } = this.props
     const body = {
@@ -72,9 +77,5 @@ class Publish extends React.Component {
     )
   }
 }
-Publish.propTypes = {
-  api: PropTypes.object,
-  id: PropTypes.string,
-  published: PropTypes.bool
-}
+
 export default Publish

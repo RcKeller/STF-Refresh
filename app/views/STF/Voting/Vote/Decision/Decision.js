@@ -30,6 +30,15 @@ const questions = ['Proposal Quality', 'Academic Merit']
   connectForm
 )
 class Decision extends React.Component {
+  static propTypes = {
+    form: PropTypes.object,
+    api: PropTypes.object,
+    id: PropTypes.string.isRequired,
+    proposal: PropTypes.string,
+    manifest: PropTypes.object,
+    review: PropTypes.object,
+    user: PropTypes.object
+  }
   componentDidMount () {
     const { form, decision } = this.props
     if (form && decision) {
@@ -48,20 +57,19 @@ class Decision extends React.Component {
           author: user._id
         }, values)
         //  TODO: Add custom update func
-        // decision._id
-        //   ? api.patch('decision', submission, { id: decision._id })
-        //   .then(message.success('Decision updated!'))
-        //   .catch(err => {
-        //     message.warning('Decision failed to update - Unexpected client error')
-        //     console.warn(err)
-        //   })
-        //   : api.post('decision', submission)
-        api.post('decision', submission)
-          .then(message.success('Decision posted!'))
-          .catch(err => {
-            message.warning('Decision failed to post - Unexpected client error')
-            console.warn(err)
-          })
+        decision._id
+          ? api.patch('decision', submission, { id: decision._id })
+            .then(message.success('Decision updated!'))
+            .catch(err => {
+              message.warning('Decision failed to update - Unexpected client error')
+              console.warn(err)
+            })
+          : api.post('decision', submission)
+            .then(message.success('Decision posted!'))
+            .catch(err => {
+              message.warning('Decision failed to post - Unexpected client error')
+              console.warn(err)
+            })
       }
     })
   }
@@ -97,14 +105,5 @@ class Decision extends React.Component {
       </section>
     )
   }
-}
-Decision.propTypes = {
-  form: PropTypes.object,
-  api: PropTypes.object,
-  id: PropTypes.string.isRequired,
-  proposal: PropTypes.string,
-  manifest: PropTypes.object,
-  review: PropTypes.object,
-  user: PropTypes.object
 }
 export default Decision

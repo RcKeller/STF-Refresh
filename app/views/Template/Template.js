@@ -61,6 +61,10 @@ import WordmarkWhite from '../../images/WordmarkWhite.png'
   connectRequest(() => api.get('config'))
 )
 class Template extends React.Component {
+  static propTypes = {
+    children: PropTypes.object.isRequired,
+    screen: PropTypes.object
+  }
   constructor (props) {
     super(props)
     this.state = { open: false }
@@ -115,8 +119,5 @@ class Template extends React.Component {
     )
   }
 }
-Template.propTypes = {
-  children: PropTypes.object.isRequired,
-  screen: PropTypes.object
-}
+
 export default Template

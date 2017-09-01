@@ -9,6 +9,18 @@ and has been refactored to support class syntax, destructuring, etc.
 Every editor will extend this. SimpleText exists as an example editor that I've refactored.
 */
 class EditorBase extends React.Component {
+  static propTypes = {
+    onKeyDown: PropTypes.func, //  Possible bug - not always present
+    value: PropTypes.any.isRequired,
+    onBlur: PropTypes.func.isRequired,
+    column: PropTypes.shape({
+      name: PropTypes.node.isRequired,
+      key: PropTypes.string.isRequired,
+      width: PropTypes.number.isRequired,
+      filterable: PropTypes.bool
+    }).isRequired,
+    commit: PropTypes.func //  Possible bug - not always present
+  }
   getStyle () {
     return {
       width: '100%'
@@ -29,19 +41,6 @@ class EditorBase extends React.Component {
   inheritContainerStyles () {
     return true
   }
-}
-
-EditorBase.propTypes = {
-  onKeyDown: React.PropTypes.func, //  Possible bug - not always present
-  value: React.PropTypes.any.isRequired,
-  onBlur: React.PropTypes.func.isRequired,
-  column: React.PropTypes.shape({
-    name: React.PropTypes.node.isRequired,
-    key: React.PropTypes.string.isRequired,
-    width: React.PropTypes.number.isRequired,
-    filterable: React.PropTypes.bool
-  }).isRequired,
-  commit: React.PropTypes.func //  Possible bug - not always present
 }
 
 export default EditorBase

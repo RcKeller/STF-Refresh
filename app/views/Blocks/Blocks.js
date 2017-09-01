@@ -34,6 +34,10 @@ const columns = [
   connectRequest(() => api.get('blocks'))
 )
 class Blocks extends React.Component {
+  static propTypes = {
+    blocks: PropTypes.array,
+    screen: PropTypes.object
+  }
   render ({ blocks, screen } = this.props) {
     return (
       <article className={styles['blocks']}>
@@ -50,8 +54,5 @@ class Blocks extends React.Component {
     )
   }
 }
-Blocks.propTypes = {
-  blocks: PropTypes.array,
-  screen: PropTypes.object
-}
+
 export default Blocks

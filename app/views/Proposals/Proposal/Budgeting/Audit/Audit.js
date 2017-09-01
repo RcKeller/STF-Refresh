@@ -8,6 +8,9 @@ import { connect } from 'react-redux'
   reports: state.db.proposal.reports
 }))
 class Audit extends React.Component {
+  static propTypes = {
+    report: PropTypes.object
+  }
   render ({ report } = this.props) {
     return (
       <section>
@@ -19,7 +22,4 @@ class Audit extends React.Component {
   }
 }
 
-Audit.propTypes = {
-  report: PropTypes.object
-}
 export default Audit

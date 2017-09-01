@@ -56,6 +56,14 @@ const columns = [{
   connectForm
 )
 class Supplemental extends React.Component {
+  static propTypes = {
+    //  the manifest index in store that is the basis for this supplemental.
+    indexInStore: PropTypes.number.isRequired,
+    form: PropTypes.object,
+    api: PropTypes.object,
+    proposal: PropTypes.string, //  _id
+    manifest: PropTypes.object
+  }
   componentDidMount () {
     const { form } = this.props
     // if (report) {
@@ -125,12 +133,4 @@ class Supplemental extends React.Component {
   }
 }
 
-Supplemental.propTypes = {
-  //  the manifest index in store that is the basis for this supplemental.
-  indexInStore: PropTypes.number.isRequired,
-  form: PropTypes.object,
-  api: PropTypes.object,
-  proposal: PropTypes.string, //  _id
-  manifest: PropTypes.object
-}
 export default Supplemental

@@ -18,6 +18,9 @@ import Manifests from './Manifests/Manifests'
   published: state.db.proposal.published
 }))
 class View extends React.Component {
+  static propTypes = {
+    proposal: PropTypes.object
+  }
   render ({ proposal, published, isLegacy } = this.props) {
     //  Once the proposal has loaded, render it. Only render body if published.
     return (
@@ -43,7 +46,5 @@ class View extends React.Component {
     )
   }
 }
-View.propTypes = {
-  proposal: PropTypes.object
-}
+
 export default View

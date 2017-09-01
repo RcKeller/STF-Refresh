@@ -9,6 +9,11 @@ import { Row, Col, Alert } from 'antd'
   overview: state.db.proposal.body.overview
 }))
 class Overview extends React.Component {
+  static propTypes = {
+    overview: PropTypes.object,
+    decision: PropTypes.object,
+    supplementals: PropTypes.object
+  }
   render ({ overview } = this.props) {
     return (
       <section>
@@ -39,28 +44,9 @@ class Overview extends React.Component {
             <p>{overview.impact.career}</p>
           </Col>
         </Row>
-        {/* {supplementals && supplementals.map((a, i) =>
-          <Alert key={i} type={!a.approved ? 'error' : 'info'}
-            message={<span>
-              <b>Request for supplementalal Funding ({++i})</b>
-              <h6>{a.contact.name} | DATE MISSING</h6>
-            </span>}
-            description={
-              <span>
-                <h6>{a.title}</h6>
-                <p>{a.body}</p>
-              </span>
-            }
-            />
-        )} */}
       </section>
     )
   }
 }
 
-Overview.propTypes = {
-  overview: PropTypes.object,
-  decision: PropTypes.object,
-  supplementals: PropTypes.object
-}
 export default Overview

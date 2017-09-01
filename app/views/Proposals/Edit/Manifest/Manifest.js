@@ -55,6 +55,11 @@ const columns = [{
   dispatch => ({ api: bindActionCreators(api, dispatch) })
 )
 class Manifest extends React.Component {
+  static propTypes = {
+    api: PropTypes.object,
+    proposal: PropTypes.string,
+    manifest: PropTypes.object
+  }
   handleSubmit = (items, total) => {
     console.log('HANDLE SUBMIT', items, total)
     let { api, proposal, manifest } = this.props
@@ -98,10 +103,5 @@ class Manifest extends React.Component {
       </div>
     )
   }
-}
-Manifest.propTypes = {
-  api: PropTypes.object,
-  proposal: PropTypes.string,
-  manifest: PropTypes.object
 }
 export default Manifest

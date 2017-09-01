@@ -18,6 +18,9 @@ import Partial from './Partial/Partial'
   stf: state.user && state.user.stf
 }))
 class Budgeting extends React.Component {
+  static propTypes = {
+    report: PropTypes.object
+  }
   render ({ budget, manifests, stf } = this.props) {
     //  Reduce an array that contains all indexes for approved manifests, make a report for each.
     const approvedManifests = manifests.reduce((required, manifest) => {
@@ -61,7 +64,4 @@ class Budgeting extends React.Component {
   }
 }
 
-Budgeting.propTypes = {
-  report: PropTypes.object
-}
 export default Budgeting

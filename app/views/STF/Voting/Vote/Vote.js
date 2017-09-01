@@ -28,6 +28,11 @@ There are two kinds of meetings:
     dispatch => ({ api: bindActionCreators(api, dispatch) })
 )
 class Vote extends React.Component {
+  static propTypes = {
+    id: PropTypes.string.isRequired,
+    manifest: PropTypes.object,
+    user: PropTypes.object
+  }
   render (
     { index, manifest } = this.props
   ) {
@@ -68,9 +73,5 @@ class Vote extends React.Component {
     )
   }
 }
-Vote.propTypes = {
-  id: PropTypes.string.isRequired,
-  manifest: PropTypes.object,
-  user: PropTypes.object
-}
+
 export default Vote

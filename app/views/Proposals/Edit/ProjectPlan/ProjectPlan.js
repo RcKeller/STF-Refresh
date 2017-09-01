@@ -111,6 +111,12 @@ const projectFields = [
   connectForm
 )
 class ProjectPlan extends React.Component {
+  static propTypes = {
+    form: PropTypes.object,
+    api: PropTypes.object,
+    parent: PropTypes.string,
+    body: PropTypes.object
+  }
   componentDidMount () {
     const { form, body } = this.props
     if (body) {
@@ -230,10 +236,4 @@ class ProjectPlan extends React.Component {
   }
 }
 
-ProjectPlan.propTypes = {
-  form: PropTypes.object,
-  api: PropTypes.object,
-  parent: PropTypes.string,
-  body: PropTypes.object
-}
 export default ProjectPlan

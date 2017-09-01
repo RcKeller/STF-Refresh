@@ -51,6 +51,9 @@ connectRequest will force a query if there's a mismatch.
   }))
 )
 class Proposal extends React.Component {
+  static propTypes = {
+    proposal: PropTypes.object
+  }
   render ({ proposal, id, title, published, user, forceRequest } = this.props) {
     const author = true // TODO
     const stf = user && user.stf
@@ -105,7 +108,4 @@ class Proposal extends React.Component {
   }
 }
 
-Proposal.propTypes = {
-  proposal: PropTypes.object
-}
 export default Proposal

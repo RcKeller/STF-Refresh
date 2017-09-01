@@ -7,6 +7,9 @@ import { Alert } from 'antd'
 
 @connect(state => ({ legacy: state.db.proposal.body.legacy }))
 class Legacy extends React.Component {
+  static propTypes = {
+    legacy: PropTypes.object
+  }
   render ({ legacy } = this.props) {
     return (
       <div>
@@ -15,11 +18,6 @@ class Legacy extends React.Component {
           message='Legacy Format'
           description='Our proposal process has changed significantly since Summer 2017. To learn more about the current process, click here.'
         />
-        {/* <Alert type='info' banner showIcon={false}
-          message={<h1>Proposal</h1>}
-          // message='This is a Legacy Proposal'
-          description='Our proposal process has changed significantly since Summer 2017. This is an older proposal that is not representative of our current intake process. To learn more about the current process, click here.'
-        /> */}
         {legacy.map((e, i) =>
           <div key={i}>
             <h5><em>{e.title}</em></h5>
@@ -31,7 +29,4 @@ class Legacy extends React.Component {
   }
 }
 
-Legacy.propTypes = {
-  legacy: PropTypes.object
-}
 export default Legacy

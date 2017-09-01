@@ -50,6 +50,15 @@ class SliderAndNumber extends React.Component {
   connectForm
 )
 class Review extends React.Component {
+  static propTypes = {
+    form: PropTypes.object,
+    api: PropTypes.object,
+    id: PropTypes.string.isRequired,
+    proposal: PropTypes.string,
+    manifest: PropTypes.object,
+    review: PropTypes.object,
+    user: PropTypes.object
+  }
   componentDidMount () {
     const { form, review } = this.props
     if (form && review) {
@@ -151,13 +160,5 @@ class Review extends React.Component {
     )
   }
 }
-Review.propTypes = {
-  form: PropTypes.object,
-  api: PropTypes.object,
-  id: PropTypes.string.isRequired,
-  proposal: PropTypes.string,
-  manifest: PropTypes.object,
-  review: PropTypes.object,
-  user: PropTypes.object
-}
+
 export default Review

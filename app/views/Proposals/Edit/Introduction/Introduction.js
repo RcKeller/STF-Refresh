@@ -28,6 +28,15 @@ import api from '../../../../services'
   connectForm
 )
 class Introduction extends React.Component {
+  static propTypes = {
+    form: PropTypes.object,
+    api: PropTypes.object,
+    parent: PropTypes.string,
+    title: PropTypes.string,
+    category: PropTypes.string,
+    organization: PropTypes.string,
+    uac: PropTypes.bool
+  }
   componentDidMount () {
     const { form, title, category, organization, uac } = this.props
     if (title) {
@@ -94,13 +103,4 @@ class Introduction extends React.Component {
   }
 }
 
-Introduction.propTypes = {
-  form: PropTypes.object,
-  api: PropTypes.object,
-  parent: PropTypes.string,
-  title: PropTypes.string,
-  category: PropTypes.string,
-  organization: PropTypes.string,
-  uac: PropTypes.bool
-}
 export default Introduction

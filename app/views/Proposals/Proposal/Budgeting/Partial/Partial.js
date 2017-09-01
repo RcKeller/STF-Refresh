@@ -49,6 +49,13 @@ const columns = [{
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   )
 class Partial extends React.Component {
+  static propTypes = {
+    api: PropTypes.object,
+    //  Proposal / Author-User ID
+    user: PropTypes.string,
+    proposal: PropTypes.string,
+    manifests: PropTypes.array
+  }
   constructor (props) {
     super(props)
     //  The user can specify the manifest they want to import items from.
@@ -106,11 +113,4 @@ class Partial extends React.Component {
   }
 }
 
-Partial.propTypes = {
-  api: PropTypes.object,
-  //  Proposal / Author-User ID
-  user: PropTypes.string,
-  proposal: PropTypes.string,
-  manifests: PropTypes.array
-}
 export default Partial

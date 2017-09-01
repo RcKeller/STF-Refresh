@@ -13,6 +13,10 @@ import styles from './Login.css'
   dispatch => ({ signOut: bindActionCreators(endSession, dispatch) })
 )
 class Login extends React.Component {
+  static propTypes = {
+    user: PropTypes.object,
+    signOut: PropTypes.func
+  }
   render ({ user, signOut } = this.props) {
     return (
       <div className={styles['login']}>
@@ -35,8 +39,4 @@ class Login extends React.Component {
   }
 }
 
-Login.propTypes = {
-  user: PropTypes.object,
-  signOut: PropTypes.func
-}
 export default Login

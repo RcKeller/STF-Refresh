@@ -59,9 +59,11 @@ const reportColumns = [{
 }
 ]
 
-// const expandedRowRender = record => <p><h6>Description: </h6>{record.description}</p>
-
 class SubTable extends React.Component {
+  static propTypes = {
+    manifest: PropTypes.object,
+    report: PropTypes.object
+  }
   render (
     { contacts, manifest, report } = this.props
   ) {
@@ -131,8 +133,4 @@ class SubTable extends React.Component {
   }
 }
 
-SubTable.propTypes = {
-  manifest: PropTypes.object,
-  report: PropTypes.object
-}
 export default SubTable

@@ -28,6 +28,9 @@ import styles from './Voting.css'
   }))
 )
 class Voting extends React.Component {
+  static propTypes = {
+    manifests: PropTypes.array
+  }
   constructor (props) {
     super(props)
     this.state = { docket: [] }
@@ -89,7 +92,5 @@ class Voting extends React.Component {
     )
   }
 }
-Voting.propTypes = {
-  manifests: PropTypes.array
-}
+
 export default Voting

@@ -20,6 +20,11 @@ import styles from './Nav.css'
   stf: (state.user && state.user.stf) || {}
 }))
 class Nav extends React.Component {
+  static propTypes = {
+    screen: PropTypes.object,
+    routing: PropTypes.object,
+    stf: PropTypes.object
+  }
   render ({ screen, routing, stf } = this.props) {
     const location = routing.locationBeforeTransitions ? routing.locationBeforeTransitions.pathname : '1'
     return (
@@ -79,7 +84,5 @@ class Nav extends React.Component {
     )
   }
 }
-Nav.propTypes = {
-  // user: PropTypes.object
-}
+
 export default Nav

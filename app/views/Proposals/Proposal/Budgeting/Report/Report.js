@@ -52,6 +52,15 @@ const columns = [{
   connectForm
 )
 class Report extends React.Component {
+  static propTypes = {
+    awardNumber: PropTypes.number,  //  used as the manifest index in store for this report.
+    form: PropTypes.object,
+    api: PropTypes.object,
+    proposal: PropTypes.string, //  _id
+    user: PropTypes.string,
+    manifest: PropTypes.object,
+    report: PropTypes.object
+  }
   componentDidMount () {
     const { form, report } = this.props
     if (report) {
@@ -127,13 +136,4 @@ class Report extends React.Component {
   }
 }
 
-Report.propTypes = {
-  awardNumber: PropTypes.number,  //  used as the manifest index in store for this report.
-  form: PropTypes.object,
-  api: PropTypes.object,
-  proposal: PropTypes.string, //  _id
-  user: PropTypes.string,
-  manifest: PropTypes.object,
-  report: PropTypes.object
-}
 export default Report

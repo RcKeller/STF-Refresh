@@ -49,6 +49,11 @@ const expandedRowRender = record => record.description
     })
 )
 class Summary extends React.Component {
+  static propTypes = {
+    id: PropTypes.string.isRequired,
+    manifest: PropTypes.object,
+    user: PropTypes.object
+  }
   render (
     { body, manifest } = this.props
   ) {
@@ -119,9 +124,5 @@ class Summary extends React.Component {
     )
   }
 }
-Summary.propTypes = {
-  id: PropTypes.string.isRequired,
-  manifest: PropTypes.object,
-  user: PropTypes.object
-}
+
 export default Summary

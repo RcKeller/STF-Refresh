@@ -29,6 +29,17 @@ const connectForm = Form.create()
   connectForm
 )
 class Settings extends React.Component {
+  static propTypes = {
+    form: PropTypes.object,
+    api: PropTypes.object,
+    id: PropTypes.string,
+    category: PropTypes.string,
+    organization: PropTypes.string,
+    budget: PropTypes.string,
+    uac: PropTypes.bool,
+    status: PropTypes.string,
+    published: PropTypes.bool
+  }
   componentDidMount () {
     //  Take contacts, make an object with role-to-signature bool, use this to set initial vals.
     const { form, id, category, organization, budget, uac, status, published } = this.props
@@ -170,17 +181,6 @@ class Settings extends React.Component {
       </section>
     )
   }
-}
-Settings.propTypes = {
-  form: PropTypes.object,
-  api: PropTypes.object,
-  id: PropTypes.string,
-  category: PropTypes.string,
-  organization: PropTypes.string,
-  budget: PropTypes.string,
-  uac: PropTypes.bool,
-  status: PropTypes.string,
-  published: PropTypes.bool
 }
 
 export default Settings

@@ -10,10 +10,10 @@ Please note, migration to v4 is a BREAKING change.
 https://github.com/reactGo/reactGo/pull/841/files
 */
 const SplitFrontPage = (l, c) => require.ensure([], () => c(null, require('./views/FrontPage/FrontPage').default))
-// const SplitNotFound = (l, c) => require.ensure([], () => c(null, require('./views/NotFound/NotFound').default))
+const SplitNotFound = (l, c) => require.ensure([], () => c(null, require('./views/NotFound/NotFound').default))
 const SplitFAQ = (l, c) => require.ensure([], () => c(null, require('./views/FAQ/FAQ').default))
 const SplitAbout = (l, c) => require.ensure([], () => c(null, require('./views/About/About').default))
-const SplitContact = (l, c) => require.ensure([], () => c(null, require('./views/Contact/Contact').default))
+const SplitContactUs = (l, c) => require.ensure([], () => c(null, require('./views/ContactUs/ContactUs').default))
 const SplitCreate = (l, c) => require.ensure([], () => c(null, require('./views/Proposals/Create/Create').default))
 const SplitEdit = (l, c) => require.ensure([], () => c(null, require('./views/Proposals/Edit/Edit').default))
 const SplitProposals = (l, c) => require.ensure([], () => c(null, require('./views/Proposals/Proposals').default))
@@ -71,7 +71,7 @@ export default (store) => {
 
       <Route path='/faq' getComponent={SplitFAQ} />
       <Route path='/about' getComponent={SplitAbout} />
-      <Route path='/contact' getComponent={SplitContact} />
+      <Route path='/contact' getComponent={SplitContactUs} />
 
       <Route path='/proposals' getComponent={SplitProposals} />
       <Route path='/proposals/:year/:number' getComponent={SplitProposal} />
@@ -85,7 +85,7 @@ export default (store) => {
       <Route path='/docket' onEnter={requireSTF} getComponent={SplitDocket} />
       <Route path='/config' onEnter={requireSTF} getComponent={SplitConfig} />
 
-      {/* <Route path='*' 404 - Page Not Found' getComponent={SplitNotFound} /> */}
+      <Route path='*' getComponent={SplitNotFound} />
     </Route>
   )
 }

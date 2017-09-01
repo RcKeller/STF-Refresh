@@ -50,24 +50,28 @@ const authorContent = [
 ]
 
 import styles from './FAQ.css'
-const FAQ = () => (
-  <article className={styles['faq']}>
-    <Helmet title='FAQ' />
-    <h1>General Questions</h1>
-    <Collapse bordered={false} >
-      {generalContent.map((qa, i) => (
-        <Panel header={qa.q} key={i}>
-          {qa.a}
-        </Panel>
-    ))}
-    </Collapse>
-    <h1>Proposal Authors</h1>
-    <Collapse bordered={false} >
-      {authorContent.map((qa, i) => (
-        <Panel header={qa.q} key={i}>{qa.a}</Panel>
-      ))}
-    </Collapse>
-  </article>
-)
+class FAQ extends React.Component {
+  render () {
+    return (
+      <article className={styles['faq']}>
+        <Helmet title='FAQ' />
+        <h1>General Questions</h1>
+        <Collapse bordered={false} >
+          {generalContent.map((qa, i) => (
+            <Panel header={qa.q} key={i}>
+              {qa.a}
+            </Panel>
+        ))}
+        </Collapse>
+        <h1>Proposal Authors</h1>
+        <Collapse bordered={false} >
+          {authorContent.map((qa, i) => (
+            <Panel header={qa.q} key={i}>{qa.a}</Panel>
+          ))}
+        </Collapse>
+      </article>
+    )
+  }
+}
 
 export default FAQ

@@ -31,6 +31,11 @@ import styles from './Docket.css'
   }))
 )
 class Docket extends React.Component {
+  static propTypes = {
+    api: PropTypes.object,
+    manifests: PropTypes.array,
+    screen: PropTypes.object
+  }
   constructor (props) {
     super(props)
     this.columns = [{
@@ -118,9 +123,5 @@ class Docket extends React.Component {
     )
   }
 }
-Docket.propTypes = {
-  api: PropTypes.object,
-  manifests: PropTypes.array,
-  screen: PropTypes.object
-}
+
 export default Docket

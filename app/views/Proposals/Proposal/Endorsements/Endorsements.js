@@ -20,6 +20,9 @@ import Endorse from './Endorse/Endorse'
   screen: state.screen
 }))
 class Endorsements extends React.Component {
+  static propTypes = {
+    endorsements: PropTypes.object
+  }
   render ({ endorsements, endorsed, user } = this.props) {
     return (
       <div>
@@ -50,7 +53,4 @@ class Endorsements extends React.Component {
   }
 }
 
-Endorsements.propTypes = {
-  endorsements: PropTypes.object
-}
 export default Endorsements

@@ -45,6 +45,10 @@ const expandedRowRender = record => record.description
   screen: state.screen
 }))
 class Manifests extends React.Component {
+  static propTypes = {
+    manifests: PropTypes.array,
+    screen: PropTypes.object
+  }
   constructor (props) {
     super(props)
     this.state = { index: props.manifests.length - 1 }
@@ -96,8 +100,4 @@ class Manifests extends React.Component {
   }
 }
 
-Manifests.propTypes = {
-  manifests: PropTypes.array,
-  screen: PropTypes.object
-}
 export default Manifests

@@ -24,6 +24,16 @@ const jss = { icon: { fontSize: 13 } }
   connectForm
 )
 class Contact extends React.Component {
+  static propTypes = {
+    form: PropTypes.object,
+    api: PropTypes.object,
+    parent: PropTypes.string,
+    contact: PropTypes.object,
+    //  Props from container - REQUIRED.
+    role: PropTypes.string,
+    title: PropTypes.string,
+    subtitle: PropTypes.string
+  }
   componentDidMount () {
     const { form, contact } = this.props
     if (contact) {
@@ -98,14 +108,4 @@ class Contact extends React.Component {
   }
 }
 
-Contact.propTypes = {
-  form: PropTypes.object,
-  api: PropTypes.object,
-  parent: PropTypes.string,
-  contact: PropTypes.object,
-  //  Props from container - REQUIRED.
-  role: PropTypes.string,
-  title: PropTypes.string,
-  subtitle: PropTypes.string
-}
 export default Contact

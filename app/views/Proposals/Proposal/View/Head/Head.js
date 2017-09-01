@@ -22,6 +22,11 @@ const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
   supplementals: state.db.proposal.supplementals
 }))
 class Head extends React.Component {
+  static propTypes = {
+    contacts: PropTypes.object,
+    status: PropTypes.string,
+    decision: PropTypes.object
+  }
   render ({ id, title, organization, uac, year, number, contacts, status, decision, supplementals } = this.props) {
     return (
       <section>
@@ -71,9 +76,5 @@ class Head extends React.Component {
     )
   }
 }
-Head.propTypes = {
-  contacts: PropTypes.object,
-  status: PropTypes.string,
-  decision: PropTypes.object
-}
+
 export default Head

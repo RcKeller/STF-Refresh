@@ -22,6 +22,15 @@ const columns = [
     })
 )
 class Metrics extends React.Component {
+  static propTypes = {
+    form: PropTypes.object,
+    api: PropTypes.object,
+    id: PropTypes.string.isRequired,
+    proposal: PropTypes.string,
+    manifest: PropTypes.object,
+    review: PropTypes.object,
+    user: PropTypes.object
+  }
   constructor (props) {
     super(props)
     const filter = { admin: true, member: true, spectator: true }
@@ -143,13 +152,5 @@ class Metrics extends React.Component {
     )
   }
 }
-Metrics.propTypes = {
-  form: PropTypes.object,
-  api: PropTypes.object,
-  id: PropTypes.string.isRequired,
-  proposal: PropTypes.string,
-  manifest: PropTypes.object,
-  review: PropTypes.object,
-  user: PropTypes.object
-}
+
 export default Metrics

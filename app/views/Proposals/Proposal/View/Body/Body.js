@@ -11,6 +11,10 @@ import styles from './Body.css'
   screen: state.screen
 }))
 class Body extends React.Component {
+  static propTypes = {
+    body: PropTypes.object,
+    screen: PropTypes.object
+  }
   render ({ legacy, plan, screen } = this.props) {
     return (
       <div>
@@ -98,10 +102,5 @@ class Body extends React.Component {
       </div>
     )
   }
-}
-
-Body.propTypes = {
-  body: PropTypes.object,
-  screen: PropTypes.object
 }
 export default Body

@@ -26,6 +26,12 @@ API for submission, but using connectForm to instantiate initial values.
   connectForm
 )
 class Signatures extends React.Component {
+  static propTypes = {
+    form: PropTypes.object,
+    api: PropTypes.object,
+    contacts: PropTypes.array,
+    user: PropTypes.object
+  }
   componentDidMount () {
     //  Take contacts, make an object with role-to-signature bool, use this to set initial vals.
     const { form, contacts } = this.props
@@ -90,10 +96,5 @@ class Signatures extends React.Component {
     )
   }
 }
-Signatures.propTypes = {
-  form: PropTypes.object,
-  api: PropTypes.object,
-  contacts: PropTypes.array,
-  user: PropTypes.object
-}
+
 export default Signatures

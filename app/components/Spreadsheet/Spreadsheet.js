@@ -7,6 +7,26 @@ import { Alert, Button, Icon } from 'antd'
 import Menu from './Menu'
 
 class SpreadSheet extends React.Component {
+  static propTypes = {
+    //  Column config api is preserved, but editable is REQUIRED
+    columns: PropTypes.arrayOf(PropTypes.shape({
+      name: PropTypes.node.isRequired,
+      key: PropTypes.string.isRequired,
+      editable: PropTypes.bool.isRequired,
+      editor: PropTypes.func,
+      width: PropTypes.number
+    })).isRequired,
+    //  Your dataset is never mutated and can even be ref'd.
+    data: PropTypes.array.isRequired,
+    //  NewData is a prop representing what a brand new field / row should be like (defaults).
+    newData: PropTypes.object,
+    //  onSubmit is your callback for receiving well formed data.
+    onSubmit: PropTypes.func.isRequired,
+    //  Financial will calculate and show subtotals as necessary
+    financial: PropTypes.bool,
+    //  Initial total, disposed of once rows update.
+    total: PropTypes.number
+  }
   constructor (props) {
     super(props)
     const { columns, data, newData, financial, total } = this.props
@@ -110,27 +130,6 @@ class SpreadSheet extends React.Component {
       </Button>
     </div>
   }
-}
-
-SpreadSheet.propTypes = {
-  //  Column config api is preserved, but editable is REQUIRED
-  columns: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.node.isRequired,
-    key: PropTypes.string.isRequired,
-    editable: PropTypes.bool.isRequired,
-    editor: PropTypes.func,
-    width: PropTypes.number
-  })).isRequired,
-  //  Your dataset is never mutated and can even be ref'd.
-  data: PropTypes.array.isRequired,
-  //  NewData is a prop representing what a brand new field / row should be like (defaults).
-  newData: PropTypes.object,
-  //  onSubmit is your callback for receiving well formed data.
-  onSubmit: PropTypes.func.isRequired,
-  //  Financial will calculate and show subtotals as necessary
-  financial: PropTypes.bool,
-  //  Initial total, disposed of once rows update.
-  total: PropTypes.number
 }
 
 export default SpreadSheet

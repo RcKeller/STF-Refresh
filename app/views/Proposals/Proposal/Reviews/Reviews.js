@@ -17,6 +17,9 @@ const Panel = Collapse.Panel
     state.db.proposal.manifests.filter(m => m.decision)
 }))
 class Reviews extends React.Component {
+  static propTypes = {
+    reviews: PropTypes.object
+  }
   render ({ status, manifests, metrics } = this.props) {
     return (
       <section>
@@ -69,29 +72,5 @@ class Reviews extends React.Component {
     )
   }
 }
-/*
-{decision
-  ? <Alert type={decision.approved ? 'success' : 'error'} showIcon
-    message={`Proposal ${decision.approved ? 'Approved' : 'Rejected'}`}
-    description={
-      <span>
-        <h6>Author: {decision.author.name} | {decision.date}</h6>
-        <p>{decision.body}</p>
-      </span>
-    }
-    />
-  : <em>No decision has been issued</em>
-}
-<h2>Reviews & Metrics</h2>
-<Row gutter={32}>
-  {reviews && reviews.map((r, i) =>
-    <Col key={i} className='gutter-row' xs={24} md={12} xl={8} >
-      <Review index={i} />
-    </Col>
-  )}
-</Row>
-*/
-Reviews.propTypes = {
-  reviews: PropTypes.object
-}
+
 export default Reviews

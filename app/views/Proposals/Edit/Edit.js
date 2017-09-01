@@ -37,6 +37,11 @@ import styles from './Edit.css'
   }))
 )
 class Edit extends React.Component {
+  static propTypes = {
+    api: PropTypes.object,
+    proposal: PropTypes.object,
+    user: PropTypes.object
+  }
   constructor (props) {
     super(props)
     this.state = {
@@ -110,14 +115,7 @@ class Edit extends React.Component {
     { valid } = this.state
   ) {
     const { introduction, contacts, body, manifest, signatures } = valid
-    // const complete = Object.keys(valid).reduce((accumulator, key) => {
-    //   console.log(key, accumulator)
-    //   if (key === true) {
-    //     accumulator += 1
-    //   }
-    // }, 0)
     const complete = Object.keys(valid).every(k => valid[k] === true)
-    console.warn('COMPLETE', complete)
     //  Once proposals have loaded, redirect unaffiliated users.
     //  You can remove your netID and push an update, but if you leave the page after that, it locks you out.
     // proposal && proposal.contacts && redirectUnaffiliated(user, proposal.contacts)
@@ -177,9 +175,5 @@ class Edit extends React.Component {
     )
   }
 }
-Edit.propTypes = {
-  api: PropTypes.object,
-  proposal: PropTypes.object,
-  user: PropTypes.object
-}
+
 export default Edit

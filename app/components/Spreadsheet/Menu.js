@@ -6,6 +6,13 @@ const { ContextMenu, MenuItem, SubMenu } = Menu
 
 import styles from './Menu.css' //  global, doesn't work if hashed.
 class MyMenu extends React.Component {
+  static propTypes = {
+    onRowDelete: PropTypes.func.isRequired,
+    onRowInsertAbove: PropTypes.func.isRequired,
+    onRowInsertBelow: PropTypes.func.isRequired,
+    rowIdx: PropTypes.number,
+    idx: PropTypes.number
+  }
   onRowDelete = (e, data) => {
     const { onRowDelete } = this.props
     if (typeof onRowDelete === 'function') {
@@ -36,14 +43,6 @@ class MyMenu extends React.Component {
       </ContextMenu>
     )
   }
-}
-
-MyMenu.propTypes = {
-  onRowDelete: PropTypes.func.isRequired,
-  onRowInsertAbove: PropTypes.func.isRequired,
-  onRowInsertBelow: PropTypes.func.isRequired,
-  rowIdx: PropTypes.number,
-  idx: PropTypes.number
 }
 
 export default MyMenu

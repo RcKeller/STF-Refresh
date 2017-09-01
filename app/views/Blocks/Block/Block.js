@@ -22,6 +22,9 @@ import styles from './block.css'
   }))
 )
 class Block extends React.Component {
+  static propTypes = {
+    block: PropTypes.object
+  }
   render ({ block } = this.props) {
     return (
       <article className={styles['article']}>
@@ -86,7 +89,4 @@ class Block extends React.Component {
   }
 }
 
-Block.propTypes = {
-  block: PropTypes.object
-}
 export default Block

@@ -23,6 +23,12 @@ import api from '../../../../../services'
   connectForm
 )
 class Endorse extends React.Component {
+  static propTypes = {
+    proposal: PropTypes.string,
+    user: PropTypes.string,
+    api: PropTypes.object,
+    form: PropTypes.object
+  }
   // Disable submit button at the beginning by running validation.
   componentDidMount () { this.props.form.validateFields() }
   handleSubmit = (e) => {
@@ -71,12 +77,6 @@ class Endorse extends React.Component {
   }
 }
 
-Endorse.propTypes = {
-  proposal: PropTypes.string,
-  user: PropTypes.string,
-  api: PropTypes.object,
-  form: PropTypes.object
-}
 export default Endorse
 // const EndorseForm = Form.create()(Endorse)
 // export default EndorseForm
