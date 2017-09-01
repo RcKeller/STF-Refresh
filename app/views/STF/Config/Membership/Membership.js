@@ -57,25 +57,54 @@ class Membership extends React.Component {
       dataIndex: 'netID',
       key: 'netID',
       width: 100
-    }, {
-      title: 'Officio',
-      dataIndex: 'stf.spectator',
-      key: 'stf.spectator',
-      render: (text, record, index) => <Switch checked={text} onChange={spectator => this.handleToggle({ spectator }, record, index)} />,
-      width: 65
-    }, {
-      title: 'Member',
-      dataIndex: 'stf.member',
-      key: 'stf.member',
-      render: (text, record, index) => <Switch checked={text} onChange={member => this.handleToggle({ member }, record, index)} />,
-      width: 80
-    }, {
-      title: 'Admin',
-      dataIndex: 'stf.admin',
-      key: 'stf.admin',
-      render: (text, record, index) => <Switch checked={text} onChange={admin => this.handleToggle({ admin }, record, index)} />,
-      width: 65
+    },
+    {
+      title: 'Roles',
+      dataIndex: 'stf',
+      key: 'stf',
+      render: (text, record, index) => (
+        <div>
+          <Switch
+            checked={text.spectator}
+            checkedChildren='Ex-Officio' unCheckedChildren='Ex-Officio'
+            onChange={spectator => this.handleToggle({ spectator }, record, index)} />
+          <Switch
+            checked={text.member}
+            checkedChildren='Member' unCheckedChildren='Member'
+             onChange={member => this.handleToggle({ member }, record, index)} />
+          <Switch
+            checked={text.admin}
+            checkedChildren='Admin' unCheckedChildren='Admin'
+            onChange={admin => this.handleToggle({ admin }, record, index)} />
+        </div>
+      ),
+      filters: [
+        { text: 'Ex-Officio', value: 'spectator' },
+        { text: 'Member', value: 'member' },
+        { text: 'Admin', value: 'admin' }
+      ],
+      onFilter: (value, record) => record.stf[value],
+      width: 120
     }
+    // {
+    //   title: 'Officio',
+    //   dataIndex: 'stf.spectator',
+    //   key: 'stf.spectator',
+    //   render: (text, record, index) => <Switch checked={text} onChange={spectator => this.handleToggle({ spectator }, record, index)} />,
+    //   width: 65
+    // }, {
+    //   title: 'Member',
+    //   dataIndex: 'stf.member',
+    //   key: 'stf.member',
+    //   render: (text, record, index) => <Switch checked={text} onChange={member => this.handleToggle({ member }, record, index)} />,
+    //   width: 80
+    // }, {
+    //   title: 'Admin',
+    //   dataIndex: 'stf.admin',
+    //   key: 'stf.admin',
+    //   render: (text, record, index) => <Switch checked={text} onChange={admin => this.handleToggle({ admin }, record, index)} />,
+    //   width: 65
+    // }
     ]
   }
   handleAddMember = (user) => {
