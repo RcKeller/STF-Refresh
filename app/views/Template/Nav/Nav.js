@@ -52,21 +52,19 @@ class Nav extends React.Component {
         </SubMenu>
         {Object.keys(stf).length > 0 && // if associated in any way with STF
           <SubMenu key='sub1' title={<span><Icon type='safety' /><span>Committee</span></span>}>
-            <ItemGroup key='g1' title='Members'>
-              {/* <Item key='/dashboard'>
-                <Icon type='team' /><span className='nav-text'>Dashboard</span>
-              </Item> */}
-              <Item key='/voting'>
-                <Icon type='check' /><span className='nav-text'>Voting</span>
-              </Item>
-            </ItemGroup>
+            <Item key='/dashboard'>
+              <Icon type='area-chart' /><span className='nav-text'>Dashboard</span>
+            </Item>
+            <Item key='/voting'>
+              <Icon type='check-circle-o' /><span className='nav-text'>Voting</span>
+            </Item>
             {stf.admin &&
-              <ItemGroup key='g2' title='Admins'>
+              <ItemGroup key='g1' title='Admin Tools'>
                 <Item key='/docket'>
                   <Icon type='schedule' /><span className='nav-text'>Docket</span>
                 </Item>
                 <Item key='/config'>
-                  <Icon type='setting' /><span className='nav-text'>Site Config</span>
+                  <Icon type='tool' /><span className='nav-text'>Site Config</span>
                 </Item>
               </ItemGroup>
             }

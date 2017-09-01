@@ -231,7 +231,13 @@ class Dashboard extends React.Component {
           </span>
         ),
         width: 120,
-        sorter: (a, b) => a.manifest.total - b.manifest.total
+        sorter: (a, b) => a.manifest.total - b.manifest.total,
+        filters: enums
+          ? enums.statuses.map(status => {
+            return { text: status, value: status }
+          })
+          : [],
+        onFilter: (value, record) => record.proposal.status === value
       }, {
         title: 'Spent',
         dataIndex: 'manifest.report.total',
