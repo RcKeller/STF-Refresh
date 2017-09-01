@@ -36,3 +36,5 @@ Known issues:
 Quirks of note:
   Occasionally, when creating a new proposal, initial budgets that are submitted are dropped. I need help tracing the circumstances behind this.
   To enforce consistency in the editing page, we pull data from the server every time a tab is selected. This prevents a erroneous field on the client side from being pushed and propegating multiple times, enforcing some integrity.
+  For the Proposal/Reviews page, I need to know what you want to see. Metrics? Reviews? Decisions and their total breakdown? I built that page a long time ago and now that I've added committee/dashboard, I'm not so sure that it's necessary.
+  Currently, proposal statuses have to be updated after a decision has been issued. I am unsure where this logic should go, since we've discussed the need for a human element as an intermediary.

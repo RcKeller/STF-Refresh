@@ -57,6 +57,12 @@ class Docket extends React.Component {
       dataIndex: 'type',
       key: 'type',
       render: (text) => <span>{_.capitalize(text)}</span>,
+      filters: [
+        { text: 'Original Proposal', value: 'original' },
+        { text: 'Supplemental Award', value: 'supplemental' },
+        { text: 'Partial Funding', value: 'partial' }
+      ],
+      onFilter: (value, record) => record.type.includes(value),
       width: 120
     },
     {

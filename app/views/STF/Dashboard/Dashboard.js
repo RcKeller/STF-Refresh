@@ -155,9 +155,9 @@ class Dashboard extends React.Component {
         key: 'manifest.type',
         render: text => <span>{_.capitalize(text)}</span>,
         filters: [
-          { text: 'Original Proposal', value: 'Original' },
-          { text: 'Supplemental Award', value: 'Supplemental' },
-          { text: 'Partial Funding', value: 'Partial' }
+          { text: 'Original Proposal', value: 'original' },
+          { text: 'Supplemental Award', value: 'supplemental' },
+          { text: 'Partial Funding', value: 'partial' }
         ],
         onFilter: (value, record) => record.manifest.type.includes(value),
         width: 120
