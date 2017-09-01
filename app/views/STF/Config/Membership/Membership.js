@@ -85,27 +85,7 @@ class Membership extends React.Component {
       ],
       onFilter: (value, record) => record.stf[value],
       width: 120
-    }
-    // {
-    //   title: 'Officio',
-    //   dataIndex: 'stf.spectator',
-    //   key: 'stf.spectator',
-    //   render: (text, record, index) => <Switch checked={text} onChange={spectator => this.handleToggle({ spectator }, record, index)} />,
-    //   width: 65
-    // }, {
-    //   title: 'Member',
-    //   dataIndex: 'stf.member',
-    //   key: 'stf.member',
-    //   render: (text, record, index) => <Switch checked={text} onChange={member => this.handleToggle({ member }, record, index)} />,
-    //   width: 80
-    // }, {
-    //   title: 'Admin',
-    //   dataIndex: 'stf.admin',
-    //   key: 'stf.admin',
-    //   render: (text, record, index) => <Switch checked={text} onChange={admin => this.handleToggle({ admin }, record, index)} />,
-    //   width: 65
-    // }
-    ]
+    }]
   }
   handleAddMember = (user) => {
     const { api } = this.props

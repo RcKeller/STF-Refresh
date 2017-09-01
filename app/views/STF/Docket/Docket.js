@@ -94,30 +94,7 @@ class Docket extends React.Component {
       ],
       onFilter: (value, record) => record.docket[value],
       width: 150
-    }
-    // {
-    //   title: 'Metrics',
-    //   dataIndex: 'docket.metrics',
-    //   key: 'docket.metrics',
-    //   render: (text, record, index) =>
-    //   record.type === 'original'  //  Supplementals don't go through metrics reviews
-    //     ? <Switch checked={text} onChange={metrics => this.handleToggle({ metrics }, record, index)} />
-    //     : <em>N/A</em>,
-    //   width: 90
-    // }, {
-    //   title: 'Voting',
-    //   dataIndex: 'docket.voting',
-    //   key: 'docket.voting',
-    //   render: (text, record, index) => <Switch checked={text} onChange={voting => this.handleToggle({ voting }, record, index)} />,
-    //   width: 90
-    // }, {
-    //   title: 'Decisions',
-    //   dataIndex: 'docket.decisions',
-    //   key: 'docket.decisions',
-    //   render: (text, record, index) => <Switch checked={text} onChange={decisions => this.handleToggle({ decisions }, record, index)} />,
-    //   width: 90
-    // }
-    ]
+    }]
   }
   handleToggle = (change, record, index) => {
     //  Change is an object that can be easily assigned, like { docket: true } or { voting: false }
