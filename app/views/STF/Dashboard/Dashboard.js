@@ -170,8 +170,6 @@ class Dashboard extends React.Component {
             <Link to={`/proposals/${record.proposal.year}/${record.proposal.number}`}>
               {record.proposal.title}
             </Link>
-            <br />
-            <em>{record.proposal.category}</em>
           </span>
         ),
         filterDropdown: (
@@ -223,9 +221,8 @@ class Dashboard extends React.Component {
         width: 150
       }, {
         title: 'Awarded',
-        dataIndex: 'proposal.received',
-        key: 'proposal.received',
-        //  FIXME: Use manifest.total instead, using decision to qualify if it's N/A or not.
+        dataIndex: 'manifest.total',
+        key: 'manifest.total',
         render: (text, record) => (
           <span>
             {text ? currency(text) : '$0'}
@@ -233,38 +230,61 @@ class Dashboard extends React.Component {
             <Badge status={indicators[record.proposal.status] || 'default'} text={record.proposal.status} />
           </span>
         ),
-        sorter: (a, b) => a.proposal.received - b.proposal.received
+        width: 120,
+        sorter: (a, b) => a.manifest.total - b.manifest.total
       }, {
         title: 'Spent',
         dataIndex: 'manifest.report.total',
         key: 'manifest.report.total',
         render: (text, record) => {
-          let percentage = record.manifest.report.total > 0
-            ? Number.parseInt(record.manifest.report.total / record.proposal.received * 100)
-            : 0
-          // let percentage = Number.parseInt(record.proposal.received / record.manifest.report.total)
+          // let percentage = record.manifest.report.total > 0
+          //   ? Number.parseInt(record.manifest.report.total / record.proposal.received * 100)
+          //   : 0
+          // let percentage = Number.parseInt(text / record.manifest.total) * 100
+          let percentage = Number.parseInt(text / record.manifest.total * 100)
+          // console.warn(record.manifest.report.total, record.proposal.received, percentage)
           if (Number.isNaN(percentage)) percentage = 0
-          else if (percentage > 100) percentage = 100
+          // else if (percentage > 100) percentage = 100
           return (
             <span>
               {text ? currency(text) : 'N/A'}
               <br />
               <div style={{ width: 100 }}>
                 <Progress
-                  percent={percentage}
+                  percent={percentage <= 100 ? percentage : 100}
+                  status={percentage <= 100 ? 'success' : 'exception'}
                   strokeWidth={5} />
               </div>
             </span>
           )
         },
-        sorter: (a, b) => a.manifest.report.total - b.manifest.report.total
+        width: 80,
+        sorter: (a, b) => a.manifest.report.total - b.manifest.report.total,
+        filters: [
+          { text: 'No Reporting', value: 'No Reporting' },
+          { text: 'In Budget', value: 'In Budget' },
+          { text: 'Over Budget', value: 'Over Budget' }
+        ],
+        onFilter: (value, record) => {
+          let percentage = Number.parseInt(record.manifest.report.total / record.manifest.total * 100)
+          switch (value) {
+            case 'No Reporting':
+              return Number.isNaN(percentage)
+            case 'In Budget':
+              return percentage <= 100
+            case 'Over Budget':
+              return percentage > 100
+            default:
+              return true
+          }
+        }
       }, {
-        title: 'Budget #',
+        title: 'Budget',
         dataIndex: 'manifest.report.budget',
         key: 'manifest.report.budget',
-        width: 100
+        width: 80
       }, {
-        title: 'Report Due',
+        title: 'Due',
         dataIndex: 'manifest.report.due',
         key: 'manifest.report.due',
         render: (text, record) => (
@@ -277,7 +297,7 @@ class Dashboard extends React.Component {
           </span>
         ),
         sorter: (a, b) => Date.parse(a.manifest.report.due) - Date.parse(b.manifest.report.due),
-        width: 130
+        width: 100
       }
     ]
     return (
