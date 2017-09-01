@@ -27,7 +27,9 @@ export default () => {
   }
 
   // Load strategies based on the env
-  if (config.has('google')) { google(passport) }
-  if (config.has('uw')) { uw(passport) }
-  // local(passport);
+  if (config.has('prod')) {
+    uw(passport)
+  } else {
+    google(passport)
+  }
 }

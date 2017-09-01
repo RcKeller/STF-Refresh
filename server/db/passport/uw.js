@@ -1,4 +1,4 @@
 import User from '../models/user'
 
-export default () => console.log('placeholder uw db function')
+export default ({...args}) => console.log('placeholder uw db function received args', args)
 /* eslint-enable no-param-reassign */
