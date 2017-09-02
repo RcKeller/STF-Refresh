@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
-import { Row, Col, Alert } from 'antd'
+import { Row, Col } from 'antd'
 
 @connect(state => ({
   overview: state.db.proposal.body.overview

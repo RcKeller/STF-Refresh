@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { compose, bindActionCreators } from 'redux'
+import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 

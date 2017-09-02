@@ -9,7 +9,7 @@ import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
 
-import { Spin, Tabs, Alert, Button, Icon } from 'antd'
+import { Spin, Tabs, Alert, Button } from 'antd'
 const TabPane = Tabs.TabPane
 
 import Vote from './Vote/Vote'

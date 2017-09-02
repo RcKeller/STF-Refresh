@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import api from '../../../../../services'
-import { layout, feedback, help, rules } from '../../../../../util/form'
 import _ from 'lodash'
 
 import { Select, message } from 'antd'

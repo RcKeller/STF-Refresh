@@ -7,12 +7,9 @@ import { connect } from 'react-redux'
 import { layout } from '../../../../../util/form'
 import api from '../../../../../services'
 
-import { Spin, Form, Row, Col, Switch, Checkbox, Slider, Input, Button, message } from 'antd'
+import { Spin, Form, Checkbox, Input, Button, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
-
-//  Questions to ask for metrics
-const questions = ['Proposal Quality', 'Academic Merit']
 
 @compose(
   connect(
@@ -35,6 +32,7 @@ class Decision extends React.Component {
     api: PropTypes.object,
     id: PropTypes.string.isRequired,
     proposal: PropTypes.string,
+    decision: PropTypes.object,
     manifest: PropTypes.object,
     review: PropTypes.object,
     user: PropTypes.object

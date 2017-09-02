@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Alert, Button, message } from 'antd'
+import { Button, message } from 'antd'
 
 import api from '../../../../services'
 

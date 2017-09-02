@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
 import api from '../../../services'
 
-import { layout, feedback, help, rules, disableSubmit } from '../../../util/form'
+import { layout, feedback, help, rules } from '../../../util/form'
 
 import { Modal, Button, Form, Input, AutoComplete, Select, message } from 'antd'
 const FormItem = Form.Item

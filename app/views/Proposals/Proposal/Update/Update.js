@@ -1,30 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import { Link } from 'react-router'
 
-import { Form, Icon, Input, Button, Alert, message } from 'antd'
-const FormItem = Form.Item
-const connectForm = Form.create()
-
-import { feedback, help, rules, disableSubmit } from '../../../../util/form'
-import api from '../../../../services'
-// import { getRole } from '../../../../util/selectors'
+import { Alert } from 'antd'
 
 import UpdateContact from './UpdateContact/UpdateContact'
-const jss = { icon: { fontSize: 13 } }
 
-@connect(
-  state => ({
-    date: state.db.proposal.date,
-    contacts: state.db.proposal.contacts
-  }),
-  dispatch => ({ api: bindActionCreators(api, dispatch) })
-)
+@connect(state => ({
+  date: state.db.proposal.date,
+  contacts: state.db.proposal.contacts
+}))
 class Update extends React.Component {
+  static propTypes = {
+    contacts: PropTypes.array
+  }
   render ({ id, date, contacts } = this.props) {
     return (
       <section>

@@ -12,7 +12,6 @@ const ItemGroup = Menu.ItemGroup
 
 const keyserver = 'http://itconnect.uw.edu/wares/acquiring-software-and-hardware/keyserver-help-for-it-staff/'
 
-import styles from './Nav.css'
 @connect(state => ({
   //  NOTE: Do NOT try refactoring this selector. This is isomorphically generated, more specific selectors will break.
   screen: state.screen,

@@ -1,7 +1,7 @@
 import REST from './rest'
 import { Decision, Proposal, Manifest } from '../models'
-import mongoose from 'mongoose'
-import _ from 'lodash'
+// import mongoose from 'mongoose'
+// import _ from 'lodash'
 
 export default class Decisions extends REST {
   constructor () {

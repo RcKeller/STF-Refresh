@@ -6,7 +6,7 @@ import { connectRequest } from 'redux-query'
 
 import api from '../../services'
 import { Link } from 'react-router'
-import { Row, Col, Spin, Card, Timeline, Carousel, Collapse, Avatar } from 'antd'
+import { Row, Col, Spin, Timeline, Carousel, Collapse } from 'antd'
 const Item = Timeline.Item
 const Panel = Collapse.Panel
 

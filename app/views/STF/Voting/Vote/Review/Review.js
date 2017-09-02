@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { layout } from '../../../../../util/form'
 import api from '../../../../../services'
 
-import { Spin, Form, Row, Col, Switch, Checkbox, Slider, InputNumber, Button, message } from 'antd'
+import { Spin, Form, Row, Col, Switch, Slider, InputNumber, Button, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 

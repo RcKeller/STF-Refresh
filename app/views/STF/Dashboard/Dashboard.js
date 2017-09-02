@@ -11,15 +11,7 @@ import { connectRequest } from 'redux-query'
 import api from '../../../services'
 
 import { Link } from 'react-router'
-import {
-  Spin,
-  Table,
-  Progress,
-  Badge,
-  Input,
-  Button,
-  Icon
-} from 'antd'
+import { Spin, Table, Progress, Badge, Input, Icon } from 'antd'
 
 import SubTable from './SubTable/SubTable'
 

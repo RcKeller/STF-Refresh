@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
-import { redirectUnaffiliated } from '../../../util/selectors'
+// import { redirectUnaffiliated } from '../../../util/selectors'
 
 import Introduction from './Introduction/Introduction'
 import Contacts from './Contacts/Contacts'

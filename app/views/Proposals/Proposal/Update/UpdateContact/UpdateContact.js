@@ -27,6 +27,8 @@ const jss = { icon: { fontSize: 13 } }
 )
 class UpdateContact extends React.Component {
   static propTypes = {
+    indexInStore: PropTypes.number,
+    id: PropTypes.string,
     form: PropTypes.object,
     api: PropTypes.object,
     contact: PropTypes.object,
