@@ -69,26 +69,41 @@ export default (app) => {
     sessionStore = db.session()
   }
 
+  const secret = config.get('sessionSecret')
+  // const sess = {
+  //   resave: true,  // Per legacy site, default is false
+  //   saveUninitialized: true, // Per legacy site, default is false
+  //   secret,
+  //   proxy: true, // The "X-Forwarded-Proto" header will be used.
+  //   name: 'sessionId',
+  //   // Add HTTPOnly, Secure attributes on Session Cookie
+  //   // If secure is set, and you access your site over HTTP, the cookie will not be set
+  //   cookie: {
+  //     httpOnly: true,
+  //     secure: false
+  //   },
+  //   store: sessionStore
+  // }
   const sess = {
+    secret,
+    store: sessionStore,
     resave: true,  // Per legacy site, default is false
     saveUninitialized: true, // Per legacy site, default is false
-    secret: config.get('sessionSecret'),
-    proxy: true, // The "X-Forwarded-Proto" header will be used.
-    name: 'sessionId',
+    // proxy: true, // The "X-Forwarded-Proto" header will be used.
+    // name: 'sessionId',
     // Add HTTPOnly, Secure attributes on Session Cookie
     // If secure is set, and you access your site over HTTP, the cookie will not be set
     cookie: {
       httpOnly: true,
       secure: false
     },
-    store: sessionStore
   }
 
   console.log('--------------------------')
   console.log(`<===  Starting ${env} API . . .`)
   console.log(`<===  Release version: ${version}`)
   console.log(`<===  Listening on port: ${port}`)
-  if (config.has('uw')) {
+  if (config.has('prod')) {
     console.log('<===    Note: Auth with UW\'s Shibboleth Service')
     console.log('<===    requires secure HTTPS from the actual registed domain.')
     sess.cookie.secure = true // Serve secure cookies

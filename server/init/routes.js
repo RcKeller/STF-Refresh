@@ -1,6 +1,5 @@
 import passport from 'passport'
 import config from 'config'
-import path from 'path'
 import db from '../db'
 //  Truthiness check - doesn't proceed until this resolves.
 const version = config.get('version')
@@ -74,7 +73,6 @@ export default (app) => {
       console.log('Serialize user:', user)
       done(null, user)
     })
-
     passport.deserializeUser(function (user, done) {
       console.log('Deserialize user:', user)
       done(null, user)
@@ -82,19 +80,19 @@ export default (app) => {
     //  Log in
     app.get(
       loginURL,
-      passport.authenticate(Shibboleth.name),
+      passport.authenticate(UWStrategy.name),
       Shibboleth.backToUrl()
     )
     //  Log out
     app.post(
       callbackURL,
-      passport.authenticate(Shibboleth.name),
+      passport.authenticate(UWStrategy.name),
       Shibboleth.backToUrl()
     )
     //  Shib validation of site metadata
     app.get(
       Shibboleth.urls.metadata,
-      Shibboleth.metadataRoute(Shibboleth.name, pubCert)
+      Shibboleth.metadataRoute(UWStrategy, pubCert)
     )
     console.log('AUTH: Shibboleth Enabled')
   }
