@@ -2,7 +2,6 @@ import passport from 'passport'
 import config from 'config'
 import path from 'path'
 import db from '../db'
-const fs = require('fs')
 //  Truthiness check - doesn't proceed until this resolves.
 const version = config.get('version')
 const controllers = db.controllers
@@ -32,31 +31,74 @@ export default (app) => {
   app.delete('/sessions', Users.logout)
   console.log(`REST: API live for Users.`)
   // } else { console.warn('Error: DB unable to handle user routes.') }
+
   //  PRODUCTION AUTH
   if (db.passport && config.has('prod')) {
+    console.warn('SHIB: Initializing Shibboleth')
     //  NOTE: Good resource:
     //  https://github.com/drstearns/passport-uwshib
-    console.warn('WARNING: UW Shib specified in config, but routes/API not ready yet.')
-    // const uwCallback = config.get('uw.callbackURL')
-    // const shibPlaceholder = () => console.warn('Error - UW Shib not connected yet! In development.')
-    // app.get(uwCallback, shibPlaceholder)
-    // console.log('AUTH: Shibboleth Enabled')
+    var Shibboleth = require('passport-uwshib')
+    const fs = require('fs')
+    const path = require('path')
 
-    var shib = require('passport-uwshib')
-    var loginURL = config.get('uw.loginURL')
-    var loginCallbackURL = config.get('uw.callbackURL')
-    var strategyName = config.get('uw.strategyName')
-    console.warn('DEV: Shib configs:', loginURL, loginCallbackURL, strategyName)
+    const privateKey = fs.readFileSync(
+      path.resolve(process.cwd(), 'security', 'server-pvk.pem'),
+      'utf-8'
+    )
+    const pubCert = fs.readFileSync(
+      path.resolve(process.cwd(), 'security', 'server-cert.pem'),
+      'utf-8'
+    )
 
-    const pubCertPath = path.resolve(process.cwd(), 'security', 'server-cert.pem')
-    console.warn('DEV: Using pub cert path', pubCertPath)
-    const pubCert = fs.readFileSync(pubCertPath, 'utf-8')
+    //  Shib wants a domain formatted like "uwstf.org:8090"
+    const domain = `${config.get('domain')}:${config.get('port')}`
+    //  Shib wants an entityID with the protocol like "https://uwstf.org:8090"
+    const entityId = `${config.get('protocol')}://${domain}`
+    //  Login url, like /login
+    const loginURL = config.get('uw.loginURL')
+    //  Callback URL, e.g. /login/callback
+    const callbackURL = config.get('uw.callbackURL')
+    console.warn(`SHIB: Domain and entity: ${domain} | ${entityId}`)
+    console.warn(`SHIB: Login, callback and metadata: ${loginURL} | ${callbackURL} | ${Shibboleth.urls.metadata}`)
 
-    app.get(loginURL, passport.authenticate(strategyName), shib.backToUrl())
-    app.post(loginCallbackURL, passport.authenticate(strategyName), shib.backToUrl())
-    app.get(shib.urls.metadata, shib.metadataRoute(strategyName, pubCert))
+    var UWStrategy = new Shibboleth.Strategy({
+      entityId,
+      privateKey,
+      callbackURL,
+      domain
+    })
+    passport.use(UWStrategy)
+    // serialize and deserialize the user's session
+    //  TODO: How does this connect to the rest of the app?
+    passport.serializeUser(function (user, done) {
+      console.log('Serialize user:', user)
+      done(null, user)
+    })
+
+    passport.deserializeUser(function (user, done) {
+      console.log('Deserialize user:', user)
+      done(null, user)
+    })
+    //  Log in
+    app.get(
+      loginURL,
+      passport.authenticate(Shibboleth.name),
+      Shibboleth.backToUrl()
+    )
+    //  Log out
+    app.post(
+      callbackURL,
+      passport.authenticate(Shibboleth.name),
+      Shibboleth.backToUrl()
+    )
+    //  Shib validation of site metadata
+    app.get(
+      Shibboleth.urls.metadata,
+      Shibboleth.metadataRoute(Shibboleth.name, pubCert)
+    )
     console.log('AUTH: Shibboleth Enabled')
   }
+
   //  DEV MODE MOCK AUTH
   if (db.passport && config.has('dev')) {
     /*
