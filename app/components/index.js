@@ -1,1 +1,1 @@
-export { default as SpreadSheet } from './SpreadSheet/SpreadSheet'
+export { default as Spreadsheet } from './Spreadsheet/Spreadsheet'

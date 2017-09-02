@@ -6,7 +6,7 @@ import { Alert, Button, Icon } from 'antd'
 
 import Menu from './Menu'
 
-class SpreadSheet extends React.Component {
+class Spreadsheet extends React.Component {
   static propTypes = {
     //  Column config api is preserved, but editable is REQUIRED
     columns: PropTypes.arrayOf(PropTypes.shape({
@@ -37,7 +37,7 @@ class SpreadSheet extends React.Component {
     let rows = data || []
     if (rows.length < 1) rows[0] = {...newData} || {}
     let state = { rows }
-    //  If this is a financial spreadsheet, initialize total
+    //  If this is a financial Spreadsheet, initialize total
     if (financial) state.total = total || 0
     this.state = state
   }
@@ -132,4 +132,4 @@ class SpreadSheet extends React.Component {
   }
 }
 
-export default SpreadSheet
+export default Spreadsheet

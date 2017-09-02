@@ -10,7 +10,7 @@ import _ from 'lodash'
 import { Select, message } from 'antd'
 const Option = Select.Option
 
-import SpreadSheet, { Editors } from '../../../../../components/SpreadSheet'
+import Spreadsheet, { Editors } from '../../../../../components/Spreadsheet'
 const { SimpleNumber, TaxRate } = Editors
 
 //  BUG: Selectors cannot select child props. Is this case handled in the data-grid docs?
@@ -100,7 +100,7 @@ class Partial extends React.Component {
         </Select>
         <h4>{title}</h4>
         <p>{body}</p>
-        <SpreadSheet financial
+        <Spreadsheet financial
           columns={columns}
           data={data}
           newData={newData}

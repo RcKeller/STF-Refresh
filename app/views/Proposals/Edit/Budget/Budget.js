@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { message } from 'antd'
 import api from '../../../../services'
 
-import SpreadSheet, { Editors } from '../../../../components/SpreadSheet'
+import Spreadsheet, { Editors } from '../../../../components/Spreadsheet'
 const { SimpleNumber, TaxRate } = Editors
 
 const columns = [{
@@ -93,7 +93,7 @@ class Budget extends React.Component {
     return (
       <div>
         <p>Enter your budget requirements here. Tax MUST be included and will automatically default at 10.1% (Seattle's tax rate)</p>
-        <SpreadSheet financial
+        <Spreadsheet financial
           columns={columns}
           data={data}
           newData={newData}

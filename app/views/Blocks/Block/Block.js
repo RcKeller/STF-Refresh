@@ -13,7 +13,7 @@ const Panel = Collapse.Panel
 
 const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
 
-import styles from './block.css'
+import styles from './Block.css'
 @compose(
   connect((state, props) => ({ block: state.db.block })),
   connectRequest(props => api.get('block', {

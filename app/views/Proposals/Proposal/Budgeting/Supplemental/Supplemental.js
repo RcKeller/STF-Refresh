@@ -12,7 +12,7 @@ import { Form, Input, Alert, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
-import SpreadSheet, { Editors } from '../../../../../components/SpreadSheet'
+import Spreadsheet, { Editors } from '../../../../../components/Spreadsheet'
 const { SimpleNumber, TaxRate } = Editors
 
 //  BUG: Selectors cannot select child props. Is this case handled in the data-grid docs?
@@ -121,7 +121,7 @@ class Supplemental extends React.Component {
             <Input type='textarea' rows={6} />
           )}
         </FormItem>
-        <SpreadSheet financial
+        <Spreadsheet financial
           columns={columns}
           data={data}
           newData={newData}
