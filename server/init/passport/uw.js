@@ -15,6 +15,8 @@ export default (passport) => {
     //  Shib wants an entityID with the protocol like "https://uwstf.org:8090"
     const entityId = `${config.get('protocol')}://${domain}`
     const callbackURL = config.get('uw.callbackURL')
+    console.warn('SHIB: Connecting as', entityId)
+    console.warn('Callback route:', callbackURL)
     var UWStrategy = new Shibboleth.Strategy({
       entityId,
       privateKey,

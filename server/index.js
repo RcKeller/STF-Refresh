@@ -41,4 +41,40 @@ initRoutes(app)
  * HTML
  */
 app.get('*', renderMiddleware)
-app.listen(app.get('port'))
+//  Starts a UNIX socket and listens for connections on the given path. This method is identical to Node’s http.Server.listen().
+if (config.has('dev')) {
+  app.listen(app.get('port'))
+} else {
+  //  We'll need filesystem tools for certs
+  const http = require('http')
+  const https = require('https')
+  const path = require('path')
+  const fs = require('fs')
+  console.log('PROD: Configuring dual-servers')
+  const key = fs.readFileSync(
+    path.resolve(process.cwd(), 'security', 'server-pvk.pem'),
+    'utf-8'
+  )
+  const cert = fs.readFileSync(
+    path.resolve(process.cwd(), 'security', 'server-cert.pem'),
+    'utf-8'
+  )
+  //  FIXME: When not using the test port, remove the port here
+  const domain = `${config.get('domain')}:${config.get('port')}`
+
+  const httpsServer = https.createServer({ key, cert }, app)
+  httpsServer.listen(8090, function () {
+    console.log('https listening on ' + httpsServer.address().port)
+  })
+
+  //  HTTP redirects users to secure endpoints.
+  const httpServer = http.createServer(function (req, res) {
+    let redirectURL = `https://${domain}${req.url}`
+    res.writeHead(301, {'Location': redirectURL})
+    res.end()
+    console.log('redirected HTTP connection to ' + redirectURL)
+  })
+  httpServer.listen(8080, function () {
+    console.log('http listening on ' + httpServer.address().port)
+  })
+}
