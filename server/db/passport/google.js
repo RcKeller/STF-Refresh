@@ -1,7 +1,7 @@
 import User from '../models/user'
 
 /* eslint-disable no-param-reassign */
-export default (req, accessToken, refreshToken, profile, done) => {
+const serializeUser = (req, accessToken, refreshToken, profile, done) => {
   console.warn('Called db/passport/google', req.user, accessToken, refreshToken, profile)
   //  Use the JSON returned by Google
   profile = profile._json
@@ -64,4 +64,13 @@ export default (req, accessToken, refreshToken, profile, done) => {
       })
     })
 }
+
+const deserializeUser = (id, done) => {
+  console.warn('db/passport/deserializeUser:', id)
+  User.findById(id, (err, user) => {
+    done(err, user)
+  })
+}
+
+export default { serializeUser, deserializeUser }
 /* eslint-enable no-param-reassign */

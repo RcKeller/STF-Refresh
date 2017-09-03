@@ -31,7 +31,13 @@ export default (app, passport) => {
     clientSecret: config.get('google.clientSecret'),
     callbackURL: config.get('google.callbackURL'),
     passReqToCallback: true
-  }, db.passport.google))
+  }, db.passport.google.serializeUser))
+
+  passport.serializeUser((user, done) => {
+    console.warn('init/passport/google serialize', user)
+    done(null, user.id)
+  })
+  passport.deserializeUser(db.passport.google.deserializeUser)
 
   //  NOTE: Moved from routes
   /*

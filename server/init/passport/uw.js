@@ -43,21 +43,16 @@ export default (app, passport) => {
     callbackUrl: callbackUrl,
     domain: 'uwstf.org:8090'
     // domain
-  }, db.passport.uw)
+  }, db.passport.uw.serializeUser)
   //  NOTE: adding new serializeUser here?
   passport.use(UWStrategy)
   //  NOTE: Removed definition of serialize/deserialize here
 
-  // serialize and deserialize the user's session
-  //  TODO: How does this connect to the rest of the app?
-  // passport.serializeUser(function (user, done) {
-  //   console.log('Serialize user:', user)
-  //   done(null, user)
-  // })
-  // passport.deserializeUser(function (user, done) {
-  //   console.log('Deserialize user:', user)
-  //   done(null, user)
-  // })
+  passport.serializeUser((user, done) => {
+    console.warn('init/passport/uw serialize', user)
+    done(null, user.id)
+  })
+  passport.deserializeUser(db.passport.uw.deserializeUser)
 
   //  Log in
   app.get(

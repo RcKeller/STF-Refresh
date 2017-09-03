@@ -18,15 +18,16 @@ export default (app) => {
   app.use(passport.initialize())
   app.use(passport.session())
 
-  if (db.passport && db.passport.deserializeUser) {
-    passport.serializeUser((user, done) => {
-      console.warn('init/passport/index serialize', user)
-      done(null, user.id)
-    })
-    passport.deserializeUser(db.passport.deserializeUser)
-  } else {
-    console.warn('Failed to (de)serialize User')
-  }
+  //  NOTE: Moving serialization to individual strategy files
+  // if (db.passport && db.passport.deserializeUser) {
+  //   passport.serializeUser((user, done) => {
+  //     console.warn('init/passport/index serialize', user)
+  //     done(null, user.id)
+  //   })
+  //   passport.deserializeUser(db.passport.deserializeUser)
+  // } else {
+  //   console.warn('Failed to (de)serialize User')
+  // }
 
   // Load strategies based on the env
   config.has('prod') ? uw(app, passport) : google(app, passport)
