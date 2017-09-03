@@ -20,7 +20,6 @@ class Login extends React.Component {
     signOut: PropTypes.func
   }
   render ({ user, signOut } = this.props) {
-    console.warn('ENV', ENV)
     return (
       <div className={styles['login']}>
         {!user.authenticated

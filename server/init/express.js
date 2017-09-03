@@ -95,8 +95,7 @@ export default (app) => {
   }
   console.log('--------------------------')
 
-  app.use(passport.initialize())
-  app.use(passport.session())
+  //  NOTE: PASSPORT INIT moved to init/passport/index
 
   app.use(flash())
 }

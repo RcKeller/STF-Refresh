@@ -17,7 +17,7 @@ const app = express()
 db.connect()
 
 // REMOVE if you do not need passport configuration
-initPassport()
+// initPassport()
 
 if (config.has('dev')) {
   // enable webpack hot module replacement
@@ -33,6 +33,8 @@ if (config.has('dev')) {
 //  Bootstrap application settings
 initExpress(app)
 initRoutes(app)
+//  NOTE: Passing in express() for initPassport (previously isolated and handled in routes.js)
+initPassport(app)
 
 /*
  * This is where the magic happens. We take the locals data we have already

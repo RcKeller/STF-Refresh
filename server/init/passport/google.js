@@ -2,7 +2,7 @@ import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth'
 import db from '../../db'
 import config from 'config'
 
-export default (passport) => {
+export default (app, passport) => {
   if (!db.passport || !db.passport.google || !typeof db.passport.google === 'function') {
     console.warn('Error: MongoDB unable to initialize passport-google-oauth')
     return
@@ -32,4 +32,33 @@ export default (passport) => {
     callbackURL: config.get('google.callbackURL'),
     passReqToCallback: true
   }, db.passport.google))
+
+  //  NOTE: Moved from routes
+  /*
+  Redirect the user to Google for authentication. When complete, Google
+  will redirect the user back to the application at
+  /auth/google/return
+  Authentication with google requires an additional scope param, for more info go
+  here https://developers.google.com/identity/protocols/OpenIDConnect#scope-param
+  */
+  app.get('/auth/google', passport.authenticate('google', {
+    scope: [
+      'https://www.googleapis.com/auth/userinfo.profile',
+      'https://www.googleapis.com/auth/userinfo.email'
+    ]
+  }))
+  /*
+  Google will redirect the user to this URL after authentication. Finish the
+  process by verifying the assertion. If valid, the user will be logged in.
+  Otherwise, the authentication has failed.
+  */
+  const googleCallback = config.get('google.callbackURL')
+  // const successRedirect = '/login'
+  const successRedirect = '/'
+  const failureRedirect = '/'
+  app.get(
+    googleCallback,
+    passport.authenticate('google', { successRedirect, failureRedirect })
+  )
+  console.log('AUTH: Google "Psuedo-Auth" Enabled')
 }

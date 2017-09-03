@@ -1,7 +1,7 @@
 // import User from '../models/user'
 
 export default (...args) => {
-  console.log('args for db/passport/uw.js', args)
+  console.log('Called db/passport/uw', args)
   return {}
 }
 /* eslint-enable no-param-reassign */
