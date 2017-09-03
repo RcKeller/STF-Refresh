@@ -2,6 +2,7 @@ import express from 'express'
 import passport from 'passport'
 import session from 'express-session'
 import logger from 'morgan'
+import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import path from 'path'
 import flash from 'express-flash'
@@ -84,20 +85,27 @@ export default (app) => {
   //   },
   //   store: sessionStore
   // }
-  const sess = {
+  // const sess = {
+  //   secret,
+  //   store: sessionStore,
+  //   resave: true,  // Per legacy site, default is false
+  //   saveUninitialized: true, // Per legacy site, default is false
+  //   // proxy: true, // The "X-Forwarded-Proto" header will be used.
+  //   // name: 'sessionId',
+  //   // Add HTTPOnly, Secure attributes on Session Cookie
+  //   // If secure is set, and you access your site over HTTP, the cookie will not be set
+  //   cookie: {
+  //     httpOnly: true,
+  //     secure: false
+  //   }
+  // }
+  app.use(cookieParser(config.get('cookieSecret')))
+  app.use(session({
     secret,
     store: sessionStore,
-    resave: true,  // Per legacy site, default is false
-    saveUninitialized: true, // Per legacy site, default is false
-    // proxy: true, // The "X-Forwarded-Proto" header will be used.
-    // name: 'sessionId',
-    // Add HTTPOnly, Secure attributes on Session Cookie
-    // If secure is set, and you access your site over HTTP, the cookie will not be set
-    cookie: {
-      httpOnly: true,
-      secure: false
-    },
-  }
+    resave: true,
+    saveUninitialized: true
+  }))
 
   console.log('--------------------------')
   console.log(`<===  Starting ${env} API . . .`)
@@ -106,11 +114,11 @@ export default (app) => {
   if (config.has('prod')) {
     console.log('<===    Note: Auth with UW\'s Shibboleth Service')
     console.log('<===    requires secure HTTPS from the actual registed domain.')
-    sess.cookie.secure = true // Serve secure cookies
+    // sess.cookie.secure = true // Serve secure cookies
   }
   console.log('--------------------------')
 
-  app.use(session(sess))
+  // app.use(session(sess))
 
   app.use(passport.initialize())
   app.use(passport.session())

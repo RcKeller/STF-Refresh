@@ -1,8 +1,8 @@
 import passport from 'passport'
 import config from 'config'
 import db from '../db'
-//  Truthiness check - doesn't proceed until this resolves.
 const version = config.get('version')
+//  Truthiness check - doesn't proceed until this resolves.
 const controllers = db.controllers
 
 //  GENERATE ROUTES

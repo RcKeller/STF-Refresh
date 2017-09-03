@@ -61,6 +61,7 @@
     "compression": "^1.6.2",
     "config": "^1.26.1",
     "connect-mongo": "^1.3.2",
+    "cookie-parser": "^1.4.3",
     "cross-env": "^5.0.0",
     "css-loader": "^0.28.0",
     "cuid": "^1.3.8",
