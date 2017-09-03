@@ -1,6 +1,9 @@
 import passport from 'passport'
 import config from 'config'
 import db from '../db'
+import Shibboleth from 'passport-uwshib'
+import fs from 'fs'
+import path from 'path'
 const version = config.get('version')
 //  Truthiness check - doesn't proceed until this resolves.
 const controllers = db.controllers
@@ -36,9 +39,6 @@ export default (app) => {
     console.warn('SHIB: Initializing Shibboleth')
     //  NOTE: Good resource:
     //  https://github.com/drstearns/passport-uwshib
-    var Shibboleth = require('passport-uwshib')
-    const fs = require('fs')
-    const path = require('path')
 
     const privateKey = fs.readFileSync(
       path.resolve(process.cwd(), 'security', 'server-pvk.pem'),
@@ -54,17 +54,19 @@ export default (app) => {
     //  Shib wants an entityID with the protocol like "https://uwstf.org:8090"
     const entityId = `${config.get('protocol')}://${domain}`
     //  Login url, like /login
-    const loginURL = config.get('uw.loginURL')
+    const loginUrl = '/login'
     //  Callback URL, e.g. /login/callback
-    const callbackURL = config.get('uw.callbackURL')
+    const callbackUrl = '/login/callback'
     console.warn(`SHIB: Domain and entity: ${domain} | ${entityId}`)
-    console.warn(`SHIB: Login, callback and metadata: ${loginURL} | ${callbackURL} | ${Shibboleth.urls.metadata}`)
+    console.warn(`SHIB: Login, callback and metadata: ${loginUrl} | ${callbackUrl} | ${Shibboleth.urls.metadata}`)
 
     var UWStrategy = new Shibboleth.Strategy({
-      entityId,
-      privateKey,
-      callbackURL,
-      domain
+      // entityId,
+      entityId: 'https://uwstf.org:8090',
+      privateKey: privateKey,
+      callbackUrl: callbackUrl,
+      domain: 'uwstf.org:8090'
+      // domain
     })
     passport.use(UWStrategy)
     // serialize and deserialize the user's session
@@ -79,13 +81,13 @@ export default (app) => {
     })
     //  Log in
     app.get(
-      loginURL,
+      loginUrl,
       passport.authenticate(UWStrategy.name),
       Shibboleth.backToUrl()
     )
     //  Log out
     app.post(
-      callbackURL,
+      callbackUrl,
       passport.authenticate(UWStrategy.name),
       Shibboleth.backToUrl()
     )

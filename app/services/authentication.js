@@ -42,8 +42,7 @@ is from the server during rendering.
 Our reducer here specifies expected data (initially none, so {} as default)
 as well as means of deleting the user object.
 ***** */
-const initialState = { authenticated: false }
-export default function user (state = initialState, action) {
+export default function user (state = {}, action) {
   switch (action.type) {
     case 'REMOVE_USER':
       return initialState
