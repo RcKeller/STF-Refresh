@@ -45,7 +45,7 @@ as well as means of deleting the user object.
 export default function user (state = {}, action) {
   switch (action.type) {
     case 'REMOVE_USER':
-      return initialState
+      return {}
     default: return state
   }
 }

@@ -2,7 +2,7 @@ import User from '../models/user'
 
 /* eslint-disable no-param-reassign */
 export default (req, accessToken, refreshToken, profile, done) => {
-  console.warn('Called db/passport/google', req.user)
+  console.warn('Called db/passport/google', req.user, accessToken, refreshToken, profile)
   //  Use the JSON returned by Google
   profile = profile._json
   //  Select relevant fields
