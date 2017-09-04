@@ -38,6 +38,8 @@ class About extends React.Component {
     return (
       <article className={styles['about']}>
         <Helmet title='About' />
+        <h1 className='demo-note' style={{ color: 'goldenrod' }}>REVISION NEEDED</h1>
+        <p className='demo-note' style={{ color: 'goldenrod' }}>I need new contact information and verbage (can we get rid of the "tech fee" part), hopefully some that explains the proposal lifecycle. Also, let's consider combining this with the contact page.</p>
 
         <Row gutter={16}>
           <Col xs={24} sm={12}>

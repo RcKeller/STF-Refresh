@@ -37,6 +37,8 @@ class Budgeting extends React.Component {
         {approvedManifests.length <= 0 &&
           <em>This proposal has not received funding, so advanced budgeting tools are unavailable for now.</em>
         }
+        <h1 className='demo-note' style={{ color: 'red' }}>REVISION NEEDED</h1>
+        <p className='demo-note' style={{ color: 'red' }}>I need content for these sections, both general explaination and "alert boxes" that clearly tell peple reporting is for PAST expenditures, supplementals are to appeal for MORE funding, and partials are for ALTERNATIVE BUDGETS or proposing PARTIAL FUNDING.</p>
         <Tabs>
           <TabPane disabled={approvedManifests.length <= 0} tab={<b>Expense Reporting</b>} key='1'>
             <Tabs size='small' defaultActiveKey={`${approvedManifests.length - 1}`}>

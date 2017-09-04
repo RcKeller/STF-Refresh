@@ -113,6 +113,8 @@ class Metrics extends React.Component {
           : <div>
             <h1>Scores & Metrics</h1>
             <h4>Filter by Commitee Roles</h4>
+            <h1 className='demo-note' style={{ color: 'goldenrod' }}>UNCLEAR BUSINESS LOGIC</h1>
+            <p className='demo-note' style={{ color: 'goldenrod' }}>Should this refresh after you issue a vote, or not? Currently, you have to force updates with the refresh button (top right tab on the page). And should this really be a separate page? I made these current decisions to keep voting impartial and encourage group polarization during voting, instead of people just voting based on the rest of the group.</p>
             <Switch checked={filter.admin}
               unCheckedChildren='Admins' checkedChildren='Admins'
               onChange={admin => this.handleFilter({ admin })}

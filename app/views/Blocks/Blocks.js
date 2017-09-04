@@ -50,6 +50,8 @@ class Blocks extends React.Component {
             columns={screen.lessThan.medium ? columns.slice(1, 3) : columns}
           />
         }
+        <h1 className='demo-note' style={{ color: 'red' }}>CONTENT NEEDED</h1>
+        <p className='demo-note' style={{ color: 'red' }}>We'll need a (brand new) rundown on how block funding works here.</p>
       </article>
     )
   }

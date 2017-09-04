@@ -278,6 +278,8 @@ Proposals extends React.Component {
               footer={footer}
             />
             }
+            <h1 className='demo-note' style={{ color: 'red' }}>CONTENT NEEDED</h1>
+            <p className='demo-note' style={{ color: 'red' }}>Verbage here would be cool. Although, basically the rest of the site explains this...</p>
       </article>
     )
   }

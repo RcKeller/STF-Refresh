@@ -27,6 +27,8 @@ class Endorsements extends React.Component {
     return (
       <div>
         <h1>Community Endorsements</h1>
+        <h1 className='demo-note' style={{ color: 'goldenrod' }}>UP FOR DISCUSSION</h1>
+        <p className='demo-note' style={{ color: 'goldenrod' }}>You can currently endorse your own proposal, but I can fix block contacts from the actual proposal from doing that. I don't see the point, though (say, a student lead or org head has something meaningful to say). Historically, I've seen department heads make really high quality endorsement messages.</p>
         <p>Anyone with a UW NetID can endorse a proposal! We highly encourage our proposal authors to exemplify their community engagement by having their proposals endorsed by students and staff alike. You may endorse as many proposals as you like.</p>
         <Row gutter={32}>
           {endorsements.map((c, i) =>

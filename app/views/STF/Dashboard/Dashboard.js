@@ -305,8 +305,10 @@ class Dashboard extends React.Component {
     )
     return (
       <article className={styles['article']}>
-        <h1>Budgeting Dashboard</h1>
         <Helmet title='Dashboard' />
+        <h1>Budgeting Dashboard</h1>
+        <h1 className='demo-note' style={{ color: 'goldenrod' }}>FUTURE ENHANCEMENT</h1>
+        <p className='demo-note' style={{ color: 'goldenrod' }}>This was built for budgeting/auditing purposes (Britt/Katie and Cheryl (Sharyl? Carol?) by extension). It's a very robust component, please check for any miscalculations and room for improvement.</p>
         {!awards
             ? <Spin size='large' tip='Loading...' />
             : <Table

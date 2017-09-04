@@ -41,6 +41,8 @@ class FrontPage extends React.Component {
         <section className={styles['page-content']}>
           <Row type='flex' justify='space-around' >
             <Col className='gutter-row' span={24} md={8}>
+              <h1 className='demo-note' style={{ color: 'red' }}>CONTENT NEEDED</h1>
+              <p className='demo-note' style={{ color: 'red' }}>This should be an elevator speech for what the STF is. But for now, you can see our typography. To the right is a timeline component that the admin can edit himself in the config panel, allowing him to show where we are in the proposal lifecycle (hearing proposals, voting on proposals, dispersing awards...)</p>
               <h1>About the STF Committee</h1>
               <p>The STF committee...</p>
               <h2>H2</h2>
@@ -73,7 +75,7 @@ class FrontPage extends React.Component {
                     <Panel key={i} header={`${m.user.name} (${m.user.netID})`}>
                       <span>
                         <p>{m.body}</p>
-                        <em>For <Link to={`${m.proposal.year}/${m.proposal.number}`}>{m.proposal.title}</Link></em>
+                        <em>Endorsement of <Link to={`${m.proposal.year}/${m.proposal.number}`}>{m.proposal.title}</Link></em>
                       </span>
                     </Panel>
                   ))

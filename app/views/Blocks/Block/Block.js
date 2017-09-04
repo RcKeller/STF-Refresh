@@ -29,6 +29,8 @@ class Block extends React.Component {
     return (
       <article className={styles['article']}>
         <Helmet title={block ? block.title : 'Block'} />
+        <h1 className='demo-note' style={{ color: 'goldenrod' }}>UP FOR DISCUSSION</h1>
+        <p className='demo-note' style={{ color: 'goldenrod' }}>Per prior meetings, block functions are not totally built out (it'll be a while before we deliberate them). I think we should consider wether or not they should be programmatic (generated via DB records/web components) or bespoke pages for each block (gives us the opportunity to write unique, meaningful content and reduce codebase complexity)</p>
         {!block
           ? <Spin size='large' tip='Loading...' />
           : <div>

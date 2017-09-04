@@ -31,6 +31,9 @@ class ContactUs extends React.Component {
       <article className={styles['contact']}>
         <Helmet title='Contact Us' />
         <h1>Contact Us</h1>
+        <h1 className='demo-note' style={{ color: 'red' }}>CONTENT NEEDED</h1>
+        <p className='demo-note' style={{ color: 'red' }}>I think this section needs either a flowchart or brief rundown of the STF admin roles. I'll need updated contact information and blurbs along the lines of "contact me for * Issue A, * Issue B", etc.</p>
+
         <p>
           We're here if you need us. Before reaching out, please consider learning more <Link to='/about'>about the STF</Link> first, and then viewing our <Link to='/faq'>Frequently Asked Questions</Link>. Otherwise, feel free to contact us at any of the locations below.
         </p>

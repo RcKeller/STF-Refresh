@@ -125,6 +125,8 @@ class Docket extends React.Component {
         <Helmet title='Docket' />
         <h1>Committee Docket</h1>
         <h6>Internal use only.</h6>
+        <h1 className='demo-note' style={{ color: 'red' }}>CONTENT NEEDED</h1>
+        <p className='demo-note' style={{ color: 'red' }}>This page allows admins / the chair to put different kinds of budgets up for various kinds of debate. Could use brief verbage here.</p>
         <p>Add proposals, partials and supplementals to QA and voting dockets.</p>
         {!manifests
           ? <Spin size='large' tip='Loading...' />

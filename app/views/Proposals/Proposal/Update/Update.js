@@ -21,6 +21,9 @@ class Update extends React.Component {
     return (
       <section>
         <h1>Post-Submission Updates</h1>
+        <h1 className='demo-note' style={{ color: 'goldenrod' }}>REVISION NEEDED / UP FOR DEBATE</h1>
+        <p className='demo-note' style={{ color: 'goldenrod' }}>I need very clear verbage indicating that updating proposal contact info is an ongoing responsibility, as well as some verbage to push people who want to change their content to either A) contact the proposal officer (verbage fixes) or B) Submit a brand new proposal.</p>
+        <p className='demo-note' style={{ color: 'goldenrod' }}>Having people edit their content post-publication is a very very bad idea, that gives malicious users repudiation. I considered having a "withdraw proposal" button here, but I'd be afraid of that being either A) abused or B) circumventing the proposal officer, who could identify very important concerns by having a direct discussion with proposal authors.</p>
         <Alert type='warning'
           message='Grace Period'
           description={<span>

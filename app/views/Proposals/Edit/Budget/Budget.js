@@ -92,6 +92,8 @@ class Budget extends React.Component {
     const total = manifest && manifest.total
     return (
       <div>
+        <h1 className='demo-note' style={{ color: 'goldenrod' }}>BUG HUNT</h1>
+        <p className='demo-note' style={{ color: 'goldenrod' }}>Please thoroughly test budgeting, especially when submitting a new budget right after proposing. There's one bug I have where budgets don't upload, but after significant amounts of crazy testing I can't reproduce it.</p>
         <p>Enter your budget requirements here. Tax MUST be included and will automatically default at 10.1% (Seattle's tax rate)</p>
         <Spreadsheet financial
           columns={columns}

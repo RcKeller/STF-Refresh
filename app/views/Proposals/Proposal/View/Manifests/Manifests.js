@@ -64,6 +64,8 @@ class Manifests extends React.Component {
     return (
       <div>
         <h1>Budget</h1>
+        <h1 className='demo-note' style={{ color: 'goldenrod' }}>UP FOR DEBATE</h1>
+        <p className='demo-note' style={{ color: 'goldenrod' }}>Should this default to using the most recently approved/denied budget, or the most recent one in general?</p>
         {(manifests && manifests.length > 1) &&
           <Alert type='info' banner showIcon={false}
             message='Multiple Budgets'
