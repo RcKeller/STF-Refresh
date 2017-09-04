@@ -6,8 +6,8 @@ import faker from 'faker'
 
 const UserSchema = new mongoose.Schema({
   name: { type: String, default: '' },
-  netID: { type: String, unique: true, lowercase: true },
-  email: { type: String, unique: true, lowercase: true },
+  netID: { type: String, unique: true },
+  email: { type: String, lowercase: true },
   /*
   The commitee(orization) object will not pass to the client unless
   there's some sort of elevated privlege. Delete this object to remove
