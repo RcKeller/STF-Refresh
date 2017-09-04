@@ -1,5 +1,7 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
+import { environment } from './services'
+const { ENV } = environment
 
 import Template from './views/Template/Template'
 /*
@@ -31,36 +33,44 @@ const SplitConfig = (l, c) => require.ensure([], () => c(null, require('./views/
  * state from the store after it has been authenticated.
  */
 export default (store) => {
+  const loginRoute = ENV === 'production' ? '/login' : '/auth/google'
   const requireAuth = (nextState, replace, callback) => {
-    const { user: { authenticated } } = store.getState()
+    const { user } = store.getState()
+    const authenticated = user.authenticated || false
     if (!authenticated) {
       try {
-        window.location = '/auth/google'
+        window.location = loginRoute
       } catch (err) {
         console.error(err)
       }
-      replace({
-        //  TODO: When shib is fully implemented, dynamically re-route based on ENV
-        // pathname: '/login',
-        state: { nextPathname: nextState.location.pathname }
-      })
+      replace({ state: { nextPathname: nextState.location.pathname } })
     }
     callback()
   }
   //  TODO: Refactor once we have a live demo
   const requireSTF = (nextState, replace, callback) => {
-    const { user: { stf } } = store.getState()
+    const { user } = store.getState()
+    const stf = user.stf || false
     if (!stf) {
       try {
-        window.location = '/auth/google'
+        window.location = loginRoute
       } catch (err) {
         console.error(err)
       }
-      replace({
-        //  TODO: When shib is fully implemented, dynamically re-route based on ENV
-        // pathname: '/login',
-        state: { nextPathname: nextState.location.pathname }
-      })
+      replace({ state: { nextPathname: nextState.location.pathname } })
+    }
+    callback()
+  }
+  const requireAdmin = (nextState, replace, callback) => {
+    const { user } = store.getState()
+    const admin = (user.stf && user.stf.admin) || false
+    if (!admin) {
+      try {
+        window.location = loginRoute
+      } catch (err) {
+        console.error(err)
+      }
+      replace({ state: { nextPathname: nextState.location.pathname } })
     }
     callback()
   }
@@ -82,8 +92,8 @@ export default (store) => {
       <Route path='/edit/:id' onEnter={requireAuth} getComponent={SplitEdit} />
       <Route path='/dashboard' onEnter={requireSTF} getComponent={SplitDashboard} />
       <Route path='/voting' onEnter={requireSTF} getComponent={SplitVoting} />
-      <Route path='/docket' onEnter={requireSTF} getComponent={SplitDocket} />
-      <Route path='/config' onEnter={requireSTF} getComponent={SplitConfig} />
+      <Route path='/docket' onEnter={requireAdmin} getComponent={SplitDocket} />
+      <Route path='/config' onEnter={requireAdmin} getComponent={SplitConfig} />
 
       {/* <Route path='*' getComponent={SplitNotFound} /> */}
     </Route>
