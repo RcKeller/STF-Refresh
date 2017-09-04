@@ -20,6 +20,7 @@ Callback: function
 */
 
 const serializeUser = ({ regId, netId, givenName, displayName, email } = {}, done) => {
+  //  Receive shib info
   console.log('Called db/passport/uw.serializeUser', regId, netId, displayName, email)
   console.log('Callback:', typeof done)
   const profile = {
@@ -27,39 +28,28 @@ const serializeUser = ({ regId, netId, givenName, displayName, email } = {}, don
     name: givenName || displayName,
     email
   }
+  //  Check DB if exists.
 
   //  CASE: User is logged in
   if (profile.netID) {
-    console.warn('SHIB-TEST: has netId')
-    // Check if there is an existing account with a provider id.
+    console.log('Searching for netId:', profile.netID)
     User
-      .findOne({ netID: profile.netId }, (findOneErr, existingUser) => {
-        console.warn('SHIB-TEST: Logged in w/ Existing user', existingUser)
-      // If there is, return an error message. (NetID Account merging not supported)
-        return existingUser
-          ? done(null, false, { message: `You are already signed in as netID: ${existingUser.netID}` })
-          : User
+      .findOne({ netID: profile.netID })
+      //  Returning users have their authZ with the STF populated.
+      // .populate('stf')
+      .exec((findByNetIDErr, existingUser) => {
+        console.log('SHIB-TEST: Found user:', existingUser)
+        if (existingUser) {
+          return done(null, existingUser)
+        } else {
+          console.log('SHIB-TEST: Creating user', profile)
+          User
             .create(profile)
-            .then((err, user) => done(err, user, { message: 'New NetID saved (via cached login data) !' }))
+            .then(user => done(null, user, { message: 'New NetID saved!' }))
+        }
       })
   }
-
-  // CASE: User is NOT logged in
-  // Check if it's a returning user.
-  console.warn('SHIB-TEST: no user')
-  return User
-    .findOne({ netID: profile.netID })
-    //  Returning users have their authZ with the STF populated.
-    .populate('stf')
-    .exec((findByNetIDErr, existingUser) => {
-      console.log('SHIB-TEST: Logged out w/ existingUser', existingUser)
-      //  FIXME: The done statement is not returning when I have an existing user. Pop works.
-      return existingUser
-        ? done(null, existingUser)
-        : User
-          .create(profile)
-          .then((err, user) => done(err, user, { message: 'New NetID saved!' }))
-    })
+  //  done(user) returns user objects to be serialized
 }
 
 /*
@@ -77,13 +67,22 @@ email: 'rykeller@uw.edu' }
 [Function: serialized]
 I only need three attributes. Please note, UW prefers givenName (user chosen and usually doesn't have middle initial)
 */
-const deserializeUser = ({ netId, displayName, givenName, email } = {}, done) => {
-  console.warn('db/passport/uw.deserializeUser:', netId, givenName, email)
+// const deserializeUser = ({ netId, displayName, givenName, email } = {}, done) => {
+//   console.warn('db/passport/uw.deserializeUser:', netId, givenName, email)
+// const deserializeUser = (user, done) => {
+//   console.warn('db/passport/uw.deserializeUser:', user, typeof done)
+//   User
+//     .findOne(
+//       { netID: netId },
+//       (err, user) => done(err, user)
+//     )
+// }
+const deserializeUser = ({ netID }, done) => {
+  console.warn('db/passport/uw.deserializeUser:', netID, typeof done)
   User
-    .findOne(
-      { netID: netId },
-      (err, user) => done(err, user)
-    )
+    .findOne({ netID })
+    .populate('stf')
+    .exec((err, user) => done(err, user))
 }
 
 export default { serializeUser, deserializeUser }
