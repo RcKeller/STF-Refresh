@@ -15,7 +15,7 @@ import Budget from './Budget/Budget'
 import Signatures from './Signatures/Signatures'
 import Publish from './Publish/Publish'
 
-import { Icon, Spin, Tabs } from 'antd'
+import { Icon, Spin, Tabs, message } from 'antd'
 const TabPane = Tabs.TabPane
 
 const colors = {
@@ -110,17 +110,28 @@ class Edit extends React.Component {
     }
     return valid >= 3
   }
+  redirectUnaffiliatedUsers = () => {
+    const { router, user, proposal: { contacts } } = this.props
+    if (Array.isArray(contacts) && contacts.length > 0) {
+      const affiliated = contacts.map(con => con.netID)
+      const affiliate = affiliated.includes(user.netID)
+      const admin = user.stf && user.stf.admin
+      if (!affiliate && !admin) {
+        router.push('/')
+        message.error(`You are not affiliated with this proposal. Affiliates include: ${affiliated.toString()}`)
+      }
+      if (admin) message.warning('You\'re viewing another person\'s proposal using admin permissions. Be very careful.')
+    }
+  }
   render (
-    { forceRequest, proposal, user } = this.props,
+    { router, forceRequest, proposal, user } = this.props,
     { valid } = this.state
   ) {
     const { introduction, contacts, body, manifest, signatures } = valid
     const complete = Object.keys(valid).every(k => valid[k] === true)
     //  Once proposals have loaded, redirect unaffiliated users.
-    //  You can remove your netID and push an update, but if you leave the page after that, it locks you out.
-    // proposal && proposal.contacts && redirectUnaffiliated(user, proposal.contacts)
-    //  forceRequest is bound by redux-query and run on tab changes.
-    //  This ensures all fields populate() completely and changes reflect other subsections (contact changes update sigs, etc)
+    //  You can log out of Shib and push an update, but if you leave the page after that, it locks you out.
+    if (user && proposal) this.redirectUnaffiliatedUsers()
     return (
       <article className={styles['page']}>
         <Helmet title='New Proposal' />

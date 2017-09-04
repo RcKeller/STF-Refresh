@@ -298,6 +298,11 @@ class Dashboard extends React.Component {
         width: 100
       }
     ]
+    const footer = () => (
+      <span>
+        Dashboard is a breakdown of STF's awards (approved budgets), combined with proposal and reporting data. This can be used to cross-reference awards with expense reporting, tracking organizations, and our spending trends.
+      </span>
+    )
     return (
       <article className={styles['article']}>
         <h1>Budgeting Dashboard</h1>
@@ -311,6 +316,7 @@ class Dashboard extends React.Component {
               columns={columns}
               rowKey={record => record._id}
               expandedRowRender={expandedRowRender}
+              footer={footer}
             />
             }
       </article>
