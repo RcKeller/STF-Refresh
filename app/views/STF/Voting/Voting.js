@@ -65,11 +65,6 @@ class Voting extends React.Component {
             >
             <TabPane tab='Overview' key='1' className={styles['tab-pane']}>
               <h1>Reviews & Voting</h1>
-              {docket.length >= 1 &&
-                <h3><em>
-                  Note: Nothing has been put on the docket yet.
-                </em></h3>
-              }
               <p>Instructions here.</p>
               <Alert type='info' banner showIcon={false}
                 message='Major Changes for Ex-Officios'

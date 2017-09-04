@@ -65,15 +65,15 @@ class Membership extends React.Component {
       render: (text, record, index) => (
         <div>
           <Switch
-            checked={text.spectator}
+            checked={text && text.spectator}
             checkedChildren='Ex-Officio' unCheckedChildren='Ex-Officio'
             onChange={spectator => this.handleToggle({ spectator }, record, index)} />
           <Switch
-            checked={text.member}
+            checked={text && text.member}
             checkedChildren='Member' unCheckedChildren='Member'
-             onChange={member => this.handleToggle({ member }, record, index)} />
+            onChange={member => this.handleToggle({ member }, record, index)} />
           <Switch
-            checked={text.admin}
+            checked={text && text.admin}
             checkedChildren='Admin' unCheckedChildren='Admin'
             onChange={admin => this.handleToggle({ admin }, record, index)} />
         </div>

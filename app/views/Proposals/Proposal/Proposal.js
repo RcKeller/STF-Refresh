@@ -45,7 +45,7 @@ connectRequest will force a query if there's a mismatch.
     user: state.user
   })),
   connectRequest(props => api.get('proposal', {
-    // force: true,
+    force: true,
     where: {
       year: props.params.year,
       number: props.params.number

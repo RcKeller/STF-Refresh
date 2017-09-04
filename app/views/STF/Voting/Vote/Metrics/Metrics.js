@@ -125,7 +125,7 @@ class Metrics extends React.Component {
               unCheckedChildren='Ex-Officios' checkedChildren='Ex-Officios'
               onChange={spectator => this.handleFilter({ spectator })}
             />
-            <em>Note: If you cast a vote, it won't automatically update these totals (hit refresh in the top right).</em>
+            <p><em>Note: If you cast a vote, it won't automatically update these totals (hit refresh in the top right).</em></p>
             <Row type='flex' justify='space-around' align='middle'>
               <Col span={24} lg={8}>
                 <h2>Approval Rating</h2>

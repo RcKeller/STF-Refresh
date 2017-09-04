@@ -124,7 +124,7 @@ class Review extends React.Component {
           ? <Spin size='large' tip='Loading...' />
           : <Form onSubmit={this.handleSubmit}>
             <h2>Your Review</h2>
-            <h4>{voting ? 'This proposal is up for review - you may score this proposal as you like (0-100).' : 'Review submissions are closed'}</h4>
+            <h4>{metrics ? 'This proposal is up for review - you may score this proposal as you like (0-100).' : 'Review submissions are closed'}</h4>
             <h4>{voting ? 'Voting is now open. Be forewarned, these decisions are final!' : 'Voting is currently closed'}</h4>
             {questions.map(q => (
               <FormItem key={q} label={q} {...layout} >
