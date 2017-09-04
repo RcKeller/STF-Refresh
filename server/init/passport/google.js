@@ -6,8 +6,9 @@ export default (app, passport) => {
   if (!db.passport || !db.passport.google || !typeof db.passport.google === 'function') {
     console.warn('Error: MongoDB unable to initialize passport-google-oauth')
     return
+  } else {
+    console.warn('MOCK: Initializing Google Oauth2 "Mock-Shibboleth"')
   }
-
   /*
   OAuth Strategy taken modified from https://github.com/sahat/hackathon-starter/blob/master/config/passport.js
   - User is already logged in.
@@ -26,20 +27,20 @@ export default (app, passport) => {
   credentials and calls done providing a user, as well
   as options specifying a client ID, client secret, and callback URL.
   */
+  const clientID = config.get('google.clientID')
+  const clientSecret = config.get('google.clientSecret')
+  const callbackURL = config.get('google.callbackURL')
   passport.use(new GoogleStrategy({
-    clientID: config.get('google.clientID'),
-    clientSecret: config.get('google.clientSecret'),
-    callbackURL: config.get('google.callbackURL'),
+    clientID,
+    clientSecret,
+    callbackURL,
     passReqToCallback: true
   }, db.passport.google.serializeUser))
 
-  passport.serializeUser((user, done) => {
-    console.warn('init/passport/google serialize', user)
-    done(null, user.id)
-  })
+  //  NOTE: See above, we actually have to use the second arg for a secondary round of serialization (the first just strips out excess data)
+  passport.serializeUser((user, done) => done(null, user.id))
   passport.deserializeUser(db.passport.google.deserializeUser)
 
-  //  NOTE: Moved from routes
   /*
   Redirect the user to Google for authentication. When complete, Google
   will redirect the user back to the application at
@@ -47,24 +48,28 @@ export default (app, passport) => {
   Authentication with google requires an additional scope param, for more info go
   here https://developers.google.com/identity/protocols/OpenIDConnect#scope-param
   */
-  app.get('/auth/google', passport.authenticate('google', {
-    scope: [
-      'https://www.googleapis.com/auth/userinfo.profile',
-      'https://www.googleapis.com/auth/userinfo.email'
-    ]
-  }))
+  app.get(
+    '/auth/google',
+    passport.authenticate('google', {
+      scope: [
+        'https://www.googleapis.com/auth/userinfo.profile',
+        'https://www.googleapis.com/auth/userinfo.email'
+      ]
+    }
+  ))
   /*
   Google will redirect the user to this URL after authentication. Finish the
   process by verifying the assertion. If valid, the user will be logged in.
   Otherwise, the authentication has failed.
   */
   const googleCallback = config.get('google.callbackURL')
-  // const successRedirect = '/login'
   const successRedirect = '/'
   const failureRedirect = '/'
   app.get(
     googleCallback,
-    passport.authenticate('google', { successRedirect, failureRedirect })
+    passport.authenticate('google', {
+      successRedirect, failureRedirect
+    })
   )
-  console.log('AUTH: Google "Psuedo-Auth" Enabled')
+  console.log('MOCK: Google "Mock-Shibboleth" Enabled')
 }

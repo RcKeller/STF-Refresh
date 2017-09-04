@@ -16,9 +16,6 @@ const app = express()
  */
 db.connect()
 
-// REMOVE if you do not need passport configuration
-// initPassport()
-
 if (config.has('dev')) {
   // enable webpack hot module replacement
   const webpackDevMiddleware = require('webpack-dev-middleware')
@@ -32,8 +29,9 @@ if (config.has('dev')) {
 
 //  Bootstrap application settings
 initExpress(app)
+//  Initialize API routes
 initRoutes(app)
-//  NOTE: Passing in express() for initPassport (previously isolated and handled in routes.js)
+//  Initialize authZ systems and associated routes
 initPassport(app)
 
 /*
@@ -45,13 +43,15 @@ initPassport(app)
 app.get('*', renderMiddleware)
 //  Starts a UNIX socket and listens for connections on the given path. This method is identical to Node’s http.Server.listen().
 if (config.has('dev')) {
+  console.log('DEV: Starting hot-reloading webpack server')
   app.listen(app.get('port'))
 } else {
-  //  We'll need filesystem tools for certs
+  //  NOTE: Using require() syntax for cert loading and filesystem ops, improves dev server build times.
   const http = require('http')
   const https = require('https')
   const path = require('path')
   const fs = require('fs')
+
   console.log('PROD: Configuring dual-servers')
   const key = fs.readFileSync(
     path.resolve(process.cwd(), 'security', 'server-pvk.pem'),
@@ -61,6 +61,7 @@ if (config.has('dev')) {
     path.resolve(process.cwd(), 'security', 'server-cert.pem'),
     'utf-8'
   )
+
   //  FIXME: When not using the test port, remove the port here
   const domain = `${config.get('domain')}:${config.get('port')}`
 
@@ -70,6 +71,7 @@ if (config.has('dev')) {
   })
 
   //  HTTP redirects users to secure endpoints.
+  //  This is a best practice, also necessary for uw-shib
   const httpServer = http.createServer(function (req, res) {
     let redirectURL = `https://${domain}${req.url}`
     res.writeHead(301, {'Location': redirectURL})

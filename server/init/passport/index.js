@@ -1,7 +1,6 @@
 /* Initializing passport.js */
 import passport from 'passport'
 import config from 'config'
-import db from '../../db'
 import google from './google'
 import uw from './uw'
 
@@ -15,22 +14,13 @@ export default (app) => {
   serializing, and querying the user record by ID from the database when
   deserializing.
   */
+  console.log('AUTH: Initializing authentication strategy')
   app.use(passport.initialize())
   app.use(passport.session())
-
-  //  NOTE: Moving serialization to individual strategy files
-  // if (db.passport && db.passport.deserializeUser) {
-  //   passport.serializeUser((user, done) => {
-  //     console.warn('init/passport/index serialize', user)
-  //     done(null, user.id)
-  //   })
-  //   passport.deserializeUser(db.passport.deserializeUser)
-  // } else {
-  //   console.warn('Failed to (de)serialize User')
-  // }
-
   // Load strategies based on the env
-  config.has('prod') ? uw(app, passport) : google(app, passport)
+  config.has('prod')
+    ? uw(app, passport)
+    : google(app, passport)
 }
 
 /*
@@ -233,6 +223,7 @@ GET /v1/comments/?join=proposal 304 54.544 ms - -
 */
 
 //  NOTE: 2nd time refactoring Shibboleth
+//  To fix: implement deserializeUser in a way that generates profiles and queries mongo appropriately.
 
 /*
 ===>  Succeeded in connecting to mongodb://stf-dev:AlecForChair2017@ds115124.mlab.com:15124/uw-dev

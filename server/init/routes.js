@@ -2,11 +2,11 @@
 import config from 'config'
 import db from '../db'
 const version = config.get('version')
-//  Truthiness check - doesn't proceed until this resolves.
 const controllers = db.controllers
 
 //  GENERATE ROUTES
 export default (app) => {
+  console.log('REST: Initializing rest API routes')
   /*
   RESTful API
   */
@@ -25,6 +25,7 @@ export default (app) => {
   console.log(`REST: API live for all ${Object.keys(controllers).length - 1} core models.`)
 
   // USER PROFILE ROUTES
+  console.log('USER: Initializing User REST routes and auth endpoints')
   const Users = new controllers.Users()
   app.use(`/${version}/users`, Users.api())
   app.delete('/sessions', Users.logout)

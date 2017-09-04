@@ -1,5 +1,4 @@
 import express from 'express'
-import passport from 'passport'
 import session from 'express-session'
 import logger from 'morgan'
 // import cookieParser from 'cookie-parser'
@@ -27,7 +26,8 @@ export default (app) => {
   app.use(logger('dev'))
 
   app.use(bodyParser.json())
-  app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+  // for parsing application/x-www-form-urlencoded
+  app.use(bodyParser.urlencoded({ extended: true }))
   app.use(methodOverride())
 
   app.use(express.static(path.join(process.cwd(), 'public')))
@@ -63,18 +63,16 @@ export default (app) => {
                    If secure is set, and you access your site over HTTP, the cookie will not be set.
   */
   let sessionStore = null
-  if (!db.session) {
-    console.warn('Error: MongoDB failed to handle session storage')
-  } else {
-    sessionStore = db.session()
-  }
+  db.session
+    ? sessionStore = db.session()
+    : console.warn('Error: MongoDB failed to handle session storage')
 
   const secret = config.get('sessionSecret')
   // app.use(cookieParser(config.get('cookieSecret')))
   let sess = {
     secret,
     store: sessionStore,
-    // resave and saveUninitialized: Per legacy site, defaults are false
+    // resave and saveUninitialized: Per legacy UW-STF site, defaults are false
     resave: true,
     saveUninitialized: true,
     cookie: {
@@ -83,19 +81,13 @@ export default (app) => {
     }
   }
   app.use(session(sess))
+  if (config.has('prod')) sess.cookie.secure = true
 
   console.log('--------------------------')
-  console.log(`<===  Starting ${env} API . . .`)
+  console.log(`<===  Starting ${env} Server . . .`)
   console.log(`<===  Release version: ${version}`)
   console.log(`<===  Listening on port: ${port}`)
-  if (config.has('prod')) {
-    console.log('<===    Note: Auth with UW\'s Shibboleth Service')
-    console.log('<===    requires secure HTTPS from the actual registed domain.')
-    sess.cookie.secure = true // Serve secure cookies
-  }
   console.log('--------------------------')
-
-  //  NOTE: PASSPORT INIT moved to init/passport/index
 
   app.use(flash())
 }
