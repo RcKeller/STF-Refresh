@@ -75,8 +75,9 @@ Proposals extends React.Component {
           return contact.netID === user.netID
         }
       })
-      this.setState({ proposals, myProposals })
+      this.setState({ myProposals })
     }
+    this.setState({ proposals })
   }
 
   onInputChange = searchText => this.setState({ searchText })
