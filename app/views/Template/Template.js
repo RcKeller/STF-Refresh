@@ -41,6 +41,7 @@ const link = [{ rel: 'icon', href: favicon }]
 import enUS from 'antd/lib/locale-provider/en_US'
 import { LocaleProvider, Spin, Layout, Icon } from 'antd'
 const { Header } = Layout
+import Headroom from 'react-headroom'
 import Drawer from 'rc-drawer'
 
 // import Header from './Header/Header'
@@ -109,6 +110,7 @@ class Template extends React.Component {
             enableDragHandle={false}
             dragToggleDistance={30}
             sidebar={<Nav />}
+            // sidebarStyle={{ overflowY: 'auto' }}
            >
             <div className={styles['body']}>
               {children || <Spin size='large' tip='Loading Page...' />}

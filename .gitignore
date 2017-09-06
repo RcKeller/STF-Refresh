@@ -6,5 +6,5 @@ public
 compiled
 *.swp
 .vscode
-config
+config/*
 security

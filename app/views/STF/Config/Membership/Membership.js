@@ -32,10 +32,10 @@ const toggle = (id, body, update) => mutateAsync({
     //  Committee members vs. potential members to add.
     state => ({
       committee: Array.isArray(state.db.users)
-      ? state.db.users.filter(user => user.stf !== null)
+      ? state.db.users.filter(user => typeof user.stf === 'object')
       : [],
       users: Array.isArray(state.db.users)
-        ? state.db.users.filter(user => user.stf === null)
+        ? state.db.users.filter(user => !user.stf)
         : []
     }),
     //  NOTE: Bind custom mutators to deal with plurality constraints for the 'stf' controller.
@@ -128,6 +128,7 @@ class Membership extends React.Component {
           : <Table dataSource={committee} sort pagination={false}
             size='middle'
             columns={columns}
+            rowKey={record => record._id}
             footer={() =>
               <div>
                 <h6>Add Members:</h6>
