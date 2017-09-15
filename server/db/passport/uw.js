@@ -15,7 +15,7 @@ const serializeUser = ({ regId, netId, givenName, displayName, email } = {}, don
   // console.log('Callback:', typeof done)
   const profile = {
     netID: netId,
-    name: givenName || displayName,
+    name: givenName || displayName || '',
     email
   }
   User

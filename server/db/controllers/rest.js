@@ -106,6 +106,8 @@ export default class REST {
   /* *****
     PATCH: Update a model
     (also known as PUT in other REST api specs)
+      https://codexample.org/questions/306428/mongodb-mongoose-subdocuments-created-twice.c
+      https://github.com/linnovate/mean/issues/511
   ***** */
   patch (id, data, query) {
     let model = this.model.findOne({ [this.key]: id })
@@ -120,14 +122,6 @@ export default class REST {
      })
      .then(modelInstance => modelInstance)
   }
-  // patch (id, data, query) {
-  //   //  https://codexample.org/questions/306428/mongodb-mongoose-subdocuments-created-twice.c
-  //   //  https://github.com/linnovate/mean/issues/511
-  //   let model = this.model
-  //   return model
-  //     .findOneAndUpdate({ [this.key]: id }, data, { upsert: true, setDefaultsOnInsert: true })
-  //     .then(modelInstance => modelInstance)
-  // }
 
   /* *****
   DELETE: Remove a model
@@ -136,6 +130,20 @@ export default class REST {
     return this.model
       .remove({ [this.key]: id })
       .then(() => {})
+  }
+
+  /* *****
+  AUTH: Require netIDs for certain routes (POST/PATCH/DELETE)
+  ***** */
+  requireNetID (req, res, next, loginUrl = '/login') {
+    console.log('ISAUTH', req.isAuthenticated())
+    console.log('TYPEOF', typeof req.isAuthenticated)
+    console.log('SESSION', req.session)
+    console.log('TYPEOF NEXT', typeof next)
+    // req.isAuthenticated()
+    //   ? return next()
+    //   : res.redirect(loginUrl)
+    return next()
   }
 
   /*
@@ -159,21 +167,21 @@ export default class REST {
         .then(null, this.fail(res))
     })
     //  CREATE
-    router.post('/', (req, res) => {
+    router.post('/', this.requireNetID, (req, res) => {
       this
         .post(req.body, req.query)
         .then(this.ok(res))
         .then(null, this.fail(res))
     })
     //  UPDATE
-    router.patch('/:key', (req, res) => {
+    router.patch('/:key', this.requireNetID, (req, res) => {
       this
         .patch(req.params.key, req.body, req.query)  // query?
         .then(this.ok(res))
         .then(null, this.fail(res))
     })
     //  DELETE
-    router.delete('/:key', (req, res) => {
+    router.delete('/:key', this.requireNetID, (req, res) => {
       this
         .delete(req.params.key, req.query)
         .then(this.ok(res))
