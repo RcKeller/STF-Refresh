@@ -27,6 +27,7 @@ class Contact extends React.Component {
   static propTypes = {
     form: PropTypes.object,
     api: PropTypes.object,
+    validate: PropTypes.func,
     parent: PropTypes.string,
     contact: PropTypes.object,
     //  Props from container - REQUIRED.
@@ -43,7 +44,7 @@ class Contact extends React.Component {
   }
   handleSubmit = (e) => {
     e.preventDefault()
-    let { form, api, parent, contact, role, title } = this.props
+    let { form, api, parent, contact, role, title, validate } = this.props
     form.validateFields((err, values) => {
       //  Patch contacts if they already exist. Create them otherwise.
       if (!err && values) {
@@ -65,6 +66,7 @@ class Contact extends React.Component {
         })
       }
     })
+    // validate()
   }
 
   render ({ form, role, title, subtitle } = this.props) {

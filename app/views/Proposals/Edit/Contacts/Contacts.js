@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 import { Row, Col, Alert } from 'antd'
 
@@ -25,7 +26,10 @@ const contactFields = [
 ]
 
 class Contacts extends React.Component {
-  render () {
+  static propTypes = {
+    validate: PropTypes.func
+  }
+  render ({ validate } = this.props) {
     return (
       <div>
         <h1>Contact Information</h1>
@@ -39,7 +43,7 @@ class Contacts extends React.Component {
         <Row gutter={32}>
           {contactFields.map((c, i) => (
             <Col key={i} className='gutter-row' xs={24} md={12} lg={6} >
-              <Contact key={i} {...c} />
+              <Contact key={i} {...c} validate={validate} />
             </Col>
           ))}
         </Row>

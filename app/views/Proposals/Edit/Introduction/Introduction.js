@@ -31,6 +31,7 @@ class Introduction extends React.Component {
   static propTypes = {
     form: PropTypes.object,
     api: PropTypes.object,
+    validate: PropTypes.func,
     parent: PropTypes.string,
     title: PropTypes.string,
     category: PropTypes.string,
@@ -46,13 +47,12 @@ class Introduction extends React.Component {
   }
   handleSubmit = (e) => {
     e.preventDefault()
-    let { form, api, parent } = this.props
+    let { form, api, parent, validate } = this.props
     form.validateFields((err, values) => {
       if (!err) {
-        const update = { proposal: (prev, next) => {
-          let newData = Object.assign(prev, values)
-          return newData
-        }}
+        const update = {
+          proposal: (prev, next) => Object.assign({}, prev, values)
+        }
         api.patch('proposal',
           { proposal: parent, ...values },
           { id: parent, update }
@@ -64,6 +64,7 @@ class Introduction extends React.Component {
         })
       }
     })
+    validate()
   }
 
   render ({ form, categories, title, category, organization, uac } = this.props) {

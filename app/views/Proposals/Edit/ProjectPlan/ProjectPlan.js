@@ -114,6 +114,7 @@ class ProjectPlan extends React.Component {
   static propTypes = {
     form: PropTypes.object,
     api: PropTypes.object,
+    validate: PropTypes.func,
     parent: PropTypes.string,
     body: PropTypes.object
   }
@@ -127,7 +128,7 @@ class ProjectPlan extends React.Component {
   }
   handleSubmit = (e) => {
     e.preventDefault()
-    let { form, api, parent, body } = this.props
+    let { form, api, parent, body, validate } = this.props
     form.validateFields((err, values) => {
       if (!err) {
         //  Update if the document exists, otherwise create it anew.
@@ -155,6 +156,7 @@ class ProjectPlan extends React.Component {
         })
       }
     })
+    validate()
   }
 
   // render ({ form, overview = {}, plan = {} } = this.props) {

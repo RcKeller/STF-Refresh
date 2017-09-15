@@ -29,6 +29,7 @@ class Signatures extends React.Component {
   static propTypes = {
     form: PropTypes.object,
     api: PropTypes.object,
+    validate: PropTypes.func,
     contacts: PropTypes.array,
     user: PropTypes.object
   }
@@ -43,7 +44,7 @@ class Signatures extends React.Component {
   }
   handleToggle = (signature, contact) => {
     console.log('TOGGLE CONTACT', signature, contact)
-    const { api } = this.props
+    const { api, validate } = this.props
     const id = contact._id
     api.patch('contact', { signature }, { id })
     .then(message.success(`You have signed and approved this proposal !`))
@@ -51,6 +52,7 @@ class Signatures extends React.Component {
       message.warning(`Failed to update - Unexpected client error`)
       console.warn(err)
     })
+    validate()
   }
   render ({ form, contacts, user } = this.props) {
     return (

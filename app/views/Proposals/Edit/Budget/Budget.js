@@ -57,12 +57,13 @@ const columns = [{
 class Budget extends React.Component {
   static propTypes = {
     api: PropTypes.object,
+    validate: PropTypes.func,
     proposal: PropTypes.string,
     manifest: PropTypes.object
   }
   handleSubmit = (items, total) => {
     console.log('HANDLE SUBMIT', items, total)
-    let { api, proposal, manifest } = this.props
+    let { api, proposal, manifest, validate } = this.props
     const budget = { proposal, type: 'original', items, total }
     const id = manifest && manifest._id
     const update = {  //  Replace publication status only.
@@ -85,6 +86,7 @@ class Budget extends React.Component {
       message.warning(`Failed to update proposal data - Unexpected client error`)
       console.warn(err)
     })
+    validate()
   }
   render ({ manifest } = this.props) {
     const data = manifest ? manifest.items : []

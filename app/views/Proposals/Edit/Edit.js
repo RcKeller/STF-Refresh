@@ -172,7 +172,7 @@ class Edit extends React.Component {
             <h6>{`Draft ID: ${proposal._id}`}</h6>
             <hr />
             <Tabs tabPosition='top' defaultActiveKey='1'
-              onChange={forceRequest}
+              // onChange={forceRequest}
             >
               <TabPane key='1'
                 tab={<span style={{ color: introduction ? colors.green : colors.gold }}>
