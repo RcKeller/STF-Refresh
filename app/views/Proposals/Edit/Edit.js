@@ -38,6 +38,7 @@ import styles from './Edit.css'
 )
 class Edit extends React.Component {
   static propTypes = {
+    router: PropTypes.object,
     api: PropTypes.object,
     proposal: PropTypes.object,
     user: PropTypes.object
@@ -48,44 +49,57 @@ class Edit extends React.Component {
       valid: {
         introduction: false,
         contacts: false,
-        body: false,
-        manifest: false,
+        project: false,
+        budget: false,
         signatures: false
-      }
+      },
+      warnedAdmin: false
     }
   }
   /*
   If a section hasn't been validated, run validations as the server returns updated props (on tab change)
   Saving this in state allows us to stop redundant validation attempts.
   */
-  componentWillReceiveProps (nextProps, nextState) {
+  componentWillReceiveProps (nextProps) {
     let { valid } = this.state
     const next = nextProps.proposal
-    if (!valid.introduction) valid.introduction = this.validateIntroduction(next.title, next.category, next.organization)
-    if (!valid.contacts) valid.contacts = this.validateContacts(next.contacts)
-    if (!valid.body) valid.body = this.validateBody(next.body)
-    if (!valid.manifest) valid.manifest = this.validateManifest(next.manifests[0])
-    if (!valid.signatures) valid.signatures = this.validateSignatures(next.contacts)
+    if (!valid.introduction) this.validateIntroduction(next)
+    if (!valid.contacts) this.validateContacts(next)
+    if (!valid.project) this.validateProject(next)
+    if (!valid.budget) this.validateBudget(next)
+    if (!valid.signatures) this.validateSignatures(next)
+  }
+
+  validateIntroduction = (
+    { title, category, organization } = this.props,
+    { valid } = this.state
+  ) => {
+    valid.introduction = (title && category && organization) ? true : false // eslint-disable-line
     this.setState({ valid })
-    console.log('VALID', valid)
   }
-  validateIntroduction = (title, category, organization) => {
-    return (title && category && organization) ? true : false // eslint-disable-line
-  }
-  validateContacts = (contacts) => {
-    let valid = 0
+  validateContacts = (
+    { contacts } = this.props,
+    { valid } = this.state
+  ) => {
+    let requiredFields = 0
     for (const { role } of contacts) {
-      if (role === 'organization' || role === 'budget' || role === 'primary') valid++
+      if (role === 'organization' || role === 'budget' || role === 'primary') requiredFields++
     }
-    return valid >= 3
+    valid.contacts = requiredFields >= 3 || false
+    this.setState({ valid })
   }
-  validateBody = ({ overview, plan } = {}) => {
-    let valid = 0
+  validateProject = (
+    { body } = this.props,
+    { valid } = this.state
+  ) => {
+    const { overview, plan } = body || {}
+    console.warn('Validate body', body, overview, plan)
+    let requiredFields = 0
     //  Overview is valid if three prompts as well as the three impact types are filled
     if (overview) {
       const { abstract, justification, objectives, impact } = overview
-      if (abstract && justification && objectives) valid++
-      if (impact && Object.keys(impact).length >= 3) valid++
+      if (abstract && justification && objectives) requiredFields++
+      if (impact && Object.keys(impact).length >= 3) requiredFields++
     }
     //  Project plan is valid if each of the 5 valid subcategories has a current and future state.
     if (plan) {
@@ -93,25 +107,37 @@ class Edit extends React.Component {
       for (const key of Object.keys(plan)) {
         if (plan[key] && plan[key].current && plan[key].future) validCategories++
       }
-      if (validCategories >= 5) valid++
+      if (validCategories >= 5) requiredFields++
     }
-    return valid >= 3
+    valid.project = requiredFields >= 3
+    this.setState({ valid })
   }
-  validateManifest = ({ items } = {}) => {
+  validateBudget = (
+    { manifests } = this.props,
+    { valid } = this.state
+  ) => {
     //  Keeping the validation simple here due to anticipated future enhancement of server side pre/post processing.
-    return Array.isArray(items) && items.length >= 1
+    const { items } = manifests[0]
+    valid.budget = Array.isArray(items) && items.length >= 1
+    this.setState({ valid })
   }
-  validateSignatures = (contacts) => {
-    let valid = 0
+  validateSignatures = (
+    { contacts } = this.props,
+    { valid } = this.state
+  ) => {
+    let requiredFields = 0
     for (const { role, signature } of contacts) {
       if (role === 'organization' || role === 'budget' || role === 'primary') {
-        if (signature) valid++
+        if (signature) requiredFields++
       }
     }
-    return valid >= 3
+    valid.signatures = requiredFields >= 3
+    this.setState({ valid })
   }
-  redirectUnaffiliatedUsers = () => {
-    const { router, user, proposal: { contacts } } = this.props
+  redirectUnaffiliatedUsers = (
+    { router, user, proposal: { contacts } } = this.props,
+    { warnedAdmin } = this.state
+  ) => {
     if (Array.isArray(contacts) && contacts.length > 0) {
       const affiliated = contacts.map(con => con.netID)
       const affiliate = affiliated.includes(user.netID)
@@ -120,18 +146,22 @@ class Edit extends React.Component {
         router.push('/')
         message.error(`You are not affiliated with this proposal. Affiliates include: ${affiliated.toString()}`)
       }
-      if (admin) message.warning('You\'re viewing another person\'s proposal using admin permissions. Be very careful.')
+      if (admin && !warnedAdmin) {
+        message.warning('You\'re viewing another person\'s proposal using admin permissions. Be very careful.')
+        this.setState({ warnedAdmin: true })
+      }
     }
   }
   render (
     { router, forceRequest, proposal, user } = this.props,
     { valid } = this.state
   ) {
-    const { introduction, contacts, body, manifest, signatures } = valid
+    const { introduction, contacts, project, budget, signatures } = valid
     const complete = Object.keys(valid).every(k => valid[k] === true)
     //  Once proposals have loaded, redirect unaffiliated users.
     //  You can log out of Shib and push an update, but if you leave the page after that, it locks you out.
     if (user && proposal) this.redirectUnaffiliatedUsers()
+    console.log('rendering w/ valid:', valid)
     return (
       <article className={styles['page']}>
         <Helmet title='New Proposal' />
@@ -154,25 +184,25 @@ class Edit extends React.Component {
                 tab={<span style={{ color: contacts ? colors.green : colors.gold }}>
                   <Icon type='team' />Contacts</span>
                 }>
-                <Contacts />
+                <Contacts validate={this.validateContacts} />
               </TabPane>
               <TabPane key='3'
-                tab={<span style={{ color: body ? colors.green : colors.gold }}>
+                tab={<span style={{ color: project ? colors.green : colors.gold }}>
                   <Icon type='book' />Project Plan</span>
                 }>
-                <ProjectPlan />
+                <ProjectPlan validate={this.validateProject} />
               </TabPane>
               <TabPane key='4'
-                tab={<span style={{ color: manifest ? colors.green : colors.gold }}>
+                tab={<span style={{ color: budget ? colors.green : colors.gold }}>
                   <Icon type='wallet' />Budget</span>
                 }>
-                <Budget />
+                <Budget validate={this.validateBudget} />
               </TabPane>
               <TabPane key='5'
                 tab={<span style={{ color: signatures ? colors.green : colors.gold }}>
                   <Icon type='edit' />Signatures</span>
                 }>
-                <Signatures />
+                <Signatures validate={this.validateSignatures} />
               </TabPane>
               <TabPane key='6' disabled={!complete}
                 tab={<span><Icon type='rocket' />Publish !</span>}>
