@@ -18,7 +18,9 @@ class Bot {
     https://my.slack.com/services/new/bot
   */
   constructor (token, name) {
+    console.warn('SLCK: Initializing slackbot integration')
     this.Bot = new SlackBot({ token, name })
+    this.Bot.on('error', err => console.error('SLCK: SlackBot error:\n', err))
     this.color = '#4b2e83'
     //  Bot avatar
     this.icon_emoji = ':calcifer:'
