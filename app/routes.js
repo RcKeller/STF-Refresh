@@ -12,7 +12,7 @@ Please note, migration to v4 is a BREAKING change.
 https://github.com/reactGo/reactGo/pull/841/files
 */
 const SplitFrontPage = (l, c) => require.ensure([], () => c(null, require('./views/FrontPage/FrontPage').default))
-// const SplitNotFound = (l, c) => require.ensure([], () => c(null, require('./views/NotFound/NotFound').default))
+const SplitNotFound = (l, c) => require.ensure([], () => c(null, require('./views/NotFound/NotFound').default))
 const SplitFAQ = (l, c) => require.ensure([], () => c(null, require('./views/FAQ/FAQ').default))
 const SplitAbout = (l, c) => require.ensure([], () => c(null, require('./views/About/About').default))
 const SplitContactUs = (l, c) => require.ensure([], () => c(null, require('./views/ContactUs/ContactUs').default))
@@ -95,7 +95,7 @@ export default (store) => {
       <Route path='/docket' onEnter={requireAdmin} getComponent={SplitDocket} />
       <Route path='/config' onEnter={requireAdmin} getComponent={SplitConfig} />
 
-      {/* <Route path='*' getComponent={SplitNotFound} /> */}
+      <Route path='*' getComponent={SplitNotFound} />
     </Route>
   )
 }

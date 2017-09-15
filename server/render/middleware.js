@@ -45,7 +45,15 @@ export default function render (req, res) {
    */
   match({routes, location: req.url}, (err, redirect, props) => {
     if (err) {
-      res.status(500).json(err)
+      /*
+      FIXME: Is there a race condition here?
+      I'm also having an error emitted by a react component I require(), even if it's not used by the route
+      Suspect that these may be related to some extent, or this just emits first as part of a race.
+      ReferenceError: self is not defined
+        at C:\Users\Keller\STF-Refresh\node_modules\react-data-grid\dist\react-data-grid.js:199:31
+      */
+      // res.status(500).json(err)
+      console.error(err)
     } else if (redirect) {
       res.redirect(302, redirect.pathname + redirect.search)
     } else if (props) {
