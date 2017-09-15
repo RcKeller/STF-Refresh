@@ -37,7 +37,7 @@ export default (store) => {
   const requireAuth = (nextState, replace, callback) => {
     const { user } = store.getState()
     const authenticated = user.authenticated || false
-    if (!authenticated) {
+    if (window && !authenticated) {
       try {
         window.location = loginRoute
       } catch (err) {
@@ -51,7 +51,7 @@ export default (store) => {
   const requireSTF = (nextState, replace, callback) => {
     const { user } = store.getState()
     const stf = user.stf || false
-    if (!stf) {
+    if (window && !stf) {
       try {
         window.location = loginRoute
       } catch (err) {
@@ -64,7 +64,7 @@ export default (store) => {
   const requireAdmin = (nextState, replace, callback) => {
     const { user } = store.getState()
     const admin = (user.stf && user.stf.admin) || false
-    if (!admin) {
+    if (window && !admin) {
       try {
         window.location = loginRoute
       } catch (err) {

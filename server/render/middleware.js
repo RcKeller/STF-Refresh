@@ -5,6 +5,30 @@ import pageRenderer from './pageRenderer'
 import fetchDataForRoute from './fetchDataForRoute'
 
 /*
+RENDER ERROR PATCHES:
+These filter out specific errors caused by components that don't play well with SSR, etc
+It is the last resort to prevent race-conditions and one-off errors from interfering with render()
+This way, when a page fails to load, we know for sure it really IS an unhandled error.
+---
+Patches return true if they are indeed the exception specified
+*/
+const patchReactDataGridSelfReferenceError = err => {
+  if (err.name === 'ReferenceError' && err.message === 'self is not defined') {
+    console.error('PATCHED ERROR: React Data Grid unable to SSR due to race condition')
+    return true
+  }
+  return false
+}
+
+/*
+try {
+throw({name: "TEST", message: "mess"})
+} catch (err) {
+console.warn(err.name)
+}
+*/
+
+/*
  * Export render function to be used in server/config/routes.js
  * We grab the state passed in from the server and the req object from Express/Koa
  * and pass it into the Router.run function.
@@ -45,15 +69,13 @@ export default function render (req, res) {
    */
   match({routes, location: req.url}, (err, redirect, props) => {
     if (err) {
-      /*
-      FIXME: Is there a race condition here?
-      I'm also having an error emitted by a react component I require(), even if it's not used by the route
-      Suspect that these may be related to some extent, or this just emits first as part of a race.
-      ReferenceError: self is not defined
-        at C:\Users\Keller\STF-Refresh\node_modules\react-data-grid\dist\react-data-grid.js:199:31
-      */
-      // res.status(500).json(err)
-      console.error(err)
+      //  Patches are used to bypass 500 responses for known, non-breaking errors
+      if (
+        !patchReactDataGridSelfReferenceError(err)
+      ) {
+        console.error(err, redirect, props)
+        res.status(500).json(err)
+      }
     } else if (redirect) {
       res.redirect(302, redirect.pathname + redirect.search)
     } else if (props) {
