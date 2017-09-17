@@ -71,11 +71,11 @@ class FrontPage extends React.Component {
               <h4>See what people are saying...</h4>
               <Collapse accordion bordered={false} defaultActiveKey={['0']}>
                 {endorsements
-                  ? endorsements.map((m, i) => (
-                    <Panel key={i} header={`${m.user.name} (${m.user.netID})`}>
+                  ? endorsements.map((e, i) => (
+                    <Panel key={i} header={`${e.user.name} (${e.user.netID})`}>
                       <span>
-                        <p>{m.body}</p>
-                        <em>Endorsement of <Link to={`${m.proposal.year}/${m.proposal.number}`}>{m.proposal.title}</Link></em>
+                        <p>{e.body}</p>
+                        <em>Endorsement of <Link to={`${e.proposal.year}/${e.proposal.number}`}>{e.proposal.title}</Link></em>
                       </span>
                     </Panel>
                   ))

@@ -33,11 +33,8 @@ class Endorsements extends React.Component {
         <Row gutter={32}>
           {endorsements.map((c, i) =>
             <Col key={i} className='gutter-row' xs={24} md={12} xl={8} >
-              <Card key={i} title={<h2>{c.user.name ? c.user.name : 'Endorsement'}</h2>}
-                extra={c.user.netID}
-              >
-                <h4>{c.title}</h4>
-                <p>{c.body}</p>
+              <Card title={<h2>{c.user.name || 'Endorsement'}</h2>} extra={c.user.netID || ''}>
+                {c.body}
               </Card>
             </Col>
           )}

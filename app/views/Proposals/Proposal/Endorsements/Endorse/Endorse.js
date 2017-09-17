@@ -51,24 +51,20 @@ class Endorse extends React.Component {
     })
   }
 
-  render ({ form } = this.props) {
+  render ({ form, user } = this.props) {
     return (
       <div>
         <h1>Endorse this proposal!</h1>
         <Form onSubmit={this.handleSubmit}>
-          <FormItem label='Title' {...layout} hasFeedback={feedback(form, 'title')} help={help(form, 'title')} >
-            {form.getFieldDecorator('title', rules.required)(
-              <Input type='textarea' />
-            )}
-          </FormItem>
           <FormItem label='Comment' {...layout} hasFeedback={feedback(form, 'body')} help={help(form, 'body')} >
             {form.getFieldDecorator('body', rules.required)(
-              <Input type='textarea' rows={6} />
+              <Input type='textarea' rows={6} disabled={!user} />
             )}
           </FormItem>
           <FormItem>
             <Button size='large' type='primary'
               htmlType='submit' disabled={disableSubmit(form)}
+              style={{ width: '100%' }}
             >Update</Button>
           </FormItem>
         </Form>

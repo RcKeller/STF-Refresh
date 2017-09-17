@@ -7,8 +7,6 @@ const CommentSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
   proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', autopopulate: true },
-  //  Default titles since this is a new feature
-  title: { type: String, required: true, default: '' },
   body: { type: String, required: true }
 })
 CommentSchema.plugin(autoref, [
@@ -36,7 +34,6 @@ const dummyComments = (min, ids) => {
           date: faker.date.recent(),
           proposal: ids.proposal[i],
           user: ids.user[i],
-          title: faker.company.catchPhrase(),
           body: faker.lorem.paragraph()
         })
       }
