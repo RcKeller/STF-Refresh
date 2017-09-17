@@ -19,18 +19,46 @@ class Bot {
   */
   constructor (token, name) {
     console.warn('SLCK: Initializing slackbot integration')
+    //  Initialize SlackBot
     this.Bot = new SlackBot({ token, name })
-    this.Bot.on('error', err => console.error('SLCK: SlackBot error:\n', err))
-    this.color = '#4b2e83'
+      .on('start', () => console.log('SLCK: Initializing SlackBot'))
+      .on('open', () => console.log('SLCK: Open for real-time messaging'))
+      .on('message', data => console.log(`SLCK: Posting ${data.type} / ${Object.keys(data).slice(1)}`))
+      .on('error', err => console.error('SLCK:', err))
+      .on('close', err => console.error('SLCK: Fatal:', err))
+    //  Initialize crash reporting upon node process termination
+    if (process.env.NODE_ENV === 'production') this.initializeCrashReporting()
+
     //  Bot avatar
     this.icon_emoji = ':calcifer:'
-    //  Users to mention in announcements
-    this.proposalOfficer = '@stfagent'
-    this.financeManager = '@techfee'
-    this.chair = '@stfchair'
+    //  Channels & Users to mention in announcements
+    this.channel = 'test'
+    this.developer = 'stfcweb'
+    this.proposalOfficer = 'stfagent'
+    this.financeManager = 'techfee'
+    this.chair = 'stfchair'
   }
-  post (channel, message, params) {
-    this.Bot.postMessageToChannel(channel, message, params)
+
+  //  https://strongloop.com/strongblog/robust-node-applications-error-handling/
+  initializeCrashReporting () {
+    process
+      .on('uncaughtException', (err) => this.crashReport(err))
+      .catch(err => console.error(err))
+  }
+
+  crashReport (err) {
+    const message = 'WARNING: The STF Webapp experienced a fatal crash'
+    const { icon_emoji } = this
+    const params = {
+      icon_emoji,
+      attachments: [{
+        title: `${new Date().toLocaleString()}`,
+        text: err,
+        color: 'warning'
+      }
+      ]
+    }
+    this.Bot.postMessageToUser(this.developer, message, params)
   }
 
   announceProposal (proposal) {
@@ -54,7 +82,7 @@ class Bot {
       }
       ]
     }
-    this.post('test', message, params)
+    this.Bot.postMessageToChannel(this.channel, message, params)
   }
 
   announceSupplemental (manifest, proposal) {
@@ -65,7 +93,7 @@ class Bot {
     const params = {
       icon_emoji,
       attachments: [{
-        pretext: this.proposalOfficer,
+        pretext: `@${this.proposalOfficer}`,
         title: `${year}-${number}: ${title} ${uac ? '(UAC)' : ''}`,
         title_link: `https://uwstf.org/proposal/${year}/${number}/`,
         fields: [
@@ -82,7 +110,7 @@ class Bot {
       }
       ]
     }
-    this.post('test', message, params)
+    this.Bot.postMessageToChannel(this.channel, message, params)
   }
 
   announcePartial (manifest, proposal) {
@@ -93,7 +121,7 @@ class Bot {
     const params = {
       attachments: [{
         icon_emoji,
-        pretext: this.proposalOfficer,
+        pretext: `@${this.proposalOfficer}`,
         title: `${year}-${number}: ${title} ${uac ? '(UAC)' : ''}`,
         title_link: `https://uwstf.org/proposal/${year}/${number}/`,
         fields: [
@@ -105,7 +133,7 @@ class Bot {
       }
       ]
     }
-    this.post('test', message, params)
+    this.Bot.postMessageToChannel(this.channel, message, params)
   }
 
   announceOverexpenditure (report, manifest) {
@@ -118,7 +146,7 @@ class Bot {
     const params = {
       icon_emoji,
       attachments: [{
-        pretext: this.financeManager,
+        pretext: `@${this.financeManager}`,
         title: `${year}-${number}: ${title} ${uac ? '(UAC)' : ''}`,
         title_link: `https://uwstf.org/proposal/${year}/${number}/`,
         fields: [
@@ -131,10 +159,10 @@ class Bot {
       }
       ]
     }
-    this.post('test', message, params)
+    this.Bot.postMessageToChannel(this.channel, message, params)
   }
 }
 //  https://k94n.com/es6-modules-single-instance-pattern
-// let Slack = new Bot('xoxb-235361904727-5DyC1qvmDuYMAPq0KtkrAaWN', 'Calcifer')
+// let Slack = new Bot('<bot-api-key>', 'Calcifer')
 let Slack = new Bot(token, name)
 export default Slack
