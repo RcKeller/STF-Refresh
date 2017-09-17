@@ -1,13 +1,53 @@
-import { createSelector, createStructuredSelector } from 'reselect'
-// import _ from 'lodash'
+import { createSelector } from 'reselect'
+import _ from 'lodash'
+//  https://hackernoon.com/usage-of-reselect-in-a-react-redux-application-fcdca05cc00d
 //  http://engineering.blogfoster.com/managing-complexity-in-redux-higher-order-reducers-and-async-state/
 //  https://docs.mobify.com/progressive-web/0.15.0/guides/reselect/
 
-const getConfig = ({db}) => db.config
-export const test = createSelector(
-    getConfig,
-    config => config.enums
+/*
+BASIC ASYNC SELECTORS
+*/
+const proposals = ({ db }) => Array.isArray(db.proposals) ? db.proposals : []
+const user = ({ user }) => user || {}
+/*
+MEMOIZED SELECTORS
+*/
+export const publishedProposals = createSelector(
+  proposals,
+  (proposals) => proposals
+    .filter(({ published }) => published) || []
 )
+export const unpublishedProposals = createSelector(
+  proposals,
+  (proposals) => proposals
+    .filter(({ published }) => !published) || []
+)
+export const myProposals = createSelector(
+  publishedProposals,
+  user,
+  (proposals, user) => proposals
+    .filter(({ contacts }) => {
+      for (const c of contacts) {
+        return c.netID === user.netID
+      }
+    }) || []
+)
+export const myDrafts = createSelector(
+  unpublishedProposals,
+  user,
+  (proposals, user) => proposals
+    .filter(({ contacts }) => {
+      for (const c of contacts) {
+        return c.netID === user.netID
+      }
+    }) || []
+)
+
+// const getConfig = ({db}) => db.config
+// export const test = createSelector(
+//     getConfig,
+//     config => config.enums
+// )
 // const config = state => _.get(state, 'db.config', {})
 // const getDB = state => state.db
 // export const test = createAsyncSelector({

@@ -30,27 +30,31 @@ const currency = number =>
 //  Import modular CSS. Needs to run through JS because styles are hashed.
 import styles from './Proposals.css'
 //  This is a decorator, a function that wraps another class (which in JS is essentially a func)
+import { publishedProposals, myProposals, myDrafts } from '../../selectors'
 @compose(
   connect((state, props) => ({
-    proposals: state.db.proposals && state.db.proposals
-      .filter(proposal => proposal.published === true
-      ),
-    myProposals: state.db.proposals && state.db.proposals
-      .filter(proposal => {
-        if (proposal.published) {
-          for (const contact of proposal.contacts) {
-            return contact.netID === state.user.netID
-          }
-        }
-      }),
-    myDrafts: state.db.proposals && state.db.proposals
-      .filter(proposal => {
-        if (!proposal.published) {
-          for (const contact of proposal.contacts) {
-            return contact.netID === state.user.netID
-          }
-        }
-      }),
+    proposals: publishedProposals(state),
+    myProposals: myProposals(state),
+    myDrafts: myDrafts(state),
+    // proposals: state.db.proposals && state.db.proposals
+    //   .filter(proposal => proposal.published === true
+    //   ),
+    // myProposals: state.db.proposals && state.db.proposals
+    //   .filter(proposal => {
+    //     if (proposal.published) {
+    //       for (const contact of proposal.contacts) {
+    //         return contact.netID === state.user.netID
+    //       }
+    //     }
+    //   }),
+    // myDrafts: state.db.proposals && state.db.proposals
+    //   .filter(proposal => {
+    //     if (!proposal.published) {
+    //       for (const contact of proposal.contacts) {
+    //         return contact.netID === state.user.netID
+    //       }
+    //     }
+    //   }),
     enums: state.config && state.config.enums,
     screen: state.screen,
     user: state.user
@@ -248,7 +252,7 @@ Proposals extends React.Component {
           Click Here!
         </Link>
         </em>
-        {myProposals.length > 0 &&
+        {(myProposals && myProposals.length > 0) &&
           <div>
             <h6>Your Proposals</h6>
             <ul>
@@ -266,16 +270,16 @@ Proposals extends React.Component {
             </ul>
           </div>
         }
-        {myDrafts.length > 0 &&
+        {(myDrafts && myDrafts.length > 0) &&
           <div>
             <h6>Pending Drafts</h6>
             <ul>
-              {myProposals.map((p, i) => (
+              {myDrafts.map((p, i) => (
                 <li key={p._id}>
                   <Badge status='error'
                     text={
                       <Link to={`/edit/${p._id}`}>
-                        {`${p._id}: ${p.title}`}
+                        {`${p._id}: ${p.title || 'Untitled Draft'}`}
                       </Link>
                     }
                   />
