@@ -8,6 +8,8 @@ isn't coupled with a specific view.
 //  REST API
 import api from './api'
 export default api
+//  INITIAL CONFIG (enums, etc)
+export { default as config } from './config'
 //  MICROSERVICES
 export { default as authentication } from './authentication'
 //  ENVIRONMENT VARIABLES

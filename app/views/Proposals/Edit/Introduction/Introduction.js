@@ -18,8 +18,8 @@ import api from '../../../../services'
       title: state.db.proposal.title,
       category: state.db.proposal.category,
       organization: state.db.proposal.organization,
-      categories: state.db.config
-        ? state.db.config.enums.categories
+      categories: state.config
+        ? state.config.enums.categories
         : [],
       uac: state.db.proposal.uac
     }),

@@ -56,11 +56,11 @@ import desktopLogo from '../../images/desktopLogo.png'
 
 import WordmarkWhite from '../../images/WordmarkWhite.png'
 
-// @connect(state => ({ screen: state.screen }))
-@compose(
-  connect(state => ({ screen: state.screen })),
-  connectRequest(() => api.get('config'))
-)
+// @compose(
+//   connect(state => ({ screen: state.screen })),
+//   connectRequest(() => api.get('config'))
+// )
+@connect(state => ({ screen: state.screen }))
 class Template extends React.Component {
   static propTypes = {
     children: PropTypes.object.isRequired,

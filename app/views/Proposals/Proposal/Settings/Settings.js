@@ -22,7 +22,7 @@ const connectForm = Form.create()
       uac: state.db.proposal.uac,
       status: state.db.proposal.status,
       published: state.db.proposal.published,
-      enums: state.db.config.enums
+      enums: state.config.enums
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),

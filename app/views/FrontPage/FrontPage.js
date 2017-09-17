@@ -14,9 +14,9 @@ import styles from './FrontPage.css'
 @compose(
   connect(state => ({
     endorsements: state.db.comments,
-    stage: state.db.config && state.db.config.stage,
-    news: state.db.config && state.db.config.news,
-    timeline: state.db.config && state.db.config.timeline
+    stage: state.config && state.config.stage,
+    news: state.config && state.config.news,
+    timeline: state.config && state.config.timeline
   })),
   // connectRequest(() => api.get('comments'))
   connectRequest(() => api.get('comments', {

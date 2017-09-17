@@ -42,7 +42,7 @@ class SliderAndNumber extends React.Component {
         .find(manifest => manifest._id === props.id).reviews
         .find(review => review.author._id === state.user._id) || {},
       user: state.user,
-      questions: state.db.config.enums.questions.review || [],
+      questions: state.config.enums.questions.review || [],
       stf: state.user.stf
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })

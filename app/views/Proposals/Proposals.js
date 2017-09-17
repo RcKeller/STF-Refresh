@@ -51,7 +51,7 @@ import styles from './Proposals.css'
           }
         }
       }),
-    enums: state.db.config && state.db.config.enums,
+    enums: state.config && state.config.enums,
     screen: state.screen,
     user: state.user
   })),

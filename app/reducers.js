@@ -5,6 +5,7 @@ import {responsiveStateReducer as screen} from 'redux-responsive'
 
 // import user from './views/Template/Login/ducks'
 import user from './services/authentication'
+import config from './services/config'
 
 const rootReducer = combineReducers({
   //  redux-responsive (media query data in store)
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
   db, //  AKA Entities
   queries,
   // Isomorphic reducers (authN/Z)
-  user
+  user,
+  config
   // Client-side reducers
 })
 

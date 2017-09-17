@@ -23,11 +23,11 @@ import styles from './Config.css'
   connect(
     state => ({
       user: state.user,
-      id: state.db.config && state.db.config._id,
-      enums: state.db.config && state.db.config.enums,
-      submissions: state.db.config && state.db.config.submissions,
-      news: state.db.config && state.db.config.news,
-      timeline: state.db.config && state.db.config.timeline
+      id: state.config && state.config._id,
+      enums: state.config && state.config.enums,
+      submissions: state.config && state.config.submissions,
+      news: state.config && state.config.news,
+      timeline: state.config && state.config.timeline
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
@@ -140,10 +140,10 @@ class Config extends React.Component {
   }
 
   render ({ router, form, id, enums } = this.props) {
-    if (!id) {
-      message.warning('For security, the config panel cannot be a landing page.', 10)
-      router.push('/')
-    }
+    // if (!id) {
+    //   message.warning('For security, the config panel cannot be a landing page.', 10)
+    //   router.push('/')
+    // }
     return (
       <article className={styles['article']}>
         <Helmet title='Site Config' />
