@@ -9,7 +9,7 @@ import { connectRequest, requestAsync, mutateAsync } from 'redux-query'
 import api from '../../../../services'
 
 import { Link } from 'react-router'
-import { Spin, Table, Switch, AutoComplete, message } from 'antd'
+import { Spin, Table, Switch, AutoComplete, Tooltip, message } from 'antd'
 const Option = AutoComplete.Option
 
 const addAuth = (body, update) => mutateAsync({
@@ -130,18 +130,16 @@ class Membership extends React.Component {
             columns={columns}
             rowKey={record => record._id}
             footer={() =>
-              <div>
-                <h6>Add Members:</h6>
-                <AutoComplete style={{ width: 250 }}
-                  placeholder='Add a user to the STF...'
+              <Tooltip trigger='focus'
+                title='You may add any user to the committee, as long as they have logged into the website before. This is irreversible (to preserve voting logs).'
+              >
+                <AutoComplete style={{ width: 300 }}
+                  placeholder='Add STF members...'
                   onSelect={this.handleAddMember}
                   >
                   {users.map(user => <Option key={user._id}>{`${user.name} (${user.netID})`}</Option>)}
                 </AutoComplete>
-                <p>
-                  You may add any user to the committee (not necessarily with any auth level), as long as they have logged into the website before. This is irreversible.
-                </p>
-              </div>
+              </Tooltip>
             }
           />
         }

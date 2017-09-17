@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
+import { updateConfig } from '../../../services/config'
 import { layout, Label } from '../../../util/form'
 
 import { Spin, Tabs, Form, Icon, Tooltip, Input, Select, Checkbox, Switch, Alert, message } from 'antd'
@@ -29,15 +30,18 @@ import styles from './Config.css'
       news: state.config && state.config.news,
       timeline: state.config && state.config.timeline
     }),
-    dispatch => ({ api: bindActionCreators(api, dispatch) })
+    /*
+    NOTE: state.config exists in an isomorphic context, loads before page render.
+    As such, it has its own reducer - it just calls API services and updates itself with the response.
+    */
+    dispatch => ({ updateConfig: bindActionCreators(updateConfig, dispatch) })
   ),
-  // connectRequest(api.get('blocks')),
   connectForm
 )
 class Config extends React.Component {
   static propTypes = {
     form: PropTypes.object,
-    api: PropTypes.object,
+    updateConfig: PropTypes.object,
     id: PropTypes.string,
     status: PropTypes.string,
     submissions: PropTypes.bool,
@@ -66,32 +70,17 @@ class Config extends React.Component {
     }
   }
   handleSubmissions = (submissions) => {
-    const { api, id } = this.props
-    api.patch('configs', { submissions }, { id })
-    .then(message.warning(`Proposal submissions are now ${submissions ? 'open' : 'closed'}!`), 10)
-    .catch(err => {
-      message.warning(`Failed to update - client error`)
-      console.warn(err)
-    })
+    const { updateConfig, id } = this.props
+    updateConfig({ submissions }, { id })
   }
   handleNews = (news) => {
-    const { api, id } = this.props
-    api.patch('configs', { news }, { id })
-    .then(message.warning(`News updated!`), 10)
-    .catch(err => {
-      message.warning(`Failed to update - client error`)
-      console.warn(err)
-    })
+    const { updateConfig, id } = this.props
+    updateConfig({ news }, { id })
   }
 
   handleTimeline = (timeline) => {
-    const { api, id } = this.props
-    api.patch('configs', { timeline }, { id })
-    .then(message.warning(`News updated!`), 10)
-    .catch(err => {
-      message.warning(`Failed to update - client error`)
-      console.warn(err)
-    })
+    const { updateConfig, id } = this.props
+    updateConfig({ timeline }, { id })
   }
 
   handleOrganizations = (encodedOrgData) => {
@@ -101,49 +90,30 @@ class Config extends React.Component {
       const [org, code] = encoded.split(':')
       organizations[org] = code || ''
     }
-    const { api, id } = this.props
+    const { updateConfig, id } = this.props
     //  Immutability magic
     let enums = Object.assign({}, this.props.enums)
     enums.organizations = organizations
-    api.patch('configs', { enums }, { id })
-    .then(message.success(`Updated organizations!`), 10)
-    .catch(err => {
-      message.warning(`Failed to update - client error`)
-      console.warn(err)
-    })
+    updateConfig({ enums }, { id })
   }
 
   handleCategories = (categories) => {
-    const { api, id } = this.props
+    const { updateConfig, id } = this.props
     //  Immutability magic
     let enums = Object.assign({}, this.props.enums)
     enums.categories = categories
-    api.patch('configs', { enums }, { id })
-    .then(message.success(`Updated categories!`), 10)
-    .catch(err => {
-      message.warning(`Failed to update - client error`)
-      console.warn(err)
-    })
+    updateConfig({ enums }, { id })
   }
 
   handleQuestions = (questions) => {
-    const { api, id } = this.props
+    const { updateConfig, id } = this.props
     //  Immutability magic
     let enums = Object.assign({}, this.props.enums)
     enums.questions.review = questions
-    api.patch('configs', { enums }, { id })
-    .then(message.success(`Updated review questions!`), 10)
-    .catch(err => {
-      message.warning(`Failed to update - client error`)
-      console.warn(err)
-    })
+    updateConfig({ enums }, { id })
   }
 
   render ({ router, form, id, enums } = this.props) {
-    // if (!id) {
-    //   message.warning('For security, the config panel cannot be a landing page.', 10)
-    //   router.push('/')
-    // }
     return (
       <article className={styles['article']}>
         <Helmet title='Site Config' />
