@@ -32,16 +32,34 @@ import styles from './Proposals.css'
 //  This is a decorator, a function that wraps another class (which in JS is essentially a func)
 @compose(
   connect((state, props) => ({
-    proposals: state.db.proposals,
+    proposals: state.db.proposals && state.db.proposals
+      .filter(proposal => proposal.published === true
+      ),
+    myProposals: state.db.proposals && state.db.proposals
+      .filter(proposal => {
+        if (proposal.published) {
+          for (const contact of proposal.contacts) {
+            return contact.netID === state.user.netID
+          }
+        }
+      }),
+    myDrafts: state.db.proposals && state.db.proposals
+      .filter(proposal => {
+        if (!proposal.published) {
+          for (const contact of proposal.contacts) {
+            return contact.netID === state.user.netID
+          }
+        }
+      }),
     enums: state.db.config && state.db.config.enums,
     screen: state.screen,
     user: state.user
   })),
-  connectRequest(
-    () => api.get('proposals', {
-      where: { published: true },
-      join: [ 'contacts' ]
-    })
+  //  If not logged in, query for only published proposals (performance)
+  connectRequest(({user}) =>
+      user._id
+        ? api.get('proposals', { join: [ 'contacts' ] })
+        : api.get('proposals', { where: { published: true }, join: [ 'contacts' ] })
   )
 )
 class // Compose is a redux utility that runs an array of functions:
@@ -60,24 +78,14 @@ Proposals extends React.Component {
     const { proposals } = this.props
     this.state = {
       proposals,
-      myProposals: [],
       filterDropdownVisible: false,
       searchText: '',
       filtered: false
     }
   }
   componentWillReceiveProps (nextProps) {
-    const { proposals, user } = nextProps
-    if (proposals && user.netID) {
-      //  Filter out proposals containing the netID in contacts.
-      const myProposals = proposals.filter(proposal => {
-        for (const contact of proposal.contacts) {
-          return contact.netID === user.netID
-        }
-      })
-      this.setState({ myProposals })
-    }
-    this.setState({ proposals })
+    const { proposals } = nextProps
+    if (proposals) this.setState({ proposals })
   }
 
   onInputChange = searchText => this.setState({ searchText })
@@ -110,9 +118,9 @@ Proposals extends React.Component {
   }
   //  Shorthand assignment of variables when defining render
   render (
-    { enums, screen } = this.props,
+    { enums, screen, myProposals, myDrafts } = this.props,
     //  Proposals go through state since we filter
-    { proposals, myProposals } = this.state
+    { proposals } = this.state
   ) {
     //  Create an array of years for select boxes
     const years = _.range(
@@ -242,7 +250,7 @@ Proposals extends React.Component {
         </em>
         {myProposals.length > 0 &&
           <div>
-            <h6>My Proposals</h6>
+            <h6>Your Proposals</h6>
             <ul>
               {myProposals.map((p, i) => (
                 <li key={p._id}>
@@ -258,6 +266,24 @@ Proposals extends React.Component {
             </ul>
           </div>
         }
+        {myDrafts.length > 0 &&
+          <div>
+            <h6>Pending Drafts</h6>
+            <ul>
+              {myProposals.map((p, i) => (
+                <li key={p._id}>
+                  <Badge status='error'
+                    text={
+                      <Link to={`/edit/${p._id}`}>
+                        {`${p._id}: ${p.title}`}
+                      </Link>
+                    }
+                  />
+                </li>
+                ))}
+            </ul>
+          </div>
+        }
       </div>
     )
     return (
@@ -267,6 +293,7 @@ Proposals extends React.Component {
         {!proposals
             ? <Spin size='large' tip='Loading...' />
             : <Table
+              rowKey={record => record._id}
               dataSource={proposals}
               sort
               size={screen.lessThan.medium ? 'small' : ''}
@@ -277,9 +304,9 @@ Proposals extends React.Component {
               }
               footer={footer}
             />
-            }
-            <h1 className='demo-note' style={{ color: 'red' }}>CONTENT NEEDED</h1>
-            <p className='demo-note' style={{ color: 'red' }}>Verbage here would be cool. Although, basically the rest of the site explains this...</p>
+          }
+        <h1 className='demo-note' style={{ color: 'red' }}>CONTENT NEEDED</h1>
+        <p className='demo-note' style={{ color: 'red' }}>Verbage here would be cool. Although, basically the rest of the site explains this...</p>
       </article>
     )
   }
