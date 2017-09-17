@@ -107,9 +107,15 @@ class Spreadsheet extends React.Component {
     }
     const currency = number => number.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
     return <div>
-      <Alert type='warning' banner showIcon={false} closable
+      {/* <Alert type='warning' banner showIcon={false} closable
         message='This table can be edited! Remember to save your data when you are done'
-        />
+        /> */}
+      <Alert type='info' showIcon={false} banner closable
+        message={<span>
+          <b>Spreadsheet: </b>
+          Press enter to edit data, or type to overwrite. Remember to save once you are done.
+        </span>}
+       />
       <ReactDataGrid
         enableCellSelect cellNavigationMode='changeRow'
         contextMenu={<Menu
@@ -122,9 +128,13 @@ class Spreadsheet extends React.Component {
         rowsCount={(rows && rows.length) || 0}
         onGridRowsUpdated={this.handleGridRowsUpdated}
       />
-      {financial && <h2>Total Cost: {total ? currency(total) : '$0.00'}</h2>}
+      {(financial && total > 0) &&
+        <Alert type='info' showIcon={false} banner
+          message={<h2>Final Total: {total ? currency(total) : '$0.00'}</h2>}
+         />
+      }
       <Button size='large' type='primary' disabled={disabled}
-        style={{ width: '100%', borderRadius: '0 0 inherit inherit' }}
+        style={{ width: '100%', borderRadius: 'none' }}
         onClick={this.handleSubmit}>
         <Icon type='upload' />Save
       </Button>

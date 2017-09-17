@@ -101,9 +101,10 @@ class Contact extends React.Component {
           )}
         </FormItem>
         <FormItem>
-          <Button size='large' type='primary' width='100%' style={{width: '100%'}}
+          <Button size='large' type='primary'
             htmlType='submit' disabled={disableSubmit(form)}
-            >Update</Button>
+            style={{ width: '100%' }}
+            ><Icon type='cloud-upload-o' />Update</Button>
         </FormItem>
       </Form>
     )

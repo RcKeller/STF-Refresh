@@ -15,7 +15,7 @@ import Budget from './Budget/Budget'
 import Signatures from './Signatures/Signatures'
 import Publish from './Publish/Publish'
 
-import { Icon, Spin, Tabs, message } from 'antd'
+import { Spin, Icon, Tooltip, Tabs, message } from 'antd'
 const TabPane = Tabs.TabPane
 
 const colors = {
@@ -117,7 +117,8 @@ class Edit extends React.Component {
     { valid } = this.state
   ) => {
     //  Keeping the validation simple here due to anticipated future enhancement of server side pre/post processing.
-    const { items } = manifests[0]
+    // const { items } = manifests[0]
+    const items = manifests.length > 0 ? manifests[0].items : []
     valid.budget = Array.isArray(items) && items.length >= 1
     this.setState({ valid })
   }
@@ -169,8 +170,11 @@ class Edit extends React.Component {
           ? <Spin size='large' tip='Loading...' />
           : <div id={proposal._id}>
             <h1>{`Editing: ${proposal.title || 'New Proposal'}`}</h1>
-            <h6>{`Draft ID: ${proposal._id}`}</h6>
-            <hr />
+            <Tooltip placement='topLeft'
+              title={'Technical issues? E-mail STFCweb@uw.edu with your concern and draft ID'}
+            >
+              <h6>{`Draft ID: ${proposal._id}`}</h6>
+            </Tooltip>
             <Tabs tabPosition='top' defaultActiveKey='1'
               // onChange={forceRequest}
             >
@@ -209,7 +213,6 @@ class Edit extends React.Component {
                 <Publish />
               </TabPane>
             </Tabs>
-            {!complete && <em>Once all sections are complete (indicated by the tab turning green), the publish option will appear.</em>}
           </div>
         }
       </article>

@@ -21,14 +21,6 @@ const patchReactDataGridSelfReferenceError = err => {
 }
 
 /*
-try {
-throw({name: "TEST", message: "mess"})
-} catch (err) {
-console.warn(err.name)
-}
-*/
-
-/*
  * Export render function to be used in server/config/routes.js
  * We grab the state passed in from the server and the req object from Express/Koa
  * and pass it into the Router.run function.
@@ -70,11 +62,11 @@ export default function render (req, res) {
   match({routes, location: req.url}, (err, redirect, props) => {
     if (err) {
       //  Patches are used to bypass 500 responses for known, non-breaking errors
-      if (
-        !patchReactDataGridSelfReferenceError(err)
-      ) {
+      if (!patchReactDataGridSelfReferenceError(err)) {
         console.error(err, redirect, props)
         res.status(500).json(err)
+      } else {
+        res.redirect('back')
       }
     } else if (redirect) {
       res.redirect(302, redirect.pathname + redirect.search)

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Button, message } from 'antd'
+import { Icon, Button, message } from 'antd'
 
 import api from '../../../../services'
 
@@ -61,7 +61,10 @@ class Publish extends React.Component {
             <p>
               Major changes in the ask will require a new proposal, however - please keep us in the loop and notify us of major changes that redirect this project.
             </p>
-            <Button size='large' primary style={{ width: '100%' }} onClick={this.handlePublish}>Publish !</Button>
+            <Button size='large' primary
+              style={{ width: '100%' }}
+              onClick={this.handlePublish}
+              ><Icon type='rocket' />Publish !</Button>
           </div>
           : <div>
             <h1>This proposal is now live!</h1>

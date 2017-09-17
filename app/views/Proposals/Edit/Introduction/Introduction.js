@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Form, Input, AutoComplete, Checkbox, Button, Alert, message } from 'antd'
+import { Form, Icon, Input, AutoComplete, Checkbox, Button, Alert, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
@@ -96,7 +96,8 @@ class Introduction extends React.Component {
           <FormItem>
             <Button size='large' type='primary'
               htmlType='submit' disabled={disableSubmit(form)}
-              >Update</Button>
+              style={{ width: '100%' }}
+              ><Icon type='cloud-upload-o' />Update</Button>
           </FormItem>
         </Form>
       </div>

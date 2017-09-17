@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Row, Col, Alert, Form, Input, Button, message } from 'antd'
+import { Row, Col, Icon, Alert, Form, Input, Button, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
@@ -230,7 +230,8 @@ class ProjectPlan extends React.Component {
           <FormItem>
             <Button size='large' type='primary'
               htmlType='submit' disabled={disableSubmit(form)}
-              >Update</Button>
+              style={{ width: '100%' }}
+              ><Icon type='cloud-upload-o' />Update</Button>
           </FormItem>
         </Form>
       </div>
