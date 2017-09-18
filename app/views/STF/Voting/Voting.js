@@ -12,13 +12,20 @@ import api from '../../../services'
 import { Spin, Tabs, Alert, Button } from 'antd'
 const TabPane = Tabs.TabPane
 
-import Vote from './Vote/Vote'
+import Panels from './Panels/Panels'
 
 import styles from './Voting.css'
-// @connect(state => ({ user: state.user }))
 @compose(
   connect(
-    state => ({ manifests: state.db.manifests }),
+    state => ({
+      docket: Array.isArray(state.db.manifests)
+        ? state.db.manifests
+          .filter(budget => {
+            let { docket } = budget
+            if (docket) return docket.metrics || docket.voting || docket.decisions
+          })
+        : []
+    }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
 ),
   connectRequest(() => api.get('manifests', {
@@ -29,31 +36,10 @@ import styles from './Voting.css'
 )
 class Voting extends React.Component {
   static propTypes = {
-    manifests: PropTypes.array
-  }
-  constructor (props) {
-    super(props)
-    this.state = { docket: [] }
-  }
-  componentWillReceiveProps (nextProps) {
-    //  Check our manifests to see if they're on the docket
-    const { manifests } = nextProps
-    if (Array.isArray(manifests)) {
-      //  Filter out proposals containing the netID in contacts.
-      const docket = manifests.filter(manifest => {
-        // return manifest.docket.metrics || manifest.docket.voting
-        return (
-          manifest.docket.metrics === true ||
-          manifest.docket.voting === true ||
-          manifest.docket.decisions === true)
-      })
-      console.warn('SETTING DOCKET', docket)
-      this.setState({ docket })
-    }
+    docket: PropTypes.array
   }
   render (
-    { user, manifests, forceRequest } = this.props,
-    { docket } = this.state
+    { user, docket, forceRequest } = this.props
   ) {
     return (
       <article className={styles['tabbed-article']}>
@@ -80,7 +66,7 @@ class Voting extends React.Component {
                   ${manifest.type !== 'original' ? `(${_.capitalize(manifest.type)})` : ''}
                 `}
               >
-                <Vote index={i} id={manifest._id} />
+                <Panels index={i} id={manifest._id} />
               </TabPane>
             ))}
           </Tabs>

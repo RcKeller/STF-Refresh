@@ -22,19 +22,19 @@ There are two kinds of meetings:
     //  Might seem counterintuitive, but we're connecting to a manifest and pulling its proposal data.
     (state, props) => ({
       manifest: state.db.manifests
-        .find(manifest => manifest._id === props.id) || {},
-      user: state.user
+        .find(manifest => manifest._id === props.id),
+      admin: state.user.stf.admin
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
 )
-class Vote extends React.Component {
+class Panels extends React.Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
     manifest: PropTypes.object,
-    user: PropTypes.object
+    admin: PropTypes.object
   }
   render (
-    { index, manifest } = this.props
+    { index, manifest, admin } = this.props
   ) {
     const { _id, proposal, docket } = manifest
     const { id, title, organization, uac, year, number, date, comments } = proposal
@@ -60,10 +60,13 @@ class Vote extends React.Component {
               <TabPane tab={<b>Metrics</b>} key='2'>
                 <Metrics id={_id} />
               </TabPane>
-              <TabPane disabled={!metrics && !voting} tab={<b>Review</b>} key='3'>
+              <TabPane disabled={!metrics} tab={<b>Review</b>} key='3'>
                 <Review id={_id} />
               </TabPane>
-              <TabPane disabled={!decisions} tab={<b>Decision</b>} key='4'>
+              <TabPane disabled={!voting} tab={<b>Vote</b>} key='4'>
+                <div>Vote</div>
+              </TabPane>
+              <TabPane disabled={!admin || !decisions} tab={<b>Decision (<em>Admin-Only</em>)</b>} key='5'>
                 <Decision id={_id} />
               </TabPane>
             </Tabs>
@@ -74,4 +77,4 @@ class Vote extends React.Component {
   }
 }
 
-export default Vote
+export default Panels
