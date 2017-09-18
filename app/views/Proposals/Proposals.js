@@ -254,6 +254,7 @@ Proposals extends React.Component {
         </em>
         {(myProposals && myProposals.length > 0) &&
           <div>
+            <hr />
             <h6>Your Proposals</h6>
             <ul>
               {myProposals.map((p, i) => (
@@ -272,6 +273,7 @@ Proposals extends React.Component {
         }
         {(myDrafts && myDrafts.length > 0) &&
           <div>
+            <hr />
             <h6>Pending Drafts</h6>
             <ul>
               {myDrafts.map((p, i) => (

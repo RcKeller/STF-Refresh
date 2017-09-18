@@ -53,13 +53,13 @@ class Create extends React.Component {
       //  Create Proposal w/ budget code if valid
       if (!err) {
         this.setState({ confirmLoading: true })
-        const { organization, budget, role, title } = values
+        const { organization, budget, role, title, phone } = values
         api.post('proposal', { organization, budget })
         .then(res => {
           //  Save yourself as a new, related contact with the new proposal ID.
           const { name, netID } = user
           const proposal = res.body._id
-          const initialContact = { proposal, name, netID, role, title }
+          const initialContact = { proposal, name, netID, role, title, phone }
           api.post('contact', initialContact)
           .then(() => {
             message.success(`Proposal Created! Share the link with your team! ID: ${proposal}`, 10)
@@ -132,6 +132,11 @@ class Create extends React.Component {
             </FormItem>
             <FormItem label='Job Title' {...layout} hasFeedback={feedback(form, 'title')} help={help(form, 'title')} >
               {form.getFieldDecorator('title', rules.required)(
+                <Input />
+              )}
+            </FormItem>
+            <FormItem label='Phone' {...layout} hasFeedback={feedback(form, 'phone')} help={help(form, 'phone')} >
+              {form.getFieldDecorator('phone', rules.required)(
                 <Input />
               )}
             </FormItem>
