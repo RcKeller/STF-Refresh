@@ -13,7 +13,9 @@ const Panel = Collapse.Panel
 import styles from './FrontPage.css'
 @compose(
   connect(state => ({
-    endorsements: state.db.comments,
+    endorsements: Array.isArray(state.db.comments)
+      ? state.db.comments.slice(0, 5)
+      : [],
     stage: state.config && state.config.stage,
     news: state.config && state.config.news,
     timeline: state.config && state.config.timeline

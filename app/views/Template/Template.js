@@ -110,7 +110,7 @@ class Template extends React.Component {
             enableDragHandle={false}
             dragToggleDistance={30}
             sidebar={<Nav />}
-            // sidebarStyle={{ overflowY: 'auto' }}
+            sidebarStyle={screen.lessThan.large ? { overflowY: 'auto' } : {}}
            >
             <div className={styles['body']}>
               {children || <Spin size='large' tip='Loading Page...' />}

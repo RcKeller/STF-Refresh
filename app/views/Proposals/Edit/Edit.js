@@ -8,6 +8,8 @@ import { connectRequest } from 'redux-query'
 import api from '../../../services'
 // import { redirectUnaffiliated } from '../../../util/selectors'
 
+import { initialProposalContacts } from '../../../selectors'
+
 import Introduction from './Introduction/Introduction'
 import Contacts from './Contacts/Contacts'
 import ProjectPlan from './ProjectPlan/ProjectPlan'
@@ -28,6 +30,7 @@ import styles from './Edit.css'
   connect(state => ({
     //  Loads async, don't use specific selectors.
     proposal: state.db.proposal,
+    contacts: initialProposalContacts(state),
     user: state.user
   })),
   connectRequest(props => api.get('proposal', {
@@ -81,7 +84,7 @@ class Edit extends React.Component {
     { contacts } = this.props,
     { valid } = this.state
   ) => {
-    if (!contacts) contacts = this.props.proposal.contacts
+    if (!contacts) contacts = this.props.contacts
     console.error('VALIDATE CONTACTS', contacts)
     let requiredFields = 0
     for (const contact of contacts) {

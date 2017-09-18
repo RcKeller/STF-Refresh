@@ -31,7 +31,7 @@ class Nav extends React.Component {
         mode={screen.lessThan.large ? 'inline' : 'horizontal'}
         selectedKeys={[location]}
         onClick={(i) => i.key && browserHistory.push(i.key)}
-        style={{ overflowY: screen.lessThan.large ? 'auto' : 'none' }}
+        style={screen.lessThan.large ? { overflowY: 'auto' } : {}}
       >
         <Item key='/proposals'>
           <Icon type='solution' /><span className='nav-text'>Proposals</span>
