@@ -134,8 +134,8 @@ class ProjectPlan extends React.Component {
         //  Update if the document exists, otherwise create it anew.
         console.warn(values)
         const update = { proposal: (prev, next) => {
-          let newData = prev
-          Object.assign(newData.body, values)
+          let newData = Object.assign({}, prev)
+          newData.body = values
           return newData
         }}
         body

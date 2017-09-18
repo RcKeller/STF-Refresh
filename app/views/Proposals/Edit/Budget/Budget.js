@@ -66,12 +66,11 @@ class Budget extends React.Component {
     let { api, proposal, manifest, validate } = this.props
     const budget = { proposal, type: 'original', items, total }
     const id = manifest && manifest._id
-    const update = {  //  Replace publication status only.
-      proposal: (prev, next) =>
-        next && next.manifests
-        ? Object.assign(prev, { manifests: next.manifests })
-        : prev
-    }
+    const update = { proposal: (prev, next) => {
+      const newData = Object.assign({}, prev)
+      newData.manifests[0] = budget
+      return newData
+    }}
     manifest
     ? api.patch('manifest', budget, { id, update })
     : api.post('manifest', budget, { update })

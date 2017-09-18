@@ -38,15 +38,22 @@ class Signatures extends React.Component {
     const { form, contacts } = this.props
     if (contacts) {
       let fields = {}
-      contacts.forEach(c => fields[c.role] = c.signature)
+      for (const c of contacts) {
+        fields[c.role] = c.signature
+      }
       form.setFieldsValue(fields)
     }
   }
   handleToggle = (signature, contact) => {
-    console.log('TOGGLE CONTACT', signature, contact)
     const { api, validate } = this.props
     const id = contact._id
-    api.patch('contact', { signature }, { id })
+    const update = { proposal: (prev, next) => {
+      let newData = Object.assign({}, prev)
+      const index = newData.contacts.findIndex(c => c._id === id)
+      newData.contacts[index].signature = signature
+      return newData
+    }}
+    api.patch('contact', { signature }, { id, update })
     .then(message.success(`You have signed and approved this proposal !`))
     .catch(err => {
       message.warning(`Failed to update - Unexpected client error`)

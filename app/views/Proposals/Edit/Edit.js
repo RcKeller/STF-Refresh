@@ -81,6 +81,7 @@ class Edit extends React.Component {
     { contacts } = this.props,
     { valid } = this.state
   ) => {
+    if (!contacts) contacts = this.props.proposal.contacts
     console.error('VALIDATE CONTACTS', contacts)
     let requiredFields = 0
     for (const contact of contacts) {
@@ -94,6 +95,7 @@ class Edit extends React.Component {
     { body } = this.props,
     { valid } = this.state
   ) => {
+    // if (!body) body = this.props.proposal.body || {}
     const { overview, plan } = body || {}
     console.warn('Validate body', body, overview, plan)
     let requiredFields = 0
@@ -118,6 +120,8 @@ class Edit extends React.Component {
     { manifests } = this.props,
     { valid } = this.state
   ) => {
+    if (!manifests) manifests = this.props.proposal.manifests || []
+    console.warn('VALIDATE BUDGET', manifests)
     //  Keeping the validation simple here due to anticipated future enhancement of server side pre/post processing.
     // const { items } = manifests[0]
     const items = manifests.length > 0 ? manifests[0].items : []
@@ -128,6 +132,8 @@ class Edit extends React.Component {
     { contacts } = this.props,
     { valid } = this.state
   ) => {
+    if (!contacts) contacts = this.props.proposal.contacts || []
+    console.warn('CONTACTS', contacts)
     let requiredFields = 0
     for (const { role, signature } of contacts) {
       if (role === 'organization' || role === 'budget' || role === 'primary') {
@@ -164,7 +170,6 @@ class Edit extends React.Component {
     //  Once proposals have loaded, redirect unaffiliated users.
     //  You can log out of Shib and push an update, but if you leave the page after that, it locks you out.
     if (user && proposal) this.redirectUnaffiliatedUsers()
-    console.log('rendering w/ valid:', valid)
     return (
       <article className={styles['page']}>
         <Helmet title='New Proposal' />
