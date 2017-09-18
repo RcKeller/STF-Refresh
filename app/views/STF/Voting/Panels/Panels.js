@@ -1,8 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { bindActionCreators } from 'redux'
+import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { connectRequest } from 'redux-query'
 
 import api from '../../../../services'
 
@@ -19,14 +20,21 @@ There are two kinds of meetings:
 - QA meetings (metrics, no votes)
 - Voting meetings (votes, may have metrics but probably not)
 */
-@connect(
-    //  Might seem counterintuitive, but we're connecting to a manifest and pulling its proposal data.
-    (state, props) => ({
-      manifest: state.db.manifests
-        .find(manifest => manifest._id === props.id),
-      stf: state.user.stf
-    }),
-    dispatch => ({ api: bindActionCreators(api, dispatch) })
+@compose(
+  connect(
+      //  Might seem counterintuitive, but we're connecting to a manifest and pulling its proposal data.
+      (state, props) => ({
+        manifest: state.db.manifests
+          .find(manifest => manifest._id === props.id),
+        stf: state.user.stf
+      }),
+      dispatch => ({ api: bindActionCreators(api, dispatch) })
+  ),
+  connectRequest(({ id }) => api.get('manifest', {
+    id,
+    force: true,
+    join: ['proposal.body', 'proposal.contacts', 'reviews', 'decision']
+  }))
 )
 class Panels extends React.Component {
   static propTypes = {
@@ -34,6 +42,14 @@ class Panels extends React.Component {
     manifest: PropTypes.object,
     admin: PropTypes.object
   }
+  componentWillReceiveProps (nextProps) {
+    console.error('CWRP', this.props, nextProps)
+  }
+  shouldComponentUpdate (nextProps, nextState) {
+    console.error('SCU', this.props, nextProps)
+    return true
+  }
+
   render (
     { index, manifest, stf } = this.props
   ) {
@@ -54,7 +70,7 @@ class Panels extends React.Component {
               <li>Date: {date}</li>
               <li>Endorsements: {comments.length}</li>
             </ul>
-            <Tabs defaultActiveKey='1'>
+            {/* <Tabs defaultActiveKey='1'>
               <TabPane tab={<b>Summary</b>} key='1'>
                 <Summary id={_id} />
               </TabPane>
@@ -70,7 +86,7 @@ class Panels extends React.Component {
               <TabPane disabled={!decisions || !stf.admin} tab={<b>Decision (<em>Admin-Only</em>)</b>} key='5'>
                 <Decision id={_id} />
               </TabPane>
-            </Tabs>
+            </Tabs> */}
           </div>
         }
       </section>
