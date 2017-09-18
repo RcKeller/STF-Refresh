@@ -7,69 +7,76 @@ import _ from 'lodash'
 /*
 BASIC ASYNC SELECTORS
 */
-const proposals = ({ db }) => Array.isArray(db.proposals) ? db.proposals : []
 const user = ({ user }) => user || {}
+const config = ({ config }) => config || {}
+const proposals = ({ db }) => Array.isArray(db.proposals) ? db.proposals : []
+const proposal = ({ db }) => db.proposal || {}
+const proposalContact = ({ db }) => db.proposal ? db.proposal.contacts : []
 /*
 MEMOIZED SELECTORS
 */
+//  PUBLICATION STATUS / OWNERSHIP
 export const publishedProposals = createSelector(
-  proposals,
+  [proposals],
   (proposals) => proposals
-    .filter(({ published }) => published) || []
+    .filter(({ published }) => published)
 )
 export const unpublishedProposals = createSelector(
-  proposals,
+  [proposals],
   (proposals) => proposals
-    .filter(({ published }) => !published) || []
+    .filter(({ published }) => !published)
 )
 export const myProposals = createSelector(
-  publishedProposals,
-  user,
+  [publishedProposals, user],
   (proposals, user) => proposals
     .filter(({ contacts }) => {
       for (const c of contacts) {
         return c.netID === user.netID
       }
-    }) || []
+    })
 )
 export const myDrafts = createSelector(
-  unpublishedProposals,
-  user,
+  [unpublishedProposals, user],
   (proposals, user) => proposals
     .filter(({ contacts }) => {
       for (const c of contacts) {
         return c.netID === user.netID
       }
-    }) || []
+    })
+)
+//  CONTACT INFORMATION & ROLES
+//  The first 4 contacts (selected in proposal drafts). Contains role prop if nonexistent
+export const initialProposalContacts = createSelector(
+  proposal,
+  ({ contacts }) => {
+    if (Array.isArray(contacts)) {
+      //  Try and find one of each role, returning basic role info if nonexistent.
+      let { primary, budget, organization, student } = {}
+      primary = contacts.find(c => c.role === 'primary') || { role: 'primary' }
+      budget = contacts.find(c => c.role === 'budget') || { role: 'budget' }
+      organization = contacts.find(c => c.role === 'organization') || { role: 'organization' }
+      student = contacts.find(c => c.role === 'student') || { role: 'student' }
+      return [primary, budget, organization, student]
+    } else {
+      return []
+    }
+  }
 )
 
-// const getConfig = ({db}) => db.config
-// export const test = createSelector(
-//     getConfig,
-//     config => config.enums
-// )
-// const config = state => _.get(state, 'db.config', {})
-// const getDB = state => state.db
-// export const test = createAsyncSelector({
-//   db: getDB
-// })
-// export const configID = createSelector(
-//   [config],
-//   config => config._id
-// )()
-// export const enums = createSelector(
-//   [config],
-//   config => config.enums
-// )
-// export const submissions = createSelector(
-//   [config],
-//   config => config.submissions
-// )
-// export const news = createSelector(
-//   [config],
-//   config => config.news
-// )
-// export const timeline = createSelector(
-//   [config],
-//   config => config.timeline
-// )
+export const readyToPublish = createSelector(
+  proposal,
+  ({ contacts }) => {
+    if (Array.isArray(contacts)) {
+      const required = ['primary', 'budget', 'organization']
+      let signatures = 0
+      const requiredSignatures = 3
+      for (let role of required) {
+        let user = contacts.find(c => c.role === role)
+        if (user.signature) signatures++
+      }
+      return signatures >= requiredSignatures
+    } else {
+      return false
+    }
+  }
+)

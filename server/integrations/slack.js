@@ -26,8 +26,9 @@ class Bot {
       .on('message', data => console.log(`SLCK: Posting ${data.type} / ${Object.keys(data).slice(1)}`))
       .on('error', err => console.error('SLCK:', err))
       .on('close', err => console.error('SLCK: Fatal:', err))
+    //  FIXME: Despite this being a documented implementation, it freezes async processes and the server will not build
     //  Initialize crash reporting upon node process termination
-    if (process.env.NODE_ENV === 'production') this.initializeCrashReporting()
+    // if (process.env.NODE_ENV === 'production') this.initializeCrashReporting()
 
     //  Bot avatar
     this.icon_emoji = ':calcifer:'
