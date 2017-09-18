@@ -20,6 +20,7 @@ export default class Manifests extends REST {
     //  NOTE: Should I assign a model var and return model.patch?
     return this.model
       .create(manifest)
+      .populate(this.refs)
       .then(model => {
         switch (model.type) {
           case 'supplemental':
@@ -76,7 +77,9 @@ export default class Manifests extends REST {
             }
           })
       }
-      let model = this.model.findOne({ [this.key]: id })
+      let model = this.model
+        .findOne({ [this.key]: id })
+        .populate(this.refs)
       return model
        .then((modelInstance) => {
          for (var attribute in data) {

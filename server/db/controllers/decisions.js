@@ -29,6 +29,8 @@ export default class Decisions extends REST {
       Proposal
         .findByIdAndUpdate(data.proposal, update)
     }
-    return model.then(modelInstance => modelInstance)
+    return model
+      .populate(this.refs)
+      .then(modelInstance => modelInstance)
   }
 }

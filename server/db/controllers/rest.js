@@ -14,9 +14,10 @@ export default class REST {
     @param key primary key of the model that will be used for searching, removing
     and geting. This does NOT have to always be _id
   */
-  constructor (model, key) {
+  constructor (model, key, refs) {
     this.model = model
     this.key = key
+    this.refs = refs
     //  TODO: Consider adding a param for populate fields that are autopopulated when mutations are returned.
     console.log(`REST: Instantiated controller: ${model.modelName.toLowerCase()}s, keyed by ${this.key}`)
   }
@@ -98,7 +99,9 @@ export default class REST {
     POST: Add a model
   ***** */
   post (data, query) {
-    let model = this.model.create(data)
+    let model = this.model
+      .create(data)
+      .populate(this.refs)
     //  TODO: Any middleware needed?
     return model.then(modelInstance => modelInstance)
   }
@@ -118,8 +121,9 @@ export default class REST {
            modelInstance[attribute] = data[attribute]
          }
        }
-       return modelInstance.save()
+       modelInstance.populate(this.refs).save()
      })
+     .populate(this.refs)
      .then(modelInstance => modelInstance)
   }
 

@@ -3,7 +3,7 @@ import { User } from '../models'
 
 export default class Articles extends REST {
   constructor () {
-    super(User, '_id')
+    super(User, '_id', 'stf')
   }
   /**
    * POST /logout

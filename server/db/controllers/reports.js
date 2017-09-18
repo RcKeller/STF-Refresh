@@ -17,8 +17,9 @@ export default class Reports extends REST {
     //  Omit subdocs, create the parent, then patch it in order to create items
     let { items } = data
     let report = _.omit(data, ['_v', 'items'])
-    return this.model.create(report)
-    .then(modelInstance => this.patch(modelInstance._id, { items }, query))
+    return this.model
+      .create(report)
+      .then(modelInstance => this.patch(modelInstance._id, { items }, query))
   }
 
   /* *****
@@ -56,6 +57,7 @@ export default class Reports extends REST {
       }
       let model = this.model.findOne({ [this.key]: id })
       return model
+       .populate(this.refs)
        .then((modelInstance) => {
          for (var attribute in data) {
            if (data.hasOwnProperty(attribute) && attribute !== this.key && attribute !== '_id') {
