@@ -12,6 +12,7 @@ const TabPane = Tabs.TabPane
 import Summary from './Summary/Summary'
 import Metrics from './Metrics/Metrics'
 import Review from './Review/Review'
+import Vote from './Vote/Vote'
 import Decision from './Decision/Decision'
 /*
 There are two kinds of meetings:
@@ -23,7 +24,7 @@ There are two kinds of meetings:
     (state, props) => ({
       manifest: state.db.manifests
         .find(manifest => manifest._id === props.id),
-      admin: state.user.stf.admin
+      stf: state.user.stf
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
 )
@@ -34,7 +35,7 @@ class Panels extends React.Component {
     admin: PropTypes.object
   }
   render (
-    { index, manifest, admin } = this.props
+    { index, manifest, stf } = this.props
   ) {
     const { _id, proposal, docket } = manifest
     const { id, title, organization, uac, year, number, date, comments } = proposal
@@ -60,13 +61,13 @@ class Panels extends React.Component {
               <TabPane tab={<b>Metrics</b>} key='2'>
                 <Metrics id={_id} />
               </TabPane>
-              <TabPane disabled={!metrics} tab={<b>Review</b>} key='3'>
+              <TabPane disabled={!metrics && !voting && !decisions} tab={<b>Review</b>} key='3'>
                 <Review id={_id} />
               </TabPane>
-              <TabPane disabled={!voting} tab={<b>Vote</b>} key='4'>
-                <div>Vote</div>
+              <TabPane disabled={!voting || !stf.member} tab={<b>Vote</b>} key='4'>
+                <Vote id={_id} />
               </TabPane>
-              <TabPane disabled={!admin || !decisions} tab={<b>Decision (<em>Admin-Only</em>)</b>} key='5'>
+              <TabPane disabled={!decisions || !stf.admin} tab={<b>Decision (<em>Admin-Only</em>)</b>} key='5'>
                 <Decision id={_id} />
               </TabPane>
             </Tabs>

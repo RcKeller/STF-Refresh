@@ -11,26 +11,6 @@ import { Spin, Form, Row, Col, Switch, Slider, InputNumber, Button, message } fr
 const FormItem = Form.Item
 const connectForm = Form.create()
 
-class SliderAndNumber extends React.Component {
-  render (
-    { min, max, step, value } = this.props
-  ) {
-    return (
-      <Row>
-        <Col span={12}>
-          <Slider {...this.props} />
-        </Col>
-        <Col span={4}>
-          <InputNumber {...this.props} style={{ marginLeft: 16 }} />
-        </Col>
-      </Row>
-    )
-  }
-}
-
-//  Questions to ask for metrics
-// const questions = ['Proposal Quality', 'Academic Merit']
-
 @compose(
   connect(
     (state, props) => ({
@@ -46,15 +26,13 @@ class SliderAndNumber extends React.Component {
         .find(manifest => manifest._id === props.id)
         .reviews
         .find(review => review.author._id === state.user._id) || {},
-      user: state.user,
-      questions: state.config.enums.questions.review || [],
-      stf: state.user.stf
+      user: state.user
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
   connectForm
 )
-class Review extends React.Component {
+class Vote extends React.Component {
   static propTypes = {
     form: PropTypes.object,
     api: PropTypes.object,
@@ -68,17 +46,8 @@ class Review extends React.Component {
     const { form, review } = this.props
     if (form && review) {
       //  Consistent fields
-      const { score, ratings } = review
-      //  Dynamic fields - metric prompts change all the time. Normalize
-      //  rc-form format: { metrics: { prompt: score }}
-      let metrics = { }
-      if (ratings && ratings.length > 0) {
-        for (const q of review.ratings) {
-          metrics[q.prompt] = q.score
-        }
-      }
-      let fields = { score, metrics }
-      form.setFieldsValue(fields)
+      const { approved } = review
+      form.setFieldsValue({ approved })
     }
   }
   handleSubmit = (e) => {
@@ -87,20 +56,17 @@ class Review extends React.Component {
     form.validateFields((err, values) => {
       if (!err) {
         console.warn('Submitting', values)
-        const { metrics, score, approved } = values
-        let denormalizedMetrics = []
-        //  Denormalize prompts into scores: [{ prompt, score }]
-        Object.keys(metrics).forEach((key, i) => {
-          denormalizedMetrics.push({ prompt: key, score: metrics[key] })
-        })
+        const { approved } = values
         const submission = {
           proposal,
           manifest: manifest._id,
           author: user._id,
-          ratings: denormalizedMetrics,
-          score,
           approved
         }
+        /*
+        Transform res and update manifest props
+        */
+        // const transform = res => ({})
         console.warn('Review', submission)
         //  TODO: Add custom update func
         review._id
@@ -120,7 +86,7 @@ class Review extends React.Component {
     })
   }
   render (
-    { form, active, manifest, user, stf, questions } = this.props
+    { form, active, manifest, user, questions } = this.props
   ) {
     return (
       <section>
@@ -130,27 +96,17 @@ class Review extends React.Component {
             <h2>Your Review</h2>
             <h1 className='demo-note' style={{ color: 'goldenrod' }}>UNCLEAR BUSINESS LOGIC</h1>
             <p className='demo-note' style={{ color: 'goldenrod' }}>I was very confused reg. the difference between metrics/review and voting itself. That resulted in me building out this component, then having to split its functionality (you can review but not vote, or vote and not review, etc). I like being able to view my prior metrics when voting, but this is also confusing and misleading. Anyways, I NEEED CONSENSUS regarding how metrics will be handled (like, are they metrics, or reviews?), how independent they should be from voting processes, etc.</p>
-            <h4>{active ? 'This proposal is up for review - you may score this proposal as you like (0-100).' : 'Review submissions are closed, but you may view your previous scores'}</h4>
-            {questions.map(q => (
-              <FormItem key={q} label={q} {...layout} >
-                {form.getFieldDecorator(`metrics[${q}]`)(
-                  <SliderAndNumber disabled={!active} min={0} max={100} step={1} />
-                )}
-              </FormItem>
-            ))}
-            <br />
-            <FormItem label={<b>Overall Score</b>} {...layout} >
-              {form.getFieldDecorator('score')(
-                <SliderAndNumber disabled={!active} min={0} max={100} step={1} />
+            <FormItem label={<b>Final Vote</b>} {...layout}>
+              {form.getFieldDecorator('approved', { valuePropName: 'checked' })(
+                //  Valueprop is a selector for antd switches, it's in the docs.
+                <Switch checkedChildren='APPROVE' unCheckedChildren='DENY' />
               )}
             </FormItem>
-            {active &&
-              <FormItem label='Submit' {...layout}>
-                <Button size='large' type='primary'
-                  htmlType='submit' ghost disabled={!active}
-                  >Update your Review</Button>
-              </FormItem>
-            }
+            <FormItem label='Submit' {...layout}>
+              <Button size='large' type='primary'
+                htmlType='submit' ghost disabled={!active}
+                >Update your Review</Button>
+            </FormItem>
           </Form>
           }
       </section>
@@ -158,4 +114,4 @@ class Review extends React.Component {
   }
 }
 
-export default Review
+export default Vote
