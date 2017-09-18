@@ -139,7 +139,7 @@ class Settings extends React.Component {
             {form.getFieldDecorator('category')(
               <Select onChange={this.handleCategory}>
                 {enums.categories.map(category => (
-                  <Option value={category}>{category}</Option>
+                  <Option key={category} value={category}>{category}</Option>
                 ))}
               </Select>
             )}
@@ -148,7 +148,7 @@ class Settings extends React.Component {
             {form.getFieldDecorator('organization')(
               <Select onChange={this.handleOrganization}>
                 {Object.keys(enums.organizations).map(org => (
-                  <Option value={org}>{org}</Option>
+                  <Option key={org} value={org}>{org}</Option>
                 ))}
               </Select>
             )}
@@ -167,7 +167,7 @@ class Settings extends React.Component {
             {form.getFieldDecorator('status')(
               <Select onChange={this.handleStatus}>
                 {enums.statuses.map(s => (
-                  <Option value={s}>{s}</Option>
+                  <Option key={s} value={s}>{s}</Option>
                 ))}
               </Select>
             )}

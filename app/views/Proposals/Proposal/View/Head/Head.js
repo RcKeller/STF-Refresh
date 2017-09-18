@@ -23,7 +23,7 @@ const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
 }))
 class Head extends React.Component {
   static propTypes = {
-    contacts: PropTypes.object,
+    contacts: PropTypes.array,
     status: PropTypes.string,
     decision: PropTypes.object
   }

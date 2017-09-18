@@ -46,6 +46,7 @@ class Blocks extends React.Component {
         {!blocks
           ? <Spin size='large' tip='Loading...' />
           : <Table dataSource={blocks} pagination={false}
+            rowKey={record => record._id}
             size={screen.lessThan.medium ? 'small' : ''}
             columns={screen.lessThan.medium ? columns.slice(1, 3) : columns}
           />

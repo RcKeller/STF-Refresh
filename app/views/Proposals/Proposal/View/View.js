@@ -19,7 +19,9 @@ import Manifests from './Manifests/Manifests'
 }))
 class View extends React.Component {
   static propTypes = {
-    proposal: PropTypes.object
+    proposal: PropTypes.string,
+    isLegacy: PropTypes.bool,
+    published: PropTypes.bool
   }
   render ({ proposal, published, isLegacy } = this.props) {
     //  Once the proposal has loaded, render it. Only render body if published.

@@ -78,7 +78,7 @@ class Manifests extends React.Component {
                 onChange={(value) => this.handleChange(value)}
               >
                 {manifests.map((m, i) =>
-                  <Option value={i.toString()}><h4>{`
+                  <Option key={i} value={i.toString()}><h4>{`
                     ${m.title ? m.title : _.capitalize(m.type)}
                      by ${m.author && m.author.name ? m.author.name : 'anonymous'}
                      - ${m.decision ? m.decision.approved ? 'Approved' : 'Denied' : 'Proposed'}
