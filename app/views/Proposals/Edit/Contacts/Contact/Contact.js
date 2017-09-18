@@ -17,6 +17,7 @@ const jss = { icon: { fontSize: 13 } }
 @compose(
   connect((state, props) => ({
     proposal: state.db.proposal._id,
+    contacts: initialProposalContacts(state),
     contact: initialProposalContacts(state)[props.index]
   }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
@@ -45,7 +46,7 @@ class Contact extends React.Component {
   }
   handleSubmit = (e) => {
     e.preventDefault()
-    let { form, api, proposal, contact, index, title, validate } = this.props
+    let { form, api, proposal, contact, contacts, index, title, validate } = this.props
     form.validateFields((err, values) => {
       if (!err && values) {
         //  Set role type, it's not in the form for security.
@@ -58,8 +59,10 @@ class Contact extends React.Component {
         const transform = res => ({ proposal: res })
         const update = { proposal: (prev, next) => {
           let newData = Object.assign({}, prev)
-          console.log('NEWDATA', newData, index)
-          newData.contacts[index] = next
+          let newContacts = contacts.slice()
+          newContacts[index] = next
+          console.log('NEWDATA', newData.contacts, newContacts, index)
+          newData.contacts = newContacts
           return newData
         }}
         contact._id

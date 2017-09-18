@@ -18,7 +18,8 @@ API for submission, but using connectForm to instantiate initial values.
 */
 @compose(
   connect(state => ({
-    contacts: state.db.proposal.contacts,
+    contacts: state.db.proposal.contacts
+      .filter(contact => contact._id),
     user: state.user
   }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })

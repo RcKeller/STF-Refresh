@@ -142,12 +142,13 @@ class Edit extends React.Component {
     { valid } = this.state
   ) => {
     if (proposal && proposal.manifests && proposal.manifests[0]) {
-      const { manifests } = proposal
-      console.warn('VALIDATE BUDGET', manifests)
-      //  Keeping the validation simple here due to anticipated future enhancement of server side pre/post processing.
-      const items = manifests.length > 0 ? manifests[0].items : []
-      valid.budget = Array.isArray(items) && items.length >= 1
-      this.setState({ valid })
+      const manifest = proposal.manifests[0]
+      const { items, total } = manifest
+      if (items && total) {
+        console.warn('VALIDATE BUDGET', items, total)
+        valid.budget = Array.isArray(items) && items.length >= 1
+        this.setState({ valid })
+      }
     }
   }
   validateSignatures = (
@@ -191,7 +192,8 @@ class Edit extends React.Component {
     { valid } = this.state
   ) {
     const { introduction, contacts, project, budget, signatures } = valid
-    const complete = Object.keys(valid).every(k => valid[k] === true)
+    const complete = Object.keys(valid)
+      .every(key => valid[key] === true)
     //  Once proposals have loaded, redirect unaffiliated users.
     //  You can log out of Shib and push an update, but if you leave the page after that, it locks you out.
     if (user && proposal) this.redirectUnaffiliatedUsers()
