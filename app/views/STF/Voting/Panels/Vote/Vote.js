@@ -16,7 +16,7 @@ const connectForm = Form.create()
     (state, props) => ({
       active: state.db.manifests
         .find(manifest => manifest._id === props.id)
-        .docket.metrics,
+        .docket.voting,
       proposal: state.db.manifests
         .find(manifest => manifest._id === props.id)
         .proposal._id,
@@ -52,7 +52,7 @@ class Vote extends React.Component {
   }
   handleSubmit = (e) => {
     e.preventDefault()
-    let { form, api, proposal, manifest, review, user } = this.props
+    let { form, api, proposal, id, manifest, review, user } = this.props
     form.validateFields((err, values) => {
       if (!err) {
         console.warn('Submitting', values)
@@ -66,22 +66,49 @@ class Vote extends React.Component {
         /*
         Transform res and update manifest props
         */
-        // const transform = res => ({})
+        const transform = res => ({ manifests: res })
+        const update = { manifests: (prev, next) => {
+          let newData = prev.slice()
+          let newReview = {...next, ...user}
+          console.error('PREV', prev)
+          const manifestIndex = newData.findIndex(m => m._id === manifest._id)
+          if (!newData[manifestIndex].reviews) newData[manifestIndex].reviews = []
+          const reviewIndex = newData[manifestIndex].reviews
+            .findIndex(m => m.author && m.author._id === user._id)
+          console.log(manifestIndex, reviewIndex)
+          reviewIndex >= 0
+            ? newData[manifestIndex].reviews[reviewIndex] = newReview
+            : newData[manifestIndex].reviews.push(newReview)
+          return newData
+        }}
         console.warn('Review', submission)
-        //  TODO: Add custom update func
         review._id
-          ? api.patch('review', submission, { id: review._id })
+          ? api.patch('review', submission, { id: review._id, transform, update })
           .then(message.success('Review updated!'), 10)
           .catch(err => {
             message.warning('Review failed to update - Unexpected client error')
             console.warn(err)
           })
-          : api.post('review', submission)
+          : api.post('review', submission, { transform, update })
           .then(message.success('Review posted!'))
           .catch(err => {
             message.warning('Review failed to post - Unexpected client error')
             console.warn(err)
           })
+        //  TODO: Add custom update func
+        // review._id
+        //   ? api.patch('review', submission, { id: review._id })
+        //   .then(message.success('Review updated!'), 10)
+        //   .catch(err => {
+        //     message.warning('Review failed to update - Unexpected client error')
+        //     console.warn(err)
+        //   })
+        //   : api.post('review', submission)
+        //   .then(message.success('Review posted!'))
+        //   .catch(err => {
+        //     message.warning('Review failed to post - Unexpected client error')
+        //     console.warn(err)
+        //   })
       }
     })
   }
