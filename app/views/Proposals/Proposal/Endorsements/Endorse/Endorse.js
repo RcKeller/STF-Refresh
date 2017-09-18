@@ -16,7 +16,7 @@ import api from '../../../../../services'
   connect(
     state => ({
       proposal: state.db.proposal._id,
-      user: state.user._id
+      user: state.user
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
@@ -25,7 +25,7 @@ import api from '../../../../../services'
 class Endorse extends React.Component {
   static propTypes = {
     proposal: PropTypes.string,
-    user: PropTypes.string,
+    user: PropTypes.object,
     api: PropTypes.object,
     form: PropTypes.object
   }
@@ -36,11 +36,13 @@ class Endorse extends React.Component {
     let { proposal, user, api, form } = this.props
     form.validateFields((err, values) => {
       if (!err) {
-        const comment = { proposal, user, ...values }
-        //  Immutable update.
-        const update = { proposal: (prev, next) =>
-            Object.assign({}, prev, { comments: [...prev.comments, comment] })
-        }
+        const comment = { proposal, user: user._id, ...values }
+        const update = { proposal: (prev, next) => {
+          let newData = Object.assign({}, prev)
+          let newComment = Object.assign({}, comment, { user })
+          newData.comments.push(newComment)
+          return newData
+        }}
         api.post('comments', comment, { update })
         .then(message.success('Endorsement posted!'))
         .catch(err => {
@@ -58,7 +60,7 @@ class Endorse extends React.Component {
         <Form onSubmit={this.handleSubmit}>
           <FormItem label='Comment' {...layout} hasFeedback={feedback(form, 'body')} help={help(form, 'body')} >
             {form.getFieldDecorator('body', rules.required)(
-              <Input type='textarea' rows={6} disabled={!user} />
+              <Input type='textarea' rows={6} disabled={!user._id} />
             )}
           </FormItem>
           <FormItem>
