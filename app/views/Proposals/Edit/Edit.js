@@ -86,7 +86,7 @@ class Edit extends React.Component {
     let requiredFields = 0
     for (const contact of contacts) {
       const { role } = contact
-      if (role === 'organization' || role === 'budget' || role === 'primary') requiredFields++
+      if (role && (role === 'organization' || role === 'budget' || role === 'primary')) requiredFields++
     }
     valid.contacts = requiredFields >= 3 || false
     this.setState({ valid })
