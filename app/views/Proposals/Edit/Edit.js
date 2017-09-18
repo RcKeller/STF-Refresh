@@ -81,8 +81,10 @@ class Edit extends React.Component {
     { contacts } = this.props,
     { valid } = this.state
   ) => {
+    console.error('VALIDATE CONTACTS', contacts)
     let requiredFields = 0
-    for (const { role } of contacts) {
+    for (const contact of contacts) {
+      const { role } = contact
       if (role === 'organization' || role === 'budget' || role === 'primary') requiredFields++
     }
     valid.contacts = requiredFields >= 3 || false
@@ -176,7 +178,7 @@ class Edit extends React.Component {
               <h6>{`Draft ID: ${proposal._id}`}</h6>
             </Tooltip>
             <Tabs tabPosition='top' defaultActiveKey='1'
-              // onChange={forceRequest}
+              onChange={() => this.validateContacts(proposal)}
             >
               <TabPane key='1'
                 tab={<span style={{ color: introduction ? colors.green : colors.gold }}>

@@ -70,14 +70,20 @@ const get = (model, options = {}) => ({
   url: target(model, options),
   options: { method: 'GET' },
   transform: res => ({ [model]: normalize(res) }),
-  update: options.update ? options.update : { [model]: (prev, next) => next },
+  update: options.update
+    ? options.update
+    : { [model]: (prev, next) => next },
   force: options.force || false
 })
 const getAsync = (model, options = {}) => requestAsync({
   url: target(model, options),
   options: { method: 'GET' },
-  transform: res => ({ [model]: normalize(res) }),
-  update: options.update ? options.update : { [model]: (prev, next) => next },
+  transform: options.transform
+    ? options.transform
+    : res => ({ [model]: normalize(res) }),
+  update: options.update
+    ? options.update
+    : { [model]: (prev, next) => next },
   force: options.force || false
 })
 
@@ -89,9 +95,13 @@ ex: api.post('report', {})
 const post = (model, body = {}, options = {}) => mutateAsync({
   url: target(model, options),
   options: { method: 'POST' },
-  transform: res => ({ [model]: normalize(res) }),
+  transform: options.transform
+    ? options.transform
+    : res => ({ [model]: normalize(res) }),
   body,
-  update: options.update ? options.update : { [model]: (prev, next) => next }
+  update: options.update
+    ? options.update
+    : { [model]: (prev, next) => next }
 })
 
 /* *****
@@ -102,7 +112,9 @@ ex: api.put('report', '594b49998dabd50e2c7176bf',
 const patch = (model, body = {}, options = {}) => mutateAsync({
   url: target(model, options),
   options: { method: 'PATCH' },
-  transform: res => ({ [model]: normalize(res) }),
+  transform: options.transform
+    ? options.transform
+    : res => ({ [model]: normalize(res) }),
   body,
   update: options.update ? options.update : { [model]: (prev, next) => next }
 })
@@ -115,7 +127,9 @@ note: The 'delete' namespace is a JS keyword.
 const remove = (model, options = {}) => mutateAsync({
   url: target(options),
   options: { method: 'DELETE' },
-  transform: res => ({ [model]: normalize(res) }),
+  transform: options.transform
+    ? options.transform
+    : res => ({ [model]: normalize(res) }),
   update: options.update ? options.update : { [model]: (prev, next) => next }
 })
 

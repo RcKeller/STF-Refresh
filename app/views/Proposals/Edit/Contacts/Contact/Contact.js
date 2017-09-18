@@ -11,14 +11,14 @@ const connectForm = Form.create()
 import { feedback, help, rules, disableSubmit } from '../../../../../util/form'
 import api from '../../../../../services'
 import { getRole } from '../../../../../util/selectors'
+import { initialProposalContacts } from '../../../../../selectors'
 
 const jss = { icon: { fontSize: 13 } }
 @compose(
-  connect(
-    (state, props) => ({
-      parent: state.db.proposal._id,
-      contact: getRole(state.db.proposal.contacts, props.role)
-    }),
+  connect((state, props) => ({
+    proposal: state.db.proposal._id,
+    contact: initialProposalContacts(state)[props.index]
+  }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
   connectForm
@@ -28,10 +28,11 @@ class Contact extends React.Component {
     form: PropTypes.object,
     api: PropTypes.object,
     validate: PropTypes.func,
-    parent: PropTypes.string,
+    proposal: PropTypes.string,
+    //  Contact is selected by its index within the redux store
+    index: PropTypes.number,
     contact: PropTypes.object,
-    //  Props from container - REQUIRED.
-    role: PropTypes.string,
+    //  Props from container (text for render).
     title: PropTypes.string,
     subtitle: PropTypes.string
   }
@@ -44,54 +45,59 @@ class Contact extends React.Component {
   }
   handleSubmit = (e) => {
     e.preventDefault()
-    let { form, api, parent, contact, role, title, validate } = this.props
+    let { form, api, proposal, contact, index, title, validate } = this.props
     form.validateFields((err, values) => {
-      //  Patch contacts if they already exist. Create them otherwise.
       if (!err && values) {
-        values.role = role  //  Set role, it's not in the form for security.
-        contact
-        ? api.patch(
-          'contact',
-          { proposal: parent, ...values },
-          { id: contact._id }
-        )
-        : api.post(
-          'contact',
-          { proposal: parent, ...values }
-        )
-        .then(message.success(`Updated ${title} !`))
+        //  Set role type, it's not in the form for security.
+        const submission = { proposal, role: contact.role, ...values }
+        /*
+        NOTE: Since we're operating on state.db.proposal and need the new ID
+        we transform proposal data (the res being our new/updated contact)
+        and set the contact at our index to the transformed (selected) value
+        */
+        const transform = res => ({ proposal: res })
+        const update = { proposal: (prev, next) => {
+          let newData = Object.assign({}, prev)
+          newData.contacts[index] = next
+          return newData
+        }}
+        contact._id
+        ? api.patch('contact', submission, { id: contact._id, transform, update })
+        : api.post('contact', submission, { transform, update })
+        .then(() => {
+          message.success(`Updated ${title} !`)
+          validate()
+        })
         .catch(err => {
           message.warning(`Failed to update ${title} - Unexpected client error`)
           console.warn(err)
         })
       }
     })
-    // validate()
   }
 
-  render ({ form, role, title, subtitle } = this.props) {
-    const requireStaff = role !== 'student' ? rules.required : null
+  render ({ form, contact, title, subtitle } = this.props) {
     return (
       <Form layout='inline' onSubmit={this.handleSubmit}>
         <h3>{title}</h3>
         <p>{subtitle}</p>
         <FormItem hasFeedback={feedback(form, 'name')} help={help(form, 'name')} >
-          {form.getFieldDecorator('name', requireStaff)(
+          {form.getFieldDecorator('name', rules.required)(
             <Input prefix={<Icon type='edit' style={jss.icon} />} placeholder='Name' />
           )}
         </FormItem>
         <FormItem hasFeedback={feedback(form, 'netID')} help={help(form, 'netID')} >
-          {form.getFieldDecorator('netID', requireStaff)(
+          {form.getFieldDecorator('netID', rules.required)(
             <Input prefix={<Icon type='idcard' style={jss.icon} />} placeholder='NetID' />
           )}
         </FormItem>
         <FormItem hasFeedback={feedback(form, 'title')} help={help(form, 'title')} >
-          {form.getFieldDecorator('title', requireStaff)(
+          {form.getFieldDecorator('title', rules.required)(
             <Input prefix={<Icon type='info-circle-o' style={jss.icon} />} placeholder='Title' />
           )}
         </FormItem>
         <FormItem hasFeedback={feedback(form, 'phone')} help={help(form, 'phone')} >
-          {form.getFieldDecorator('phone', requireStaff)(
+          {form.getFieldDecorator('phone', rules.required)(
             <Input prefix={<Icon type='phone' style={jss.icon} />} placeholder='Phone' />
           )}
         </FormItem>

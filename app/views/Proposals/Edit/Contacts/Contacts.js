@@ -1,35 +1,38 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import { connect } from 'react-redux'
+import { initialProposalContacts } from '../../../../selectors'
+
 import { Row, Col, Alert } from 'antd'
 
 import Contact from './Contact/Contact'
 
-const contactFields = [
-  {
-    role: 'primary',
+const contactFields = {
+  primary: {
     title: 'Primary Contact',
     subtitle: 'The primary lead and point-of-contact for this project.'
-  }, {
-    role: 'budget',
+  },
+  budget: {
     title: 'Budget Director',
     subtitle: 'Contact for budgetary concerns and handling transfers of funds.'
-  }, {
-    role: 'organization',
+  },
+  organization: {
     title: 'Organizational Head',
     subtitle: 'A departmental head or organization president to officiate this proposal.'
-  }, {
-    role: 'student',
+  },
+  student: {
     title: 'Student Lead',
     subtitle: '(Optional) We recommend that there be at least one student representing a project, as STF funds are intended for student use.'
   }
-]
+}
 
+@connect(state => ({ contacts: initialProposalContacts(state) }))
 class Contacts extends React.Component {
   static propTypes = {
     validate: PropTypes.func
   }
-  render ({ validate } = this.props) {
+  render ({ validate, contacts } = this.props) {
     return (
       <div>
         <h1>Contact Information</h1>
@@ -41,11 +44,22 @@ class Contacts extends React.Component {
           As a contact, you will be responsible for the project during its lifecycle, which includes maintaining rapport with the committee and selecting a replacement contact should your university affilitation change (changes in leadership, graduation, etc). After this proposal is published, you will be responsible for selecting a replacement contact should the need arise via the "update" panel.'
         />
         <Row gutter={32}>
-          {contactFields.map((c, i) => (
+          {contacts.map((contact, i) => (
+            <Col key={contact.role} className='gutter-row' xs={24} md={12} lg={6} >
+              <Contact
+                // contact={contact}
+                index={i}
+                title={contactFields[contact.role].title}
+                subtitle={contactFields[contact.role].subtitle}
+                validate={validate}
+              />
+            </Col>
+          ))}
+          {/* {contactFields.map((c, i) => (
             <Col key={i} className='gutter-row' xs={24} md={12} lg={6} >
               <Contact key={i} {...c} validate={validate} />
             </Col>
-          ))}
+          ))} */}
         </Row>
       </div>
     )
