@@ -70,6 +70,7 @@ class Panels extends React.Component {
               <li>Date: {date}</li>
               <li>Endorsements: {comments.length}</li>
             </ul>
+            <Summary />
             {/* <Tabs defaultActiveKey='1'>
               <TabPane tab={<b>Summary</b>} key='1'>
                 <Summary id={_id} />

@@ -40,17 +40,14 @@ const expandedRowRender = record => record.description
 @connect(
     //  Might seem counterintuitive, but we're connecting to a manifest and pulling its proposal data.
     (state, props) => ({
-      body: state.db.manifests
-        .find(manifest => manifest._id === props.id).proposal.body || {},
-      manifest: state.db.manifests
-        .find(manifest => manifest._id === props.id) || {},
-      items: state.db.manifests
-        .find(manifest => manifest._id === props.id).items || []
+      body: state.db.manifest.proposal.body,
+      manifest: state.db.manifest,
+      items: state.db.manifest.items
     })
 )
 class Summary extends React.Component {
   static propTypes = {
-    id: PropTypes.string.isRequired,
+    // id: PropTypes.string.isRequired,
     manifest: PropTypes.object,
     user: PropTypes.object
   }

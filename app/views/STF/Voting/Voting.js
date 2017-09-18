@@ -39,6 +39,13 @@ class Voting extends React.Component {
   static propTypes = {
     docket: PropTypes.array
   }
+  componentWillReceiveProps (nextProps) {
+    console.error('voting CWRP', this.props, nextProps)
+  }
+  shouldComponentUpdate (nextProps, nextState) {
+    console.error('voting SCU', this.props, nextProps)
+    return true
+  }
   render (
     { user, docket, forceRequest } = this.props
   ) {
