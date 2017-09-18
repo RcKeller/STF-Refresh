@@ -61,7 +61,7 @@ class Publish extends React.Component {
             <p>
               Major changes in the ask will require a new proposal, however - please keep us in the loop and notify us of major changes that redirect this project.
             </p>
-            <Button size='large' primary
+            <Button size='large' type='primary' ghost
               style={{ width: '100%' }}
               onClick={this.handlePublish}
               ><Icon type='rocket' />Publish !</Button>

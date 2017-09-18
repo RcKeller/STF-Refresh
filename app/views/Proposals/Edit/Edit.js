@@ -65,86 +65,108 @@ class Edit extends React.Component {
   */
   componentWillReceiveProps (nextProps) {
     let { valid } = this.state
-    const next = nextProps.proposal
-    if (!valid.introduction) this.validateIntroduction(next)
-    if (!valid.contacts) this.validateContacts(next)
-    if (!valid.project) this.validateProject(next)
-    if (!valid.budget) this.validateBudget(next)
-    if (!valid.signatures) this.validateSignatures(next)
+    console.error('CWRP', this.props.proposal, nextProps.proposal)
+    if (!valid.introduction) this.validateIntroduction(nextProps)
+    if (!valid.contacts) this.validateContacts(nextProps)
+    if (!valid.project) this.validateProject(nextProps)
+    if (!valid.budget) this.validateBudget(nextProps)
+    if (!valid.signatures) this.validateSignatures(nextProps)
+  }
+
+  test = () => {
+    console.warn('TEST')
+    this.validateIntroduction()
+    this.validateContacts()
+    this.validateProject()
+    this.validateBudget()
+    this.validateSignatures()
   }
 
   validateIntroduction = (
-    { title, category, organization } = this.props,
+    { proposal } = this.props,
     { valid } = this.state
   ) => {
-    valid.introduction = (title && category && organization) ? true : false // eslint-disable-line
-    this.setState({ valid })
+    if (proposal) {
+      const { title, category, organization } = proposal
+      console.error('Validate intro', { title, category, organization })
+      if (title && category && organization) valid.introduction = true
+      this.setState({ valid })
+    }
   }
   validateContacts = (
-    { contacts } = this.props,
+    { proposal } = this.props,
     { valid } = this.state
   ) => {
-    if (!contacts) contacts = this.props.contacts
-    console.error('VALIDATE CONTACTS', contacts)
-    let requiredFields = 0
-    for (const contact of contacts) {
-      const { role } = contact
-      if (role && (role === 'organization' || role === 'budget' || role === 'primary')) requiredFields++
+    if (proposal && proposal.contacts) {
+      const { contacts } = proposal
+      console.error('VALIDATE CONTACTS', contacts)
+      let requiredFields = 0
+      for (const contact of contacts) {
+        if (contact) {
+          let { role, _id } = contact
+          if (_id && (role === 'primary' || role === 'budget' || role === 'organization')) requiredFields++
+        }
+      }
+      valid.contacts = requiredFields >= 3 || false
+      this.setState({ valid })
     }
-    valid.contacts = requiredFields >= 3 || false
-    this.setState({ valid })
   }
   validateProject = (
-    { body } = this.props,
+    { proposal } = this.props,
     { valid } = this.state
   ) => {
-    // if (!body) body = this.props.proposal.body || {}
-    const { overview, plan } = body || {}
-    console.warn('Validate body', body, overview, plan)
-    let requiredFields = 0
-    //  Overview is valid if three prompts as well as the three impact types are filled
-    if (overview) {
-      const { abstract, justification, objectives, impact } = overview
-      if (abstract && justification && objectives) requiredFields++
-      if (impact && Object.keys(impact).length >= 3) requiredFields++
-    }
-    //  Project plan is valid if each of the 5 valid subcategories has a current and future state.
-    if (plan) {
-      let validCategories = 0
-      for (const key of Object.keys(plan)) {
-        if (plan[key] && plan[key].current && plan[key].future) validCategories++
+    if (proposal && proposal.body) {
+      const { body: { overview, plan } } = proposal
+      console.warn('Validate body', overview, plan)
+      let requiredFields = 0
+      //  Overview is valid if three prompts as well as the three impact types are filled
+      if (overview) {
+        const { abstract, justification, objectives, impact } = overview
+        if (abstract && justification && objectives) requiredFields++
+        if (impact && Object.keys(impact).length >= 3) requiredFields++
       }
-      if (validCategories >= 5) requiredFields++
+      //  Project plan is valid if each of the 5 valid subcategories has a current and future state.
+      if (plan) {
+        let validCategories = 0
+        for (const key of Object.keys(plan)) {
+          if (plan[key] && plan[key].current && plan[key].future) validCategories++
+        }
+        if (validCategories >= 5) requiredFields++
+      }
+      valid.project = requiredFields >= 3
+      this.setState({ valid })
     }
-    valid.project = requiredFields >= 3
-    this.setState({ valid })
   }
   validateBudget = (
-    { manifests } = this.props,
+    { proposal } = this.props,
     { valid } = this.state
   ) => {
-    if (!manifests) manifests = this.props.proposal.manifests || []
-    console.warn('VALIDATE BUDGET', manifests)
-    //  Keeping the validation simple here due to anticipated future enhancement of server side pre/post processing.
-    // const { items } = manifests[0]
-    const items = manifests.length > 0 ? manifests[0].items : []
-    valid.budget = Array.isArray(items) && items.length >= 1
-    this.setState({ valid })
+    if (proposal && proposal.manifests && proposal.manifests[0]) {
+      const { manifests } = proposal
+      console.warn('VALIDATE BUDGET', manifests)
+      //  Keeping the validation simple here due to anticipated future enhancement of server side pre/post processing.
+      const items = manifests.length > 0 ? manifests[0].items : []
+      valid.budget = Array.isArray(items) && items.length >= 1
+      this.setState({ valid })
+    }
   }
   validateSignatures = (
-    { contacts } = this.props,
+    { proposal } = this.props,
     { valid } = this.state
   ) => {
-    if (!contacts) contacts = this.props.proposal.contacts || []
-    console.warn('CONTACTS', contacts)
-    let requiredFields = 0
-    for (const { role, signature } of contacts) {
-      if (role === 'organization' || role === 'budget' || role === 'primary') {
-        if (signature) requiredFields++
+    if (proposal && proposal.contacts) {
+      const { contacts } = proposal
+      console.warn('Validate SIGNATURES', contacts)
+      let requiredFields = 0
+      for (const contact of contacts) {
+        if (contact) {
+          let { role, signature } = contact
+          if (signature && role && (role === 'organization' || role === 'budget' || role === 'primary')) requiredFields++
+        }
       }
+      valid.signatures = requiredFields >= 3
+      this.setState({ valid })
     }
-    valid.signatures = requiredFields >= 3
-    this.setState({ valid })
   }
   redirectUnaffiliatedUsers = (
     { router, user, proposal: { contacts } } = this.props,
@@ -176,6 +198,7 @@ class Edit extends React.Component {
     return (
       <article className={styles['page']}>
         <Helmet title='New Proposal' />
+        <button onClick={this.test}>TEST</button>
         {!proposal
           ? <Spin size='large' tip='Loading...' />
           : <div id={proposal._id}>

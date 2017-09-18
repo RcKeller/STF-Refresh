@@ -52,10 +52,10 @@ export const initialProposalContacts = createSelector(
     if (Array.isArray(contacts)) {
       //  Try and find one of each role, returning basic role info if nonexistent.
       let { primary, budget, organization, student } = {}
-      primary = contacts.find(c => c.role === 'primary') || { role: 'primary' }
-      budget = contacts.find(c => c.role === 'budget') || { role: 'budget' }
-      organization = contacts.find(c => c.role === 'organization') || { role: 'organization' }
-      student = contacts.find(c => c.role === 'student') || { role: 'student' }
+      primary = contacts.find(c => c && c.role === 'primary') || { role: 'primary' }
+      budget = contacts.find(c => c && c.role === 'budget') || { role: 'budget' }
+      organization = contacts.find(c => c && c.role === 'organization') || { role: 'organization' }
+      student = contacts.find(c => c && c.role === 'student') || { role: 'student' }
       return [primary, budget, organization, student]
     } else {
       return []

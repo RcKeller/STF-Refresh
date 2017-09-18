@@ -58,6 +58,7 @@ class Contact extends React.Component {
         const transform = res => ({ proposal: res })
         const update = { proposal: (prev, next) => {
           let newData = Object.assign({}, prev)
+          console.log('NEWDATA', newData, index)
           newData.contacts[index] = next
           return newData
         }}
