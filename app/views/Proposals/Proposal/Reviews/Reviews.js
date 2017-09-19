@@ -46,30 +46,29 @@ class Reviews extends React.Component {
         <h2>Metrics</h2>
         {(metrics.length <= 0)
           ? <em>Metrics have not been taken for the original budget.</em>
-          : <div>Test</div>
-          // <Row gutter={32}>
-          //   {metrics.map((review, i) => (
-          //     <Col key={i} className='gutter-row' xs={24} md={12} xl={8} >
-          //       <Alert type={review.approved ? 'success' : 'warning'} banner
-          //         message={`${review.author.name}: ${review.approved ? 'Approved' : 'Rejected'} | ${review.date.toLocaleString('en-US')}`}
-          //         description={
-          //           <div>
-          //             {review.body}
-          //             <Collapse bordered={false} style={{background: 'inherit'}}>
-          //               <Panel style={{border: 'none'}}header={<h6>{`Overall Score: ${review.score}%`}</h6>}>
-          //                 {review.ratings.map((r, i) =>
-          //                   <div key={i}>
-          //                     <em>{r.prompt}</em>
-          //                     <Progress percent={r.score} />
-          //                   </div>
-          //                 )}
-          //               </Panel>
-          //             </Collapse>
-          //           </div>
-          //         } />
-          //     </Col>
-          //     ))}
-          // </Row>
+          : <Row gutter={32}>
+            {metrics.map((review, i) => (
+              <Col key={i} className='gutter-row' xs={24} md={12} xl={8} >
+                <Alert type={review.approved ? 'success' : 'warning'} banner
+                  message={`${review.author.name}: ${review.approved ? 'Approved' : 'Rejected'} | ${review.date.toLocaleString('en-US')}`}
+                  description={
+                    <div>
+                      {review.body}
+                      <Collapse bordered={false} style={{background: 'inherit'}}>
+                        <Panel style={{border: 'none'}}header={<h6>{`Overall Score: ${review.score}%`}</h6>}>
+                          {review.ratings.map((r, i) =>
+                            <div key={i}>
+                              <em>{r.prompt}</em>
+                              <Progress percent={r.score} />
+                            </div>
+                          )}
+                        </Panel>
+                      </Collapse>
+                    </div>
+                  } />
+              </Col>
+              ))}
+          </Row>
         }
       </section>
     )

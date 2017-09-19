@@ -7,6 +7,12 @@ import { connect } from 'react-redux'
 import { Table, Alert, Select } from 'antd'
 const Option = Select.Option
 
+const currency = number =>
+  number.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD'
+  })
+
 const columns = [
   {
     title: 'Priority',
@@ -23,9 +29,11 @@ const columns = [
   { title: 'Price',
     dataIndex: 'price',
     key: 'price',
-    render: (text, record) => <span>{`${record.price} x ${record.tax}`}</span>,
+    // render: (text, record) => <span>{`${record.price} x ${record.tax}`}</span>,
+    render: (text, record) => <span>{currency(record.price * record.tax)}</span>,
     sorter: (a, b) => (a.price * a.tax) - (b.price * b.tax),
-    width: 120
+    width: 120,
+    padding: 0
   },
   { title: 'Quantity',
     dataIndex: 'quantity',
@@ -61,6 +69,7 @@ class Manifests extends React.Component {
     { manifests, screen } = this.props,
     { index } = this.state
   ) {
+    const footer = () => <h2>{`Grand Total: ${currency(manifests[index].total)}`}</h2>
     return (
       <div>
         <h1>Budget</h1>
@@ -90,12 +99,13 @@ class Manifests extends React.Component {
           } />
         }
         <Table dataSource={manifests[index].items} sort
-          size={screen.lessThan.medium ? 'small' : 'middle'}
+          size='middle'
           columns={screen.lessThan.medium ? columns.slice(1, 4) : columns}
           rowKey={record => record._id}
           //  The above will throw an error if using faker data, since duplicates are involved.
           expandedRowRender={expandedRowRender}
           pagination={false}
+          footer={footer}
         />
       </div>
     )

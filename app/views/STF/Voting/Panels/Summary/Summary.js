@@ -3,6 +3,12 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
+const currency = number =>
+  number.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD'
+  })
+
 import { Row, Col, Spin, Collapse, Table } from 'antd'
 const Panel = Collapse.Panel
 
@@ -62,6 +68,7 @@ class Summary extends React.Component {
     const impactTitles = ['Academic Experience', 'Research Opportunities', 'Career Development']
     const planKeys = Object.keys(body.plan)
     const planTitles = ['State Analysis', 'Availability', 'Implementation Strategy', 'Outreach Efforts', 'Risk Assessment']
+    const footer = () => <h2>{`Grand Total: ${currency(manifest.total)}`}</h2>
     return (
       <section>
         {!body
@@ -118,6 +125,7 @@ class Summary extends React.Component {
             //  The above will throw an error if using faker data, since duplicates are involved.
             expandedRowRender={expandedRowRender}
             pagination={false}
+            footer={footer}
           />
         }
       </section>

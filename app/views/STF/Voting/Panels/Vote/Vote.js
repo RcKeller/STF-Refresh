@@ -93,7 +93,8 @@ class Vote extends React.Component {
         {!manifest
           ? <Spin size='large' tip='Loading...' />
           : <Form onSubmit={this.handleSubmit}>
-            <h2>Your Review</h2>
+            <h2>Your Final Vote</h2>
+            <h6>For internal use only.</h6>
             <h1 className='demo-note' style={{ color: 'goldenrod' }}>UNCLEAR BUSINESS LOGIC</h1>
             <p className='demo-note' style={{ color: 'goldenrod' }}>I was very confused reg. the difference between metrics/review and voting itself. That resulted in me building out this component, then having to split its functionality (you can review but not vote, or vote and not review, etc). I like being able to view my prior metrics when voting, but this is also confusing and misleading. Anyways, I NEEED CONSENSUS regarding how metrics will be handled (like, are they metrics, or reviews?), how independent they should be from voting processes, etc.</p>
             <FormItem label={<b>Final Vote</b>} {...layout}>
