@@ -30,11 +30,24 @@ class Head extends React.Component {
   render ({ id, title, organization, uac, year, number, contacts, status, decision, supplementals } = this.props) {
     return (
       <section>
-        <Row gutter={32} type='flex' justify='space-between' align='middle' >
+        <Row gutter={32} type='flex' justify='space-between' align='top' >
           <Col className='gutter-row' xs={24} md={12} lg={16} >
             <h1>{title}</h1>
             <h3>For {organization}</h3>
             <h6 id={id}>{`ID: ${year}-${number}`}</h6>
+            <hr />
+            <ul>
+              {contacts.map((c, i) => (
+                <li key={i}>
+                  <b>{`${c.role[0].toUpperCase() + c.role.slice(1)} Contact: `}</b>
+                  <span>{`${c.name} (${c.netID}) - `}</span>
+                  <em>{c.title}</em>
+                </li>
+              ))}
+            </ul>
+            <hr />
+          </Col>
+          <Col className='gutter-row' xs={24} md={12} lg={8} >
             {uac && <Alert type='warning' showIcon={false} banner
               style={{padding: '8px 0'}}
               message={<span><b>Tri-Campus</b>: This is a Universal Access Committe (UAC) proposal</span>}
@@ -52,9 +65,7 @@ class Head extends React.Component {
                 description='Lorem Ipsum'
               />
             }
-          </Col>
-          <Col className='gutter-row' xs={24} md={12} lg={8} >
-            <Collapse bordered={false} >
+            {/* <Collapse bordered={false} >
               {contacts.map((c, i) => (
                 <Panel key={i} header={
                   <span>
@@ -69,7 +80,7 @@ class Head extends React.Component {
                   </ul>
                 </Panel>
               ))}
-            </Collapse>
+            </Collapse> */}
           </Col>
         </Row>
       </section>

@@ -20,6 +20,7 @@ API for submission, but using connectForm to instantiate initial values.
   connect(state => ({
     contacts: state.db.proposal.contacts
       .filter(contact => contact._id),
+    link: `https://uwstf.org${state.routing.locationBeforeTransitions.pathname}`,
     user: state.user
   }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
@@ -62,12 +63,12 @@ class Signatures extends React.Component {
     })
     validate()
   }
-  render ({ form, contacts, user } = this.props) {
+  render ({ form, contacts, link, user } = this.props) {
     return (
       <Form>
         <Alert type='info' showIcon={false}
           message='Share this link!'
-          description='Your signers can access this page by signing in with their netID. This is the very last step!'
+          description={<a href={link}>Your signers can access this page by signing in with their netID. This is the very last step!</a>}
         />
         <Row gutter={32}>
           <Col className='gutter-row' xs={24} sm={12}>

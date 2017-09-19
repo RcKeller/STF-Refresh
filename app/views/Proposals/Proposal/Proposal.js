@@ -87,14 +87,14 @@ class Proposal extends React.Component {
                 <Budgeting />
               </TabPane>
             }
-            {(author || stf) &&
-              <TabPane tab='Next Steps' key='4' className={styles['tab-pane']}>
-                <NextSteps />
+            {(author || admin) &&
+              <TabPane tab='Contact Info' key='4' className={styles['tab-pane']}>
+                <Update />
               </TabPane>
             }
-            {(author || admin) &&
-              <TabPane tab='Update Contacts' key='5' className={styles['tab-pane']}>
-                <Update />
+            {(author || stf) &&
+              <TabPane tab='Next Steps' key='5' className={styles['tab-pane']}>
+                <NextSteps />
               </TabPane>
             }
             {stf &&

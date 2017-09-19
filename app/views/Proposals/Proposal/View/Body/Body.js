@@ -16,6 +16,7 @@ class Body extends React.Component {
     screen: PropTypes.object
   }
   render ({ legacy, plan, screen } = this.props) {
+    const { state, availability, strategy, outreach, risk } = plan
     return (
       <div>
         <h1>Project Plan</h1>
@@ -24,14 +25,14 @@ class Body extends React.Component {
           <Row gutter={32}>
             <Col className='gutter-row' xs={24} md={11}>
               <h5><em>Current State</em></h5>
-              <p>{plan.state.current}</p>
+              <p>{state.current}</p>
             </Col>
             <Col className='gutter-row' xs={24} md={2}>
               <Icon type={screen.greaterThan.medium ? 'right' : 'down'} className={styles['arrow']} />
             </Col>
             <Col className='gutter-row' xs={24} md={11}>
               <h5><em>Future State</em></h5>
-              <p>{plan.state.future}</p>
+              <p>{state.future}</p>
             </Col>
           </Row>
         </section>
@@ -40,14 +41,14 @@ class Body extends React.Component {
           <Row gutter={32}>
             <Col className='gutter-row' xs={24} md={11}>
               <h5><em>Current Availability</em></h5>
-              <p>{plan.state.current}</p>
+              <p>{availability.current}</p>
             </Col>
             <Col className='gutter-row' xs={24} md={2}>
               <Icon type={screen.greaterThan.medium ? 'right' : 'down'} className={styles['arrow']} />
             </Col>
             <Col className='gutter-row' xs={24} md={11}>
               <h5><em>Future Availability</em></h5>
-              <p>{plan.state.future}</p>
+              <p>{availability.future}</p>
             </Col>
           </Row>
         </section>
@@ -56,14 +57,14 @@ class Body extends React.Component {
           <Row gutter={32}>
             <Col className='gutter-row' xs={24} md={11}>
               <h5><em>Organizational Backing</em></h5>
-              <p>{plan.state.current}</p>
+              <p>{strategy.current}</p>
             </Col>
             <Col className='gutter-row' xs={24} md={2}>
               <Icon type={screen.greaterThan.medium ? 'right' : 'down'} className={styles['arrow']} />
             </Col>
             <Col className='gutter-row' xs={24} md={11}>
               <h5><em>Implementation Plan</em></h5>
-              <p>{plan.state.future}</p>
+              <p>{strategy.future}</p>
             </Col>
           </Row>
         </section>
@@ -72,14 +73,14 @@ class Body extends React.Component {
           <Row gutter={32}>
             <Col className='gutter-row' xs={24} md={11}>
               <h5><em>Prior Outreach</em></h5>
-              <p>{plan.state.current}</p>
+              <p>{outreach.current}</p>
             </Col>
             <Col className='gutter-row' xs={24} md={2}>
               <Icon type={screen.greaterThan.medium ? 'right' : 'down'} className={styles['arrow']} />
             </Col>
             <Col className='gutter-row' xs={24} md={11}>
               <h5><em>Outreach Strategy</em></h5>
-              <p>{plan.state.future}</p>
+              <p>{outreach.future}</p>
             </Col>
           </Row>
         </section>
@@ -88,14 +89,14 @@ class Body extends React.Component {
           <Row gutter={32}>
             <Col className='gutter-row' xs={24} md={11}>
               <h5><em>Risk Factors</em></h5>
-              <p>{plan.state.current}</p>
+              <p>{risk.current}</p>
             </Col>
             <Col className='gutter-row' xs={24} md={2}>
               <Icon type={screen.greaterThan.medium ? 'right' : 'down'} className={styles['arrow']} />
             </Col>
             <Col className='gutter-row' xs={24} md={11}>
               <h5><em>Mitigation Strategy</em></h5>
-              <p>{plan.state.future}</p>
+              <p>{risk.future}</p>
             </Col>
           </Row>
         </section>

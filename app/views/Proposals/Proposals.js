@@ -36,25 +36,6 @@ import { publishedProposals, myProposals, myDrafts } from '../../selectors'
     proposals: publishedProposals(state),
     myProposals: myProposals(state),
     myDrafts: myDrafts(state),
-    // proposals: state.db.proposals && state.db.proposals
-    //   .filter(proposal => proposal.published === true
-    //   ),
-    // myProposals: state.db.proposals && state.db.proposals
-    //   .filter(proposal => {
-    //     if (proposal.published) {
-    //       for (const contact of proposal.contacts) {
-    //         return contact.netID === state.user.netID
-    //       }
-    //     }
-    //   }),
-    // myDrafts: state.db.proposals && state.db.proposals
-    //   .filter(proposal => {
-    //     if (!proposal.published) {
-    //       for (const contact of proposal.contacts) {
-    //         return contact.netID === state.user.netID
-    //       }
-    //     }
-    //   }),
     enums: state.config && state.config.enums,
     screen: state.screen,
     user: state.user
@@ -245,16 +226,10 @@ Proposals extends React.Component {
         width: 100
       }
     ]
-    const footer = () => (
+    const title = () => (
       <div>
-        <em>
-          Any campus department or org can submit a proposal with a budget code. <Link to='/create'>
-          Click Here!
-        </Link>
-        </em>
         {(myProposals && myProposals.length > 0) &&
           <div>
-            <hr />
             <h6>Your Proposals</h6>
             <ul>
               {myProposals.map((p, i) => (
@@ -273,7 +248,6 @@ Proposals extends React.Component {
         }
         {(myDrafts && myDrafts.length > 0) &&
           <div>
-            <hr />
             <h6>Pending Drafts</h6>
             <ul>
               {myDrafts.map((p, i) => (
@@ -292,6 +266,17 @@ Proposals extends React.Component {
         }
       </div>
     )
+    const footer = () => (
+      <div>
+        <h6>
+          <em>
+            Any campus department or org can submit a proposal with a budget code. <Link to='/create'>
+            Click Here!
+          </Link>
+          </em>
+        </h6>
+      </div>
+    )
     return (
       <article className={styles['article']}>
         <h1>STF Proposals</h1>
@@ -308,6 +293,7 @@ Proposals extends React.Component {
                 ? columns.slice(0, 3)
                 : columns
               }
+              title={title}
               footer={footer}
             />
           }
