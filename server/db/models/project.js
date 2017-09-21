@@ -21,16 +21,16 @@ const ProjectSchema = new mongoose.Schema({
   */
   proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },
   overview: {
-    abstract: { type: String, required: true },
+    abstract: String,
     //  Objectives are key notes/bullet points. Not stored in array for consistency.
-    objectives: { type: String, required: true },
+    objectives: String,
     //  Justification is a brief answer to "why", or info about urgent need.
-    justification: { type: String, required: true },
+    justification: String,
     //  The impact on students in various aspects
     impact: {
-      academic: { type: String, required: true },
-      research: { type: String, required: true },
-      career: { type: String, required: true }
+      academic: String,
+      research: String,
+      career: String
     }
   },
   /*
@@ -44,24 +44,24 @@ const ProjectSchema = new mongoose.Schema({
   */
   plan: {
     state: {
-      current: { type: String, required: true },
-      future: { type: String, required: true }
+      current: String,
+      future: String
     },
     availability: {
-      current: { type: String, required: true },
-      future: { type: String, required: true }
+      current: String,
+      future: String
     },
     strategy: {
-      current: { type: String, required: true },
-      future: { type: String, required: true }
+      current: String,
+      future: String
     },
     outreach: {
-      current: { type: String, required: true },
-      future: { type: String, required: true }
+      current: String,
+      future: String
     },
     risk: {
-      current: { type: String, required: true },
-      future: { type: String, required: true }
+      current: String,
+      future: String
     }
   },
   /*
@@ -75,8 +75,8 @@ const ProjectSchema = new mongoose.Schema({
   of the legacy prop: if (proposal.legacy) {proposal.legacy.map((prompt, i)) => (...))}
   */
   legacy: [{
-    title: { type: String, required: true },
-    body: { type: String, required: true }
+    title: String,
+    body: String
   }]
 })
 ProjectSchema.plugin(autoref, ['proposal.body'])

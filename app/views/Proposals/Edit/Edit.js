@@ -73,15 +73,6 @@ class Edit extends React.Component {
     if (!valid.signatures) this.validateSignatures(nextProps)
   }
 
-  test = () => {
-    console.warn('TEST')
-    this.validateIntroduction()
-    this.validateContacts()
-    this.validateProject()
-    this.validateBudget()
-    this.validateSignatures()
-  }
-
   validateIntroduction = (
     { proposal } = this.props,
     { valid } = this.state
@@ -200,7 +191,6 @@ class Edit extends React.Component {
     return (
       <article className={styles['page']}>
         <Helmet title='New Proposal' />
-        <button onClick={this.test}>TEST</button>
         {!proposal
           ? <Spin size='large' tip='Loading...' />
           : <div id={proposal._id}>

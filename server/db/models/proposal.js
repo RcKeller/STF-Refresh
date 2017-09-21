@@ -25,6 +25,8 @@ const ProposalSchema = new mongoose.Schema({
   category: String,
   // UAC === uniform access / tri-campus.
   uac: { type: Boolean, default: false },
+  //  Fast === FastTrack, an old process that's not well defined but must be documented.
+  fast: { type: Boolean, default: false },
   // organization === department in legacy code. This is more inclusive.
   organization: String,
   //  Proposal status, differs from decisions in that this is "summary" data for table viewing.
@@ -90,6 +92,7 @@ const dummyProposals = (min, ids) => {
           title: faker.company.catchPhrase(),
           category: faker.name.jobArea(),
           uac: faker.random.boolean(),
+          fast: faker.random.boolean(),
           organization: faker.commerce.department(),
 
           status: faker.company.bsAdjective(),

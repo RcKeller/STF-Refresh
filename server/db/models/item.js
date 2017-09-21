@@ -9,7 +9,9 @@ const ItemSchema = new mongoose.Schema({
   name: { type: String, required: true },
   // Description will contain the old "justification" element at the end,
   description: String,
-  quantity: { type: Number, required: true, default: 1, min: 1 },
+  category: String,
+  //  NOTE: Quantity min must be 0 so people can report not buying things in reports
+  quantity: { type: Number, required: true, default: 1, min: 0 },
   price: { type: Number, required: true, min: 0 },
   //  Vendor (for reporting, these are tracked)
   vendor: String,

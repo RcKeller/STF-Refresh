@@ -6,7 +6,7 @@ import faker from 'faker'
 
 const UserSchema = new mongoose.Schema({
   name: { type: String, default: '' },
-  netID: { type: String, unique: true },
+  netID: String,
   email: { type: String, lowercase: true },
   /*
   The commitee(orization) object will not pass to the client unless
