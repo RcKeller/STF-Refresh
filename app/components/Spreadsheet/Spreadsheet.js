@@ -112,8 +112,21 @@ class Spreadsheet extends React.Component {
         /> */}
       <Alert type='info' showIcon={false} banner closable
         message={<span>
-          <b>Spreadsheet: </b>
-          Press enter to edit data, or type to overwrite. Remember to save once you are done.
+          <h5>Editable Spreadsheet:</h5>
+          <hr />
+          <ul>
+            <li>
+              <b>Edit Data: </b> Press enter to edit, or start typing to overwrite.
+            </li>
+            <li>
+              <b>Add /Delete Rows: </b> Right click the table and choose add/delete.
+            </li>
+            <hr />
+            {financial && <li>Totals are calculated automatically, including tax<br /></li>}
+            <li>
+              <em><b>Don't forget to save when you are finished!</b></em>
+            </li>
+          </ul>
         </span>}
        />
       <ReactDataGrid
