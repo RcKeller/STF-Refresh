@@ -21,11 +21,8 @@ const indicators = {
   'Revisions Requested': 'warning',
   Denied: 'error'
 }
-const currency = number =>
-  number.toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD'
-  })
+//  At this scale, cents are triffling
+const currency = number => `$${Number.parseInt(number).toLocaleString('en-US')}`
 
 //  Import modular CSS. Needs to run through JS because styles are hashed.
 import styles from './Proposals.css'
@@ -113,7 +110,7 @@ Proposals extends React.Component {
       new Date().getFullYear() + 1
     )
     //  Columns are defined in render because they have many data dependencies.
-    const columns = [
+    let columns = [
       {
         title: 'ID',
         dataIndex: 'number',
@@ -177,7 +174,11 @@ Proposals extends React.Component {
       {
         title: 'Organization',
         dataIndex: 'organization',
-        key: 'organization'
+        key: 'organization',
+        filters: enums
+          ? Object.keys(enums.organizations).map(key => ({ text: key, value: key }))
+          : [],
+        onFilter: (value, record) => record.organization === value
       },
       {
         title: 'Category',
@@ -202,17 +203,19 @@ Proposals extends React.Component {
             return { text: status, value: status }
           })
           : [],
-        onFilter: (value, record) => record.status === value
+        onFilter: (value, record) => record.status === value,
+        width: 100
       },
       {
         title: 'Asked',
         dataIndex: 'asked',
         key: 'asked',
         render: text => <span>{text ? currency(text) : '0'}</span>,
-        sorter: (a, b) => a.asked - b.asked
+        sorter: (a, b) => a.asked - b.asked,
+        width: 80
       },
       {
-        title: 'Received',
+        title: 'Awarded',
         dataIndex: 'received',
         key: 'received',
         render: (text, record) =>
@@ -223,7 +226,7 @@ Proposals extends React.Component {
         sorter: (a, b) =>
           a.asked / a.received * 100 -
             b.asked / b.received * 100,
-        width: 100
+        width: 110
       }
     ]
     const title = () => (
@@ -277,6 +280,20 @@ Proposals extends React.Component {
         </h6>
       </div>
     )
+    // let responsiveColumns = columns
+    // const responsiveColumns = () => {
+    //   if (screen.lessThan.large && !screen.lessThan.medium) {
+    //     return [...columns.slice(0, 3), ...columns.slice(6)]
+    //   } else if (screen.lessThan.medium) {
+    //     return columns.slice(0, 3)
+    //   }
+    //   return columns
+    // }
+    if (screen.lessThan.large && !screen.lessThan.medium) {
+      columns = [...columns.slice(0, 3), ...columns.slice(6)]
+    } else if (screen.lessThan.medium) {
+      columns = columns.slice(0, 3)
+    }
     return (
       <article className={styles['article']}>
         <h1>STF Proposals</h1>
@@ -287,12 +304,13 @@ Proposals extends React.Component {
               rowKey={record => record._id}
               dataSource={proposals}
               sort
-              size={screen.lessThan.medium ? 'small' : ''}
-              columns={
-                screen.lessThan.medium
-                ? columns.slice(0, 3)
-                : columns
-              }
+              size={screen.lessThan.medium ? 'small' : 'middle'}
+              columns={columns}
+              // columns={
+              //   screen.lessThan.medium
+              //   ? columns.slice(0, 3)
+              //   : columns
+              // }
               title={title}
               footer={footer}
             />

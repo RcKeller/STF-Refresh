@@ -52,7 +52,8 @@ const expandedRowRender = record => record.description
       manifest: state.db.manifests
         .find(manifest => manifest._id === props.id) || {},
       items: state.db.manifests
-        .find(manifest => manifest._id === props.id).items || []
+        .find(manifest => manifest._id === props.id).items || [],
+      screen: state.screen
     })
 )
 class Summary extends React.Component {
@@ -62,7 +63,7 @@ class Summary extends React.Component {
     user: PropTypes.object
   }
   render (
-    { body, isLegacy, manifest } = this.props
+    { screen, body, isLegacy, manifest } = this.props
   ) {
     //  For reasons unknown, we can't use Object.keys to iterate and create panels. Map works though. Perhaps it's a FP issue?
     const impactKeys = body.overview ? Object.keys(body.overview.impact) : []
@@ -142,7 +143,8 @@ class Summary extends React.Component {
             columns={columns}
             rowKey={record => record._id}
             //  The above will throw an error if using faker data, since duplicates are involved.
-            expandedRowRender={expandedRowRender}
+            expandedRowRender={screen.greaterThan.medium ? expandedRowRender : false}
+            defaultExpandAllRows={screen.greaterThan.medium ? true : false}
             pagination={false}
             footer={footer}
           />
