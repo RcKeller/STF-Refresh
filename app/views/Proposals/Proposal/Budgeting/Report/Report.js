@@ -78,6 +78,16 @@ class Report extends React.Component {
         let report = { proposal, manifest: manifest._id, author: user, items, total }
         //  Hydrate the report with form data
         report = Object.assign(report, values)
+        // const transform = res => ({ proposal: res })
+        // const update = { proposal: (prev, next) => {
+        //   let newData = Object.assign({}, prev)
+        //   let indexOfManifest = newData.manifests.findIndex(m => m._id === report.manifest)
+        //   if (indexOfManifest >= 0) {
+        //     newData.manifests[indexOfManifest].report =
+        //       Object.assign(next, report)
+        //   }
+        //   return newData
+        // }}
         this.props.report
         ? api.patch('report', report, { id: this.props.report._id })
         : api.post('report', report)

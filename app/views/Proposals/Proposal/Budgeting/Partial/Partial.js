@@ -67,9 +67,15 @@ class Partial extends React.Component {
     const { api, proposal, user } = this.props
     const partial = { proposal, type: 'partial', author: user, items, total }
     //  Nullify the update for proposal data.
-    const update = { proposal: (prev, next) => prev }
+    // const update = { proposal: (prev, next) => prev }
+    const transform = res => ({ proposal: res })
+    const update = { proposal: (prev, next) => {
+      let newData = Object.assign({}, prev)
+      newData.manifests.push(next)
+      return newData
+    }}
     //  Post it - partials are a one-time deal, they aren't patched after the fact.
-    api.post('manifest', partial, { update })
+    api.post('manifest', partial, { transform, update })
     .then(message.success(`Partial budget created! Please add it to the docket.`))
     .catch(err => {
       message.warning(`Failed to create partial budget - Unexpected client error`)

@@ -3,7 +3,9 @@ import loadModels from './models'
 // import dummyData from './dummies'
 import dummyData from './dummy'
 import config from 'config'
-const db = config.get('db')
+// const db = config.get('db')
+//  FIXME: Temporary test of migration db
+const db = 'mongodb://192.168.99.100:27017/uw-migration'
 
 export default () => {
   // Find the appropriate database to connect to, default to localhost if not found.

@@ -81,8 +81,14 @@ class Supplemental extends React.Component {
         let supplemental = { proposal, type: 'supplemental', items, total }
         //  Hydrate the supplement with form data (title/body, totally optional)
         supplemental = Object.assign(supplemental, values)
-        const update = { proposal: (prev, next) => prev }
-        api.post('manifest', supplemental, { update })
+        // const update = { proposal: (prev, next) => prev }
+        const transform = res => ({ proposal: res })
+        const update = { proposal: (prev, next) => {
+          let newData = Object.assign({}, prev)
+          newData.manifests.push(next)
+          return newData
+        }}
+        api.post('manifest', supplemental, { transform, update })
         .then(message.success('Supplemental request submitted!'))
         .catch(err => {
           message.warning('Supplemental request failed - Unexpected client error')
