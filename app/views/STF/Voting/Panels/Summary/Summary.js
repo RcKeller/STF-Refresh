@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
 import { connect } from 'react-redux'
 
 const currency = number =>
@@ -9,7 +8,7 @@ const currency = number =>
     currency: 'USD'
   })
 
-import { Row, Col, Spin, Collapse, Table } from 'antd'
+import { Row, Col, Spin, Alert, Collapse, Table } from 'antd'
 const Panel = Collapse.Panel
 
 const columns = [
@@ -28,7 +27,7 @@ const columns = [
   { title: 'Price',
     dataIndex: 'price',
     key: 'price',
-    render: (text, record) => <span>{`${record.price} x ${record.tax}`}</span>,
+    render: (text, record) => <span>{currency(record.tax ? record.price * record.tax : record.price)}</span>,
     sorter: (a, b) => (a.price * a.tax) - (b.price * b.tax),
     width: 120
   },
@@ -48,6 +47,8 @@ const expandedRowRender = record => record.description
     (state, props) => ({
       body: state.db.manifests
         .find(manifest => manifest._id === props.id).proposal.body || {},
+      isLegacy: state.db.manifests
+        .find(manifest => manifest._id === props.id).proposal.body.legacy.length > 0,
       manifest: state.db.manifests
         .find(manifest => manifest._id === props.id) || {},
       items: state.db.manifests
@@ -61,12 +62,12 @@ class Summary extends React.Component {
     user: PropTypes.object
   }
   render (
-    { body, manifest } = this.props
+    { body, isLegacy, manifest } = this.props
   ) {
     //  For reasons unknown, we can't use Object.keys to iterate and create panels. Map works though. Perhaps it's a FP issue?
-    const impactKeys = Object.keys(body.overview.impact)
+    const impactKeys = body.overview ? Object.keys(body.overview.impact) : []
     const impactTitles = ['Academic Experience', 'Research Opportunities', 'Career Development']
-    const planKeys = Object.keys(body.plan)
+    const planKeys = body.plan ? Object.keys(body.plan) : []
     const planTitles = ['State Analysis', 'Availability', 'Implementation Strategy', 'Outreach Efforts', 'Risk Assessment']
     const footer = () => <h2>{`Grand Total: ${currency(manifest.total)}`}</h2>
     return (
@@ -74,38 +75,56 @@ class Summary extends React.Component {
         {!body
           ? <Spin size='large' tip='Loading...' />
           : <div>
-            <Row gutter={32}>
-              <Col className='gutter-row' xs={24} md={12}>
-                <h1>Overview</h1>
-                <p>{body.overview.abstract}</p>
-              </Col>
-              <Col className='gutter-row' xs={24} md={12}>
-                <h3>Objectives</h3>
-                <p>{body.overview.objectives}</p>
-                <h3>Core Justification</h3>
-                <p>{body.overview.justification}</p>
-              </Col>
-            </Row>
-            <h2>Impact</h2>
-            <Collapse bordered={false} defaultActiveKey={['0', '1', '2']}>
-              {impactKeys.map((area, i) => (
-                <div key={i}>
-                  <h6>{impactTitles[i]}</h6>
-                  <p>{body.overview.impact[area]}</p>
-                </div>
-              ))}
-            </Collapse>
-            <h1>Project Plan</h1>
-            <Collapse bordered={false} >
-              {planKeys.map((area, i) => (
-                <Panel header={planTitles[i]} key={i}>
-                  <h3>Current</h3>
-                  <p>{body.plan[area].current}</p>
-                  <h3>Future</h3>
-                  <p>{body.plan[area].future}</p>
-                </Panel>
-              ))}
-            </Collapse>
+            {!isLegacy
+              ? <section>
+                <Row gutter={32}>
+                  <Col className='gutter-row' xs={24} md={12}>
+                    <h1>Overview</h1>
+                    <p>{body.overview.abstract}</p>
+                  </Col>
+                  <Col className='gutter-row' xs={24} md={12}>
+                    <h3>Objectives</h3>
+                    <p>{body.overview.objectives}</p>
+                    <h3>Core Justification</h3>
+                    <p>{body.overview.justification}</p>
+                  </Col>
+                </Row>
+                <h2>Impact</h2>
+                <Collapse bordered={false} defaultActiveKey={['0', '1', '2']}>
+                  {impactKeys.map((area, i) => (
+                    <div key={i}>
+                      <h6>{impactTitles[i]}</h6>
+                      <p>{body.overview.impact[area]}</p>
+                    </div>
+                  ))}
+                </Collapse>
+                <h1>Project Plan</h1>
+                <Collapse bordered={false} >
+                  {planKeys.map((area, i) => (
+                    <Panel header={planTitles[i]} key={i}>
+                      <h3>Current</h3>
+                      <p>{body.plan[area].current}</p>
+                      <h3>Future</h3>
+                      <p>{body.plan[area].future}</p>
+                    </Panel>
+                  ))}
+                </Collapse>
+              </section>
+            : <div>
+              <Alert type='info' banner showIcon={false}
+                message='Legacy Format'
+                description='Our proposal process has changed significantly since Summer 2017. To learn more about the current process, click here.'
+              />
+              <div>
+                {body.legacy && body.legacy.map((e, i) =>
+                  <div key={i}>
+                    <h5><em>{e.title}</em></h5>
+                    <p>{e.body}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          }
           </div>
           }
         {manifest && manifest.type === 'supplemental' &&

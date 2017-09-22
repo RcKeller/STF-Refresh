@@ -7,41 +7,6 @@ import { connect } from 'react-redux'
 import { Table, Alert, Select } from 'antd'
 const Option = Select.Option
 
-const currency = number =>
-  number.toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD'
-  })
-
-const columns = [
-  {
-    title: 'Priority',
-    dataIndex: 'priority',
-    key: 'priority',
-    sorter: (a, b) => (a.priority) - (b.priority),
-    width: 90
-  },
-  {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name'
-  },
-  { title: 'Price',
-    dataIndex: 'price',
-    key: 'price',
-    // render: (text, record) => <span>{`${record.price} x ${record.tax}`}</span>,
-    render: (text, record) => <span>{currency(record.price * record.tax)}</span>,
-    sorter: (a, b) => (a.price * a.tax) - (b.price * b.tax),
-    width: 120,
-    padding: 0
-  },
-  { title: 'Quantity',
-    dataIndex: 'quantity',
-    key: 'quantity',
-    width: 90
-  }
-]
-
 // const expandedRowRender = record => <p><h6>Description: </h6>{record.description}</p>
 
 const expandedRowRender = record => record.description
@@ -69,6 +34,42 @@ class Manifests extends React.Component {
     { manifests, screen } = this.props,
     { index } = this.state
   ) {
+    const currency = number =>
+      screen.greaterThan.medium
+      ? number.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD'
+      })
+      : `$${Number.parseInt(number).toLocaleString('en-US')}`
+
+    const columns = [
+      {
+        title: 'Priority',
+        dataIndex: 'priority',
+        key: 'priority',
+        sorter: (a, b) => (a.priority) - (b.priority),
+        width: 90
+      },
+      {
+        title: 'Name',
+        dataIndex: 'name',
+        key: 'name'
+      },
+      { title: 'Price',
+        dataIndex: 'price',
+        key: 'price',
+        // render: (text, record) => <span>{`${record.price} x ${record.tax}`}</span>,
+        render: (text, record) => <span>{currency(record.tax ? record.price * record.tax : record.price)}</span>,
+        sorter: (a, b) => (a.price * a.tax) - (b.price * b.tax),
+        width: screen.greaterThan.medium ? 120 : 80,
+        padding: 0
+      },
+      { title: 'Quantity',
+        dataIndex: 'quantity',
+        key: 'quantity',
+        width: 90
+      }
+    ]
     const footer = () => <h2>{`Grand Total: ${currency(manifests[index].total)}`}</h2>
     return (
       <div>
@@ -103,7 +104,7 @@ class Manifests extends React.Component {
           columns={screen.lessThan.medium ? columns.slice(1, 4) : columns}
           rowKey={record => record._id}
           //  The above will throw an error if using faker data, since duplicates are involved.
-          expandedRowRender={expandedRowRender}
+          expandedRowRender={screen.greaterThan.medium ? expandedRowRender : false}
           pagination={false}
           footer={footer}
         />

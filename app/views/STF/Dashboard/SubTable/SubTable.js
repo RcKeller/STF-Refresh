@@ -20,7 +20,7 @@ const manifestColumns = [
     title: 'Price',
     dataIndex: 'price',
     key: 'price',
-    render: (text, record) => <span>{currency(text * record.tax)}</span>,
+    render: (text, record) => <span>{currency(record.tax ? text * record.tax : text)}</span>,
     sorter: (a, b) => (a.price * a.tax) - (b.price * b.tax)
   }, {
     title: 'Quantity',

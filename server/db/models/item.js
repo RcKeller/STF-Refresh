@@ -15,9 +15,9 @@ const ItemSchema = new mongoose.Schema({
   price: { type: Number, required: true, min: 0 },
   //  Vendor (for reporting, these are tracked)
   vendor: String,
-  //  Tax rate, used to automatically account for tax. Seattle taxes 10.1%
+  //  Tax rate, used to automatically account for tax.
   //  TODO: Handle tax calculations on the server side.
-  tax: { type: Number, min: 0 },
+  tax: { type: Number, required: true, default: 10.1, min: 0 },
   //  Priority (legacy: group) is used to sort items by importance, lower is most imp.
   //  Tad confusing, but this is a constant question for proposers.
   priority: { type: Number, min: 0 }

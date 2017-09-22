@@ -5,11 +5,11 @@ import { connect } from 'react-redux'
 
 import { Alert } from 'antd'
 
-@connect(state => ({ legacy: state.db.proposal.body.legacy }))
+@connect(state => ({ legacy: state.db.proposal.body.legacy || [] }))
 class Legacy extends React.Component {
-  static propTypes = {
-    legacy: PropTypes.object
-  }
+  // static propTypes = {
+  //   legacy: PropTypes.object
+  // }
   render ({ legacy } = this.props) {
     return (
       <div>

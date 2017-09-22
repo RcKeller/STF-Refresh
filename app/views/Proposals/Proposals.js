@@ -138,7 +138,7 @@ Proposals extends React.Component {
           <span>{text.substr(0, 2) || ''}</span>
         ),
         filters: [
-          { text: 'Autumn', value: 'Autumn' },
+          { text: 'Winter', value: 'Winter' },
           { text: 'Fall', value: 'Fall' },
           { text: 'Spring', value: 'Spring' },
           { text: 'Summer', value: 'Summer' }
