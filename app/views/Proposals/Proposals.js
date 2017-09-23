@@ -15,11 +15,14 @@ import { Spin, Table, Progress, Badge, Input, Icon } from 'antd'
 
 //  Status indicator mapping for badge components
 const indicators = {
-  'In Review': 'default',
-  'Fully Funded': 'success',
+  'Submitted': 'default',
+  'Funded': 'success',
   'Partially Funded': 'success',
-  'Revisions Requested': 'warning',
-  Denied: 'error'
+  'In Review': 'warning',
+  'Awaiting Decision': 'warning',
+  'Denied': 'error',
+  'Draft': 'error',
+  'Withdrawn': 'error'
 }
 //  At this scale, cents are triffling
 const currency = number => `$${Number.parseInt(number).toLocaleString('en-US')}`
@@ -212,7 +215,7 @@ Proposals extends React.Component {
         key: 'asked',
         render: text => <span>{text ? currency(text) : '0'}</span>,
         sorter: (a, b) => a.asked - b.asked,
-        width: 80
+        width: 100
       },
       {
         title: 'Awarded',

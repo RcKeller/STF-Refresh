@@ -33,7 +33,7 @@ class Budgeting extends React.Component {
     return (
       <section>
         <h1>Budgeting</h1>
-        <h3>{`Organization Budget Code: ${budget}`}</h3>
+        {budget && <h3>{`Organization Budget Code: ${budget}`}</h3>}
         {approvedManifests.length <= 0 &&
           <em>This proposal has not received funding, so advanced budgeting tools are unavailable for now.</em>
         }

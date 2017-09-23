@@ -140,6 +140,7 @@ class Scores extends React.Component {
               <Col span={24} lg={16}>
                 <h2>Review Breakdown</h2>
                 <Table dataSource={dataSource} pagination={false}
+                  rowKey={record => record.prompt}
                   columns={columns}
                 />
               </Col>

@@ -121,11 +121,6 @@ class Spreadsheet extends React.Component {
             <li>
               <b>Add /Delete Rows: </b> Right click the table and choose add/delete.
             </li>
-            <hr />
-            {financial && <li>Totals are calculated automatically, including tax<br /></li>}
-            <li>
-              <em><b>Don't forget to save when you are finished!</b></em>
-            </li>
           </ul>
         </span>}
        />

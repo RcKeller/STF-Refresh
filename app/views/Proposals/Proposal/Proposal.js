@@ -98,7 +98,7 @@ class Proposal extends React.Component {
               </TabPane>
             }
             {stf &&
-              <TabPane tab={<span>Reviews (<em>STF-Only</em>)</span>} key='6' className={styles['tab-pane']}>
+              <TabPane disabled tab={<span>Reviews (<em>STF-Only</em>)</span>} key='6' className={styles['tab-pane']}>
                 <Reviews />
               </TabPane>
             }
