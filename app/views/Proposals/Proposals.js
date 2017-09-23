@@ -122,19 +122,19 @@ Proposals extends React.Component {
           <span>{`${record.year}-${record.number}`}</span>
         ),
         //  FIXME: Does this sort correctly?
-        // sorter: (a, b) =>
-        //   a.year * a.number - b.year * b.number,
-        sorter: (a, b) => {
-          let ret = 0
-          if (a.year > b.year) {
-            ret -= 1
-          } else if (a.number > b.number) {
-            ret -= 1
-          } else {
-            ret += 1
-          }
-          return ret
-        },
+        sorter: (a, b) =>
+          a.year * a.number - b.year * b.number,
+        // sorter: (a, b) => {
+          // let ret = 0
+          // if (a.year > b.year) {
+          //   ret -= 1
+          // } else if (a.number > b.number) {
+          //   ret -= 1
+          // } else {
+          //   ret += 1
+          // }
+          // return ret
+        // },
         filters: years.map((year, i) => {
           return { text: year, value: year }
         }),
@@ -236,11 +236,19 @@ Proposals extends React.Component {
         render: (text, record) =>
           record.received
             ? <Progress type='circle' width={70}
-              percent={parseInt(record.asked / record.received * 100)} />
+              percent={parseInt(record.received / record.asked * 100)} />
             : <span />,
         sorter: (a, b) =>
-          a.asked / a.received * 100 -
-            b.asked / b.received * 100,
+          a.received / a.asked -
+            b.received / b.asked,
+        // render: (text, record) =>
+        //   record.received
+        //     ? <Progress type='circle' width={70}
+        //       percent={parseInt(record.asked / record.received * 100)} />
+        //     : <span />,
+        // sorter: (a, b) =>
+        //   a.asked / a.received * 100 -
+        //     b.asked / b.received * 100,
         width: 110
       }
     ]

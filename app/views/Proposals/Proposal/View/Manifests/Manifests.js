@@ -53,7 +53,8 @@ class Manifests extends React.Component {
       {
         title: 'Name',
         dataIndex: 'name',
-        key: 'name'
+        key: 'name',
+        render: text => <h5>{text}</h5>
       },
       { title: 'Price',
         dataIndex: 'price',
@@ -105,6 +106,7 @@ class Manifests extends React.Component {
           rowKey={record => record._id}
           //  The above will throw an error if using faker data, since duplicates are involved.
           expandedRowRender={screen.greaterThan.medium ? expandedRowRender : false}
+          defaultExpandAllRows={screen.greaterThan.medium}
           pagination={false}
           footer={footer}
         />

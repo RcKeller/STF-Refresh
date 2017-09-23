@@ -74,7 +74,7 @@ class About extends React.Component {
                       <h1>Voting Members</h1>
                       <p>Lorem ipsum...</p>
                     </div>
-                }
+                  }
                   dataSource={members}
                   columns={screen.lessThan.medium ? representativeColumns.slice(0, 2) : representativeColumns}
                   rowKey={record => record.name}

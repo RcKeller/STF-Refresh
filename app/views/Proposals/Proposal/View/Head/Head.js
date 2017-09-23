@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
-import { Row, Col, Collapse, Alert } from 'antd'
+import { Row, Col, Collapse, Alert, Progress } from 'antd'
 const Panel = Collapse.Panel
 
 const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
@@ -19,7 +19,9 @@ const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
   contacts: state.db.proposal.contacts,
   status: state.db.proposal.status,
   decision: state.db.proposal.decision,
-  supplementals: state.db.proposal.supplementals
+  supplementals: state.db.proposal.supplementals,
+  asked: state.db.proposal.asked,
+  received: state.db.proposal.received
 }))
 class Head extends React.Component {
   static propTypes = {
@@ -27,7 +29,7 @@ class Head extends React.Component {
     status: PropTypes.string,
     decision: PropTypes.object
   }
-  render ({ id, title, organization, uac, year, number, contacts, status, decision, supplementals } = this.props) {
+  render ({ id, title, organization, uac, year, number, contacts, status, decision, supplementals, asked, received } = this.props) {
     return (
       <section>
         <Row gutter={32} type='flex' justify='space-between' align='top' >
@@ -47,7 +49,11 @@ class Head extends React.Component {
             </ul>
             <hr />
           </Col>
-          <Col className='gutter-row' xs={24} md={12} lg={8} >
+          <Col className='gutter-row' xs={24} md={12} lg={8}>
+            {/* {received &&
+              <Progress type='circle' width={70}
+                percent={parseInt(asked / received * 100)} />
+            } */}
             {uac && <Alert type='warning' showIcon={false} banner
               style={{padding: '8px 0'}}
               message={<span><b>Tri-Campus</b>: This is a Universal Access Committe (UAC) proposal</span>}
