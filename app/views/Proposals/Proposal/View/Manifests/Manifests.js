@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { Table, Alert, Select } from 'antd'
 const Option = Select.Option
 
-// const expandedRowRender = record => <p><h6>Description: </h6>{record.description}</p>
+const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
 const expandedRowRender = record => record.description
   ? <div><h6>Description: </h6>{record.description}</div>
@@ -34,14 +34,6 @@ class Manifests extends React.Component {
     { manifests, screen } = this.props,
     { index } = this.state
   ) {
-    const currency = number =>
-      screen.greaterThan.medium
-      ? number.toLocaleString('en-US', {
-        style: 'currency',
-        currency: 'USD'
-      })
-      : `$${Number.parseInt(number).toLocaleString('en-US')}`
-
     const columns = [
       {
         title: 'Priority',
@@ -72,6 +64,7 @@ class Manifests extends React.Component {
       }
     ]
     const footer = () => <h2>{`Grand Total: ${currency(manifests[index].total)}`}</h2>
+    const dataSource = manifests[index].items
     return (
       <div>
         <h1>Budget</h1>
@@ -100,7 +93,7 @@ class Manifests extends React.Component {
             </div>
           } />
         }
-        <Table dataSource={manifests[index].items} sort
+        <Table dataSource={dataSource} sort
           size='middle'
           columns={screen.lessThan.medium ? columns.slice(1, 4) : columns}
           rowKey={record => record._id}

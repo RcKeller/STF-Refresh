@@ -62,7 +62,8 @@ class Docket extends React.Component {
         { text: 'Supplemental Award', value: 'supplemental' },
         { text: 'Partial Funding', value: 'partial' }
       ],
-      onFilter: (value, record) => record.type.includes(value),
+      onFilter: (value, record) => record.type === value,
+      // onFilter: (value, record) => record.type.includes(value),
       width: 120
     },
     {
@@ -125,13 +126,13 @@ class Docket extends React.Component {
         <Helmet title='Docket' />
         <h1>Committee Docket</h1>
         <h6>Internal use only.</h6>
-        <h1 className='demo-note' style={{ color: 'red' }}>CONTENT NEEDED</h1>
-        <p className='demo-note' style={{ color: 'red' }}>This page allows admins / the chair to put different kinds of budgets up for various kinds of debate. Could use brief verbage here.</p>
-        <p>Add proposals, partials and supplementals to QA and voting dockets.</p>
+        <p>
+          This page allows admins to control the availability of committee actions on proposals through the website. To make proposals available for metric submission or a committee vote, or to issue a final decision, use the switches below to update proposal status.
+        </p>
         {!manifests
           ? <Spin size='large' tip='Loading...' />
           : <Table dataSource={manifests} sort
-            size={screen.lessThan.medium ? 'small' : ''}
+            size={screen.lessThan.medium ? 'small' : 'middle'}
             columns={screen.lessThan.medium ? columns.filter(col => col.title !== 'Title') : columns}
           />
         }

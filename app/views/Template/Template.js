@@ -124,7 +124,7 @@ class Template extends React.Component {
             enableDragHandle={false}
             dragToggleDistance={30}
             sidebarStyle={screen.lessThan.large
-              ? { overflowY: 'auto', overflowX: 'hidden' } : { overflowX: 'hidden' }
+              ? { overflowY: 'auto', overflowX: 'hidden' } : {}
             }
             sidebar={
               <Menu

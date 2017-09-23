@@ -4,15 +4,16 @@ Fix top bar flexbox/responsiveness.
 Add search for docket
 DONE: Edit proposal head to show status more elegantly.
 Edit manifests (multiple) to show most recent approval.
-Edit manifest cols to
-Edit tables to have size='middle'
+DONE: Edit tables to have size='middle'
 Navigate unaffiliated away from editing
 Enforce authorship when rendering tabs
-Remove review tab
-add content
+DONE: Remove review tab
 Require auth on shib routes?
 Fix undefined shib callback urls / backtourl
 
+MAJOR: Find way to save manifests in order.
+https://stackoverflow.com/questions/38364474/how-can-i-save-mongoose-in-sync-mode
+Sort then save?
 ---
 
 Enhancements:

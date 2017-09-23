@@ -320,6 +320,9 @@ Proposals extends React.Component {
     return (
       <article className={styles['article']}>
         <h1>STF Proposals</h1>
+        <p>
+          All STF proposals from the past 2 years can be viewed here.
+        </p>
         <Helmet title='Proposals' />
         {!proposals
             ? <Spin size='large' tip='Loading...' />
@@ -329,17 +332,10 @@ Proposals extends React.Component {
               sort
               size={screen.lessThan.medium ? 'small' : 'middle'}
               columns={columns}
-              // columns={
-              //   screen.lessThan.medium
-              //   ? columns.slice(0, 3)
-              //   : columns
-              // }
               title={title}
               footer={footer}
             />
           }
-        <h1 className='demo-note' style={{ color: 'red' }}>CONTENT NEEDED</h1>
-        <p className='demo-note' style={{ color: 'red' }}>Verbage here would be cool. Although, basically the rest of the site explains this...</p>
       </article>
     )
   }

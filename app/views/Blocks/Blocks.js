@@ -15,8 +15,8 @@ import styles from './Blocks.css'
 // const renderTitle = (text, record) => <Link to={`/${record.number}`}>{record.title}</Link>
 
 const columns = [
-  { title: 'Year', dataIndex: 'year', key: 'year' },
-  { title: '#', dataIndex: 'number', key: 'number' },
+  { title: 'Year', dataIndex: 'year', key: 'year', width: 60 },
+  { title: '#', dataIndex: 'number', key: 'number', width: 80 },
   { title: 'Title',
     dataIndex: 'title',
     key: 'title',
@@ -43,6 +43,33 @@ class Blocks extends React.Component {
       <article className={styles['blocks']}>
         <Helmet title='Block Funding' />
         <h1>Continuous Funding Blocks</h1>
+        <p>
+          Block Funding is the mode through which the STF provides continuous funding to select UW entities. Programs to be considered for Block Funding are identified by the STF committee internally, rather than through a proposal process. STF members may nominate a program to receive block funding, at which point the committee may vote to begin the block initiation process. Programs chosen for block funding are generally characterized by:
+        </p>
+        <ul style={{
+          listStyleType: 'circle',
+          listStylePosition: 'inside'
+        }}>
+          <li>
+            A history of successfully using committee funds to complete proposed projects.
+          </li>
+          <li>
+            High impact on student success.
+          </li>
+          <li>
+            A specific need for continuous access to new equipment.
+          </li>
+          <li>
+            A demonstrated history of accurate and timely reporting.
+          </li>
+          <li>
+            A reasonable need for greater discretion in use of committee funds than is provided by the regular proposal process.
+          </li>
+        </ul>
+        <br />
+        <p>
+          If you are interested in pursuing Block Funding for your organization, feel free to discuss it with any member of the committee. Please refrain from asking for Block Funding in your written proposal or proposal presentation.
+        </p>
         {!blocks
           ? <Spin size='large' tip='Loading...' />
           : <Table dataSource={blocks} pagination={false}
@@ -51,8 +78,6 @@ class Blocks extends React.Component {
             columns={screen.lessThan.medium ? columns.slice(1, 3) : columns}
           />
         }
-        <h1 className='demo-note' style={{ color: 'red' }}>CONTENT NEEDED</h1>
-        <p className='demo-note' style={{ color: 'red' }}>We'll need a (brand new) rundown on how block funding works here.</p>
       </article>
     )
   }

@@ -71,13 +71,13 @@ export default (app, passport) => {
   app.get(
     loginUrl,
     passport.authenticate(UWStrategy.name),
-    Shibboleth.backToUrl()
+    Shibboleth.backToUrl('/')
   )
   //  Log out
   app.post(
     callbackUrl,
     passport.authenticate(UWStrategy.name),
-    Shibboleth.backToUrl()
+    Shibboleth.backToUrl('/')
   )
   //  Shib validation of site metadata
   app.get(

@@ -18,7 +18,7 @@ class Legacy extends React.Component {
           message='Legacy Format'
           description='Our proposal process has changed significantly since Summer 2017. To learn more about the current process, click here.'
         />
-        {legacy.map((e, i) =>
+        {Array.isArray(legacy) && legacy.map((e, i) =>
           <div key={i}>
             {e.title === 'Abstract' || e.title === 'Background'
               ? <h2>{e.title}</h2>

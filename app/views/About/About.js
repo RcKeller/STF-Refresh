@@ -45,19 +45,19 @@ class About extends React.Component {
           <Col xs={24} sm={12}>
             <h1>The Student Tech Fee</h1>
             <p>
-              The Student Technology Fee is a $38 per quarter fee paid by all matriculated students of the University of Washington. The STF pays for additional technological needs of students, both in and out of their regular classes. The STF was created under the powers given by the Washington State Legislature's <a href='http://apps.leg.wa.gov/RCW/default.aspx?cite=28b.15.051'>Technology Fee</a> article, and the University of Washington's <a href='https://www.washington.edu/regents/'>Board of Regents</a>.
+              The Student Technology Fee is a $38 per quarter fee paid by all matriculated students of the University of Washington. The STF pays for additional technological needs of students beyond the scope of the classroom. The STF was created under the powers given by the Washington State Legislature's <a href='http://apps.leg.wa.gov/RCW/default.aspx?cite=28b.15.051'>Technology Fee</a> article, and the University of Washington's <a href='https://www.washington.edu/regents/'>Board of Regents</a>.
             </p>
           </Col>
           <Col xs={24} sm={12}>
             <h1>The STF Committee</h1>
             <p>
-                The money brought in by The Student Technology Fee is appropriated by the STF Committee. A group of nine voting members, appointed by both the <a href='http://asuw.org'>Associated Students of the University of Washington</a>, and the <a href='http://depts.washington.edu/gpss/home'>Graduate and Professional Student Senate</a>, accepts proposals for the expenditure of STF funds. Throughout the regular school season, proposal authors present to the committee on why their proposal should be funded.
+                The money brought in by The Student Technology Fee is appropriated by the STF Committee. A group of nine voting members, appointed by both the <a href='http://asuw.org'>Associated Students of the University of Washington</a>, and the <a href='http://depts.washington.edu/gpss/home'>Graduate and Professional Student Senate</a>, accepts proposals for the expenditure of STF funds. Throughout the academic year, proposal authors present to the committee to request funding.
             </p>
             <p>
-                The committee regularly appropriates just shy of $5 million into almost one hundred proposals yearly. Any remaining funds by the end of spring quarter are rolled into the next fiscal year.
+                The committee appropriates just shy of $5 million into almost one hundred proposals annually.
             </p>
             <p>
-              The Student Technology Fee is entirely student operated and funded. While department heads can request money, funds must always be allocated to student uses. Any technology funded by the STF Committee is appropriated for students only.
+              The Student Technology Fee is entirely student operated and funded. While department heads can request money, funds must always be allocated to student uses. Any technology funded by the STF Committee is appropriated for students use.
             </p>
           </Col>
         </Row>
@@ -79,6 +79,7 @@ class About extends React.Component {
                   columns={screen.lessThan.medium ? representativeColumns.slice(0, 2) : representativeColumns}
                   rowKey={record => record.name}
                   expandedRowRender={expandedRowRender}
+                  defaultExpandAllRows={screen.greaterThan.medium}
                   pagination={false}
                   size='small'
                 />
@@ -96,6 +97,7 @@ class About extends React.Component {
                   columns={screen.lessThan.medium ? representativeColumns.slice(0, 2) : representativeColumns}
                   rowKey={record => record.name}
                   expandedRowRender={expandedRowRender}
+                  defaultExpandAllRows={screen.greaterThan.medium}
                   pagination={false}
                   size='small'
                 />
@@ -113,6 +115,7 @@ class About extends React.Component {
               columns={screen.lessThan.medium ? adminColumns.slice(0, 2) : adminColumns}
               rowKey={record => record.name}
               expandedRowRender={expandedRowRender}
+              defaultExpandAllRows={screen.greaterThan.medium}
               pagination={false}
               size='small'
             />
