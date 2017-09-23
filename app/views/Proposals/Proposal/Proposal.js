@@ -97,11 +97,12 @@ class Proposal extends React.Component {
                 <NextSteps />
               </TabPane>
             }
-            {stf &&
+            {/* FIXME: This component is failing w/ actual data */}
+            {/* {stf &&
               <TabPane disabled tab={<span>Reviews (<em>STF-Only</em>)</span>} key='6' className={styles['tab-pane']}>
                 <Reviews />
               </TabPane>
-            }
+            } */}
             {admin &&
               <TabPane tab={<span>Settings (<em>Admin-Only</em>)</span>} key='7' className={styles['tab-pane']}>
                 <Settings />

@@ -1,8 +1,8 @@
 # TODO list
-Close nav on navigation events
+DONE: Close nav on navigation events
 Fix top bar flexbox/responsiveness.
 Add search for docket
-Edit proposal head to show status more elegantly.
+DONE: Edit proposal head to show status more elegantly.
 Edit manifests (multiple) to show most recent approval.
 Edit manifest cols to
 Edit tables to have size='middle'
