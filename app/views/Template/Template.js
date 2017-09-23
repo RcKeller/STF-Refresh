@@ -1,10 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { compose } from 'redux'
 import { connect } from 'react-redux'
-import { connectRequest } from 'redux-query'
-
-import api from '../../services'
 
 import { Link } from 'react-router'
 
@@ -39,13 +35,17 @@ const meta = [
 const link = [{ rel: 'icon', href: favicon }]
 
 import enUS from 'antd/lib/locale-provider/en_US'
-import { LocaleProvider, Spin, Layout, Icon } from 'antd'
+import { LocaleProvider, Spin, Layout, Icon, Menu } from 'antd'
 const { Header } = Layout
+const SubMenu = Menu.SubMenu
+const Item = Menu.Item
+const ItemGroup = Menu.ItemGroup
+
 import Drawer from 'rc-drawer'
 
 // import Header from './Header/Header'
 import Login from './Login/Login'
-import Nav from './Nav/Nav'
+// import Nav from './Nav/Nav'
 
 import '../../css/main'
 import styles from './Template.css'
@@ -55,23 +55,39 @@ import desktopLogo from '../../images/desktopLogo.png'
 
 import WordmarkWhite from '../../images/WordmarkWhite.png'
 
-// @compose(
-//   connect(state => ({ screen: state.screen })),
-//   connectRequest(() => api.get('config'))
-// )
-@connect(state => ({ screen: state.screen }))
+const keyserver = 'http://itconnect.uw.edu/wares/acquiring-software-and-hardware/keyserver-help-for-it-staff/'
+
+@connect(state => ({
+  screen: state.screen,
+  //  Nextlocation is the route of new pages router is transitioning to.
+  nextLocation: state.routing.locationBeforeTransitions
+    ? state.routing.locationBeforeTransitions.pathname
+    : '1',
+  stf: (state.user && state.user.stf) || {}
+}))
 class Template extends React.Component {
   static propTypes = {
     children: PropTypes.object.isRequired,
-    screen: PropTypes.object
+    screen: PropTypes.object,
+    router: PropTypes.object,
+    nextLocation: PropTypes.string
   }
   constructor (props) {
     super(props)
     this.state = { open: false }
   }
+  //  Toggle menu view
   handleToggle = () => this.setState({ open: !this.state.open })
+  //  Changed pages? Close the nav
+  componentWillReceiveProps (nextProps) {
+    if (this.state.open) {
+      if (this.props.nextLocation !== nextProps.nextLocation) {
+        this.setState({ open: false })
+      }
+    }
+  }
   render (
-    { children, screen } = this.props,
+    { children, screen, nextLocation, router, stf } = this.props,
     { open } = this.state
   ) {
     // React-router is separated from redux store - too heavy to persist.
@@ -79,7 +95,6 @@ class Template extends React.Component {
       <LocaleProvider locale={enUS}>
         <div>
           <Helmet
-            // title='Home'
             titleTemplate='%s - UW Student Tech'
             meta={meta} link={link}
           />
@@ -108,8 +123,61 @@ class Template extends React.Component {
             onOpenChange={this.handleToggle}
             enableDragHandle={false}
             dragToggleDistance={30}
-            sidebar={<Nav />}
-            sidebarStyle={screen.lessThan.large ? { overflowY: 'auto' } : {}}
+            sidebarStyle={screen.lessThan.large
+              ? { overflowY: 'auto', overflowX: 'hidden' } : { overflowX: 'hidden' }
+            }
+            sidebar={
+              <Menu
+                mode={screen.lessThan.large ? 'inline' : 'horizontal'}
+                selectedKeys={[nextLocation]}
+                // onClick={this.handleNavigate}
+                onClick={({ key }) => router.push(key)}
+                style={screen.lessThan.large ? { overflowY: 'auto' } : {}}
+              >
+                <Item key='/proposals'>
+                  <Icon type='solution' /><span className='nav-text'>Proposals</span>
+                </Item>
+                <Item key='/blocks'>
+                  <Icon type='desktop' /><span className='nav-text'>Block Funding</span>
+                </Item>
+                <Item key='/faq'>
+                  <Icon type='question' /><span className='nav-text'>F.A.Q.</span>
+                </Item>
+                <Item key='/about'>
+                  <Icon type='info' /><span className='nav-text'>About</span>
+                </Item>
+                <Item key='/contact'>
+                  <Icon type='team' /><span className='nav-text'>Contact Us</span>
+                </Item>
+                <SubMenu key='sub2' title={<span><Icon type='folder-open' /><span>Documents</span></span>}>
+                  <Item key='/documents'>Commitee Docs</Item>
+                  <Item key='/docs/Current Request for Proposals.pdf' >Request for Proposals</Item>
+                  <Item key=''>
+                    <a href={keyserver} target='_blank'>License Keyserver</a>
+                  </Item>
+                </SubMenu>
+                {Object.keys(stf).length > 0 && // if associated in any way with STF
+                  <SubMenu key='sub1' title={<span><Icon type='safety' /><span>Committee</span></span>}>
+                    <Item key='/dashboard'>
+                      <Icon type='area-chart' /><span className='nav-text'>Dashboard</span>
+                    </Item>
+                    <Item key='/voting'>
+                      <Icon type='check-circle-o' /><span className='nav-text'>Voting</span>
+                    </Item>
+                    {stf.admin &&
+                      <ItemGroup key='g1' title='Admin Tools'>
+                        <Item key='/docket'>
+                          <Icon type='schedule' /><span className='nav-text'>Docket</span>
+                        </Item>
+                        <Item key='/config'>
+                          <Icon type='tool' /><span className='nav-text'>Site Config</span>
+                        </Item>
+                      </ItemGroup>
+                    }
+                  </SubMenu>
+                }
+              </Menu>
+            }
            >
             <div className={styles['body']}>
               {children || <Spin size='large' tip='Loading Page...' />}

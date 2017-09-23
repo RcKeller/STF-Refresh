@@ -1,4 +1,20 @@
 # TODO list
+Close nav on navigation events
+Fix top bar flexbox/responsiveness.
+Add search for docket
+Edit proposal head to show status more elegantly.
+Edit manifests (multiple) to show most recent approval.
+Edit manifest cols to
+Edit tables to have size='middle'
+Navigate unaffiliated away from editing
+Enforce authorship when rendering tabs
+Remove review tab
+add content
+Require auth on shib routes?
+Fix undefined shib callback urls / backtourl
+
+---
+
 Enhancements:
   4: Frontpage
   4: Contacts
