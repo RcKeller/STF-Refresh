@@ -58,7 +58,7 @@ class FAQ extends React.Component {
         <p className='demo-note'>This is Bryce's old FAQ, ported over. I think our user base is polarized between people who know about us (and want to know our internal practices and the proposal lifecycle) and students who know nothing (Jon Snow? Is that you?)</p>
         <Helmet title='FAQ' />
         <h1>General Questions</h1>
-        <Collapse bordered={false} >
+        <Collapse bordered={false} defaultActiveKey={Object.keys(generalContent)} >
           {generalContent.map((qa, i) => (
             <Panel header={qa.q} key={i}>
               {qa.a}
@@ -66,7 +66,7 @@ class FAQ extends React.Component {
         ))}
         </Collapse>
         <h1>Proposal Authors</h1>
-        <Collapse bordered={false} >
+        <Collapse bordered={false} defaultActiveKey={Object.keys(authorContent)} >
           {authorContent.map((qa, i) => (
             <Panel header={qa.q} key={i}>{qa.a}</Panel>
           ))}

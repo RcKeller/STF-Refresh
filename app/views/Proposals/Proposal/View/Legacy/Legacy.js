@@ -20,8 +20,15 @@ class Legacy extends React.Component {
         />
         {legacy.map((e, i) =>
           <div key={i}>
-            <h5><em>{e.title}</em></h5>
+            {e.title === 'Abstract' || e.title === 'Background'
+              ? <h2>{e.title}</h2>
+              : <h3>{e.title}</h3>
+            }
             <p>{e.body}</p>
+            {/* <p>
+              <b>{e.body.split(':')[0]}</b>
+              <span>{e.body.split(':')[1]}</span>
+            </p> */}
           </div>
         )}
       </div>

@@ -3,7 +3,8 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
-import { Row, Col, Card } from 'antd'
+import { Row, Col, Card, Collapse } from 'antd'
+const Panel = Collapse.Panel
 
 import Endorse from './Endorse/Endorse'
 
@@ -30,16 +31,6 @@ class Endorsements extends React.Component {
         <h1 className='demo-note' style={{ color: 'goldenrod' }}>UP FOR DISCUSSION</h1>
         <p className='demo-note' style={{ color: 'goldenrod' }}>You can currently endorse your own proposal, but I can fix block contacts from the actual proposal from doing that. I don't see the point, though (say, a student lead or org head has something meaningful to say). Historically, I've seen department heads make really high quality endorsement messages.</p>
         <p>Anyone with a UW NetID can endorse a proposal! We highly encourage our proposal authors to exemplify their community engagement by having their proposals endorsed by students and staff alike. You may endorse as many proposals as you like.</p>
-        <Row gutter={32}>
-          {endorsements.map((c, i) =>
-            <Col key={i} className='gutter-row' xs={24} md={12} xl={8} >
-              <Card title={<h2>{c.user.name || 'Endorsement'}</h2>} extra={c.user.netID || ''}>
-                {c.body}
-              </Card>
-            </Col>
-          )}
-        </Row>
-        <hr />
         {endorsed
           ? <em>
             <h4>You have already endorsed this proposal.</h4>
@@ -47,6 +38,17 @@ class Endorsements extends React.Component {
           </em>
           : <Endorse />
         }
+        {endorsements && <hr />}
+        <Collapse bordered={false} defaultActiveKey={endorsements ? Object.keys(endorsements) : '0'}>
+          {endorsements.map((c, i) => (
+            <Panel key={i}
+              header={<b>{c.user.name || 'Endorsement'}</b>}
+              extra={c.user.netID || ''}
+              >
+              <p>{c.body}</p>
+            </Panel>
+          ))}
+        </Collapse>
       </div>
     )
   }

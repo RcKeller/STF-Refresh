@@ -119,7 +119,10 @@ class Summary extends React.Component {
               <div>
                 {body.legacy && body.legacy.map((e, i) =>
                   <div key={i}>
-                    <h5><em>{e.title}</em></h5>
+                    {e.title === 'Abstract' || e.title === 'Background'
+                      ? <h2>{e.title}</h2>
+                      : <h4>{e.title}</h4>
+                    }
                     <p>{e.body}</p>
                   </div>
                 )}

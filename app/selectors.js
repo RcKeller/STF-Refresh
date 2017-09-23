@@ -9,9 +9,29 @@ BASIC ASYNC SELECTORS
 */
 const user = ({ user }) => user || {}
 const config = ({ config }) => config || {}
-const proposals = ({ db }) => Array.isArray(db.proposals) ? db.proposals : []
+const proposals = ({ db }) => Array.isArray(db.proposals)
+  ? db.proposals.sort((a, b) => {
+    if (a.year > b.year) {
+      return -1
+    } else if (a.number > b.number) {
+      return -1
+    }
+    return 1
+    // if (a.year === b.year && a.number > b.number) return 1
+
+    // console.log(typeof a.year, typeof a.number)
+    // if (a.year > b.year) return 1
+    // if (a.year === b.year && a.number > b.number) return 1
+    // return -1
+    // return a.year < b.year && a.number < b.number && 1
+    // (a.year * a.number) - (b.year * b.number)
+  })
+  // ? db.proposals.sort((a, b) => (a.year * a.number) - (b.year * b.number))
+  : []
 const proposal = ({ db }) => db.proposal || {}
 const proposalContact = ({ db }) => db.proposal ? db.proposal.contacts : []
+// (a, b) =>
+//   a.year * a.number - b.year * b.number,
 /*
 MEMOIZED SELECTORS
 */
