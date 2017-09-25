@@ -16,6 +16,17 @@
       padding: 24px;
     }
   }
+  --slim-page {
+    margin: 24px 4px;
+    padding: 4px;
+    background: #fff;
+    border-radius: 4px;
+    max-width: 960px;
+    @media (min-width: 992px) {
+      margin: 24px 48px;
+      padding: 24px;
+    }
+  }
   --page-margin {
     margin: 24px 0 0 0;
     background: #fff;

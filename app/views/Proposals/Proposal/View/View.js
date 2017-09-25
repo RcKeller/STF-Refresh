@@ -14,7 +14,9 @@ import Manifests from './Manifests/Manifests'
 
 @connect(state => ({
   proposal: state.db.proposal._id,
-  isLegacy: state.db.proposal.body.legacy.length > 0,
+  isLegacy: state.db.proposal.body
+    ? state.db.proposal.body.legacy.length > 0
+    : false,
   published: state.db.proposal.published
 }))
 class View extends React.Component {

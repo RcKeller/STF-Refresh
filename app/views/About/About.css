@@ -1,5 +1,6 @@
 @import '../../css/layout';
 
 .about {
+  /*@apply --slim-page;*/
   @apply --page;
 }

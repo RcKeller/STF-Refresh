@@ -2,21 +2,29 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
+import { Link } from 'react-router'
 
 import { Alert } from 'antd'
 
-@connect(state => ({ legacy: state.db.proposal.body.legacy || [] }))
+@connect(state => ({
+  legacy: state.db.proposal.body
+  ? state.db.proposal.body.legacy
+  : []
+}))
 class Legacy extends React.Component {
-  // static propTypes = {
-  //   legacy: PropTypes.object
-  // }
+  static propTypes = {
+    legacy: PropTypes.array
+  }
   render ({ legacy } = this.props) {
     return (
       <div>
         <h1>Proposal</h1>
-        <Alert type='info' banner showIcon={false}
-          message='Legacy Format'
-          description='Our proposal process has changed significantly since Summer 2017. To learn more about the current process, click here.'
+        <Alert type='info' banner showIcon
+          message={<span>
+            Our proposal process has changed significantly since Summer 2017.
+          </span>
+        }
+          closeText={<Link to='/create'>Learn More</Link>}
         />
         {Array.isArray(legacy) && legacy.map((e, i) =>
           <div key={i}>

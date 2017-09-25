@@ -233,22 +233,23 @@ Proposals extends React.Component {
         title: 'Awarded',
         dataIndex: 'received',
         key: 'received',
+        // render: (text, record) =>
+        //   record.received
+        //     ? <Progress type='circle' width={70}
+        //       percent={parseInt(record.received / record.asked * 100)} />
+        //     : <span />,
         render: (text, record) =>
           record.received
             ? <Progress type='circle' width={70}
               percent={parseInt(record.received / record.asked * 100)} />
-            : <span />,
+            : record.status === 'Denied'
+                ? <Progress type='circle' width={70}
+                  status='exception'
+                  percent={0} />
+                : <em>N/A</em>,
         sorter: (a, b) =>
-          a.received / a.asked -
-            b.received / b.asked,
-        // render: (text, record) =>
-        //   record.received
-        //     ? <Progress type='circle' width={70}
-        //       percent={parseInt(record.asked / record.received * 100)} />
-        //     : <span />,
-        // sorter: (a, b) =>
-        //   a.asked / a.received * 100 -
-        //     b.asked / b.received * 100,
+          a.received || 0 / a.asked -
+            b.received || 0 / b.asked,
         width: 110
       }
     ]
