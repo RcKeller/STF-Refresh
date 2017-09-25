@@ -1,15 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import _ from 'lodash'
 
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { connectRequest, requestAsync, mutateAsync } from 'redux-query'
+import { connectRequest, mutateAsync } from 'redux-query'
 
 import api from '../../../../services'
 
-import { Link } from 'react-router'
-import { Spin, Table, Switch, AutoComplete, Tooltip, message } from 'antd'
+import { Spin, Table, Switch, AutoComplete, Tooltip } from 'antd'
 const Option = AutoComplete.Option
 
 const addAuth = (body, update) => mutateAsync({
@@ -26,6 +24,8 @@ const toggle = (id, body, update) => mutateAsync({
   body,
   update
 })
+
+const filterOption = (inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
 
 @compose(
   connect(
@@ -136,6 +136,7 @@ class Membership extends React.Component {
                 <AutoComplete style={{ width: 300 }}
                   placeholder='Add STF members...'
                   onSelect={this.handleAddMember}
+                  filterOption={filterOption}
                   >
                   {users.map(user => <Option key={user._id}>{`${user.name} (${user.netID})`}</Option>)}
                 </AutoComplete>

@@ -9,6 +9,8 @@ const Panel = Collapse.Panel
 const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
 const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
+import { proposalDecision } from '../../../../../selectors'
+
 // import styles from './Body.css'
 @connect(state => ({
   screen: state.screen,
@@ -20,9 +22,7 @@ const currency = value => `$${Number.parseInt(value).toLocaleString()}`
   uac: state.db.proposal.uac,
   contacts: state.db.proposal.contacts,
   status: state.db.proposal.status,
-  decision: state.db.proposal.manifests
-    ? state.db.proposal.manifests.find(m => m.decision).decision || {}
-    : {},
+  decision: proposalDecision(state),
   asked: state.db.proposal.asked,
   received: state.db.proposal.received
 }))

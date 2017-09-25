@@ -29,7 +29,8 @@ const proposals = ({ db }) => Array.isArray(db.proposals)
   // ? db.proposals.sort((a, b) => (a.year * a.number) - (b.year * b.number))
   : []
 const proposal = ({ db }) => db.proposal || {}
-const proposalContact = ({ db }) => db.proposal ? db.proposal.contacts : []
+const proposalContacts = ({ db }) => db.proposal ? db.proposal.contacts : []
+const proposalManifests = ({ db }) => db.proposal ? db.proposal.manifests : []
 // (a, b) =>
 //   a.year * a.number - b.year * b.number,
 /*
@@ -67,19 +68,15 @@ export const myDrafts = createSelector(
 //  CONTACT INFORMATION & ROLES
 //  The first 4 contacts (selected in proposal drafts). Contains role prop if nonexistent
 export const initialProposalContacts = createSelector(
-  proposal,
-  ({ contacts }) => {
-    if (Array.isArray(contacts)) {
-      //  Try and find one of each role, returning basic role info if nonexistent.
-      let { primary, budget, organization, student } = {}
-      primary = contacts.find(c => c && c.role === 'primary') || { role: 'primary' }
-      budget = contacts.find(c => c && c.role === 'budget') || { role: 'budget' }
-      organization = contacts.find(c => c && c.role === 'organization') || { role: 'organization' }
-      student = contacts.find(c => c && c.role === 'student') || { role: 'student' }
-      return [primary, budget, organization, student]
-    } else {
-      return []
-    }
+  proposalContacts,
+  (contacts) => {
+    //  Try and find one of each role, returning basic role info if nonexistent.
+    let arrangedContacts = [{}, {}, {}, {}]
+    arrangedContacts[0] = contacts.find(c => c && c.role === 'primary') || { role: 'primary' }
+    arrangedContacts[1] = contacts.find(c => c && c.role === 'budget') || { role: 'budget' }
+    arrangedContacts[2] = contacts.find(c => c && c.role === 'organization') || { role: 'organization' }
+    arrangedContacts[3] = contacts.find(c => c && c.role === 'student') || { role: 'student' }
+    return arrangedContacts
   }
 )
 
@@ -98,5 +95,20 @@ export const readyToPublish = createSelector(
     } else {
       return false
     }
+  }
+)
+
+//  PROPOSAL MANIFEST SELECTORS
+export const proposalDecision = createSelector(
+  [proposalManifests],
+  (manifests) =>
+    manifests.find(m => m.decision).decision || {}
+)
+
+export const indexOfApprovedManifest = createSelector(
+  [proposalManifests],
+  (manifests) => {
+    let index = manifests.findIndex(m => m.decision && m.decision.approved)
+    return index > 0 ? index : 0
   }
 )
