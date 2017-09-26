@@ -20,20 +20,17 @@ class FrontPage extends React.Component {
     return (
       <article className={styles['page']}>
         <Helmet title='Home' />
-        <section className={styles['page-content']}>
+        <section>
           <Row type='flex' justify='space-around' >
             <Col className='gutter-row' span={24} md={16}>
               <h1>About the STF Committee</h1>
-              <p>The STF committee...</p>
-              <h2>H2</h2>
-              <p>The STF committee...</p>
-              <h3>H3</h3>
-              <p>The STF committee...</p>
-              <h4>H4</h4>
-              <p>The STF committee...</p>
-              <h5>H5</h5>
-              <p>The STF committee...</p>
-              <h6>H6</h6>
+              <p>
+                The STFC is a committee composed of UW undergraduate and graduate students that appropriates funds to provide technology resources to UW students. Funds are allocated through a proposal/grant cycle, in which proposals submitted by UW departments and student groups are reviewed by the committee. Proposals are accepted at the beginning of each quarter in the form of a written request. Proposal authors are also asked to present their request at one of the STF’s weekly board meetings. At the end of each quarter, committee members vote on each proposal and a funding decision is issued.
+              </p>
+              <h2>New Web Platform</h2>
+              <p>
+                This website is the new platform for the committee, supporting proposal submissions, endorsements, committee review and award management. We have developed this new platform to improve the proposal experience. We encourage authors to review the new RFP in the navbar and reach out to the proposal officer with any questions.
+              </p>
             </Col>
             <Col className='gutter-row' span={24} md={8}>
               <h2>Announcements</h2>

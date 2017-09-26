@@ -5,23 +5,23 @@
   }
 
   --page {
+    margin: 24px 4px;
+    padding: 4px;
+    background: #fff;
+    border-radius: 4px;
+    max-width: 1280px;
+    @media (min-width: 992px) {
+      margin: 24px auto;
+      padding: 24px;
+    }
+  }
+  --full-page {
     /*margin: 24px 0 0 0;*/
     margin: 24px 4px;
     /*padding: 8px;*/
     padding: 4px;
     background: #fff;
     border-radius: 4px;
-    @media (min-width: 992px) {
-      margin: 24px 48px;
-      padding: 24px;
-    }
-  }
-  --slim-page {
-    margin: 24px 4px;
-    padding: 4px;
-    background: #fff;
-    border-radius: 4px;
-    max-width: 960px;
     @media (min-width: 992px) {
       margin: 24px 48px;
       padding: 24px;

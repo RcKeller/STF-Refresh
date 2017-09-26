@@ -95,7 +95,7 @@ class Manifests extends React.Component {
         <Table dataSource={dataSource} sort
           size='middle'
           columns={screen.lessThan.medium ? columns.slice(1, 4) : columns}
-          // rowKey={record => record._id}
+          rowKey={record => record._id}
           //  The above will throw an error if using faker data, since duplicates are involved.
           expandedRowRender={screen.greaterThan.medium ? expandedRowRender : false}
           defaultExpandAllRows={screen.greaterThan.medium}

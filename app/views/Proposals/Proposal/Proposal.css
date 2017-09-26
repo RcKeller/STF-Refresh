@@ -3,10 +3,8 @@
 
 .tabbed-article {
   @apply --page;
-  margin: 24px 0 0 0;
   padding: 0;
   @media (min-width: 992px) {
-    margin: 24px 48px;
     padding: 0;
   }
   background-color: inherit;

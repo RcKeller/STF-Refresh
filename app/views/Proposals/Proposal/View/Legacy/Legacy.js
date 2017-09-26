@@ -24,7 +24,7 @@ class Legacy extends React.Component {
             Our proposal process has changed significantly since Summer 2017.
           </span>
         }
-          closeText={<Link to='/create'>Learn More</Link>}
+          closeText={<span><Link to='/create'>Learn More</Link></span>}
         />
         {Array.isArray(legacy) && legacy.map((e, i) =>
           <div key={i}>

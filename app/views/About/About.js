@@ -81,7 +81,7 @@ class About extends React.Component {
                   expandedRowRender={expandedRowRender}
                   defaultExpandAllRows={screen.greaterThan.medium}
                   pagination={false}
-                  size='small'
+                  size='middle'
                 />
               </div>
             }
@@ -99,7 +99,7 @@ class About extends React.Component {
                   expandedRowRender={expandedRowRender}
                   defaultExpandAllRows={screen.greaterThan.medium}
                   pagination={false}
-                  size='small'
+                  size='middle'
                 />
               </div>
             }
@@ -117,7 +117,7 @@ class About extends React.Component {
               expandedRowRender={expandedRowRender}
               defaultExpandAllRows={screen.greaterThan.medium}
               pagination={false}
-              size='small'
+              size='middle'
             />
           </div>
         }

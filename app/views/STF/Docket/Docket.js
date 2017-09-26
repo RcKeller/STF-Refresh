@@ -134,6 +134,7 @@ class Docket extends React.Component {
           : <Table dataSource={manifests} sort
             size={screen.lessThan.medium ? 'small' : 'middle'}
             columns={screen.lessThan.medium ? columns.filter(col => col.title !== 'Title') : columns}
+            rowKey={record => record._id}
           />
         }
       </article>

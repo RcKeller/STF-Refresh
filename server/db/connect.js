@@ -3,8 +3,8 @@ import loadModels from './models'
 // import dummyData from './dummies'
 import dummyData from './dummy'
 import config from 'config'
-const db = config.get('db')
-
+// const db = config.get('db')
+const db = 'mongodb://stf-dev:AlecForChair2017@ds149144.mlab.com:49144/stf-dev'
 export default () => {
   // Find the appropriate database to connect to, default to localhost if not found.
   const connect = () => {

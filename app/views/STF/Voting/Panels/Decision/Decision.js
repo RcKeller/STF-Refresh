@@ -83,8 +83,9 @@ class Decision extends React.Component {
             <h1>Committee Decision</h1>
             <h6>For internal use only.</h6>
             <h4>{decisions ? 'Issue the final decision. Be forewarned, these decisions go into effect immediately!' : 'Decision submissions are closed'}</h4>
-            <h1 className='demo-note' style={{ color: 'red' }}>CONTENT NEEDED</h1>
-            <p className='demo-note' style={{ color: 'red' }}>A brief explaination for the next chair. The general idea behind this is that a decision would be manually issued by an authority, adding a human element to final deliberations (issuing decisions automatically has caused problems). New changes are the ability to write a blurb about the decision, although this information is not reflected in other parts of the site (we could make this a message to send to authors when we do future enhancement here)</p>
+            <p>
+              This tool exists to issue a decision on a proposal AFTER a formal vote is taken by the committee. Only admins can issue a decision, but they should not do so without committee approval. This tool was put in place to provide manual oversight of funding decisions to ensure that errors with the website do not cause incorrect decisions to be issued.
+            </p>
             <FormItem label='Remarks (Public)' {...layout} >
               {form.getFieldDecorator('body')(
                 <Input disabled={!decisions}type='textarea' rows={4} />

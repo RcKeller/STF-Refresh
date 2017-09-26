@@ -65,11 +65,12 @@ export default function render (req, res) {
     match({routes, location: req.url}, (err, redirect, props) => {
       if (err) {
         //  Patches are used to bypass 500 responses for known, non-breaking errors
-        if (!patchReactDataGridSelfReferenceError(err)) {
+        if (patchReactDataGridSelfReferenceError(err)) {
+          //  BUGFIX: Redirect to self after a split second (error does not reoccur)
+          setTimeout(() => res.redirect(req.url), 500)
+        } else {
           console.error(err, redirect, props)
           res.status(500).json(err)
-        } else {
-          res.redirect('back')
         }
       } else if (redirect) {
         res.redirect(302, redirect.pathname + redirect.search)

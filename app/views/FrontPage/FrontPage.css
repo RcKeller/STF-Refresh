@@ -1,7 +1,7 @@
 @import '../../css/layout';
 
 .page {
-  @apply --page-margin;
+  @apply --page;
 }
 
 .page-content {

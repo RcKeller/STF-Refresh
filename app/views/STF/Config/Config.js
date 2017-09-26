@@ -41,7 +41,7 @@ import styles from './Config.css'
 class Config extends React.Component {
   static propTypes = {
     form: PropTypes.object,
-    updateConfig: PropTypes.object,
+    updateConfig: PropTypes.func,
     id: PropTypes.string,
     status: PropTypes.string,
     submissions: PropTypes.bool,
