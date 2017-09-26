@@ -62,30 +62,33 @@ class Budget extends React.Component {
     manifest: PropTypes.object
   }
   handleSubmit = (items, total) => {
-    console.log('HANDLE SUBMIT', items, total)
-    let { api, proposal, manifest, validate } = this.props
-    const budget = { proposal, type: 'original', items, total }
-    const id = manifest && manifest._id
-    const update = { proposal: (prev, next) => {
-      const newData = Object.assign({}, prev)
-      newData.manifests[0] = budget
-      return newData
-    }}
-    manifest
-    ? api.patch('manifest', budget, { id, update })
-    : api.post('manifest', budget, { update })
-    .then(message.success(`Updated budget manifest!`))
-    .catch(err => {
-      message.warning(`Failed to update budget manifest - Unexpected client error`)
-      console.warn(err)
-    })
-    //  Silent update of the proposal ask
-    api.patch('proposal', { asked: total }, { id: proposal, update })
-    .catch(err => {
-      message.warning(`Failed to update proposal data - Unexpected client error`)
-      console.warn(err)
-    })
-    validate()
+    if (total && total > 0) {
+      let { api, proposal, manifest, validate } = this.props
+      const budget = { proposal, type: 'original', items, total }
+      const id = manifest && manifest._id
+      const update = { proposal: (prev, next) => {
+        const newData = Object.assign({}, prev)
+        newData.manifests[0] = budget
+        return newData
+      }}
+      manifest
+      ? api.patch('manifest', budget, { id, update })
+      : api.post('manifest', budget, { update })
+      .then(message.success(`Updated budget manifest!`))
+      .catch(err => {
+        message.warning(`Failed to update budget manifest - Unexpected client error`)
+        console.warn(err)
+      })
+      //  Silent update of the proposal ask
+      api.patch('proposal', { asked: total }, { id: proposal, update })
+      .catch(err => {
+        message.warning(`Failed to update proposal data - Unexpected client error`)
+        console.warn(err)
+      })
+      validate()
+    } else {
+      message.error('Budgets must cost at least something!', 10)
+    }
   }
   render ({ manifest } = this.props) {
     const data = manifest ? manifest.items : []

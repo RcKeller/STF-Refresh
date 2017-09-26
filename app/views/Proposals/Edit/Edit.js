@@ -65,7 +65,6 @@ class Edit extends React.Component {
   */
   componentWillReceiveProps (nextProps) {
     let { valid } = this.state
-    console.error('CWRP', this.props.proposal, nextProps.proposal)
     if (!valid.introduction) this.validateIntroduction(nextProps)
     if (!valid.contacts) this.validateContacts(nextProps)
     if (!valid.project) this.validateProject(nextProps)
@@ -79,7 +78,6 @@ class Edit extends React.Component {
   ) => {
     if (proposal) {
       const { title, category, organization } = proposal
-      console.error('Validate intro', { title, category, organization })
       if (title && category && organization) valid.introduction = true
       this.setState({ valid })
     }
@@ -90,7 +88,6 @@ class Edit extends React.Component {
   ) => {
     if (proposal && proposal.contacts) {
       const { contacts } = proposal
-      console.error('VALIDATE CONTACTS', contacts)
       let requiredFields = 0
       for (const contact of contacts) {
         if (contact) {
@@ -108,7 +105,6 @@ class Edit extends React.Component {
   ) => {
     if (proposal && proposal.body) {
       const { body: { overview, plan } } = proposal
-      console.warn('Validate body', overview, plan)
       let requiredFields = 0
       //  Overview is valid if three prompts as well as the three impact types are filled
       if (overview) {
@@ -136,7 +132,6 @@ class Edit extends React.Component {
       const manifest = proposal.manifests[0]
       const { items, total } = manifest
       if (items && total) {
-        console.warn('VALIDATE BUDGET', items, total)
         valid.budget = Array.isArray(items) && items.length >= 1
         this.setState({ valid })
       }
@@ -148,7 +143,6 @@ class Edit extends React.Component {
   ) => {
     if (proposal && proposal.contacts) {
       const { contacts } = proposal
-      console.warn('Validate SIGNATURES', contacts)
       let requiredFields = 0
       for (const contact of contacts) {
         if (contact) {

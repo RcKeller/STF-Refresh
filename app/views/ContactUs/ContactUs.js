@@ -2,7 +2,7 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { Link } from 'react-router'
 
-import { Row, Col, Card } from 'antd'
+import { Row, Col, Card, Avatar } from 'antd'
 
 const leadership = [
   {
@@ -48,13 +48,25 @@ class ContactUs extends React.Component {
           We're here if you need us. Before reaching out, please consider learning more <Link to='/about'>about the STF</Link> first, and then viewing our <Link to='/faq'>Frequently Asked Questions</Link>. Otherwise, feel free to contact us at any of us below. If in doubt, contact the chair.
         </p>
         {leadership.map((p, i) => (
-          <Card key={i}
-            title={p.position}
-            extra={<a href={`mailto:${p.email}`}>{p.email}</a>}
-            >
-            <span>Current: <b>{p.name}</b></span>
+          <div key={i} className={styles['contact-block']}>
+            <Avatar shape='square' size='large' icon='user' />
+            <div className={styles['avatar-text']}>
+              <b>{p.position}</b>
+              <br />
+              <span>{p.name}</span>
+            </div>
+            <div>
+            <span>Email: <a href={`mailto:${p.email}`}>{p.email}</a></span>
             <p>{p.duties}</p>
-          </Card>
+          </div>
+          </div>
+          // <Card key={i}
+          //   title={p.position}
+          //   extra={<a href={`mailto:${p.email}`}>{p.email}</a>}
+          //   >
+          //   <span>Current: <b>{p.name}</b></span>
+          //   <p>{p.duties}</p>
+          // </Card>
         ))}
       </article>
     )

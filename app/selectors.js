@@ -80,6 +80,14 @@ export const initialProposalContacts = createSelector(
   }
 )
 
+export const proposalSigners = createSelector(
+  proposalContacts,
+  (contacts) => {
+    //  Try and find one of each role, returning basic role info if nonexistent.
+    return contacts.filter(c => c._id)
+  }
+)
+
 export const readyToPublish = createSelector(
   proposal,
   ({ contacts }) => {

@@ -59,10 +59,10 @@ class Contact extends React.Component {
         const transform = res => ({ proposal: res })
         const update = { proposal: (prev, next) => {
           let newData = Object.assign({}, prev)
-          let newContacts = contacts.slice()
-          newContacts[index] = next
-          console.log('NEWDATA', newData.contacts, newContacts, index)
-          newData.contacts = newContacts
+          let contactIndex = newData.contacts.findIndex(c => c.role === contact.role)
+          contactIndex >= 0
+            ? newData.contacts[contactIndex] = next
+            : newData.contacts.push(next)
           return newData
         }}
         contact._id

@@ -9,7 +9,7 @@ const FormItem = Form.Item
 const connectForm = Form.create()
 
 import api from '../../../../services'
-
+import { proposalSigners } from '../../../../selectors'
 import styles from './Signatures.css'
 /*
 NOTE:
@@ -18,8 +18,11 @@ API for submission, but using connectForm to instantiate initial values.
 */
 @compose(
   connect(state => ({
-    contacts: state.db.proposal.contacts
-      .filter(contact => contact._id),
+    // contacts: state.db.proposal.contacts
+    //   .filter(contact => contact._id),
+    // contacts: state.db.proposal.contacts,
+    contacts: state.db.proposal.contacts.filter(c => c._id),
+    // contacts: proposalSigners(state),
     link: `https://uwstf.org${state.routing.locationBeforeTransitions.pathname}`,
     user: state.user
   }),

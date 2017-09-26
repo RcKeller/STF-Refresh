@@ -3,3 +3,14 @@
 .contact {
   @apply --page;
 }
+
+.contact-block {
+  display: inline-block;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.avatar-text {
+  display: inline-block;
+  margin: 0 8px;
+}
