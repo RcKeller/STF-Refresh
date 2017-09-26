@@ -38,89 +38,62 @@ class About extends React.Component {
     return (
       <article className={styles['about']}>
         <Helmet title='About' />
-        <h1 className='demo-note' style={{ color: 'goldenrod' }}>REVISION NEEDED</h1>
-        <p className='demo-note' style={{ color: 'goldenrod' }}>I need new contact information and verbage (can we get rid of the "tech fee" part), hopefully some that explains the proposal lifecycle. Also, let's consider combining this with the contact page.</p>
-
-        <Row gutter={16}>
-          <Col xs={24} sm={12}>
-            <h1>The Student Tech Fee</h1>
-            <p>
-              The Student Technology Fee is a $38 per quarter fee paid by all matriculated students of the University of Washington. The STF pays for additional technological needs of students beyond the scope of the classroom. The STF was created under the powers given by the Washington State Legislature's <a href='http://apps.leg.wa.gov/RCW/default.aspx?cite=28b.15.051'>Technology Fee</a> article, and the University of Washington's <a href='https://www.washington.edu/regents/'>Board of Regents</a>.
-            </p>
-          </Col>
-          <Col xs={24} sm={12}>
-            <h1>The STF Committee</h1>
-            <p>
-                The money brought in by The Student Technology Fee is appropriated by the STF Committee. A group of nine voting members, appointed by both the <a href='http://asuw.org'>Associated Students of the University of Washington</a>, and the <a href='http://depts.washington.edu/gpss/home'>Graduate and Professional Student Senate</a>, accepts proposals for the expenditure of STF funds. Throughout the academic year, proposal authors present to the committee to request funding.
-            </p>
-            <p>
-                The committee appropriates just shy of $5 million into almost one hundred proposals annually.
-            </p>
-            <p>
-              The Student Technology Fee is entirely student operated and funded. While department heads can request money, funds must always be allocated to student uses. Any technology funded by the STF Committee is appropriated for students use.
-            </p>
-          </Col>
-        </Row>
-        <Row gutter={16}>
-          <Col xs={24} sm={12}>
-            {!members
-              ? <Spin size='large' tip='Loading...' />
-              : <div>
-                <h1>Voting Members</h1>
-                <p>Lorem ipsum...</p>
-                <Table
-                  header={() =>
-                    <div>
-                      <h1>Voting Members</h1>
-                      <p>Lorem ipsum...</p>
-                    </div>
-                  }
-                  dataSource={members}
-                  columns={screen.lessThan.medium ? representativeColumns.slice(0, 2) : representativeColumns}
-                  rowKey={record => record.name}
-                  expandedRowRender={expandedRowRender}
-                  defaultExpandAllRows={screen.greaterThan.medium}
-                  pagination={false}
-                  size='middle'
-                />
-              </div>
-            }
-          </Col>
-          <Col xs={24} sm={12}>
-            {!exOfficios
-              ? <Spin size='large' tip='Loading...' />
-              : <div>
-                <h1>Ex-Officios</h1>
-                <p>Lorem ipsum...</p>
-                <Table
-                  dataSource={exOfficios}
-                  columns={screen.lessThan.medium ? representativeColumns.slice(0, 2) : representativeColumns}
-                  rowKey={record => record.name}
-                  expandedRowRender={expandedRowRender}
-                  defaultExpandAllRows={screen.greaterThan.medium}
-                  pagination={false}
-                  size='middle'
-                />
-              </div>
-            }
-          </Col>
-        </Row>
-        {!admins
-          ? <Spin size='large' tip='Loading...' />
-          : <div>
-            <h1>Administration</h1>
-            <p>Lorem ipsum...</p>
-            <Table
-              dataSource={admins}
-              columns={screen.lessThan.medium ? adminColumns.slice(0, 2) : adminColumns}
-              rowKey={record => record.name}
-              expandedRowRender={expandedRowRender}
-              defaultExpandAllRows={screen.greaterThan.medium}
-              pagination={false}
-              size='middle'
-            />
-          </div>
-        }
+        <div>
+          {!members
+            ? <Spin size='large' tip='Loading...' />
+            : <div>
+              <h1>Voting Members</h1>
+              <p>
+                Voting members are appointed by the <a href='http://asuw.org'>Associated Students of the University of Washington</a>, and the <a href='http://depts.washington.edu/gpss/home'>Graduate and Professional Student Senate</a>. In addition, the STF chair, elected by the committe, is also a voting member.
+              </p>
+              <Table
+                dataSource={members}
+                columns={screen.lessThan.medium ? representativeColumns.slice(0, 2) : representativeColumns}
+                rowKey={record => record.name}
+                expandedRowRender={expandedRowRender}
+                defaultExpandAllRows={screen.greaterThan.medium}
+                pagination={false}
+                size='middle'
+              />
+            </div>
+          }
+        </div>
+        <div>
+          {!exOfficios
+            ? <Spin size='large' tip='Loading...' />
+            : <div>
+              <h1>Ex-Officios</h1>
+              <p>Ex-Officios are non-voting members that represent other campus institutions, like UW-IT, Learning Technologies, Library Programs, so on and forth.</p>
+              <Table
+                dataSource={exOfficios}
+                columns={screen.lessThan.medium ? representativeColumns.slice(0, 2) : representativeColumns}
+                rowKey={record => record.name}
+                expandedRowRender={expandedRowRender}
+                defaultExpandAllRows={screen.greaterThan.medium}
+                pagination={false}
+                size='middle'
+              />
+            </div>
+          }
+        </div>
+        <div>
+          {!admins
+            ? <Spin size='large' tip='Loading...' />
+            : <div>
+              <h1>Administration</h1>
+              <p>The Staff and advisors that manage committee operations.</p>
+              <Table
+                dataSource={admins}
+                columns={screen.lessThan.medium ? adminColumns.slice(0, 2) : adminColumns}
+                rowKey={record => record.name}
+                expandedRowRender={expandedRowRender}
+                defaultExpandAllRows={screen.greaterThan.medium}
+                pagination={false}
+                size='middle'
+              />
+            </div>
+          }
+        </div>
       </article>
     )
   }

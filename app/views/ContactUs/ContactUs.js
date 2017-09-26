@@ -35,8 +35,6 @@ class ContactUs extends React.Component {
       <article className={styles['contact']}>
         <Helmet title='Contact Us' />
         <h1>Contact Us</h1>
-        <h1 className='demo-note' style={{ color: 'red' }}>CONTENT NEEDED</h1>
-        <p className='demo-note' style={{ color: 'red' }}>I think this section needs either a flowchart or brief rundown of the STF admin roles. I'll need updated contact information and blurbs along the lines of "contact me for * Issue A, * Issue B", etc.</p>
         <ul>
           <li>University of Washington</li>
           <li>Husky Union Building, RM 305B</li>
@@ -48,17 +46,14 @@ class ContactUs extends React.Component {
           We're here if you need us. Before reaching out, please consider learning more <Link to='/about'>about the STF</Link> first, and then viewing our <Link to='/faq'>Frequently Asked Questions</Link>. Otherwise, feel free to contact us at any of us below. If in doubt, contact the chair.
         </p>
         {leadership.map((p, i) => (
-          <div key={i} className={styles['contact-block']}>
+          <div key={i}>
             <Avatar shape='square' size='large' icon='user' />
             <div className={styles['avatar-text']}>
-              <b>{p.position}</b>
+              <b>{p.position} | <em>{p.name}</em></b>
               <br />
-              <span>{p.name}</span>
+              <a href={`mailto:${p.email}`}>{p.email}</a>
             </div>
-            <div>
-            <span>Email: <a href={`mailto:${p.email}`}>{p.email}</a></span>
-            <p>{p.duties}</p>
-          </div>
+            <p className={styles['duties']}>{p.duties}</p>
           </div>
           // <Card key={i}
           //   title={p.position}

@@ -54,8 +54,6 @@ class FAQ extends React.Component {
   render () {
     return (
       <article className={styles['faq']}>
-        <h1 className='demo-note' style={{ color: 'goldenrod' }}>REVISION NEEDED</h1>
-        <p className='demo-note'>This is Bryce's old FAQ, ported over. I think our user base is polarized between people who know about us (and want to know our internal practices and the proposal lifecycle) and students who know nothing (Jon Snow? Is that you?)</p>
         <Helmet title='FAQ' />
         <h1>General Questions</h1>
         <Collapse bordered={false} defaultActiveKey={Object.keys(generalContent)} >
