@@ -63,28 +63,47 @@ class Budget extends React.Component {
   }
   handleSubmit = (items, total) => {
     if (total && total > 0) {
+      console.error(items, total)
       let { api, proposal, manifest, validate } = this.props
       const budget = { proposal, type: 'original', items, total }
       const id = manifest && manifest._id
+      const transform = res => ({ proposal: res })
       const update = { proposal: (prev, next) => {
-        const newData = Object.assign({}, prev)
-        newData.manifests[0] = budget
+        let newData = Object.assign({}, prev)
+        newData.manifests[0] = next
         return newData
       }}
-      manifest
-      ? api.patch('manifest', budget, { id, update })
-      : api.post('manifest', budget, { update })
+      api.post('manifest', budget, { transform, update })
       .then(message.success(`Updated budget manifest!`))
       .catch(err => {
         message.warning(`Failed to update budget manifest - Unexpected client error`)
         console.warn(err)
       })
       //  Silent update of the proposal ask
-      api.patch('proposal', { asked: total }, { id: proposal, update })
+      const updateAsk = { proposal: (prev, next) => {
+        const newData = Object.assign({}, prev)
+        newData.asked = next.asked
+        return newData
+      }}
+      api.patch('proposal', { asked: total }, { id: proposal, update: updateAsk })
       .catch(err => {
         message.warning(`Failed to update proposal data - Unexpected client error`)
         console.warn(err)
       })
+      // manifest
+      // ? api.patch('manifest', budget, { id, update })
+      // : api.post('manifest', budget, { update })
+      // .then(message.success(`Updated budget manifest!`))
+      // .catch(err => {
+      //   message.warning(`Failed to update budget manifest - Unexpected client error`)
+      //   console.warn(err)
+      // })
+      // //  Silent update of the proposal ask
+      // api.patch('proposal', { asked: total }, { id: proposal, update })
+      // .catch(err => {
+      //   message.warning(`Failed to update proposal data - Unexpected client error`)
+      //   console.warn(err)
+      // })
       validate()
     } else {
       message.error('Budgets must cost at least something!', 10)
@@ -96,9 +115,6 @@ class Budget extends React.Component {
     const total = manifest && manifest.total
     return (
       <div>
-        <h1 className='demo-note' style={{ color: 'goldenrod' }}>BUG HUNT</h1>
-        <p className='demo-note' style={{ color: 'goldenrod' }}>Please thoroughly test budgeting, especially when submitting a new budget right after proposing. There's one bug I have where budgets don't upload, but after significant amounts of crazy testing I can't reproduce it.</p>
-        <p>Enter your budget requirements here. Tax MUST be included and will automatically default at 10.1% (Seattle's tax rate)</p>
         <Spreadsheet financial
           columns={columns}
           data={data}

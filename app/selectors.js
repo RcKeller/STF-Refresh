@@ -109,8 +109,11 @@ export const readyToPublish = createSelector(
 //  PROPOSAL MANIFEST SELECTORS
 export const proposalDecision = createSelector(
   [proposalManifests],
-  (manifests) =>
-    manifests.find(m => m.decision).decision || {}
+  (manifests) => {
+    let manifest = manifests.find(m => m && m.decision)
+    console.error(manifests, manifest)
+    return manifest ? manifest.decision : {}
+  }
 )
 
 export const indexOfApprovedManifest = createSelector(

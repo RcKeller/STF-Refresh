@@ -4,39 +4,15 @@ import Helmet from 'react-helmet'
 
 import { Row, Col, Spin, Table } from 'antd'
 
-const votingMembers = [{
-  name: 'name',
-  title: 'title',
-  representing: 'ASUW',
-  from: '2017-2018',
-  bio: 'Bio here'
-}, {
-  name: 'name B',
-  title: 'title',
-  representing: 'ASUW',
-  from: '2017-2018',
-  bio: 'Bio here'
-}]
+const votingMembers = []
 
-const exOfficios = [{
-  name: 'name',
-  title: 'title',
-  representing: 'ASUW',
-  from: '2017-2018',
-  bio: 'Bio here'
-}, {
-  name: 'name B',
-  title: 'title',
-  representing: 'ASUW',
-  from: '2017-2018',
-  bio: 'Bio here'
-}]
+const exOfficios = []
 
 const admins = [{
   name: 'Alec Meade',
   title: 'Chair, former Officer',
   from: '2016-2018',
-  bio: 'Bio here',
+  bio: 'This is Alec\'s fourth year at the University of Washington, and his third year with the STF. Alec is studying Environmental Science and Resource Management, with a focus in Landscape Ecology, and hopes to pursue a career related to environmental policy and planning. When he\'s not in class, Alec enjoys exploring the outdoors, memes, and literature.',
   duties: 'Responsible for creating STF policy, setting meeting agendas, approving official documents, managing personnel, communicating with student governments, and leading special projects.'
 }, {
   name: 'Katie McConville',
@@ -60,7 +36,7 @@ const admins = [{
   name: 'Ryan Keller',
   title: 'Software Engineer',
   from: '2017-2018',
-  bio: 'Bio here',
+  bio: 'Keller is an ex-researcher who led trauma research at the University of North Texas shortly before changing careers. After moving to Seattle he worked for UW-IT in Network Implementation and later Critical Infrastructure, developing automation systems and streamlining IT system deployments. Keller joined the STF administration last spring to share his interdisciplinary passion and improve the proposal process.',
   duties: 'The Web Developer is is responsible for maintaining, updating, and improving upon the STF’s web resources.'
 }]
 

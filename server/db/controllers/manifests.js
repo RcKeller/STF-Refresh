@@ -47,7 +47,8 @@ export default class Manifests extends REST {
   patch (id, data, query) {
     //  https://codexample.org/questions/306428/mongodb-mongoose-subdocuments-created-twice.c
     //  https://github.com/linnovate/mean/issues/511
-    if (!data.items) {
+    let { items } = data
+    if (!items) {
       return super.patch(id, data, query)
     } else {
       /*
@@ -60,33 +61,37 @@ export default class Manifests extends REST {
       https://medium.skyrocketdev.com/es6-to-the-rescue-c832c286d28f
       */
       //  Keep track of item refs to update manifest.
-      let { items } = data
-      let itemRefs = []
-      for (let item of items) {
-        item = _.omit(item, ['__v'])
-        item.manifest = id
-        let _id = item._id || new mongoose.Types.ObjectId()
-        const mongoOptions = { upsert: true, setDefaultsOnInsert: true, new: true }
-        Item
-          .findOneAndUpdate({ _id }, item, mongoOptions)
-          .exec((err, doc) => {
-            if (!err && doc) {
-              //  Save item ref so we can update parent manifest.
-              itemRefs.push(doc._id)
-            }
-          })
-      }
-      let model = this.model.findOne({ [this.key]: id })
-      return model
+      return this.model
+       .findOne({ [this.key]: id })
        .then((modelInstance) => {
          for (var attribute in data) {
            if (data.hasOwnProperty(attribute) && attribute !== this.key && attribute !== '_id') {
              modelInstance[attribute] = data[attribute]
            }
          }
-         // Update the manifest with the new child refs. Replace the entire thing to handle deleted records.
-         modelInstance.items = itemRefs
-         return modelInstance.save()
+
+         let itemRefs = []
+         for (let item of items) {
+           item = _.omit(item, ['__v'])
+           if (!item.manifest) item.manifest = id
+           if (!item._id) item._id = mongoose.Types.ObjectId()
+           const mongoOptions = { upsert: true, setDefaultsOnInsert: true, new: true }
+           Item
+             .findOneAndUpdate({ _id: item._id }, item, mongoOptions)
+             .exec((err, doc) => {
+               if (!err && doc) {
+                 //  Save item ref so we can update parent manifest.
+                 itemRefs.push(doc._id)
+                 console.log('ADDED REF', doc.name, doc._id, itemRefs.length)
+               }
+               // Last item ref saved? Finish saving
+               if (itemRefs.length === items.length) {
+                 // Update the manifest with the new child refs. Replace the entire thing to handle deleted records.
+                 modelInstance.items = itemRefs
+                 return modelInstance.save()
+               }
+             })
+         }
        })
        .then(modelInstance => modelInstance)
     }
