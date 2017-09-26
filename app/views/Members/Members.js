@@ -4,42 +4,95 @@ import Helmet from 'react-helmet'
 
 import { Row, Col, Spin, Table } from 'antd'
 
-import members from './members'
-import exOfficios from './exOfficios'
-import admins from './admins'
+const votingMembers = [{
+  name: 'name',
+  title: 'title',
+  representing: 'ASUW',
+  from: '2017-2018',
+  bio: 'Bio here'
+}, {
+  name: 'name B',
+  title: 'title',
+  representing: 'ASUW',
+  from: '2017-2018',
+  bio: 'Bio here'
+}]
 
-const representativeColumns = [
-  { title: 'Name', dataIndex: 'name', key: 'name' },
-  { title: 'Representing', dataIndex: 'representing', key: 'representing', width: 120 },
-  { title: 'Title', dataIndex: 'title', key: 'title' },
-  { title: 'From', dataIndex: 'from', key: 'from', width: 80 }
-]
+const exOfficios = [{
+  name: 'name',
+  title: 'title',
+  representing: 'ASUW',
+  from: '2017-2018',
+  bio: 'Bio here'
+}, {
+  name: 'name B',
+  title: 'title',
+  representing: 'ASUW',
+  from: '2017-2018',
+  bio: 'Bio here'
+}]
 
-const adminColumns = [
-  { title: 'Name', dataIndex: 'name', key: 'name' },
-  { title: 'Title', dataIndex: 'title', key: 'title' },
-  { title: 'From', dataIndex: 'from', key: 'from', width: 80 }
-  //  Admins should have a duties prop, shown upon expansion.
-]
+const admins = [{
+  name: 'Alec Meade',
+  title: 'Chair, former Officer',
+  from: '2016-2018',
+  bio: 'Bio here',
+  duties: 'Responsible for creating STF policy, setting meeting agendas, approving official documents, managing personnel, communicating with student governments, and leading special projects.'
+}, {
+  name: 'Katie McConville',
+  title: 'Proposal Officer',
+  from: '2017-2018',
+  bio: 'Bio here',
+  duties: 'Responsible for advising proposal authors, reviewing proposals for completeness, and auditing previously funded proposals.'
+}, {
+  name: 'Britt Arram Carlson',
+  title: 'Director, Finance',
+  from: '2017-2018',
+  bio: 'Bio here',
+  duties: ' Responsible for scheduling, overseeing budgets, reviewing proposal reports, and general committee operations.'
+}, {
+  name: 'Sara Torres',
+  title: 'Hub Advisor & Manager, Student Life',
+  from: '2017-2018',
+  bio: 'Bio here',
+  duties: 'Serves as the in-house advisor for the STF, keeping administration cohesive as the commitee evolves.'
+}, {
+  name: 'Ryan Keller',
+  title: 'Software Engineer',
+  from: '2017-2018',
+  bio: 'Bio here',
+  duties: 'The Web Developer is is responsible for maintaining, updating, and improving upon the STF’s web resources.'
+}]
 
-const expandedRowRender = record => (
-  <span>
-    <p>{record.bio || <em>Biography not available.</em>}</p>
-    {record.duties && <span><hr /><p>{record.duties}</p></span>}
-  </span>
-)
-
-import styles from './About.css'
+import styles from './Members.css'
 @connect(state => ({ screen: state.screen }))
-class About extends React.Component {
+class Members extends React.Component {
   render (
     { screen } = this.props
   ) {
+    const expandedRowRender = record => (
+      <span>
+        <p>{record.bio || <em>Biography not available.</em>}</p>
+        {record.duties && <span><hr /><p>{record.duties}</p></span>}
+      </span>
+    )
+    const representativeColumns = [
+      { title: 'Name', dataIndex: 'name', key: 'name' },
+      { title: 'Representing', dataIndex: 'representing', key: 'representing', width: 120 },
+      { title: 'Title', dataIndex: 'title', key: 'title' },
+      { title: 'From', dataIndex: 'from', key: 'from', width: 80 }
+    ]
+    const adminColumns = [
+      { title: 'Name', dataIndex: 'name', key: 'name' },
+      { title: 'Title', dataIndex: 'title', key: 'title' },
+      { title: 'From', dataIndex: 'from', key: 'from', width: 80 }
+      //  Admins should have a duties prop, shown upon expansion.
+    ]
     return (
       <article className={styles['about']}>
         <Helmet title='About' />
         <div>
-          {!members
+          {!votingMembers
             ? <Spin size='large' tip='Loading...' />
             : <div>
               <h1>Voting Members</h1>
@@ -47,7 +100,7 @@ class About extends React.Component {
                 Voting members are appointed by the <a href='http://asuw.org'>Associated Students of the University of Washington</a>, and the <a href='http://depts.washington.edu/gpss/home'>Graduate and Professional Student Senate</a>. In addition, the STF chair, elected by the committe, is also a voting member.
               </p>
               <Table
-                dataSource={members}
+                dataSource={votingMembers}
                 columns={screen.lessThan.medium ? representativeColumns.slice(0, 2) : representativeColumns}
                 rowKey={record => record.name}
                 expandedRowRender={expandedRowRender}
@@ -99,4 +152,4 @@ class About extends React.Component {
   }
 }
 
-export default About
+export default Members

@@ -14,7 +14,7 @@ https://github.com/reactGo/reactGo/pull/841/files
 const SplitFrontPage = (l, c) => require.ensure([], () => c(null, require('./views/FrontPage/FrontPage').default))
 const SplitNotFound = (l, c) => require.ensure([], () => c(null, require('./views/NotFound/NotFound').default))
 const SplitFAQ = (l, c) => require.ensure([], () => c(null, require('./views/FAQ/FAQ').default))
-const SplitAbout = (l, c) => require.ensure([], () => c(null, require('./views/About/About').default))
+const SplitMembers = (l, c) => require.ensure([], () => c(null, require('./views/Members/Members').default))
 const SplitContactUs = (l, c) => require.ensure([], () => c(null, require('./views/ContactUs/ContactUs').default))
 const SplitCreate = (l, c) => require.ensure([], () => c(null, require('./views/Proposals/Create/Create').default))
 const SplitEdit = (l, c) => require.ensure([], () => c(null, require('./views/Proposals/Edit/Edit').default))
@@ -80,7 +80,9 @@ export default (store) => {
       <IndexRoute getComponent={SplitFrontPage} />
 
       <Route path='/faq' getComponent={SplitFAQ} />
-      <Route path='/about' getComponent={SplitAbout} />
+      <Route path='/members' getComponent={SplitMembers} />
+      {/* Legacy route */}
+      <Route path='/about' getComponent={SplitMembers} />
       <Route path='/contact' getComponent={SplitContactUs} />
 
       <Route path='/proposals' getComponent={SplitProposals} />
