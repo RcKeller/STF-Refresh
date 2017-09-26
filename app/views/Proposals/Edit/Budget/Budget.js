@@ -73,8 +73,8 @@ class Budget extends React.Component {
         return newData
       }}
       manifest
-      ? api.patch('manifest', budget, { id, transform, update })
-      : api.post('manifest', budget, { transform, update })
+      ? api.patch('manifest', budget, { id })
+      : api.post('manifest', budget, { })
       .then(message.success(`Updated budget manifest!`))
       .catch(err => {
         message.warning(`Failed to update budget manifest - Unexpected client error`)
@@ -87,13 +87,12 @@ class Budget extends React.Component {
         return newData
       }}
       api.patch('proposal', { asked: total }, { id: proposal, update: updateAsk })
-      .then(forceRequest())
+      // .then(forceRequest())
       .catch(err => {
         message.warning(`Failed to update proposal data - Unexpected client error`)
         console.warn(err)
       })
       validate()
-      // forceRequest()
     } else {
       message.error('Budgets must cost at least something!', 10)
     }

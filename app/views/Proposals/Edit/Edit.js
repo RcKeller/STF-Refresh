@@ -135,6 +135,10 @@ class Edit extends React.Component {
         valid.budget = Array.isArray(items) && items.length >= 1
         this.setState({ valid })
       }
+    } else {
+      //  FIXME: To address issues with budget updates
+      valid.budget = proposal ? proposal.asked > 0 : false
+      this.setState({ valid })
     }
   }
   validateSignatures = (
