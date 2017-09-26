@@ -52,8 +52,6 @@ class Voting extends React.Component {
             <TabPane tab='Overview' key='1' className={styles['tab-pane']}>
               <h1>Reviews & Voting</h1>
               <p>Instructions here.</p>
-              <h1 className='demo-note' style={{ color: 'red' }}>CONTENT NEEDED</h1>
-              <p className='demo-note' style={{ color: 'red' }}>Explain how voting, review, and decision posting are all separate processes.</p>
               <Alert type='info' banner showIcon={false}
                 message='Major Changes for Ex-Officios'
                 description='Permissions have been expanded to allow Ex-Officios to review proposals, sans final voting. Officios also have read access to more content in general. We are grateful for their involvement and want the web platform to reflect that.'

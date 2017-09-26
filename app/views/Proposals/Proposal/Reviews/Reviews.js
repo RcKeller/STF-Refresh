@@ -25,8 +25,6 @@ class Reviews extends React.Component {
       <section>
         <h1>Committee Reviews</h1>
         <h6>For internal use only.</h6>
-        <h1 className='demo-note' style={{ color: 'goldenrod' }}>UP FOR DEBATE</h1>
-        <p className='demo-note' style={{ color: 'goldenrod' }}>I built this page very early on and left it as the codebase became increasingly complex. Surprisingly, it still works. I need to know if this is a page you want (you probably do) and if so, what DO you want here? Should it be a summary of decisions, awards, average metrics (like stf/voting/metrics)..?</p>
         <h2>Decisions</h2>
         {(manifests.length <= 0)
           ? <em>Decisions have not been issued for this proposal.</em>

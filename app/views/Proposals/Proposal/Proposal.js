@@ -93,7 +93,7 @@ class Proposal extends React.Component {
               </TabPane>
             }
             {(author || stf) &&
-              <TabPane tab='Next Steps' key='5' className={styles['tab-pane']}>
+              <TabPane tab='Next Steps' disabled key='5' className={styles['tab-pane']}>
                 <NextSteps />
               </TabPane>
             }

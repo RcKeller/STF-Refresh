@@ -122,8 +122,6 @@ class Config extends React.Component {
           : <div id={id}>
             <h1>Web Configuration</h1>
             <h6>Here be dragons...</h6>
-            <h1 className='demo-note' style={{ color: 'goldenrod' }}>BUG</h1>
-            <p className='demo-note' style={{ color: 'goldenrod' }}>This page fails to load properly if you go directly to it, because the site loads a ton of configuration pieces over time. I am working on a fix, but the fix I need to put in requires a lot of testing, so I've put that on the back burner.</p>
             <p>Please be advised that changes go into effect IMMEDIATELY, users will experience the change after refreshing their page.</p>
             <hr />
             <FormItem {...layout} label='Submissions'>

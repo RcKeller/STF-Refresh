@@ -36,8 +36,6 @@ class Contacts extends React.Component {
     return (
       <div>
         <h1>Contact Information</h1>
-        <h1 className='demo-note' style={{ color: 'goldenrod' }}>NOTE</h1>
-        <p className='demo-note' style={{ color: 'goldenrod' }}>Contacts update separately here because I want to add more security here (disabling contact forms dynamically), yet I also need authors to be able to add new authors so they don't get kicked out of proposal creation.</p>
         <Alert type='warning'
           message='Contact Responsibilities'
           description='

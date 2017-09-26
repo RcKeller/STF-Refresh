@@ -96,8 +96,6 @@ class Create extends React.Component {
     return (
       <article className={styles['page']}>
         <h1>Proposal Agreement</h1>
-        <h1 className='demo-note' style={{ color: 'goldenrod' }}>REVISION NEEDED</h1>
-        <p className='demo-note' style={{ color: 'goldenrod' }}>If you want new blocks/content etc here, let me know.</p>
         <p>
           The Student Technology Fee Committee was created to ensure the best return on collected student dollars. By proposing to the committee, you agree to follow all requirements, current and future, set by the STFC. Included below are particularly relevant documents, along with brief summary and their full text.
         </p>
