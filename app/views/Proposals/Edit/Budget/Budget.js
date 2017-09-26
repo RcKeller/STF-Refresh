@@ -63,8 +63,7 @@ class Budget extends React.Component {
   }
   handleSubmit = (items, total) => {
     if (total && total > 0) {
-      console.error(items, total)
-      let { api, proposal, manifest, validate } = this.props
+      let { api, proposal, manifest, validate, forceRequest } = this.props
       const budget = { proposal, type: 'original', items, total }
       const id = manifest && manifest._id
       const transform = res => ({ proposal: res })
@@ -73,7 +72,9 @@ class Budget extends React.Component {
         newData.manifests[0] = next
         return newData
       }}
-      api.post('manifest', budget, { transform, update })
+      manifest
+      ? api.patch('manifest', budget, { id, transform, update })
+      : api.post('manifest', budget, { transform, update })
       .then(message.success(`Updated budget manifest!`))
       .catch(err => {
         message.warning(`Failed to update budget manifest - Unexpected client error`)
@@ -86,25 +87,13 @@ class Budget extends React.Component {
         return newData
       }}
       api.patch('proposal', { asked: total }, { id: proposal, update: updateAsk })
+      .then(forceRequest())
       .catch(err => {
         message.warning(`Failed to update proposal data - Unexpected client error`)
         console.warn(err)
       })
-      // manifest
-      // ? api.patch('manifest', budget, { id, update })
-      // : api.post('manifest', budget, { update })
-      // .then(message.success(`Updated budget manifest!`))
-      // .catch(err => {
-      //   message.warning(`Failed to update budget manifest - Unexpected client error`)
-      //   console.warn(err)
-      // })
-      // //  Silent update of the proposal ask
-      // api.patch('proposal', { asked: total }, { id: proposal, update })
-      // .catch(err => {
-      //   message.warning(`Failed to update proposal data - Unexpected client error`)
-      //   console.warn(err)
-      // })
       validate()
+      // forceRequest()
     } else {
       message.error('Budgets must cost at least something!', 10)
     }

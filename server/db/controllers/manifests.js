@@ -61,8 +61,8 @@ export default class Manifests extends REST {
       https://medium.skyrocketdev.com/es6-to-the-rescue-c832c286d28f
       */
       //  Keep track of item refs to update manifest.
-      return this.model
-       .findOne({ [this.key]: id })
+      let model = this.model.findOne({ [this.key]: id })
+      model
        .then((modelInstance) => {
          for (var attribute in data) {
            if (data.hasOwnProperty(attribute) && attribute !== this.key && attribute !== '_id') {

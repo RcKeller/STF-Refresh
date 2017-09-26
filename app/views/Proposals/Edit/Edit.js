@@ -219,7 +219,7 @@ class Edit extends React.Component {
                 tab={<span style={{ color: budget ? colors.green : colors.gold }}>
                   <Icon type='wallet' />Budget</span>
                 }>
-                <Budget validate={this.validateBudget} />
+                <Budget validate={this.validateBudget} forceRequest={() => this.props.forceRequest()}/>
               </TabPane>
               <TabPane key='5'
                 tab={<span style={{ color: signatures ? colors.green : colors.gold }}>
