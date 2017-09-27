@@ -3,31 +3,45 @@ import _ from 'lodash'
 //  https://hackernoon.com/usage-of-reselect-in-a-react-redux-application-fcdca05cc00d
 //  http://engineering.blogfoster.com/managing-complexity-in-redux-higher-order-reducers-and-async-state/
 //  https://docs.mobify.com/progressive-web/0.15.0/guides/reselect/
-
+/*
+SORTATION FUNCTIONS
+*/
+// export const sortProposals = (a, b) => {
+//   if (a.year > b.year) return 1
+//   if (a.year >= b.year && a.number > b.number) return 1
+//   return -1
+// }
+export const sortProposals = (a, b) => {
+  if (a.year > b.year) return -1
+  if (a.year >= b.year && a.number > b.number) return -1
+  return 1
+}
 /*
 BASIC ASYNC SELECTORS
 */
 const user = ({ user }) => user || {}
 const config = ({ config }) => config || {}
 const proposals = ({ db }) => Array.isArray(db.proposals)
-  ? db.proposals.sort((a, b) => {
-    if (a.year > b.year) {
-      return -1
-    } else if (a.number > b.number) {
-      return -1
-    }
-    return 1
-    // if (a.year === b.year && a.number > b.number) return 1
-
-    // console.log(typeof a.year, typeof a.number)
-    // if (a.year > b.year) return 1
-    // if (a.year === b.year && a.number > b.number) return 1
-    // return -1
-    // return a.year < b.year && a.number < b.number && 1
-    // (a.year * a.number) - (b.year * b.number)
-  })
-  // ? db.proposals.sort((a, b) => (a.year * a.number) - (b.year * b.number))
+  ? db.proposals.sort(sortProposals)
   : []
+  // ? db.proposals.sort((a, b) => {
+  //   if (a.year > b.year) {
+  //     return -1
+  //   } else if (a.number > b.number) {
+  //     return -1
+  //   }
+  //   return 1
+  //   // if (a.year === b.year && a.number > b.number) return 1
+  //
+  //   // console.log(typeof a.year, typeof a.number)
+  //   // if (a.year > b.year) return 1
+  //   // if (a.year === b.year && a.number > b.number) return 1
+  //   // return -1
+  //   // return a.year < b.year && a.number < b.number && 1
+  //   // (a.year * a.number) - (b.year * b.number)
+  // })
+  // // ? db.proposals.sort((a, b) => (a.year * a.number) - (b.year * b.number))
+  // : []
 const proposal = ({ db }) => db.proposal || {}
 const proposalContacts = ({ db }) => db.proposal ? db.proposal.contacts : []
 const proposalManifests = ({ db }) => db.proposal ? db.proposal.manifests : []

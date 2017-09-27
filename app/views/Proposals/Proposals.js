@@ -30,7 +30,7 @@ const currency = number => `$${Number.parseInt(number).toLocaleString('en-US')}`
 //  Import modular CSS. Needs to run through JS because styles are hashed.
 import styles from './Proposals.css'
 //  This is a decorator, a function that wraps another class (which in JS is essentially a func)
-import { publishedProposals, myProposals, myDrafts } from '../../selectors'
+import { sortProposals, publishedProposals, myProposals, myDrafts } from '../../selectors'
 @compose(
   connect((state, props) => ({
     proposals: publishedProposals(state),
@@ -111,7 +111,7 @@ Proposals extends React.Component {
     const years = _.range(
       2000,
       new Date().getFullYear() + 1
-    )
+    ).reverse()
     //  Columns are defined in render because they have many data dependencies.
     let columns = [
       {
@@ -121,20 +121,7 @@ Proposals extends React.Component {
         render: (text, record) => (
           <span>{`${record.year}-${record.number}`}</span>
         ),
-        //  FIXME: Does this sort correctly?
-        sorter: (a, b) =>
-          a.year * a.number - b.year * b.number,
-        // sorter: (a, b) => {
-          // let ret = 0
-          // if (a.year > b.year) {
-          //   ret -= 1
-          // } else if (a.number > b.number) {
-          //   ret -= 1
-          // } else {
-          //   ret += 1
-          // }
-          // return ret
-        // },
+        sorter: sortProposals,
         filters: years.map((year, i) => {
           return { text: year, value: year }
         }),
