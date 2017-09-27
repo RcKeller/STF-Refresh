@@ -49,8 +49,8 @@ export default (app, passport) => {
     -loginUrl (CASE SENSITIVE, due to a bug with passport-uwshib) for outgoing requests
     -callbackUrl (CASE SENSITIVE) for incoming user profiles
   */
-  const domain = `${config.get('domain')}:${config.get('port')}`
-  const entityId = `https://${domain}`
+  const domain = `uwstf.org`
+  const entityId = `https://uwstf.org`
   const loginUrl = '/login'
   const callbackUrl = '/login/callback'
   console.warn(`SHIB: Connecting as: ${entityId}`)

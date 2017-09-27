@@ -1,7 +1,7 @@
 import express from 'express'
 import session from 'express-session'
 import logger from 'morgan'
-// import cookieParser from 'cookie-parser'
+import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import path from 'path'
 import flash from 'express-flash'
@@ -21,6 +21,8 @@ export default (app) => {
   if (env === 'prod') {
     app.use(gzip())
     app.use(helmet())
+    app.use(cookieParser(config.get('cookieSecret')))
+    console.log(`INIT: Cookie Parser live ${config.get('cookieSecret')}`)
   }
   // LOGGING
   app.use(logger('dev'))

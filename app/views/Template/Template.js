@@ -55,6 +55,8 @@ import desktopLogo from '../../images/desktopLogo.png'
 
 import WordmarkWhite from '../../images/WordmarkWhite.png'
 
+const RFP = 'https://docs.google.com/document/d/1X-M1HqTMYEDe6BrL7JUMqWWr4k9kpx0Hp8x_SrpS1O8/edit?usp=sharing'
+const drive = 'https://drive.google.com/drive/folders/0BwVcM9nLxRsqbVNqV2lwa3lRZzA?usp=sharing'
 const keyserver = 'http://itconnect.uw.edu/wares/acquiring-software-and-hardware/keyserver-help-for-it-staff/'
 
 @connect(state => ({
@@ -131,7 +133,7 @@ class Template extends React.Component {
                 mode={screen.lessThan.large ? 'inline' : 'horizontal'}
                 selectedKeys={[nextLocation]}
                 // onClick={this.handleNavigate}
-                onClick={({ key }) => router.push(key)}
+                onClick={({ key }) => key.startsWith('/') && router.push(key)}
                 style={screen.lessThan.large ? { overflowY: 'auto' } : {}}
               >
                 <Item key='/proposals'>
@@ -140,19 +142,23 @@ class Template extends React.Component {
                 <Item key='/blocks'>
                   <Icon type='desktop' /><span className='nav-text'>Block Funding</span>
                 </Item>
+                <Item key='/members'>
+                  <Icon type='team' /><span className='nav-text'>Members</span>
+                </Item>
                 <Item key='/faq'>
                   <Icon type='question' /><span className='nav-text'>F.A.Q.</span>
                 </Item>
-                <Item key='/about'>
-                  <Icon type='info' /><span className='nav-text'>About</span>
-                </Item>
                 <Item key='/contact'>
-                  <Icon type='team' /><span className='nav-text'>Contact Us</span>
+                  <Icon type='info' /><span className='nav-text'>Contact Us</span>
                 </Item>
                 <SubMenu key='sub2' title={<span><Icon type='folder-open' /><span>Documents</span></span>}>
-                  <Item key='/documents'>Commitee Docs</Item>
-                  <Item key='/docs/Current Request for Proposals.pdf' >Request for Proposals</Item>
-                  <Item key=''>
+                  <Item key='rfp'>
+                    <a href={RFP} target='_blank'>Request For Proposals</a>
+                  </Item>
+                  <Item key='drive'>
+                    <a href={drive} target='_blank'>Committee Docs</a>
+                  </Item>
+                  <Item key='keyserver'>
                     <a href={keyserver} target='_blank'>License Keyserver</a>
                   </Item>
                 </SubMenu>

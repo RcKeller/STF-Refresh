@@ -8,17 +8,17 @@ const leadership = [
   {
     position: 'Committee Chair',
     duties: 'The chair is responsible for creating STF policy, setting meeting agendas, approving official documents, managing personnel, communicating with student governments, and leading special projects.',
-    name: 'Bryce Kolton',
+    name: 'Alec Meade',
     email: 'STFChair@uw.edu'
   }, {
     position: 'Proposal Officer',
     duties: 'The PO is responsible for advising proposal authors, reviewing proposals for completeness, and auditing previously funded proposals.',
-    name: 'Alec Meade',
+    name: 'Katie McConville',
     email: 'STFAgent@uw.edu'
   }, {
     position: 'Operations & Finance Manager',
     duties: ' The OFM is responsible for scheduling, overseeing budgets, reviewing proposal reports, and general committee operations.',
-    name: 'Rajiv Raina',
+    name: 'Britt Carlson',
     email: 'TechFee@uw.edu'
   }, {
     position: 'Web Developer',

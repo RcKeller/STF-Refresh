@@ -66,7 +66,7 @@ if (config.has('dev')) {
   const domain = `${config.get('domain')}:${config.get('port')}`
 
   const httpsServer = https.createServer({ key, cert }, app)
-  httpsServer.listen(8090, function () {
+  httpsServer.listen(config.get('port'), function () {
     console.log('https listening on ' + httpsServer.address().port)
   })
 
@@ -78,7 +78,7 @@ if (config.has('dev')) {
     res.end()
     console.log('redirected HTTP connection to ' + redirectURL)
   })
-  httpServer.listen(8080, function () {
+  httpServer.listen(80, function () {
     console.log('http listening on ' + httpServer.address().port)
   })
 }

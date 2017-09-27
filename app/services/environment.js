@@ -9,7 +9,7 @@ API keys and security files.
 const ENV = process.env.NODE_ENV
 const API = (process.env.NODE_ENV === 'development'
   ? 'http://localhost:3000'
-  : 'https://uwstf.org:8090'
+  : 'https://uwstf.org'
 )
 const version = process.env.VERSION || 'v1'
 
