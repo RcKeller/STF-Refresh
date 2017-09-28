@@ -2,6 +2,7 @@ import { Router } from 'express'
 import { Log } from '../../integrations'
 import _ from 'lodash'
 import config from 'config'
+const env = config.get('env')
 
 /*
 CORE RESTful CONTROLLER:
@@ -141,7 +142,7 @@ export default class REST {
   AUTH: Require netIDs for certain routes (POST/PATCH/DELETE)
   ***** */
   requireNetID (req, res, next, loginUrl = '/login') {
-    if (config.has('prod')) {
+    if (env === 'production') {
       Log.debug(`ISAUTH: ${req.isAuthenticated()}`)
       Log.debug(`TYPEOF: ${typeof req.isAuthenticated}`)
       Log.debug(`SESSION OBJ: ${req.session}`)

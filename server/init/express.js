@@ -24,7 +24,7 @@ export default (app) => {
     app.use(helmet())
     console.log(`INIT: HTTP Headers set via "Helmet"`)
     app.use(cookieParser(config.get('cookieSecret')))
-    console.log(`INIT: Cookie Parser live ${config.get('cookieSecret')}`)
+    console.log(`INIT: Cookie Parser live (${config.get('cookieSecret')})`)
   }
   // LOGGING
   app.use(logger('dev'))
@@ -84,7 +84,8 @@ export default (app) => {
     }
   }
   app.use(session(sess))
-  if (config.has('prod')) sess.cookie.secure = true
+  console.log(`SESS: Express sessions / cookies enabled (${config.get('sessionSecret')})`)
+  if (env === 'production') sess.cookie.secure = true
 
   console.log('--------------------------')
   console.log(`<===  Starting ${env} Server . . .`)

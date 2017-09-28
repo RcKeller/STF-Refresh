@@ -43,7 +43,7 @@ module.exports = (env = {}) => {
     context: PATHS.app,
     entry: {
       app: ['./client'],
-      vendor: ['react', 'react-dom', 'react-router', 'redux', 'react-router-redux', 'react-helmet']
+      vendor: ['react', 'react-dom', 'react-router', 'react-helmet', 'redux', 'react-router-redux', 'redux-query', 'reselect', 'react-redux']
     },
     node,
     output: {

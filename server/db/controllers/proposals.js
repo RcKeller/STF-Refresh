@@ -6,18 +6,6 @@ export default class Proposals extends REST {
   constructor () {
     super(Proposal, '_id')
   }
-  // /* *****
-  //   POST: Add a model
-  //   Hydrate new proposals with a year and quarter
-  // ***** */
-  // post (data, query) {
-  //   let date = new Date()
-  //   const year = date.getFullYear()
-  //   const quarter = this.determineQuarter(date)
-  //   let hydratedData = Object.assign(data, { year, quarter })
-  //   //  NOTE: Number is determined upon publication in patch.
-  //   return super.post(hydratedData, query)
-  // }
 
   /* *****
     PATCH: Update a model
@@ -25,7 +13,7 @@ export default class Proposals extends REST {
   ***** */
   patch (id, data, query) {
     //  If this was just published And the proposal isn't numbered yet
-    console.warn('data')
+    // console.warn('data')
     if (data.published) {
       const date = new Date()
       const year = date.getFullYear()

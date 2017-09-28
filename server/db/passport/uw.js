@@ -23,11 +23,11 @@ const serializeUser = ({ regId, netId, givenName, displayName, email } = {}, don
     //  Returning users have their authZ with the STF populated.
     // .populate('stf')
     .exec((findByNetIDErr, existingUser) => {
-      console.log('SHIB-TEST: Found user:', existingUser)
+      // console.log('SHIB-TEST: Found user:', existingUser)
       if (existingUser) {
         return done(null, existingUser)
       } else {
-        console.log('SHIB-TEST: Creating user', profile)
+        // console.log('SHIB-TEST: Creating user', profile)
         return User
           .create(profile)
           .then(user => done(null, user, { message: 'New NetID saved!' }))
@@ -40,7 +40,7 @@ const serializeUser = ({ regId, netId, givenName, displayName, email } = {}, don
 deserializeUser: Takes the netID returned by serialize and hydrates it with currnet data and authZ
 */
 const deserializeUser = ({ netID }, done) => {
-  console.warn('db/passport/uw.deserializeUser:', netID, typeof done)
+  // console.warn('db/passport/uw.deserializeUser:', netID, typeof done)
   User
     .findOne({ netID })
     .populate('stf')

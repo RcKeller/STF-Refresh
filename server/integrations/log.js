@@ -6,7 +6,7 @@ import config from 'config'
 
 class Logger {
   constructor () {
-    console.warn('LOGS: Initializing Logger ("Winston")')
+    console.log('LOGS: Initializing Action Logging')
     this.logDir = path.resolve(process.cwd(), 'logs')
     this.filename = config.has('prod') ? `${this.logDir}/-STF-WEB.log` : `${this.logDir}/-STF-DEV.log`
     //  { error: 0, warn: 1, info: 2, verbose: 3, debug: 4, silly: 5 }
@@ -29,7 +29,8 @@ class Logger {
         })
       ]
     })
-    this.logger.info(`LOGS: Logging services enabled - ${this.logDir}`)
+
+    console.log(`LOGS: Logging services enabled - ${this.logDir}`)
   }
 
   timeWithoutDate () {

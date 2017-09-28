@@ -3,6 +3,16 @@ import fs from 'fs'
 import path from 'path'
 import config from 'config'
 import db from '../../db'
+/*
+CONFIG: /config/default.json or /config/production.json
+
+"domain": "uwstf.org",
+"uw": {
+  "entityId": "https://uwstf.org",
+  "loginUrl": "/login",
+  "callbackUrl": "/login/callback"
+},
+*/
 
 export default (app, passport) => {
   //  NOTE: Good resource:
@@ -49,10 +59,8 @@ export default (app, passport) => {
     -loginUrl (CASE SENSITIVE, due to a bug with passport-uwshib) for outgoing requests
     -callbackUrl (CASE SENSITIVE) for incoming user profiles
   */
-  const domain = `uwstf.org`
-  const entityId = `https://uwstf.org`
-  const loginUrl = '/login'
-  const callbackUrl = '/login/callback'
+  const domain = config.get('domain')
+  const { entityId, loginUrl, callbackUrl } = config.get('uw')
   console.warn(`SHIB: Connecting as: ${entityId}`)
   console.warn(`SHIB: Login, Callback and Metadata routes: ${loginUrl} | ${callbackUrl} | ${Shibboleth.urls.metadata}`)
 

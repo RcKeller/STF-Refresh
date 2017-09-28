@@ -6,6 +6,8 @@ import initPassport from './init/passport'
 import initExpress from './init/express'
 import initRoutes from './init/routes'
 import renderMiddleware from './render/middleware'
+const env = config.get('env')
+const port = config.get('port')
 
 const app = express()
 
@@ -16,8 +18,9 @@ const app = express()
  */
 db.connect()
 
-if (config.has('dev')) {
+if (env === 'development') {
   // enable webpack hot module replacement
+  console.log('DEV: Loading Webpack HRM middleware and compilers')
   const webpackDevMiddleware = require('webpack-dev-middleware')
   const webpackHotMiddleware = require('webpack-hot-middleware')
   const webpackConfig = require('../webpack/webpack.config')
@@ -42,7 +45,7 @@ initPassport(app)
  */
 app.get('*', renderMiddleware)
 //  Starts a UNIX socket and listens for connections on the given path. This method is identical to Node’s http.Server.listen().
-if (config.has('dev')) {
+if (env === 'development') {
   console.log('DEV: Starting hot-reloading webpack server')
   app.listen(app.get('port'))
 } else {
@@ -51,8 +54,9 @@ if (config.has('dev')) {
   const https = require('https')
   const path = require('path')
   const fs = require('fs')
+  const redirect = config.get('redirect')
 
-  console.log('PROD: Configuring dual-servers')
+  console.log(`PROD: Configuring dual-servers (HTTP redirects ${redirect} to secure port ${port})`)
   const key = fs.readFileSync(
     path.resolve(process.cwd(), 'security', 'server-pvk.pem'),
     'utf-8'
@@ -66,7 +70,7 @@ if (config.has('dev')) {
   const domain = `${config.get('domain')}:${config.get('port')}`
 
   const httpsServer = https.createServer({ key, cert }, app)
-  httpsServer.listen(config.get('port'), function () {
+  httpsServer.listen(port, function () {
     console.log('https listening on ' + httpsServer.address().port)
   })
 
@@ -78,7 +82,7 @@ if (config.has('dev')) {
     res.end()
     console.log('redirected HTTP connection to ' + redirectURL)
   })
-  httpServer.listen(80, function () {
+  httpServer.listen(redirect, function () {
     console.log('http listening on ' + httpServer.address().port)
   })
 }

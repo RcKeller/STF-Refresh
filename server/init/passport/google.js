@@ -1,6 +1,17 @@
 import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth'
 import db from '../../db'
 import config from 'config'
+/*
+CONFIG: /config/default.json or /config/development.json
+"google": {
+  "clientID": "<...google id>.apps.googleusercontent.com",
+  "clientSecret": "<...google secret>",
+  "loginURL": "/auth/google",
+  "callbackURL": "/auth/google/callback",
+  "successRedirect": "/",
+  "failureRedirect": "/"
+}
+*/
 
 export default (app, passport) => {
   if (!db.passport || !db.passport.google || !typeof db.passport.google === 'function') {
@@ -27,9 +38,8 @@ export default (app, passport) => {
   credentials and calls done providing a user, as well
   as options specifying a client ID, client secret, and callback URL.
   */
-  const clientID = config.get('google.clientID')
-  const clientSecret = config.get('google.clientSecret')
-  const callbackURL = config.get('google.callbackURL')
+  const { clientID, clientSecret, loginURL, callbackURL, successRedirect, failureRedirect } = config.get('google')
+  //  NOTE: Namespaces are "URL", case sensitive
   passport.use(new GoogleStrategy({
     clientID,
     clientSecret,
@@ -49,7 +59,8 @@ export default (app, passport) => {
   here https://developers.google.com/identity/protocols/OpenIDConnect#scope-param
   */
   app.get(
-    '/auth/google',
+    // '/auth/google',
+    loginURL,
     passport.authenticate('google', {
       scope: [
         'https://www.googleapis.com/auth/userinfo.profile',
@@ -62,11 +73,8 @@ export default (app, passport) => {
   process by verifying the assertion. If valid, the user will be logged in.
   Otherwise, the authentication has failed.
   */
-  const googleCallback = config.get('google.callbackURL')
-  const successRedirect = '/'
-  const failureRedirect = '/'
   app.get(
-    googleCallback,
+    callbackURL,
     passport.authenticate('google', {
       successRedirect, failureRedirect
     })
