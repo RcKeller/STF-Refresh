@@ -185,7 +185,10 @@ class Template extends React.Component {
             }
            >
             <div className={styles['body']}>
-              {children || <Spin size='large' tip='Loading Page...' />}
+              <Spin size='large' tip='Loading Page...' spinning={!children}>
+                {children}
+              </Spin>
+              {/* {children || <Spin size='large' tip='Loading Page...' />} */}
             </div>
           </Drawer>
         </div>

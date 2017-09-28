@@ -20,7 +20,9 @@ export default (app) => {
   // Secure your Express apps by setting various HTTP headers. Documentation: https://github.com/helmetjs/helmet
   if (env === 'production') {
     app.use(gzip())
+    console.log(`INIT: Enabled compression (GZIP)`)
     app.use(helmet())
+    console.log(`INIT: HTTP Headers set via "Helmet"`)
     app.use(cookieParser(config.get('cookieSecret')))
     console.log(`INIT: Cookie Parser live ${config.get('cookieSecret')}`)
   }
@@ -70,7 +72,6 @@ export default (app) => {
     : console.warn('Error: MongoDB failed to handle session storage')
 
   const secret = config.get('sessionSecret')
-  // app.use(cookieParser(config.get('cookieSecret')))
   let sess = {
     secret,
     store: sessionStore,
