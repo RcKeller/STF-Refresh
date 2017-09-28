@@ -1,25 +1,35 @@
-import config from 'config'
 import winston from 'winston'
+import path from 'path'
+import config from 'config'
 //  http://thisdavej.com/using-winston-a-versatile-logging-library-for-node-js/
 //  http://tostring.it/2014/06/23/advanced-logging-with-nodejs/
 
 class Logger {
   constructor () {
     console.warn('LOGS: Initializing Logger ("Winston")')
-    //  Initialize Logging functions
+    this.logDir = path.resolve(process.cwd(), 'logs')
+    this.filename = config.has('prod') ? `${this.logDir}/-STF-WEB.log` : `${this.logDir}/-STF-DEV.log`
+    //  { error: 0, warn: 1, info: 2, verbose: 3, debug: 4, silly: 5 }
     this.logger = new winston.Logger({
       transports: [
         // colorize the output to the console
         new (winston.transports.Console)({
+          level: 'info',
           timestamp: this.time,
-          colorize: true,
-          level: 'debug'
+          colorize: true
+        }),
+        new (require('winston-daily-rotate-file'))({
+          name: 'dailylogging',
+          level: 'debug',
+          json: false,
+          timestamp: this.timeWithoutDate,
+          filename: this.filename,
+          datePattern: 'dd-MM-yyyy',
+          prepend: true
         })
       ]
     })
-    this.logger.level = 'debug'
-    this.logger.info('Hello world')
-    this.logger.debug('Debugging info')
+    this.logger.info(`LOGS: Logging services enabled - ${this.logDir}`)
   }
 
   timeWithoutDate () {
@@ -54,11 +64,9 @@ class Logger {
   }
 
   userAction (netID, action, model, data) {
-    this.logger.verbose(`${netID}: ${action} for ${model}:\n${data}`)
+    this.logger.verbose(`${netID}: ${action} for ${model}:\n${JSON.stringify(data)}`)
   }
-
 }
 //  https://k94n.com/es6-modules-single-instance-pattern
-// let Slack = new Bot('<bot-api-key>', 'Calcifer')
-let Logging = new Logger()
-export default Logging
+let Log = new Logger()
+export default Log

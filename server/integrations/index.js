@@ -1,4 +1,4 @@
 import Slack from './slack'
-import Logging from './logging'
+import Log from './log'
 
-export { Slack, Logging }
+export { Slack, Log }

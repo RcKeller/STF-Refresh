@@ -1,0 +1,19 @@
+08:57:32 - info: LOGS: Logging services enabled
+08:57:32 - info: TESTING INFO
+08:57:32 - info: TESTING LOG
+08:59:06 - verbose: Anonymous: POST for new proposal:
+{"organization":"Org B","budget":"111"}
+08:59:06 - verbose: Anonymous: POST for new contact:
+{"proposal":"59cd1c4aa9dce32de8d29069","name":"Ryan Keller","netID":"rykeller","role":"organization","title":"j","phone":"j"}
+09:01:58 - info: LOGS: Logging services enabled
+09:02:49 - info: LOGS: Logging services enabled - C:\Users\Keller\STF-Refresh\logs/-STF-DEV.log
+09:04:55 - info: LOGS: Logging services enabled - C:\Users\Keller\STF-Refresh\logs/-STF-DEV.log
+09:05:38 - info: LOGS: Logging services enabled - C:\Users\Keller\STF-Refresh\logs/-STF-DEV.log
+09:07:15 - info: LOGS: Logging services enabled - C:\Users\Keller\STF-Refresh\logs
+09:09:29 - info: LOGS: Logging services enabled - C:\Users\Keller\STF-Refresh\logs
+09:12:08 - info: LOGS: Logging services enabled - C:\Users\Keller\STF-Refresh\logs
+09:12:46 - info: LOGS: Logging services enabled - C:\Users\Keller\STF-Refresh\logs
+09:22:08 - verbose: Anonymous: POST for new proposal:
+{"organization":"h","budget":"d"}
+09:22:08 - verbose: Anonymous: POST for new contact:
+{"proposal":"59cd21b008c684276c271312","name":"Ryan Keller","netID":"rykeller","role":"organization","title":"h","phone":"h"}

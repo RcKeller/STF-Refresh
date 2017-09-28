@@ -1,4 +1,7 @@
 import { Router } from 'express'
+import { Log } from '../../integrations'
+import _ from 'lodash'
+import config from 'config'
 
 /*
 CORE RESTful CONTROLLER:
@@ -16,9 +19,11 @@ export default class REST {
   */
   constructor (model, key) {
     this.model = model
+    this.name = model.modelName.toLowerCase()
     this.key = key
     //  TODO: Consider adding a param for populate fields that are autopopulated when mutations are returned.
-    console.log(`REST: Instantiated controller: ${model.modelName.toLowerCase()}s, keyed by ${this.key}`)
+    console.log(`REST: Instantiated controller: ${this.name}s, keyed by ${this.key}`)
+    this.logUserAction = this.logUserAction.bind(this)
   }
 
   // Returns a function that will write the result as a JSON to the response
@@ -136,13 +141,23 @@ export default class REST {
   AUTH: Require netIDs for certain routes (POST/PATCH/DELETE)
   ***** */
   requireNetID (req, res, next, loginUrl = '/login') {
-    console.log('ISAUTH', req.isAuthenticated())
-    console.log('TYPEOF', typeof req.isAuthenticated)
-    console.log('SESSION', req.session)
-    console.log('TYPEOF NEXT', typeof next)
+    if (config.has('prod')) {
+      Log.debug(`ISAUTH: ${req.isAuthenticated()}`)
+      Log.debug(`TYPEOF: ${typeof req.isAuthenticated}`)
+      Log.debug(`SESSION OBJ: ${req.session}`)
+    }
     // req.isAuthenticated()
     //   ? return next()
     //   : res.redirect(loginUrl)
+    return next()
+  }
+  logUserAction (req, res, next, name, protocol) {
+    Log.userAction(
+      _.get(req, 'session.passport.user.netID', 'Anonymous'),
+      protocol,
+      req.params && req.params.key ? `${name} ${req.params.key}` : `new ${name}`,
+      req.body
+    )
     return next()
   }
 
@@ -154,39 +169,50 @@ export default class REST {
   api () {
     const router = new Router()
     //  READ
-    router.get('/', (req, res) => {
-      this
-        .getAll(req.query)
-        .then(this.ok(res))
-        .then(null, this.fail(res))
-    })
-    router.get('/:key', (req, res) => {
-      this
-        .get(req.params.key, req.query)
-        .then(this.ok(res))
-        .then(null, this.fail(res))
-    })
+    router.get('/',
+      (req, res) => {
+        this
+          .getAll(req.query)
+          .then(this.ok(res))
+          .then(null, this.fail(res))
+      })
+    router.get('/:key',
+      (req, res) => {
+        this
+          .get(req.params.key, req.query)
+          .then(this.ok(res))
+          .then(null, this.fail(res))
+      })
     //  CREATE
-    router.post('/', this.requireNetID, (req, res) => {
-      this
-        .post(req.body, req.query)
-        .then(this.ok(res))
-        .then(null, this.fail(res))
-    })
+    router.post('/',
+      this.requireNetID,
+      (req, res, next) => this.logUserAction(req, res, next, this.name, 'POST'),
+      (req, res) => {
+        this
+          .post(req.body, req.query)
+          .then(this.ok(res))
+          .then(null, this.fail(res))
+      })
     //  UPDATE
-    router.patch('/:key', this.requireNetID, (req, res) => {
-      this
-        .patch(req.params.key, req.body, req.query)  // query?
-        .then(this.ok(res))
-        .then(null, this.fail(res))
-    })
+    router.patch('/:key',
+      this.requireNetID,
+      (req, res, next) => this.logUserAction(req, res, next, this.name, 'PATCH'),
+      (req, res) => {
+        this
+          .patch(req.params.key, req.body, req.query)  // query?
+          .then(this.ok(res))
+          .then(null, this.fail(res))
+      })
     //  DELETE
-    router.delete('/:key', this.requireNetID, (req, res) => {
-      this
-        .delete(req.params.key, req.query)
-        .then(this.ok(res))
-        .then(null, this.fail(res))
-    })
+    router.delete('/:key',
+      this.requireNetID,
+      (req, res, next) => this.logUserAction(req, res, next, this.name, 'DELETE'),
+      (req, res) => {
+        this
+          .delete(req.params.key, req.query)
+          .then(this.ok(res))
+          .then(null, this.fail(res))
+      })
 
     return router
   }

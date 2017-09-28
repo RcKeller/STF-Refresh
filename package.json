@@ -127,6 +127,7 @@
     "webpack-dev-middleware": "1.11.0",
     "webpack-hot-middleware": "^2.18.0",
     "webpack-manifest-plugin": "^1.1.2",
-    "winston": "^2.3.1"
+    "winston": "^2.3.1",
+    "winston-daily-rotate-file": "^1.7.2"
   }
 }

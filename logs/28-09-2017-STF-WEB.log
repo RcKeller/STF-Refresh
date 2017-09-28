@@ -1,0 +1,60 @@
+08:03:46 - info: LOGS: Logging services enabled
+08:03:46 - info: TESTING INFO
+08:03:46 - info: TESTING LOG
+08:05:37 - info: LOGS: Logging services enabled
+08:05:37 - info: TESTING INFO
+08:05:37 - info: TESTING LOG
+08:15:47 - info: LOGS: Logging services enabled
+08:15:47 - info: TESTING INFO
+08:15:47 - info: TESTING LOG
+08:16:13 - info: LOGS: Logging services enabled
+08:16:13 - info: TESTING INFO
+08:16:13 - info: TESTING LOG
+08:18:17 - info: LOGS: Logging services enabled
+08:18:17 - info: TESTING INFO
+08:18:17 - info: TESTING LOG
+08:21:58 - info: LOGS: Logging services enabled
+08:21:58 - info: TESTING INFO
+08:21:58 - info: TESTING LOG
+08:24:25 - info: LOGS: Logging services enabled
+08:24:25 - info: TESTING INFO
+08:24:25 - info: TESTING LOG
+08:28:47 - info: LOGS: Logging services enabled
+08:28:47 - info: TESTING INFO
+08:28:47 - info: TESTING LOG
+08:29:53 - verbose: testNetID: PROTOCOL for proposal:
+[object Object]
+08:29:53 - verbose: testNetID: PROTOCOL for contact:
+[object Object]
+08:32:12 - info: LOGS: Logging services enabled
+08:32:12 - info: TESTING INFO
+08:32:12 - info: TESTING LOG
+08:33:18 - verbose: testNetID: PROTOCOL for proposal:
+{"organization":"j","budget":"j"}
+08:33:19 - verbose: testNetID: PROTOCOL for contact:
+{"proposal":"59cd163e6210da3780fcd1c5","name":"Ryan Keller","netID":"rykeller","role":"organization","title":"j","phone":"jj"}
+08:45:17 - info: LOGS: Logging services enabled
+08:45:17 - info: TESTING INFO
+08:45:17 - info: TESTING LOG
+08:45:48 - verbose: Anonymous: PATCH for proposal:
+{"proposal":"59cd163e6210da3780fcd1c5","title":"jjj","category":"j","uac":true}
+08:46:52 - verbose: Anonymous: PATCH for proposal:
+{"proposal":"59cd163e6210da3780fcd1c5","title":"jjjjjnkjn","category":"Frontier Technology","uac":true}
+08:49:48 - info: LOGS: Logging services enabled
+08:49:48 - info: TESTING INFO
+08:49:48 - info: TESTING LOG
+08:50:22 - verbose: Anonymous: PATCH for proposal ID: 59cd163e6210da3780fcd1c5:
+{"proposal":"59cd163e6210da3780fcd1c5","title":"TESTING PARAMS","category":"Frontier Technology","uac":true}
+08:52:56 - info: LOGS: Logging services enabled
+08:52:56 - info: TESTING INFO
+08:52:56 - info: TESTING LOG
+08:55:04 - verbose: Anonymous: POST for proposal undefined:
+{"organization":"jnjk","budget":"jk"}
+08:55:04 - verbose: Anonymous: POST for contact undefined:
+{"proposal":"59cd1b58b00e952cb0d92c8e","name":"Ryan Keller","netID":"rykeller","role":"budget","title":"njk","phone":"nk"}
+08:56:00 - info: LOGS: Logging services enabled
+08:56:00 - info: TESTING INFO
+08:56:00 - info: TESTING LOG
+08:56:23 - info: LOGS: Logging services enabled
+08:56:23 - info: TESTING INFO
+08:56:23 - info: TESTING LOG
