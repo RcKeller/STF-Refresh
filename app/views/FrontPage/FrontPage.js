@@ -7,9 +7,9 @@ const Item = Timeline.Item
 
 import styles from './FrontPage.css'
 @connect(state => ({
-    stage: state.config && state.config.stage,
-    news: state.config && state.config.news,
-    timeline: state.config && state.config.timeline
+  stage: state.config.stage,
+  news: state.config.news,
+  timeline: state.config.timeline
 }))
 class FrontPage extends React.Component {
   render (

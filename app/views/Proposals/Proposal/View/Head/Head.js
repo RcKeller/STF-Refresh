@@ -45,7 +45,10 @@ class Head extends React.Component {
               message={<span><b>Tri-Campus</b>: This is a Universal Access Committe (UAC) proposal</span>}
             />}
             <hr />
-            <ul>
+            <ul style={{
+              listStyleType: 'disc',
+              listStylePosition: 'inside'
+            }}>
               {contacts.map((c, i) => (
                 <li key={i}>
                   <b>{`${c.role[0].toUpperCase() + c.role.slice(1)} Contact: `}</b>

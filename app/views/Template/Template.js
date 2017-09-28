@@ -134,7 +134,6 @@ class Template extends React.Component {
                 selectedKeys={[nextLocation]}
                 // onClick={this.handleNavigate}
                 onClick={({ key }) => key.startsWith('/') && router.push(key)}
-                style={screen.lessThan.large ? { overflowY: 'auto' } : {}}
               >
                 <Item key='/proposals'>
                   <Icon type='solution' /><span className='nav-text'>Proposals</span>

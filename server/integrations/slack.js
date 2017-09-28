@@ -33,7 +33,7 @@ class Bot {
     //  Bot avatar
     this.icon_emoji = ':calcifer:'
     //  Channels & Users to mention in announcements
-    this.channel = 'test'
+    this.channel = config.has('prod') ? 'general' : 'test'
     this.developer = 'stfcweb'
     this.proposalOfficer = 'stfagent'
     this.financeManager = 'techfee'

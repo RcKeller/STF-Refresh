@@ -90,10 +90,6 @@ ANT Design theme overrides
   line-height: 0;
   height: 60px;
   z-index: 1020;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-  @media (min-width: 768px) {
-    // height: 90px;
-  }
 }
 .ant-menu-horizontal {
   display: flex;
@@ -112,6 +108,24 @@ ANT Design theme overrides
   background: white;
   overflow-y: visible;
   z-index: 9999;
+}
+// Side nav
+.rc-drawer-open.rc-drawer.rc-drawer-left .rc-drawer-sidebar .ant-menu {
+  border: none;
+}
+.rc-drawer-open.rc-drawer.rc-drawer-left .rc-drawer-sidebar ul {
+  overflow-x: hidden;
+}
+// Top nav
+.rc-drawer.rc-drawer-top .rc-drawer-sidebar {
+  -webkit-box-shadow: 0 8px 6px -6px #999;
+  -moz-box-shadow: 0 8px 6px -6px #999;
+  box-shadow: 0 8px 6px -6px #999;
+  z-index: 1020;
+  // box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+.rc-drawer-content {
+  overflow-x: hidden;
 }
 // .rc-drawer-top {
 //   top: 60px !important;

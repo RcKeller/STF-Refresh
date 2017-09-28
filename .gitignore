@@ -8,3 +8,4 @@ compiled
 .vscode
 config/*
 security
+logs

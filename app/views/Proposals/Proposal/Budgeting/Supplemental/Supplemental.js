@@ -112,10 +112,56 @@ class Supplemental extends React.Component {
       <section>
         <h1>Request Supplemental</h1>
         <h6>For proposals that face an unforseen and minor increase in budgetary needs</h6>
-        <p>Supplemental awards help cover common scenarios where equipment models have changed or project needs have changed slightly in comparison to an original proposal. We understand that these things happen, so supplementals requests are how you can request more funding. These are voted on by the STF committee in a separate, less intensive process.</p>
-        <Alert type='info' banner showIcon={false}
+        <p>
+          Welcome to the Request Supplemental page. The purpose of a Supplemental is to request additional funding, additional technology, and/or modify specific details regarding the technology listed in the original proposal, <b>due to needs due to circumstances that could not have been reasonably anticipated.</b>
+
+          We've copied all your proposal's items over into this new supplemental. Please use this pages to change items to reflect changes (or lack thereof) for all items initially funded, as well as add requests for additional technology.
+        </p>
+        <Alert type='warning' showIcon banner
+          message={<span><b>Important:</b> The STF Committee will not consider Supplemental requests which ask for funding and/or technology outside of the range of the original proposal.</span>}
+        />
+        <p>
+          Common acceptable reasons for a Supplemental request may include situations such as:
+          <ul style={{
+            listStyleType: 'circle',
+            listStylePosition: 'inside'
+          }}>
+            <li>
+              The cost of an item(s) changes due to unforeseen market changes
+            </li>
+            <li>
+              Manufacturer discontinues item so an item of comparable capability is requested instead
+            </li>
+          </ul>
+        </p>
+        <p>
+          Unacceptable reasons to ask for a supplemental may include:
+          <ul style={{
+            listStyleType: 'circle',
+            listStylePosition: 'inside'
+          }}>
+            <li>
+              Requests for additional technology outside the scope of the original project
+            </li>
+            <li>
+              Requests for student labor
+            </li>
+            <li>
+              Underspending of budget and subsequent request for multiples of item and/or more technology
+            </li>
+            <li>
+              Reimbursement for items purchased from another budget
+            </li>
+          </ul>
+        </p>
+        <p>
+          Once you submit, the committee will consider your proposal as soon as possible, usually by the next week's meeting.
+
+          If you have additional questions, please contact the STF Proposal Officer at stfagent@uw.edu
+        </p>
+        <Alert type='info' showIcon banner
           message='Important Note reg. Award Supplements'
-          description='If you have underspent your award, there is no consequence - simply fill out the above budget report so we can log your spending. If your project has changed significantly, we ask that you create a new proposal instead of requesting a large supplement. By clicking "I agree", you signify that you understand these conditions.'
+          description='If you have underspent your award, there is no consequence - simply fill out the above budget report so we can log your spending. If your project has changed significantly, we ask that you create a new proposal instead of requesting a large supplement. By requesting a supplement, you signify that you understand these conditions.'
         />
         <FormItem label='Request Title' {...layout} >
           {form.getFieldDecorator('title')(
