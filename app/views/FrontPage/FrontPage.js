@@ -21,7 +21,7 @@ class FrontPage extends React.Component {
       <article className={styles['page']}>
         <Helmet title='Home' />
         <section>
-          <Row type='flex' justify='space-around' >
+          <Row type='flex' justify='space-between' gutter={32} >
             <Col className='gutter-row' span={24} md={16}>
               <h1>The UW Student Technology Committee</h1>
               <p>

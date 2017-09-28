@@ -18,7 +18,7 @@ export default (app) => {
   app.set('port', port)
 
   // Secure your Express apps by setting various HTTP headers. Documentation: https://github.com/helmetjs/helmet
-  if (env === 'prod') {
+  if (env === 'production') {
     app.use(gzip())
     app.use(helmet())
     app.use(cookieParser(config.get('cookieSecret')))
