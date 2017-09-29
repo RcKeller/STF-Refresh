@@ -157,6 +157,7 @@ Proposals extends React.Component {
         ),
         filterDropdown: (
           <Input
+            size='large'
             ref={ele => this.searchInput = ele}
             placeholder='Search title'
             value={this.state.searchText}

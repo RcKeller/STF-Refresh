@@ -43,9 +43,7 @@ const ItemGroup = Menu.ItemGroup
 
 import Drawer from 'rc-drawer'
 
-// import Header from './Header/Header'
 import Login from './Login/Login'
-// import Nav from './Nav/Nav'
 
 import '../../css/main'
 import styles from './Template.css'

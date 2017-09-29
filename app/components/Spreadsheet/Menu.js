@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Menu } from 'react-data-grid-addons'
 const { ContextMenu, MenuItem, SubMenu } = Menu
 
-import styles from './Menu.css' //  global, doesn't work if hashed.
+// import styles from './Menu.css' //  global, doesn't work if hashed.
 class MyMenu extends React.Component {
   static propTypes = {
     onRowDelete: PropTypes.func.isRequired,
