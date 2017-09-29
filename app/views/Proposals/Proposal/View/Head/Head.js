@@ -77,15 +77,17 @@ class Head extends React.Component {
                      : <Alert banner showIcon
                        type={received > 0 ? 'success' : 'error'}
                        message={<b>{received ? `${status} - ${currency(received)}` : status}</b>}
-                       description={
+                       description={<div>
                          <Progress
                            percent={parseInt(received / asked * 100)}
                          />
+                         <span>{decision.body}</span>
+                       </div>
                        } />
                      )
                    : <Alert banner showIcon type='error'
                      message={<b>{status}</b>}
-                     description={decision.body}
+                     description={decision.body || 'Unfortunately, this proposal was denied by the committee. Decisions are issued based on student need and benefits. Authors are welcome to propose partial / alternative budgets or suggest a new project in the next cycle.'}
                     />
                    )
                : <Alert banner showIcon type='info'

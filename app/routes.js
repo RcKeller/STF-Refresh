@@ -27,7 +27,6 @@ const SplitVoting = (l, c) => require.ensure([], () => c(null, require('./views/
 const SplitDocket = (l, c) => require.ensure([], () => c(null, require('./views/STF/Docket/Docket').default))
 const SplitConfig = (l, c) => require.ensure([], () => c(null, require('./views/STF/Config/Config').default))
 
-const LoginCallbackRoute = () => <div>Redirecting...</div>
 /*
  * @param {Redux Store}
  * We require store as an argument here because we wish to get
@@ -79,6 +78,7 @@ export default (store) => {
   BUG: UWShib is redirecting many users to /login/undefined after successful auth.
   This is a client (thus server because SSR) sided redirect to address the issue as I find the root cause.
   */
+  const LoginCallbackRoute = () => <div>Redirecting...</div>
   const loginCallbackPatch = (nextState, replace, callback) => {
     if (typeof window === 'object') {
       try {

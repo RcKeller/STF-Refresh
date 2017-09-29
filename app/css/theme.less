@@ -91,7 +91,6 @@ ANT Design theme overrides
   height: 60px;
   z-index: 1020;
   overflow-x: hidden;
-  // max-width: 100vw;
 }
 .ant-menu-horizontal {
   display: flex;
@@ -128,6 +127,11 @@ ANT Design theme overrides
 }
 .rc-drawer-content {
   overflow-x: hidden;
+  @media only screen and (min-width : 1360px) {
+    background-image: url('../images/circuit.png');
+    background-repeat: no-repeat;
+    background-size:cover;
+  }
 }
 @layout-sider-background  : white;
 
