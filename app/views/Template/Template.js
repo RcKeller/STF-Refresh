@@ -128,6 +128,7 @@ class Template extends React.Component {
             }
             sidebar={
               <Menu
+                theme='dark'
                 mode={screen.lessThan.large ? 'inline' : 'horizontal'}
                 selectedKeys={[nextLocation]}
                 // onClick={this.handleNavigate}

@@ -127,15 +127,34 @@ ANT Design theme overrides
 // .ant-menu-horizontal .ant-menu-item-active {
 //   color: white !important;
 // }
+.ant-menu-dark,
+.ant-menu-dark .ant-menu-item,
+.ant-menu-dark .ant-menu-sub {
+  background-color: @dark-gray;
+  // color: @gold
+}
+.ant-menu.ant-menu-dark .ant-menu-item-selected,
+.ant-menu.ant-menu-dark .ant-menu-submenu-selected {
+  background-color: @dark-gray;
+  color: @gold;
+  font-weight: 600;
+}
+.ant-menu-horizontal > .ant-menu-item,
+.ant-menu-horizontal > .ant-menu-submenu {
+  top: 0;
+}
 .ant-menu-inline {
   min-width: 230px;
+  .ant-menu-item-group-title {
+    background-color: @dark-gray;
+  }
 }
 //  Fix rc-drawer, make it responsive to the header
 .rc-drawer {
   top: 60px;
 }
 .rc-drawer-sidebar {
-  background: white;
+  background-color: @dark-gray;
   overflow-y: visible;
   z-index: 9999;
 }
@@ -151,24 +170,14 @@ ANT Design theme overrides
 }
 // Top nav
 .rc-drawer.rc-drawer-top .rc-drawer-sidebar {
-  // -webkit-box-shadow: 0 8px 6px -6px #999;
-  // -moz-box-shadow: 0 8px 6px -6px #999;
-  // box-shadow: 0 8px 6px -6px #999;
   z-index: 1020;
-  // box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 }
 .rc-drawer-content {
   overflow-x: hidden;
   @media only screen and (min-width : 1360px) {
-    // background-image: url('../images/circuit.png');
-    // background-repeat: no-repeat;
-    // background-size:cover;
-
     background-image: url('../images/circuit.png');
     background-repeat: no-repeat;
     background-size: 100%;
-    // bottom: 0;
-    // background-size: inherit 100vw;
   }
 }
 @layout-sider-background  : white;
@@ -216,10 +225,6 @@ body {
 .ant-tabs-nav-container {
   margin-left: -1px;
 }
-//  Heavy tab fonts
-// .ant-tabs-nav .ant-tabs-tab {
-//   font-weight: 600;
-// }
 
 //  Break words in table cells.
 .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
@@ -247,9 +252,9 @@ body {
 
 //  Editable tables
 .react-grid-Cell:focus {
-  outline-color: @gold !important;
+  outline-color: @secondary-color !important;
   .drag-handle {
-    background: @metallic-gold !important;
+    background: @primary-color !important;
   }
 }
 .editable-row-text {
@@ -272,14 +277,6 @@ body {
     min-width: 100px;
   }
 }
-// .react-context-menu-item {
-//   // background-color: #FFF !important;
-//     background-color: @dark-gray;
-//     color: white;
-// }
-// .react-context-menu .react-context-menu {
-//   min-width: 100px;
-// }
 .react-context-menu-link {
     display: inline-block;
     width: 100%;
