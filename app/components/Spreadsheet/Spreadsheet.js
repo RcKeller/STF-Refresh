@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import _ from 'lodash'
 
 import ReactDataGrid from 'react-data-grid'
 import { Alert, Button, Icon } from 'antd'
@@ -42,13 +43,17 @@ class Spreadsheet extends React.Component {
     this.state = state
   }
   componentWillReceiveProps (nextProps) {
-    //  NOTE: Fixed a bug here with prop updates, check later for future enhancement.
     const { data } = nextProps
-    if (Array.isArray(data) && data.length >= 1) {
+    /*
+    We use lodash to do a deep equal, this is because data !=== this.props.data will always be true
+    Otherwise, we have bugs where spreadsheets rerender for no good reason.
+    */
+    if (Array.isArray(data) && !_.isEqual(data, this.props.data)) {
       let rows = data || []
       this.setState({ rows })
     }
   }
+
   rowGetter = (i) =>
     this.state.rows[i]
 

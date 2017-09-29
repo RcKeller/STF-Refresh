@@ -1,10 +1,8 @@
 @import '../../../css/layout';
 @import '../../../css/colors';
 .login {
-  /*margin-left: auto*/
-  position: fixed;
-  top: 0;
-  right: 0;
+  margin-left: auto;
+  /*max-width: 100px;*/
 }
 .button {
   /*Per branding, 15* clip: https://www.washington.edu/brand/graphic-elements/angled-background/ */

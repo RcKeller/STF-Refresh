@@ -111,7 +111,7 @@ class Report extends React.Component {
     let data = (report && report.items)
       ? report.items
       : manifest.items.map((item) =>
-        _.omit(item, ['_id', '__v', 'manifest', 'description', 'priority', 'tax', 'report']))
+        _.omit(item, ['_id', '__v', 'manifest', 'description', 'priority', 'tax']))
     const newData = { quantity: 1, price: 0 }
     const total = report && report.total
     return (

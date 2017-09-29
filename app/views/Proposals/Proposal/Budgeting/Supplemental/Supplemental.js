@@ -104,7 +104,7 @@ class Supplemental extends React.Component {
     //  Make sure to omit mongo data, preventing the original from being mutated.
     let data = manifest.items
       ? manifest.items.map((item) =>
-        _.omit(item, ['_id', '__v', 'manifest', 'description', 'priority', 'tax', 'report']))
+        _.omit(item, ['_id', '__v', 'manifest', 'description', 'priority', 'report']))
       : []
     const newData = { tax: 10.1, quantity: 1, price: 0 }
     const total = manifest && manifest.total
@@ -112,14 +112,14 @@ class Supplemental extends React.Component {
       <section>
         <h1>Request Supplemental</h1>
         <h6>For proposals that face an unforseen and minor increase in budgetary needs</h6>
+        <Alert type='warning' showIcon={false} banner
+          message={<span><b>Important:</b> The STF Committee will not consider Supplemental requests which ask for funding and/or technology outside of the range of the original proposal.</span>}
+        />
         <p>
           Welcome to the Request Supplemental page. The purpose of a Supplemental is to request additional funding, additional technology, and/or modify specific details regarding the technology listed in the original proposal, <b>due to needs due to circumstances that could not have been reasonably anticipated.</b>
 
           We've copied all your proposal's items over into this new supplemental. Please use this pages to change items to reflect changes (or lack thereof) for all items initially funded, as well as add requests for additional technology.
         </p>
-        <Alert type='warning' showIcon banner
-          message={<span><b>Important:</b> The STF Committee will not consider Supplemental requests which ask for funding and/or technology outside of the range of the original proposal.</span>}
-        />
         <p>
           Common acceptable reasons for a Supplemental request may include situations such as:
           <ul style={{

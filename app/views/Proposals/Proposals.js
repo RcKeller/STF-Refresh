@@ -138,7 +138,7 @@ Proposals extends React.Component {
         ),
         filters: [
           { text: 'Winter', value: 'Winter' },
-          { text: 'Fall', value: 'Fall' },
+          { text: 'Autumn', value: 'Autumn' },
           { text: 'Spring', value: 'Spring' },
           { text: 'Summer', value: 'Summer' }
         ],
@@ -220,11 +220,6 @@ Proposals extends React.Component {
         title: 'Awarded',
         dataIndex: 'received',
         key: 'received',
-        // render: (text, record) =>
-        //   record.received
-        //     ? <Progress type='circle' width={70}
-        //       percent={parseInt(record.received / record.asked * 100)} />
-        //     : <span />,
         render: (text, record) =>
           record.received
             ? <Progress type='circle' width={70}
@@ -235,8 +230,10 @@ Proposals extends React.Component {
                   percent={0} />
                 : <em>N/A</em>,
         sorter: (a, b) =>
-          a.received || 0 / a.asked -
-            b.received || 0 / b.asked,
+          a.received
+            ? (a.received || 0) / (a.asked || 1) -
+            (b.received || 0) / (b.asked || 1)
+            : -a.asked,
         width: 110
       }
     ]

@@ -11,6 +11,7 @@ const rules = require('./rules')
 const plugins = require('./plugins')
 const externals = require('./externals')
 const resolve = require('./resolve')
+const vendor = ['react', 'react-dom', 'react-router', 'react-helmet', 'redux', 'react-redux', 'react-router-redux', 'redux-query', 'reselect']
 
 module.exports = (env = {}) => {
   const isProduction = process.env.NODE_ENV === 'production'
@@ -43,7 +44,7 @@ module.exports = (env = {}) => {
     context: PATHS.app,
     entry: {
       app: ['./client'],
-      vendor: ['react', 'react-dom', 'react-router', 'react-helmet', 'redux', 'react-router-redux', 'redux-query', 'reselect', 'react-redux']
+      vendor
     },
     node,
     output: {
@@ -62,7 +63,7 @@ module.exports = (env = {}) => {
     context: PATHS.app,
     entry: {
       app: ['./client', hotMiddlewareScript],
-      vendor: ['react', 'react-dom', 'react-router', 'redux', 'react-router-redux', 'react-helmet']
+      vendor
     },
     node,
     output: {

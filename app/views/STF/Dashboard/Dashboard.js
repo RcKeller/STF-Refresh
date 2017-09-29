@@ -17,11 +17,14 @@ import SubTable from './SubTable/SubTable'
 
 //  Status indicator mapping for badge components
 const indicators = {
-  'In Review': 'default',
-  'Fully Funded': 'success',
-  'Partially Funded': 'success',
-  'Revisions Requested': 'warning',
-  Denied: 'error'
+  'Submitted': 'default',
+  'Funded': 'success',
+  'Partially Funded': 'warning',
+  'In Review': 'warning',
+  'Awaiting Decision': 'warning',
+  'Denied': 'error',
+  'Draft': 'error',
+  'Withdrawn': 'error'
 }
 const currency = number =>
   number.toLocaleString('en-US', {
@@ -219,7 +222,7 @@ class Dashboard extends React.Component {
           <span>
             {text ? currency(text) : '$0'}
             <br />
-            <Badge status={indicators[record.proposal.status] || 'default'} text={record.proposal.status} />
+            <Badge status={indicators[record.proposal.status] || 'default'} text={record.proposal.status.split(' ')[0]} />
           </span>
         ),
         width: 120,
@@ -243,6 +246,9 @@ class Dashboard extends React.Component {
           // console.warn(record.manifest.report.total, record.proposal.received, percentage)
           if (Number.isNaN(percentage)) percentage = 0
           // else if (percentage > 100) percentage = 100
+          let status = 'active'
+          if (percentage === 100) status = 'success'
+          if (percentage > 100) status = 'exception'
           return (
             <span>
               {text ? currency(text) : 'N/A'}
@@ -250,8 +256,8 @@ class Dashboard extends React.Component {
               <div style={{ width: 100 }}>
                 <Progress
                   percent={percentage <= 100 ? percentage : 100}
-                  status={percentage <= 100 ? 'success' : 'exception'}
-                  strokeWidth={5} />
+                  status={status}
+                  strokeWidth={10} />
               </div>
             </span>
           )

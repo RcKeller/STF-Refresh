@@ -59,6 +59,32 @@ const reportColumns = [{
 }
 ]
 
+const contactColumns = [{
+  title: 'Name',
+  dataIndex: 'name',
+  key: 'name',
+  width: 200
+}, {
+  title: 'Title',
+  dataIndex: 'title',
+  key: 'title'
+}, {
+  title: 'NetID',
+  dataIndex: 'netID',
+  key: 'netID',
+  width: 100
+}, {
+  title: 'Phone',
+  dataIndex: 'phone',
+  key: 'phone',
+  width: 130
+}, {
+  title: 'Mail',
+  dataIndex: 'mailbox',
+  key: 'mailbox',
+  width: 80
+}]
+
 class SubTable extends React.Component {
   static propTypes = {
     manifest: PropTypes.object,
@@ -69,68 +95,78 @@ class SubTable extends React.Component {
   ) {
     return (
       <div style={{ backgroundColor: '#fff' }}>
-        <Row type='flex' justify='space-between' align='bottom'>
-          <Col className='gutter-row' span={24} lg={12}>
-            <h2>Award</h2>
-            <h6><em>{`${_.capitalize(manifest.type)} Proposal`}</em></h6>
-            <h5>{manifest.title}</h5>
-            <p>{manifest.body}</p>
-          </Col>
-          <Col className='gutter-row' span={24} lg={12}>
-            {report &&
-            <div>
-              <h2>Expenditures</h2>
-              <h5>{report.title}</h5>
-              <p>{report.body}</p>
-            </div>
-          }
-          </Col>
-        </Row>
-        <Row type='flex' justify='space-between' align='bottom'>
-          <Col className='gutter-row' span={24} lg={12}>
+        <Row type='flex' justify='space-between' align='top'>
+          <Col className='gutter-row' span={24} lg={report ? 12 : 24}>
+            <h1>Award</h1>
+            <h6>{`${_.capitalize(manifest.type)} - ${manifest.title || 'Untitled Award'}`}</h6>
             <Table id={manifest._id}
               columns={manifestColumns}
               dataSource={manifest.items || []}
-              size='small'
+              size='middle'
               pagination={false}
               bordered={false}
             />
             <h2>{`Total: ${currency(manifest.total)}`}</h2>
+            <p>{manifest.body || <em>No further information provided.</em>}</p>
           </Col>
-          {report
-            ? <Col className='gutter-row' span={24} lg={12}>
-              <Table id={report._id}
-                columns={reportColumns}
-                dataSource={report.items || []}
-                size='small'
-                pagination={false}
-                bordered={false}
-              />
-              <h2>{`Total: ${currency(report.total)}`}</h2>
-            </Col>
-            : <em>The author has not reported any expenditures.</em>
-          }
+          <Col className='gutter-row' span={24} lg={12}>
+            {report
+              ? <div>
+                <h1>Expense Report</h1>
+                <h6>{report.title}</h6>
+                {Array.isArray(report.items) && report.items > 0 &&
+                  <Table id={report._id}
+                    columns={reportColumns}
+                    dataSource={report.items || []}
+                    size='middle'
+                    pagination={false}
+                    bordered={false}
+                  />
+                }
+                {report.total && report.total > 0
+                  ? <h2>{`Total: ${currency(report.total)}`}</h2>
+                  : <h6><em>Legacy Report - no itemized expenses</em></h6>
+                }
+                <p>{report.body || <em>No further information provided.</em>}</p>
+              </div>
+              : <h1><em>No Reports Submitted</em></h1>
+            }
+          </Col>
         </Row>
         <hr />
-        <Collapse bordered={false} >
-          {contacts.map((c, i) => (
-            <Panel key={i} header={
-              <span>
-                {`${_.capitalize(c.role)} Contact: `}
-                <em>{`${c.name}, ${c.title}`}</em>
-              </span>
-            }>
-              <ul>
-                <li>NetID: {c.netID}</li>
-                <li>Phone: {c.phone}</li>
-                <li>Mailbox: {c.mailbox}</li>
-              </ul>
-            </Panel>
-          ))}
-        </Collapse>
+        <h2>Contact Information</h2>
+        {Array.isArray(contacts) && contacts.length > 0
+          ? <Table
+            columns={contactColumns}
+            dataSource={contacts || []}
+            size='small'
+            pagination={false}
+            bordered={false}
+          />
+          : <h6><em>No contact info available.</em></h6>
+        }
       </div>
     )
   }
 }
+/*
+
+{<Collapse bordered={false} >
+  {contacts.map((c, i) => (
+    <Panel key={i} header={
+      <span>
+        {`${_.capitalize(c.role)} Contact: `}
+        <em>{`${c.name}, ${c.title}`}</em>
+      </span>
+    }>
+      <ul>
+        <li>NetID: {c.netID}</li>
+        <li>Phone: {c.phone}</li>
+        <li>Mailbox: {c.mailbox}</li>
+      </ul>
+    </Panel>
+  ))}
+</Collapse>}
+*/
 
 export default SubTable

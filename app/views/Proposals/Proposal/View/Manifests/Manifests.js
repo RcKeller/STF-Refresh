@@ -48,7 +48,7 @@ class Manifests extends React.Component {
         title: 'Name',
         dataIndex: 'name',
         key: 'name',
-        render: text => <h5>{text}</h5>
+        render: text => <b>{text}</b>
       },
       { title: 'Price',
         dataIndex: 'price',
@@ -58,10 +58,10 @@ class Manifests extends React.Component {
         width: screen.greaterThan.medium ? 120 : 80,
         padding: 0
       },
-      { title: 'Quantity',
+      { title: '#',
         dataIndex: 'quantity',
         key: 'quantity',
-        width: 90
+        width: 50
       }
     ]
     const footer = () => <h2>{`Grand Total: ${currency(manifest.total || 0)}`}</h2>
@@ -94,7 +94,7 @@ class Manifests extends React.Component {
         }
         <Table dataSource={dataSource} sort
           size='middle'
-          columns={screen.lessThan.medium ? columns.slice(1, 4) : columns}
+          columns={screen.lessThan.medium ? columns.slice(0, 4) : columns}
           rowKey={record => record._id}
           //  The above will throw an error if using faker data, since duplicates are involved.
           expandedRowRender={screen.greaterThan.medium ? expandedRowRender : false}
