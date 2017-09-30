@@ -61,23 +61,24 @@ export const unpublishedProposals = createSelector(
   (proposals) => proposals
     .filter(({ published }) => !published)
 )
+
 export const myProposals = createSelector(
   [publishedProposals, user],
-  (proposals, user) => proposals
-    .filter(({ contacts }) => {
-      for (const c of contacts) {
-        return c.netID === user.netID
-      }
-    })
+  (proposals, user) =>
+    proposals.filter(({ contacts }) =>
+      Array.isArray(contacts)
+        ? contacts.findIndex(c => c.netID === user.netID) >= 0
+        : false
+    )
 )
 export const myDrafts = createSelector(
   [unpublishedProposals, user],
-  (proposals, user) => proposals
-    .filter(({ contacts }) => {
-      for (const c of contacts) {
-        return c.netID === user.netID
-      }
-    })
+  (proposals, user) =>
+    proposals.filter(({ contacts }) =>
+      Array.isArray(contacts)
+        ? contacts.findIndex(c => c.netID === user.netID) >= 0
+        : false
+    )
 )
 //  CONTACT INFORMATION & ROLES
 //  The first 4 contacts (selected in proposal drafts). Contains role prop if nonexistent
@@ -125,7 +126,6 @@ export const proposalDecision = createSelector(
   [proposalManifests],
   (manifests) => {
     let manifest = manifests.find(m => m && m.decision)
-    console.error(manifests, manifest)
     return manifest ? manifest.decision : {}
   }
 )

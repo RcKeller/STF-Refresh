@@ -70,6 +70,10 @@ class Introduction extends React.Component {
   render ({ form, categories, title, category, organization, uac } = this.props) {
     return (
       <div>
+        <Alert type='info' banner
+          message='Welcome to the 2017-2018 STF Proposal Application!'
+          description={<span>Questions or feedback? We're here to help. E-mail the proposal officer, Katie, at <a href='mailto:STFAgent@uw.edu'>STFAgent@uw.edu</a> with any questions.</span>}
+        />
         <h1>Introduction</h1>
         <Form onSubmit={this.handleSubmit}>
           <FormItem label='Title' {...layout} hasFeedback={feedback(form, 'title')} help={help(form, 'title')} >

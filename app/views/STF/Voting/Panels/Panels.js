@@ -71,19 +71,19 @@ class Panels extends React.Component {
             <hr />
             <hr />
             <Tabs defaultActiveKey='1'>
-              <TabPane tab={<b>Proposal</b>} key='1'>
+              <TabPane tab='Proposal' key='1'>
                 <Summary id={_id} />
               </TabPane>
-              <TabPane tab={<b>Scores</b>} key='2'>
+              <TabPane tab='Scores' key='2'>
                 <Scores id={_id} />
               </TabPane>
-              <TabPane disabled={!metrics && !voting && !decisions} tab={<b>Metrics</b>} key='3'>
+              <TabPane disabled={!metrics && !voting && !decisions} tab='Metrics' key='3'>
                 <Metrics id={_id} />
               </TabPane>
-              <TabPane disabled={!voting || !stf.member} tab={<b>Vote</b>} key='4'>
+              <TabPane disabled={!voting || !stf.member} tab='Vote' key='4'>
                 <Vote id={_id} />
               </TabPane>
-              <TabPane disabled={!decisions || !stf.admin} tab={<b>Decision (<em>Admin-Only</em>)</b>} key='5'>
+              <TabPane disabled={!decisions || !stf.admin} tab={<span>Decision (<em>Admin-Only</em>)</span>} key='5'>
                 <Decision id={_id} />
               </TabPane>
             </Tabs>

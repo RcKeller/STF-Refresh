@@ -289,15 +289,6 @@ Proposals extends React.Component {
         </h6>
       </div>
     )
-    // let responsiveColumns = columns
-    // const responsiveColumns = () => {
-    //   if (screen.lessThan.large && !screen.lessThan.medium) {
-    //     return [...columns.slice(0, 3), ...columns.slice(6)]
-    //   } else if (screen.lessThan.medium) {
-    //     return columns.slice(0, 3)
-    //   }
-    //   return columns
-    // }
     if (screen.lessThan.large && !screen.lessThan.medium) {
       columns = [...columns.slice(0, 3), ...columns.slice(6)]
     } else if (screen.lessThan.medium) {

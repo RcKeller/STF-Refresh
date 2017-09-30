@@ -38,7 +38,7 @@ class Budgeting extends React.Component {
           <em>This proposal has not received funding, so advanced budgeting tools are unavailable for now.</em>
         }
         <Tabs>
-          <TabPane disabled={approvedManifests.length <= 0} tab={<b>Expense Reporting</b>} key='1'>
+          <TabPane disabled={approvedManifests.length <= 0} tab='Expense Reporting' key='1'>
             <Tabs size='small' defaultActiveKey={`${approvedManifests.length - 1}`}>
               {approvedManifests.map((indexInStore, i) => (
                 <TabPane key={i} tab={<span>{_.capitalize(manifests[indexInStore].type)}<br />{`Award (#${++i})`}</span>} >
@@ -47,14 +47,14 @@ class Budgeting extends React.Component {
               ))}
             </Tabs>
           </TabPane>
-          <TabPane disabled={approvedManifests.length <= 0} tab={<b>Request Supplemental Funding</b>} key='2'>
+          <TabPane disabled={approvedManifests.length <= 0} tab='Supplemental Funding' key='2'>
             <Supplemental indexInStore={approvedManifests.length - 1} />
           </TabPane>
-          <TabPane tab={<b>Create Partial Budget</b>} key='3'>
+          <TabPane tab='Partial Budgets' key='3'>
             <Partial />
           </TabPane>
           {stf && stf.admin &&
-            <TabPane tab={<b>Auditing (<em>Admin-Only</em>)</b>} key='4'>
+            <TabPane tab={<span>Auditing (<em>Admin-Only</em>)</span>} key='4'>
               <Audit />
             </TabPane>
           }

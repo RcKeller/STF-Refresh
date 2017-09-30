@@ -113,9 +113,8 @@ class Summary extends React.Component {
                 </Collapse>
               </section>
             : <div>
-              <Alert type='info' banner showIcon={false}
-                message='Legacy Format'
-                description='Our proposal process has changed significantly since Summer 2017. To learn more about the current process, click here.'
+              <Alert type='info' banner showIcon
+                message='Legacy Proposal - No Project Plan'
               />
               <div>
                 {body.legacy && body.legacy.map((e, i) =>

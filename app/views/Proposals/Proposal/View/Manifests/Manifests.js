@@ -58,7 +58,7 @@ class Manifests extends React.Component {
         width: screen.greaterThan.medium ? 120 : 80,
         padding: 0
       },
-      { title: '#',
+      { title: 'Q',
         dataIndex: 'quantity',
         key: 'quantity',
         width: 50

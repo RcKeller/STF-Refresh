@@ -35,12 +35,12 @@ class Contacts extends React.Component {
   render ({ validate, contacts } = this.props) {
     return (
       <div>
-        <h1>Contact Information</h1>
-        <Alert type='warning'
+        <Alert type='info' banner
           message='Contact Responsibilities'
           description='
           As a contact, you will be responsible for the project during its lifecycle, which includes maintaining rapport with the committee and selecting a replacement contact should your university affilitation change (changes in leadership, graduation, etc). After this proposal is published, you will be responsible for selecting a replacement contact should the need arise via the "update" panel.'
         />
+        <h1>Contact Information</h1>
         <Row gutter={32}>
           {contacts.map((contact, i) => (
             <Col key={contact.role} className='gutter-row' xs={24} md={12} lg={6} >

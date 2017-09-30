@@ -69,9 +69,9 @@ class Signatures extends React.Component {
   render ({ form, contacts, link, user } = this.props) {
     return (
       <Form>
-        <Alert type='info' showIcon={false}
-          message='Share this link!'
-          description={<a href={link}>Your signers can access this page by signing in with their netID. This is the very last step!</a>}
+        <Alert type='info' banner
+          message='Have your authors sign!'
+          description={<span><a href={link}>Your signers can access this page by signing in with their netID.</a> You will NOT be able to sign as another person's netID.</span>}
         />
         <Row gutter={32}>
           <Col className='gutter-row' xs={24} sm={12}>
@@ -104,6 +104,9 @@ class Signatures extends React.Component {
                 </Col>
               ))}
             </Row>
+            {contacts && contacts.length > 1 && <Alert type='warning' banner
+              message='Other authors must log in separately to sign.'
+            />}
           </Col>
         </Row>
       </Form>

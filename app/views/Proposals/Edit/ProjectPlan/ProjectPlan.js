@@ -165,7 +165,7 @@ class ProjectPlan extends React.Component {
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>
-          <Alert type='info'
+          <Alert type='info' banner
             message='Project Plan Format'
             description='We are using a traditional project plan format for our proposals going forward. The committee has decided on this because it covers the questions traditionally addressed in Q&A, and ensures that proposals are comprehensive, covering the full lifecycle of the project. We understand that a lot of these questions may not apply directly to all cases, so for those fields, feel free to write "N/A".'
           />

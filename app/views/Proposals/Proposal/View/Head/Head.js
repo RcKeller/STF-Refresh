@@ -60,7 +60,7 @@ class Head extends React.Component {
             <hr />
           </Col>
           <Col className='gutter-row' xs={24} md={12} lg={8}>
-            {decision
+            {typeof decision.approved === 'boolean'
               ? (decision.approved
                   ? (screen.greaterThan.medium
                     ? <div style={{ textAlign: 'right' }}>
@@ -84,12 +84,12 @@ class Head extends React.Component {
                          <span>{decision.body}</span>
                        </div>
                        } />
-                     )
-                   : <Alert banner showIcon type='error'
-                     message={<b>{status}</b>}
-                     description={decision.body || 'Unfortunately, this proposal was denied by the committee. Decisions are issued based on student need and benefits. Authors are welcome to propose partial / alternative budgets or suggest a new project in the next cycle.'}
-                    />
                    )
+                 : <Alert banner showIcon type='error'
+                   message={<b>{status}</b>}
+                   description={decision.body || 'Unfortunately, this proposal was denied by the committee. Decisions are issued based on student need and benefits. Authors are welcome to propose partial / alternative budgets or suggest a new project in the next cycle.'}
+                  />
+               )
                : <Alert banner showIcon type='info'
                  message={<b>{status}</b>}
                  description='The committee has not issued a decision at this time.'

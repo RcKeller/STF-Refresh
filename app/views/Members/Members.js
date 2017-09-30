@@ -18,13 +18,13 @@ const admins = [{
   name: 'Katie McConville',
   title: 'Proposal Officer',
   from: '2017-2018',
-  bio: 'Bio here',
+  bio: '',
   duties: 'Responsible for advising proposal authors, reviewing proposals for completeness, and auditing previously funded proposals.'
 }, {
   name: 'Britt Arram Carlson',
   title: 'Director, Finance',
   from: '2017-2018',
-  bio: 'Bio here',
+  bio: '',
   duties: ' Responsible for scheduling, overseeing budgets, reviewing proposal reports, and general committee operations.'
 }, {
   name: 'Sara Torres',
