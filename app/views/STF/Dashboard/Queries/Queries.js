@@ -15,10 +15,7 @@ const AutoCompleteOption = AutoComplete.Option
 const FormItem = Form.Item
 const connectForm = Form.create()
 
-// // import the react-json-view component
-// import ReactJson from 'react-json-view'
-// // use the component in your app!
-// <ReactJson src={my_json_object} />
+import ReactJson from 'react-json-view'
 
 //  Legible names for DB models
 const modelNames = {
@@ -53,31 +50,21 @@ const modelJoins = {
 Department, funded, year, category
 */
 const modelWhere = {
-  'proposals': {
-    'Published': '{"published":true}',
-    'Unpublished': '{"published":true}',
-    'Draft': '{"status":"Draft"}',
-    'In Review': '{"status":"In Review"}',
-    'Funded': '{"status":"Funded"}',
-    'Partially Funded': '{"status":"Partially Funded"}',
-    'Denied': '{"status":"Denied"}',
-    'UAC': '{"uac":true}',
-    'Fast Track': '{"fast":true}',
-    'Autumn': '{"quarter":"Autumn"}',
-    'Winter': '{"quarter":"Winter"}',
-    'Spring': '{"quarter":"Spring"}',
-    'Summer': '{"quarter":"Summer"}'
-  },
-  // 'projects': [],
-  // 'contacts': [],
-  // 'manifests': [],
-  // 'items': [],
-  // 'comments': [],
-  // 'reviews': [],
-  // 'decisions': [],
-  // 'reports': [],
-  // 'users': [],
-  // 'blocks': []
+  proposals: {
+    'Published': { published: true },
+    'Unpublished': { published: false },
+    'Draft': { status: 'Draft' },
+    'In Review': { status: 'In Review' },
+    'Funded': { status: 'Funded' },
+    'Partially Funded': { status: 'Partially Funded' },
+    'Denied': { status: 'Denied' },
+    'UAC': { uac: true },
+    'Fast Track': { fast: true },
+    'Autumn': { quarter: 'Autumn' },
+    'Winter': { quarter: 'Winter' },
+    'Spring': { quarter: 'Spring' },
+    'Summer': { quarter: 'Summer' }
+  }
 }
 
 //  This is a decorator, a function that wraps another class (which in JS is essentially a func)
@@ -86,7 +73,7 @@ const modelWhere = {
     state => ({
       enums: state.config && state.config.enums,
       screen: state.screen,
-      db: state.db
+      querytool: state.db.querytool || {}
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
@@ -119,15 +106,23 @@ class Queries extends React.Component {
     let { model } = this.state
     form.validateFields((err, values) => {
       if (!err) {
-        //  Remove undefined:
-        Object.keys(values).forEach((key) => (values[key] == null) && delete values[key])
-        console.log(this.state, values)
-        api.getAsync(model, {...values})
+        let params = {}
+        console.log(values)
+        if (values.join === 'object') params.join = values.join
+        if (values.where) params.where = modelWhere[model][values.where]
+        params.transform = res => ({ querytool: res })
+        params.update = { querytool: (prev, next) => {
+          let newData = Object.assign({}, prev)
+          newData[model] = next
+          return newData
+        }}
+        params.force = true
+        api.getAsync(model, params)
       }
     })
   }
   render (
-    { form, enums, screen } = this.props,
+    { form, enums, screen, querytool } = this.props,
     { model } = this.state
   ) {
     return (
@@ -161,7 +156,7 @@ class Queries extends React.Component {
             )}
           </FormItem>
           {modelWhere[model] &&
-            <FormItem label={<Label title='Conditions'
+            <FormItem label={<Label title='Condition'
               message={'Also known as a "where" clause, these are preset conditions for filtering your queries, like finding published proposals. These conditions are not common and support will not extend to many models.'} />} >
               {form.getFieldDecorator('where')(
                 <Select style={{ minWidth: 150 }}>
@@ -179,6 +174,12 @@ class Queries extends React.Component {
               ><Icon type='api' />Query</Button>
           </FormItem>
         </Form>
+        <ReactJson
+          src={querytool[model]}
+          theme='shapeshifter:inverted'
+          displayDataTypes={false}
+          collapseStringsAfterLength={100}
+        />
       </div>
     )
   }
