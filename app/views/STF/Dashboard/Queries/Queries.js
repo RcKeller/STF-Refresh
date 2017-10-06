@@ -108,14 +108,10 @@ class Queries extends React.Component {
       if (!err) {
         let params = {}
         console.log(values)
-        if (values.join === 'object') params.join = values.join
+        if (Array.isArray(values.join)) params.join = values.join
         if (values.where) params.where = modelWhere[model][values.where]
         params.transform = res => ({ querytool: res })
-        params.update = { querytool: (prev, next) => {
-          let newData = Object.assign({}, prev)
-          newData[model] = next
-          return newData
-        }}
+        params.update = { querytool: (prev, next) => next }
         params.force = true
         api.getAsync(model, params)
       }
@@ -127,7 +123,7 @@ class Queries extends React.Component {
   ) {
     return (
       <div>
-        <p>Instructions here.</p>
+        <p>Query Tool can fetch and relate specific data from our backend based on simple conditions. For example, you can get proposals and the contact information for anything unpublished by the query <code>proposal, contacts, unpublished</code>. Please note, this feature is NOT a best practice for websites or databases. Page slowness and freezing is to be expected at this scale.</p>
         <Form layout='inline' onSubmit={this.handleSubmit}>
           <FormItem label={<Label title='Model'
             message={'Models are document stores in the database - standalone records pulled together to generate site content.'} />} >
@@ -175,7 +171,8 @@ class Queries extends React.Component {
           </FormItem>
         </Form>
         <ReactJson
-          src={querytool[model]}
+          name={model}
+          src={querytool}
           theme='shapeshifter:inverted'
           displayDataTypes={false}
           collapseStringsAfterLength={100}
