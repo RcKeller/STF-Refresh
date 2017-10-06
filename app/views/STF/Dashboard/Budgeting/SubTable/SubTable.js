@@ -2,8 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 
-import { Row, Col, Table, Collapse } from 'antd'
-const Panel = Collapse.Panel
+import { Row, Col, Table } from 'antd'
 
 const currency = number =>
   number.toLocaleString('en-US', {
