@@ -11,7 +11,40 @@ const capitalize = (str) => str.charAt(0).toUpperCase().concat(str.slice(1).toLo
 export default class Manifests extends REST {
   constructor () {
     super(Models.Manifest, '_id')
-    this.children = ['proposal', 'report', 'author', 'items', 'reviews', 'decision']
+    /*
+    Relations describe the association between subdocuments, their schema, and subscheme refs to parents
+    */
+    this.relations = {
+      proposal: {
+        model: Models.Proposal,
+        ref: 'manifests',
+        type: 'array'
+      },
+      report: {
+        model: Models.Report,
+        ref: 'manifest',
+        type: 'object'
+      },
+      author: {
+        model: Models.User
+      },
+      items: {
+        model: Models.Item,
+        ref: 'manifest',
+        type: 'object'
+      },
+      reviews: {
+        model: Models.Review,
+        ref: 'manifest',
+        type: 'array'
+      },
+      decision: {
+        model: Models.Decision,
+        ref: 'manifest',
+        type: 'object'
+      }
+    }
+    this.children = Object.keys(this.relations)
     this.populate = this.children.join(' ')
   }
   /* *****
@@ -77,23 +110,26 @@ export default class Manifests extends REST {
       .then(modelInstance => {
         console.log(modelInstance, Object.keys(modelInstance))
         //  https://stackoverflow.com/questions/7035092/how-to-update-embedded-document-in-mongoose
-        for (const attribute in data) {
-          if (data.hasOwnProperty(attribute) && attribute !== this.key && attribute !== '_id') {
-            modelInstance[attribute] = data[attribute]
-            if (this.children.includes(attribute)) {
-              console.log('CHILD ATTR', attribute)
-              if (Array.isArray(data[attribute])) {
+        //  Iterate over props, and if they are child refs...
+        for (let prop in data) {
+          if (data.hasOwnProperty(prop) && prop !== this.key && prop !== '_id') {
+            if (this.children.includes(prop)) {
+              console.log('CHILD ATTR', prop)
+              if (Array.isArray(data[prop])) {
                 console.log('IS ARRAY')
-                for (let e of data[attribute]) {
-                  e.manifest = id
-                  console.log('E', e, Object.keys(Models.Item), typeof Models.Item.findOneAndUpdate)
-                  Models.Item.findOneAndUpdate({ _id: e._id }, e, mongoOptions).exec()
+                const { model: propModel, ref, type } = this.relations[prop]
+                for (let e of data[prop]) {
+                  propModel.findOneAndUpdate({ _id: e._id }, e, mongoOptions).exec()
                 }
               } else {
                 console.log('not array')
+                const { model: propModel, ref, type } = this.relations[prop]
+                propModel.findOneAndUpdate({ _id: e._id }, e, mongoOptions).exec()
               }
-              modelInstance.markModified(attribute)
+              // modelInstance.markModified(prop)
             }
+          } else {
+            modelInstance[prop] = data[prop]
           }
         }
         return modelInstance.save()
