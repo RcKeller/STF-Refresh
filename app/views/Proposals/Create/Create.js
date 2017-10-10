@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
 import api from '../../../services'
 
-import { layout, feedback, help, rules } from '../../../util/form'
+import { layout, feedback, help, rules, Label } from '../../../util/form'
 
 import { Modal, Button, Form, Input, AutoComplete, Select, message } from 'antd'
 const FormItem = Form.Item
@@ -110,7 +110,7 @@ class Create extends React.Component {
           // TODO: Add disable submit button: ...htmlType='submit' disabled={disableSubmit(form)}
         >
           <p>Proposals are only available to users who are directly associated as a point of contact. There are four different kinds:</p>
-          <ul>
+          <ul style={{ listStyleType: 'circle' }}>
             <li>Primary Contact</li>
             <li>Budget Contact</li>
             <li>Organization Head/Leader</li>
@@ -138,18 +138,30 @@ class Create extends React.Component {
                 <Input />
               )}
             </FormItem>
-            <FormItem label='Organization' {...layout} hasFeedback={feedback(form, 'organization')} help={help(form, 'organization')} >
+            <FormItem label={<Label title='Org'
+              message={'Your department or RSO. A list of organizations and budget codes is provided for your convenience, but you may enter your own too.'} />}
+              {...layout} hasFeedback={feedback(form, 'organization')} help={help(form, 'organization')} >
               {form.getFieldDecorator('organization', rules.required)(
-                <AutoComplete onSelect={this.handleOrganizationSelect}>
+                <AutoComplete
+                  onSelect={this.handleOrganizationSelect}
+                  filterOption={(inputValue, option) => {
+                    console.log(inputValue, option)
+                    if (option.key.toUpperCase().indexOf(inputValue.toUpperCase()) > -1) return true
+                    if (organizations[option.key].indexOf(inputValue.toUpperCase()) > -1) return true
+                    return false
+                  }}
+                >
                   {Object.keys(organizations).map(org => (
                     <AutoCompleteOption key={org}>
-                      {`${org} - Budget ${organizations[org]}`}
+                      <span><b>{org}</b> - <em>{`Budget ${organizations[org]}`}</em></span>
                     </AutoCompleteOption>
                   ))}
                 </AutoComplete>
               )}
             </FormItem>
-            <FormItem label='Budget' {...layout} hasFeedback={feedback(form, 'budget')} help={help(form, 'budget')} >
+            <FormItem label={<Label title='Budget'
+              message={'Your department or RSO\'s budget code. A financial contact will know this. Awards are dispersed to the financial org with this code.'} />}
+              {...layout} hasFeedback={feedback(form, 'budget')} help={help(form, 'budget')} >
               {form.getFieldDecorator('budget', rules.required)(
                 <Input />
               )}

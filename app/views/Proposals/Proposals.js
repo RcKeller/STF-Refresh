@@ -278,17 +278,6 @@ Proposals extends React.Component {
         }
       </div>
     )
-    const footer = () => (
-      <div>
-        <h6>
-          <em>
-            Any campus department or org can submit a proposal with a budget code. <Link to='/create'>
-            Click Here!
-          </Link>
-          </em>
-        </h6>
-      </div>
-    )
     if (screen.lessThan.large && !screen.lessThan.medium) {
       columns = [...columns.slice(0, 3), ...columns.slice(6)]
     } else if (screen.lessThan.medium) {
@@ -300,6 +289,10 @@ Proposals extends React.Component {
         <p>
           All STF proposals from the past 2 years can be viewed here.
         </p>
+        <h5>
+          <em>Any campus department or org can submit a proposal with a budget code. <Link to='/create'>
+            Click Here!</Link></em>
+        </h5>
         <Helmet title='Proposals' />
         {!proposals
             ? <Spin size='large' tip='Loading...' />
@@ -310,7 +303,6 @@ Proposals extends React.Component {
               size={screen.lessThan.medium ? 'small' : 'middle'}
               columns={columns}
               title={title}
-              footer={footer}
             />
           }
       </article>

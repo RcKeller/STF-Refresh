@@ -47,6 +47,9 @@ export default class Manifests extends REST {
   patch (id, data, query) {
     //  https://codexample.org/questions/306428/mongodb-mongoose-subdocuments-created-twice.c
     //  https://github.com/linnovate/mean/issues/511
+    if (data.proposal && data.total) {
+      this.updateProposalTotal(data.proposal._id, data.total)
+    }
     if (!data.items) {
       return super.patch(id, data, query)
     } else {
@@ -90,5 +93,8 @@ export default class Manifests extends REST {
        })
        .then(modelInstance => modelInstance)
     }
+  }
+  updateProposalTotal (id, total) {
+    Proposal.findByIdAndUpdate(id, { total })
   }
 }
