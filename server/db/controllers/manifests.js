@@ -72,33 +72,30 @@ export default class Manifests extends REST {
     //   .populate(this.populate)
     //   .then((modelInstance) => modelInstance)
     return this.model
+    //  http://mongoosejs.com/docs/2.7.x/docs/embedded-documents.html
       .findOne({ [this.key]: id })
       .then(modelInstance => {
-        // for (var attribute in data) {
-        //   if (data.hasOwnProperty(attribute) && attribute !== this.key && attribute !== '_id') {
-        //     modelInstance[attribute] = data[attribute]
-        //   }
-        // }
-        //  For each data prop, if it's part of the model and a ref...
-        Object.keys(data).forEach(key => {
-          if (modelInstance.hasOwnProperty(key) && key !== '_id' && key !== '_v') {
-            if (this.children.includes(key)) {
-              //  Check if it's an array, or object, and update
-              if (key === 'items') {
-                if (Array.isArray(data[key])) {
-                  for (let e of data[key]) {
-                    console.log(e)
-                    Models.Item.findOneAndUpdate({ _id: e._id }, e, mongoOptions)
-                  }
-                } else {
-                  Models.Item.findOneAndUpdate({ _id: data[key]._id }, data[key], mongoOptions)
+        console.log(modelInstance, Object.keys(modelInstance))
+        //  https://stackoverflow.com/questions/7035092/how-to-update-embedded-document-in-mongoose
+        for (const attribute in data) {
+          if (data.hasOwnProperty(attribute) && attribute !== this.key && attribute !== '_id') {
+            modelInstance[attribute] = data[attribute]
+            if (this.children.includes(attribute)) {
+              console.log('CHILD ATTR', attribute)
+              if (Array.isArray(data[attribute])) {
+                console.log('IS ARRAY')
+                for (let e of data[attribute]) {
+                  e.manifest = id
+                  console.log('E', e, Object.keys(Models.Item), typeof Models.Item.findOneAndUpdate)
+                  Models.Item.findOneAndUpdate({ _id: e._id }, e, mongoOptions).exec()
                 }
+              } else {
+                console.log('not array')
               }
-            } else {
-              update[key] = data[key]
+              modelInstance.markModified(attribute)
             }
           }
-        })
+        }
         return modelInstance.save()
       })
       .then((modelInstance) => {
