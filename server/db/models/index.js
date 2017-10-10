@@ -2,7 +2,7 @@
 MODEL INITIALIZER
 Uses require() to pass the imports around as a func.
 */
-export default function loadModels () {
+export function loadModels () {
   //  Auth and User data
   require('./config')
   require('./user')
@@ -41,6 +41,11 @@ import Decision, { dummyDecisions } from './decision'
 import Report, { dummyReports } from './report'
 //  Note that users are not here, that's bespoke.
 export {
+  Config, User, STF, Contact, Comment,
+  Proposal, Project, Manifest, Item, Block,
+  Review, Decision, Report
+}
+export default {
   Config, User, STF, Contact, Comment,
   Proposal, Project, Manifest, Item, Block,
   Review, Decision, Report

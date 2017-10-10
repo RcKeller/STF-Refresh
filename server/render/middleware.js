@@ -14,14 +14,20 @@ This way, when a page fails to load, we know for sure it really IS an unhandled 
 ---
 Patches return true if they are indeed the exception specified
 */
-const patchReactDataGridSelfReferenceError = err => {
+const windowUndefined = err => {
+  if (err.name === 'ReferenceError' && err.message === 'window is not defined') {
+    console.error('PATCHED ERROR: React Data Grid unable to SSR due to race condition')
+    return true
+  }
+  return false
+}
+const reactDataGridSelfReferenceError = err => {
   if (err.name === 'ReferenceError' && err.message === 'self is not defined') {
     console.error('PATCHED ERROR: React Data Grid unable to SSR due to race condition')
     return true
   }
   return false
 }
-
 /*
  * Export render function to be used in server/config/routes.js
  * We grab the state passed in from the server and the req object from Express/Koa
@@ -65,8 +71,8 @@ export default function render (req, res) {
     match({routes, location: req.url}, (err, redirect, props) => {
       if (err) {
         //  Patches are used to bypass 500 responses for known, non-breaking errors
-        if (patchReactDataGridSelfReferenceError(err)) {
-          //  BUGFIX: Redirect to self after a split second (error does not reoccur)
+        //  In these cases, just refreshing will load the window/self object to reference
+        if (reactDataGridSelfReferenceError(err) || windowUndefined(err)) {
           setTimeout(() => res.redirect(req.url), 500)
         } else {
           console.error(err, redirect, props)

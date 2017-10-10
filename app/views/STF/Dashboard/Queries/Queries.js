@@ -16,6 +16,21 @@ const FormItem = Form.Item
 const connectForm = Form.create()
 
 import ReactJson from 'react-json-view'
+/*
+SLCK: Initializing SlackBot
+ReferenceError: window is not defined
+    at C:\Users\Keller\STF-Refresh\node_modules\react-json-view\dist\main.js:1:150552
+    at C:\Users\Keller\STF-Refresh\node_modules\react-json-view\dist\main.js:1:150507
+    at e.exports (C:\Users\Keller\STF-Refresh\node_modules\react-json-view\dist\main.js:1:151009)
+    at Object.<anonymous> (C:\Users\Keller\STF-Refresh\node_modules\react-json-view\dist\main.js:1:146201)
+    at t (C:\Users\Keller\STF-Refresh\node_modules\react-json-view\dist\main.js:1:377)
+    at Object.defineProperty.value (C:\Users\Keller\STF-Refresh\node_modules\react-json-view\dist\main.js:1:41330)
+    at t (C:\Users\Keller\STF-Refresh\node_modules\react-json-view\dist\main.js:1:377)
+    at Object.defineProperty.value (C:\Users\Keller\STF-Refresh\node_modules\react-json-view\dist\main.js:1:39991)
+    at t (C:\Users\Keller\STF-Refresh\node_modules\react-json-view\dist\main.js:1:377)
+    at t.exports (C:\Users\Keller\STF-Refresh\node_modules\react-json-view\dist\main.js:1:734)
+    at C:\Users\Keller\STF-Refresh\node_modules\react-json
+*/
 
 //  Legible names for DB models
 const modelNames = {

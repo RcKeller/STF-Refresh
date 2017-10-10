@@ -74,24 +74,29 @@ class Budget extends React.Component {
       }}
       manifest
       ? api.patch('manifest', budget, { id })
-      : api.post('manifest', budget, { })
       .then(message.success(`Updated budget manifest!`))
       .catch(err => {
         message.warning(`Failed to update budget manifest - Unexpected client error`)
         console.warn(err)
       })
-      //  Silent update of the proposal ask
-      const updateAsk = { proposal: (prev, next) => {
-        const newData = Object.assign({}, prev)
-        newData.asked = next.asked
-        return newData
-      }}
-      api.patch('proposal', { asked: total }, { id: proposal, update: updateAsk })
-      // .then(forceRequest())
+      : api.post('manifest', budget, { })
+      .then(message.success(`Created a new budget!`))
       .catch(err => {
-        message.warning(`Failed to update proposal data - Unexpected client error`)
+        message.warning(`Failed to update budget manifest - Unexpected client error`)
         console.warn(err)
       })
+      //  Silent update of the proposal ask
+      // const updateAsk = { proposal: (prev, next) => {
+      //   const newData = Object.assign({}, prev)
+      //   newData.asked = next.asked
+      //   return newData
+      // }}
+      // api.patch('proposal', { asked: total }, { id: proposal, update: updateAsk })
+      // // .then(forceRequest())
+      // .catch(err => {
+      //   message.warning(`Failed to update proposal data - Unexpected client error`)
+      //   console.warn(err)
+      // })
       validate()
     } else {
       message.error('Budgets must cost at least something!', 10)

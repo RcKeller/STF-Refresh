@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import loadModels from './models'
+import { loadModels } from './models'
 // import dummyData from './dummies'
 import dummyData from './dummy'
 import config from 'config'
