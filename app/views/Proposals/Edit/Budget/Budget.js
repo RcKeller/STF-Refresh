@@ -59,40 +59,73 @@ class Budget extends React.Component {
     api: PropTypes.object,
     validate: PropTypes.func,
     proposal: PropTypes.string,
-    manifest: PropTypes.object
+    manifest: PropTypes.object,
+    refresh: PropTypes.func
   }
   handleSubmit = (items, total) => {
     if (total && total > 0) {
-      let { api, proposal, manifest, validate, forceRequest } = this.props
+      let { api, proposal, manifest, validate, refresh } = this.props
       const budget = { proposal, type: 'original', items, total }
       const id = manifest && manifest._id
-      const transform = res => ({ proposal: res })
-      const update = { proposal: (prev, next) => {
-        let newData = Object.assign({}, prev)
-        newData.manifests[0] = next
-        return newData
-      }}
-      manifest
-      ? api.patch('manifest', budget, { id })
-      : api.post('manifest', budget, { })
-      .then(message.success(`Updated budget manifest!`))
-      .catch(err => {
-        message.warning(`Failed to update budget manifest - Unexpected client error`)
-        console.warn(err)
-      })
+      /*
+      BUG: Mongo is TERRIBLE at updating embedded and subdocuments.
+      For this use case, we refresh the original data! Simple, reliable fix.
+      NOTE: Fixing this is a HUGE effort and has failed multiple times.
+      */
+      //  https://medium.com/@bluepnume/learn-about-promises-before-you-start-using-async-await-eb148164a9c8
+      async function patchBudget () {
+        const res = await api.patch('manifest', budget, { id })
+        if (res) await refresh()
+        message.success(`Budget updated!`, 10)
+        // console.log(res)
+      }
+      async function postBudget () {
+        const res = await api.post('manifest', budget)
+        if (res) await refresh()
+        message.success(`Created your first budget!`, 10)
+        // console.log(res)
+      }
+      manifest ? patchBudget() : postBudget()
+      // this.props.refresh()
+
+      // async function updateBudget () {
+      //   const res = manifest
+      //     ? await api.patch('manifest', budget, { id })
+      //     : await api.post('manifest', budget, { })
+      //   console.log(res)
+      // }
+      // updateBudget()
+
+      // manifest
+      // ? api.patch('manifest', budget, { id })
+      // .then((res) => {
+      //   message.success(`Updated budget manifest!`)
+      //   refresh()
+      // })
+      // .then(validate)
+      // : api.post('manifest', budget, { })
+      // .then((res) => {
+      //   message.success(`Created your first budget!`)
+      //   refresh()
+      // })
+      // .catch(err => {
+      //   message.warning(`Failed to update budget manifest - Unexpected client error`)
+      //   console.warn(err)
+      // })
+      // .then(validate)
       //  Silent update of the proposal ask
-      const updateAsk = { proposal: (prev, next) => {
-        const newData = Object.assign({}, prev)
-        newData.asked = next.asked
-        return newData
-      }}
-      api.patch('proposal', { asked: total }, { id: proposal, update: updateAsk })
-      // .then(forceRequest())
-      .catch(err => {
-        message.warning(`Failed to update proposal data - Unexpected client error`)
-        console.warn(err)
-      })
-      validate()
+      // const updateAsk = { proposal: (prev, next) => {
+      //   const newData = Object.assign({}, prev)
+      //   newData.asked = next.asked
+      //   return newData
+      // }}
+      // api.patch('proposal', { asked: total }, { id: proposal, update: updateAsk })
+      // // .then(forceRequest())
+      // .catch(err => {
+      //   message.warning(`Failed to update proposal data - Unexpected client error`)
+      //   console.warn(err)
+      // })
+      // validate()
     } else {
       message.error('Budgets must cost at least something!', 10)
     }

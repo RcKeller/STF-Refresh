@@ -44,7 +44,8 @@ class Edit extends React.Component {
     router: PropTypes.object,
     api: PropTypes.object,
     proposal: PropTypes.object,
-    user: PropTypes.object
+    user: PropTypes.object,
+    forceRequest: PropTypes.func
   }
   constructor (props) {
     super(props)
@@ -223,7 +224,7 @@ class Edit extends React.Component {
                 tab={<span style={{ color: budget ? colors.green : colors.gold }}>
                   <Icon type='wallet' />Budget</span>
                 }>
-                <Budget validate={this.validateBudget} forceRequest={() => this.props.forceRequest()}/>
+                <Budget validate={this.validateBudget} refresh={this.props.forceRequest} />
               </TabPane>
               <TabPane key='5'
                 tab={<span style={{ color: signatures ? colors.green : colors.gold }}>

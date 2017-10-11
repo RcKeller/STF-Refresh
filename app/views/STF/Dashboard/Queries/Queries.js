@@ -1,17 +1,15 @@
 //  React and its typechecking
 import React from 'react'
 import PropTypes from 'prop-types'
-import Helmet from 'react-helmet'
 //  Redux utils
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 //  Our API services
-import { layout, Label } from '../../../../util/form'
+import { Label } from '../../../../util/form'
 import api from '../../../../services'
 
-import { Form, Input, Select, AutoComplete, Button, Icon, message } from 'antd'
+import { Form, Select, Button, Icon } from 'antd'
 const Option = Select.Option
-const AutoCompleteOption = AutoComplete.Option
 const FormItem = Form.Item
 const connectForm = Form.create()
 
@@ -123,7 +121,8 @@ class Queries extends React.Component {
   ) {
     return (
       <div>
-        <p>Query Tool can fetch and relate specific data from our backend based on simple conditions. For example, you can get proposals and the contact information for anything unpublished by the query <code>proposal, contacts, unpublished</code>. Please note, this feature is NOT a best practice for websites or databases. Page slowness and freezing is to be expected at this scale.</p>
+        <p>Query Tool can fetch and relate specific data from our backend based on simple conditions. For example, you can get proposals and associated contact information for anything unpublished by the query <em>proposal, contacts, unpublished</em>. This tool exists to cater for any edge cases our current BI views cannot cover for you. The script bundle for this component cannot be fetched without an administrative netID, so it should not pose a security concern.</p>
+        <p>Please note, this feature is NOT a best practice for webapps. Page slowness and freezing is to be expected at this scale. An alternative would be to learn the query syntax from me and use <a href='https://www.hurl.it/'>hurl.it</a>.</p>
         <Form layout='inline' onSubmit={this.handleSubmit}>
           <FormItem label={<Label title='Model'
             message={'Models are document stores in the database - standalone records pulled together to generate site content.'} />} >
@@ -164,19 +163,23 @@ class Queries extends React.Component {
             </FormItem>
           }
           <FormItem>
-            <Button size='large' type='primary'
+            <Button size='large' type='primary' ghost
               htmlType='submit' disabled={!model}
-              style={{ width: '100%' }}
-              ><Icon type='api' />Query</Button>
+            >
+              <Icon type='api' />Query Database
+            </Button>
           </FormItem>
         </Form>
-        <ReactJson
-          name={model}
-          src={querytool}
-          theme='shapeshifter:inverted'
-          displayDataTypes={false}
-          collapseStringsAfterLength={100}
-        />
+        <br />
+        {window &&
+          <ReactJson
+            name={model}
+            src={querytool}
+            theme='shapeshifter:inverted'
+            displayDataTypes={false}
+            collapseStringsAfterLength={100}
+          />
+        }
       </div>
     )
   }

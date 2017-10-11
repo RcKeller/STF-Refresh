@@ -85,8 +85,9 @@ class Create extends React.Component {
   }
   handleOrganizationSelect = (key) => {
     const { form, organizations } = this.props
+    const organization = JSON.stringify(key)
     const budget = organizations[key]
-    console.log('ORG', organizations, key, budget)
+    console.log('ORG', organizations, key, organization, budget)
     form.setFieldsValue({ budget })
   }
   render (
@@ -110,7 +111,10 @@ class Create extends React.Component {
           // TODO: Add disable submit button: ...htmlType='submit' disabled={disableSubmit(form)}
         >
           <p>Proposals are only available to users who are directly associated as a point of contact. There are four different kinds:</p>
-          <ul style={{ listStyleType: 'circle' }}>
+          <ul style={{
+            listStyleType: 'circle',
+            listStylePosition: 'inside'
+          }}>
             <li>Primary Contact</li>
             <li>Budget Contact</li>
             <li>Organization Head/Leader</li>
@@ -139,24 +143,16 @@ class Create extends React.Component {
               )}
             </FormItem>
             <FormItem label={<Label title='Org'
-              message={'Your department or RSO. A list of organizations and budget codes is provided for your convenience, but you may enter your own too.'} />}
+              message={'Your department or RSO - fill in if yours is not listed. For your convenience, budget codes for orgs we have worked with before are autopopulated.'} />}
               {...layout} hasFeedback={feedback(form, 'organization')} help={help(form, 'organization')} >
               {form.getFieldDecorator('organization', rules.required)(
                 <AutoComplete
+                  dataSource={Object.keys(organizations)}
                   onSelect={this.handleOrganizationSelect}
-                  filterOption={(inputValue, option) => {
-                    console.log(inputValue, option)
-                    if (option.key.toUpperCase().indexOf(inputValue.toUpperCase()) > -1) return true
-                    if (organizations[option.key].indexOf(inputValue.toUpperCase()) > -1) return true
-                    return false
-                  }}
-                >
-                  {Object.keys(organizations).map(org => (
-                    <AutoCompleteOption key={org}>
-                      <span><b>{org}</b> - <em>{`Budget ${organizations[org]}`}</em></span>
-                    </AutoCompleteOption>
-                  ))}
-                </AutoComplete>
+                  filterOption={(inputValue = '', { key }) =>
+                    key.toUpperCase().indexOf(inputValue.toUpperCase()) > -1
+                  }
+                />
               )}
             </FormItem>
             <FormItem label={<Label title='Budget'

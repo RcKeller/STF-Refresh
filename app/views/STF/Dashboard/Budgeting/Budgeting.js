@@ -310,7 +310,9 @@ class Budgeting extends React.Component {
     return (
       <section>
         <Helmet title='Dashboard' />
-        <h1>Budgeting Dashboard</h1>
+        <h2>Budgeting Dashboard</h2>
+        <p>Check STF awards and expense reporting here. As we migrate away from text-based auditing towards a new standard involving itemized expenses, this will help admin staff cross-reference reports.</p>
+        <p>Note, our Slackbot Calcifer will automatically log any overexpenditures reported.</p>
         {!awards
             ? <Spin size='large' tip='Loading...' />
             : <Table

@@ -2,7 +2,7 @@
 import React from 'react'
 import Helmet from 'react-helmet'
 
-import { Tabs } from 'antd'
+import { Tabs, Alert } from 'antd'
 const TabPane = Tabs.TabPane
 import Budgeting from './Budgeting/Budgeting'
 import Queries from './Queries/Queries'
@@ -18,13 +18,18 @@ class Dashboard extends React.Component {
         <h6>For Internal Use Only.</h6>
         <Tabs>
           <TabPane tab='Overview' key='1'>
-            <h2>Instructions</h2>
-            <p>Directions here.</p>
+            <Alert type='info' banner showIcon={false}
+              message='A message from Keller, your developer.'
+              description='Welcome to Dashboard, our internal business intelligence tools. Each of these tools has been built to assist the committee with essential functions beyond the core webapp. Feel free to consult with me if you are in need of anything. Note, these features are beyond my core scope, and as such, are experimental.'
+            />
           </TabPane>
           <TabPane tab='Awards & Budgeting' key='2'>
             <Budgeting />
           </TabPane>
-          <TabPane tab='Query Tool' key='3'>
+          <TabPane tab={<span>Activity Report (<em>WIP</em>)</span>} disabled key='3'>
+            <h2>Under Development</h2>
+          </TabPane>
+          <TabPane tab='Query Tool' key='4'>
             <Queries />
           </TabPane>
         </Tabs>

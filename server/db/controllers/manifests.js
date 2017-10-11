@@ -48,7 +48,7 @@ export default class Manifests extends REST {
     //  https://codexample.org/questions/306428/mongodb-mongoose-subdocuments-created-twice.c
     //  https://github.com/linnovate/mean/issues/511
     if (data.proposal && data.total) {
-      this.updateProposalTotal(data.proposal._id, data.total)
+      this.updateProposalAsked(data.proposal, data.total)
     }
     if (!data.items) {
       return super.patch(id, data, query)
@@ -73,8 +73,8 @@ export default class Manifests extends REST {
         Item
           .findOneAndUpdate({ _id: item._id }, item, mongoOptions)
           .exec((err, doc) => {
+            //  Save item ref so we can update parent manifest.
             if (!err && doc) {
-              //  Save item ref so we can update parent manifest.
               itemRefs.push(doc._id)
             }
           })
@@ -94,7 +94,8 @@ export default class Manifests extends REST {
        .then(modelInstance => modelInstance)
     }
   }
-  updateProposalTotal (id, total) {
-    Proposal.findByIdAndUpdate(id, { total })
+  updateProposalAsked (id, asked) {
+    console.log('UPDATING PROPOSAL TOTAL:', id, asked)
+    Proposal.findByIdAndUpdate(id, { asked })
   }
 }
