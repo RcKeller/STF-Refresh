@@ -1,11 +1,11 @@
 node_modules
+public
+compiled
+config
+security
+logs
 npm-debug.log
 .tmp
 .idea
-public
-compiled
 *.swp
 .vscode
-config/*
-security
-logs

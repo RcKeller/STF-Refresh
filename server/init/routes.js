@@ -4,7 +4,7 @@ import db from '../db'
 const version = config.get('version')
 const controllers = db.controllers
 
-import { Item } from '../db/models'
+import { Manifest, Item } from '../db/models'
 import express from 'express'
 import restify from 'express-restify-mongoose'
 
@@ -20,7 +20,7 @@ export default (app) => {
   app.use(`/${version}/comments`, new controllers.Comments().api())
   app.use(`/${version}/proposals`, new controllers.Proposals().api())
   app.use(`/${version}/projects`, new controllers.Projects().api())
-  app.use(`/${version}/manifests`, new controllers.Manifests().api())
+  // app.use(`/${version}/manifests`, new controllers.Manifests().api())
   // app.use(`/${version}/items`, new controllers.Items().api())
   app.use(`/${version}/blocks`, new controllers.Blocks().api())
   app.use(`/${version}/reviews`, new controllers.Reviews().api())
@@ -55,11 +55,48 @@ export default (app) => {
     },
     onError: (err, req, res, next) => {
       const statusCode = req.erm.statusCode // 400 or 404
+      console.log(err)
       res.status(statusCode).json({ message: err.message })
     }
 
   }
+  const createOrUpdate = { upsert: true, setDefaultsOnInsert: true, new: true }
+  const manifestMiddleware = {
+    preMiddleware: function (req, res, next) {
+      async function test () {
+        for (let i = 0; i < 2; i++) {
+          console.log('Before await for ', i)
+          let result = await Promise.resolve(i)
+          console.log('After await. Value is ', result)
+        }
+      }
+
+      test().then(_ => {
+        console.log('After test() resolved')
+        next()
+      })
+
+      console.log('After calling test')
+    }
+  }
+
+/*
+async function test() {
+    for (let i = 0; i < 2; i++) {
+        console.log('Before await for ', i);
+        let result = await Promise.resolve(i);
+        console.log('After await. Value is ', result);
+    }
+}
+
+test().then(_ => console.log('After test() resolved'));
+
+console.log('After calling test');
+*/
+
   restify.serve(router, Item, options)
+  // restify.serve(router, Manifest, options)
+  restify.serve(router, Manifest, Object.assign(options, manifestMiddleware))
   app.use(router)
 
   // USER PROFILE ROUTES
