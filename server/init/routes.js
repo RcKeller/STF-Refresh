@@ -38,54 +38,76 @@ export default (app) => {
     findOneAndRemove: false,
     access: (req) => 'private',
     outputFn: (req, res) => {
-      const result = req.erm.result         // filtered object
-      const statusCode = req.erm.statusCode // 200 or 201
+      const { result, statusCode } = req.erm
       res.status(statusCode).json(result)
     },
     postProcess: (req, res, next) => {
-      // const result = req.erm.result         // filtered object
-      const statusCode = req.erm.statusCode // 200 or 201
-      const model = req.erm.model
+      const { statusCode } = req.erm
+      // const model = req.erm.model
       console.info(`${req.method} ${req.path} request completed with status code ${statusCode}`)
-      console.warn('ERM keys:', typeof req.erm, Object.keys(req.erm), Object.keys(model))
-      console.warn('MODEL:', Object.keys(model.model))
-      console.warn('SCHEMA:', Object.keys(model.schema))
-      console.warn('BASE:', Object.keys(model.base))
-      console.warn('COLLECTION:', Object.keys(model.collection))
-      console.warn('DB:', Object.keys(model.db))
+      console.warn('ERM keys:', typeof req.erm, Object.keys(req.erm))
+      // console.warn('MODEL:', Object.keys(model.model))
+      // console.warn('SCHEMA:', Object.keys(model.schema))
+      // console.warn('BASE:', Object.keys(model.base))
+      // console.warn('COLLECTION:', Object.keys(model.collection))
+      // console.warn('DB:', Object.keys(model.db))
     },
     onError: (err, req, res, next) => {
-      const statusCode = req.erm.statusCode // 400 or 404
+      const { statusCode } = req.erm
       console.log(err)
       res.status(statusCode).json({ message: err.message })
     }
 
   }
   const createOrUpdate = { upsert: true, setDefaultsOnInsert: true, new: true }
+  /*
+  Upserts items, then returns an array of their IDs
+    NOTE: Saving items will overwrite whatever exists.
+    This is for security, and left because we do not have a use case where sub items need to be merged.
+    Implication - patching a manifest writes new items.
+    //  BUG: https://github.com/florianholzapfel/express-restify-mongoose/issues/276
+  */
+  async function saveItems (items = [], manifest) {
+    for (let [i, item] of items.entries()) {
+      if (!item.manifest && manifest) item.manifest = manifest
+      if (!item._id) item._id = mongoose.Types.ObjectId()
+      let ref = await Item
+        .findByIdAndUpdate(item._id, item, createOrUpdate, (err, doc) => !err ? doc._id : '')
+      if (ref) items[i] = ref
+    }
+    return items
+  }
+  async function getTotal (items = []) {
+    let total = 0
+    for (let item of items) {
+      if (item.quantity > 0) {
+        item.tax
+          ? total += (item.price * item.quantity * (1 + item.tax / 100))
+          : total += (item.price * item.quantity)
+      }
+    }
+    return total
+  }
+  async function wait (ms) {
+    await new Promise(resolve => setTimeout(() => resolve(), ms))
+    console.log('waited', ms)
+    return ms
+  }
   const manifestMiddleware = {
     preMiddleware: function (req, res, next) {
       let { body } = req
-      //  Upserts items, then returns an array of their IDs
-      async function saveItems (items, manifest) {
-        console.log('SAVEITEMS')
-        for (let [i, item] of items.entries()) {
-          console.log('ITEM', item)
-          // if (!e.manifest) e.manifest = manifest
-          if (!item._id) item._id = mongoose.Types.ObjectId()
-          let ref = await Item
-            .findByIdAndUpdate(item._id, item, createOrUpdate, (err, doc) => !err ? doc._id : '')
-          if (ref) items[i] = ref
-          console.log('After await. Value is ', ref)
-        }
-        return items
-      }
-      saveItems(body.items).then(items => {
-        console.log('Resolved SaveItems')
-        body.items = items
-        next()
-      })
-
-      console.log('After calling test')
+      Promise.all([
+        saveItems(body.items, body._id)
+          .then(items => body.items = items),
+        getTotal(body.items)
+          .then(total => body.total = total),
+        wait(200),
+        wait(400)
+      ]).then(() => next())
+      // saveItems(body.items, body._id).then(items => {
+      //   body.items = items
+      //   next()
+      // })
     }
   }
 
@@ -104,8 +126,8 @@ console.log('After calling test');
 */
 
   restify.serve(router, Item, options)
-  // restify.serve(router, Manifest, options)
   restify.serve(router, Manifest, Object.assign(options, manifestMiddleware))
+  // restify.serve(router, Manifest, options)
   app.use(router)
 
   // USER PROFILE ROUTES
