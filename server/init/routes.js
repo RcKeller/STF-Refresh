@@ -65,21 +65,23 @@ export default (app) => {
   const manifestMiddleware = {
     preMiddleware: function (req, res, next) {
       let { body } = req
+      //  Upserts items, then returns an array of their IDs
       async function saveItems (items, manifest) {
         console.log('SAVEITEMS')
-        for (let [i, e] of items.entries()) {
-          console.log('ITEM', e)
-          //  If obj, get ref, then replace document.
+        for (let [i, item] of items.entries()) {
+          console.log('ITEM', item)
           // if (!e.manifest) e.manifest = manifest
-          if (!e._id) e._id = mongoose.Types.ObjectId()
-          items[i] = await Item
-            .findOneAndUpdate({ _id: e._id }, e, createOrUpdate)
-            .exec(doc => doc._id)
-          // console.log('After await. Value is ', items[i], items)
+          if (!item._id) item._id = mongoose.Types.ObjectId()
+          let ref = await Item
+            .findByIdAndUpdate(item._id, item, createOrUpdate, (doc) => doc._id)
+          if (ref) items[i] = ref
+          console.log('After await. Value is ', ref)
         }
+        return items
       }
-      saveItems(body.items, body._id).then(_ => {
+      saveItems(body.items).then(items => {
         console.log('Resolved SaveItems')
+        body.items = items
         next()
       })
 
@@ -103,7 +105,7 @@ console.log('After calling test');
 
   restify.serve(router, Item, options)
   // restify.serve(router, Manifest, options)
-  restify.serve(router, Manifest, { options, manifestMiddleware })
+  restify.serve(router, Manifest, Object.assign(options, manifestMiddleware))
   app.use(router)
 
   // USER PROFILE ROUTES
