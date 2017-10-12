@@ -73,7 +73,7 @@ export default (app) => {
           // if (!e.manifest) e.manifest = manifest
           if (!item._id) item._id = mongoose.Types.ObjectId()
           let ref = await Item
-            .findByIdAndUpdate(item._id, item, createOrUpdate, (doc) => doc._id)
+            .findByIdAndUpdate(item._id, item, createOrUpdate, (err, doc) => !err ? doc._id : '')
           if (ref) items[i] = ref
           console.log('After await. Value is ', ref)
         }
