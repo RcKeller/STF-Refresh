@@ -11,6 +11,7 @@
     "clean": "rimraf public && rimraf compiled",
     "start": "npm run build && cross-env NODE_ENV=production node compiled/server.js",
     "stayAlive": "cross-env NODE_ENV=production forever start compiled/server.js",
+    "forever": "cross-env NODE_ENV=production forever start -a -o out.log -e err.log compiled/server.js",
     "dev": "cross-env NODE_ENV=development nodemon",
     "prod": "cross-env NODE_ENV=production nodemon",
     "build:dev": "cross-env NODE_ENV=development npm run webpack -- --env.server",
