@@ -4,9 +4,10 @@ import db from '../db'
 const version = config.get('version')
 const controllers = db.controllers
 
-import { Manifest, Item } from '../db/models'
 import express from 'express'
 import restify from 'express-restify-mongoose'
+import mongoose from 'mongoose'
+import { Manifest, Item } from '../db/models'
 
 //  GENERATE ROUTES
 export default (app) => {
@@ -63,16 +64,22 @@ export default (app) => {
   const createOrUpdate = { upsert: true, setDefaultsOnInsert: true, new: true }
   const manifestMiddleware = {
     preMiddleware: function (req, res, next) {
-      async function test () {
-        for (let i = 0; i < 2; i++) {
-          console.log('Before await for ', i)
-          let result = await Promise.resolve(i)
-          console.log('After await. Value is ', result)
+      let { body } = req
+      async function saveItems (items, manifest) {
+        console.log('SAVEITEMS')
+        for (let [i, e] of items.entries()) {
+          console.log('ITEM', e)
+          //  If obj, get ref, then replace document.
+          // if (!e.manifest) e.manifest = manifest
+          if (!e._id) e._id = mongoose.Types.ObjectId()
+          items[i] = await Item
+            .findOneAndUpdate({ _id: e._id }, e, createOrUpdate)
+            .exec(doc => doc._id)
+          // console.log('After await. Value is ', items[i], items)
         }
       }
-
-      test().then(_ => {
-        console.log('After test() resolved')
+      saveItems(body.items, body._id).then(_ => {
+        console.log('Resolved SaveItems')
         next()
       })
 
@@ -96,7 +103,7 @@ console.log('After calling test');
 
   restify.serve(router, Item, options)
   // restify.serve(router, Manifest, options)
-  restify.serve(router, Manifest, Object.assign(options, manifestMiddleware))
+  restify.serve(router, Manifest, { options, manifestMiddleware })
   app.use(router)
 
   // USER PROFILE ROUTES
