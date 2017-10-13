@@ -50,52 +50,64 @@ export default class Manifests {
   */
   async preMiddleware (req, res, next) {
     let { body } = req
-    body.total = await this.getTotal(body.items)
-    body.items = await this.saveItems(body.items, body._id)
+    body.total = getTotal(body.items)
+    body.items = await saveItems(body.items, body._id)
     //  TODO: Update proposal
-    // if (body.type === 'original' && body.proposal) this.updateProposalAsked(body.proposal, body.total)
+    if (body.type === 'original' && body.proposal) updateProposalAsked(body.proposal, body.total)
     next()
   }
-  /*
-  METHODS
-  */
-  /*
-  Upserts items, then returns an array of their IDs
-    NOTE: Saving items will overwrite whatever exists.
-    This is for security, and left because we do not have a use case where sub items need to be merged.
-    Implication - patching a manifest writes new items.
-    //  BUG: https://github.com/florianholzapfel/express-restify-mongoose/issues/276
-  */
-  async saveItems (items = [], manifest) {
-    const createOrUpdateOptions = { upsert: true, setDefaultsOnInsert: true, new: true }
-    let promises = items.map((item) => {
-      if (!item.manifest && manifest) item.manifest = manifest
-      if (!item._id) item._id = mongoose.Types.ObjectId()
-      return Item
-        .findByIdAndUpdate(item._id, item, createOrUpdateOptions)
-        .then(doc => doc._id)
-    })
-    let refs = await Promise.all(promises)
-    return refs
-  }
-  /*
-  Calculate grand totals
-  */
-  async getTotal (items = []) {
-    let total = 0
-    for (let item of items) {
-      if (item.quantity > 0) {
-        item.tax
-          ? total += (item.price * item.quantity * (1 + item.tax / 100))
-          : total += (item.price * item.quantity)
-      }
-    }
-    return total
-  }
-  updateProposalAsked (proposal, total) {
-    return 0
-  }
 }
+
+/*
+METHODS
+These are outside class scope because async functions are really just wrapped promises
+and as such, can't be class methods, and wrapping them is a hack.
+*/
+/*
+getTotal: Calculate grand totals
+*/
+function getTotal (items = []) {
+  console.log('GETTOTAL')
+  let total = 0
+  for (let item of items) {
+    if (item.quantity > 0) {
+      item.tax
+        ? total += (item.price * item.quantity * (1 + item.tax / 100))
+        : total += (item.price * item.quantity)
+    }
+  }
+  console.log('TOTAL', total)
+  return total
+}
+/*
+Saveitems: Upserts items, then returns an array of their IDs
+  NOTE: Saving items will overwrite whatever exists.
+  This is for security, and left because we do not have a use case where sub items need to be merged.
+  Implication - patching a manifest writes new items.
+  //  BUG: https://github.com/florianholzapfel/express-restify-mongoose/issues/276
+*/
+async function saveItems (items = [], manifest) {
+  console.log('SAVEITEMS', items)
+  const createOrUpdateOptions = { upsert: true, setDefaultsOnInsert: true, new: true }
+  let promises = items.map((item) => {
+    if (!item.manifest && manifest) item.manifest = manifest
+    if (!item._id) item._id = mongoose.Types.ObjectId()
+    return Item
+      .findByIdAndUpdate(item._id, item, createOrUpdateOptions)
+      .then(doc => doc._id)
+  })
+  let refs = await Promise.all(promises)
+  console.log('REFS', refs)
+  return refs
+}
+/*
+updateProposalAsked: Updates the ask for a proposal
+*/
+async function updateProposalAsked (proposal, total) {
+  console.log('TODO: Implement updateProposalAsked')
+  return 0
+}
+
 //   /* *****
 //     POST: Add a model
 //     Modified to insertMany(<items>)

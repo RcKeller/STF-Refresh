@@ -4,7 +4,7 @@ import _ from 'lodash'
 
 import { connect } from 'react-redux'
 
-import { Table, Alert, Select } from 'antd'
+import { Table, Alert, Select, Tooltip } from 'antd'
 const Option = Select.Option
 
 const currency = value => `$${Number.parseInt(value).toLocaleString()}`
@@ -50,10 +50,15 @@ class Manifests extends React.Component {
         key: 'name',
         render: text => <b>{text}</b>
       },
-      { title: 'Price',
+      { title: <Tooltip placement='left' title='Tax Included. Mouse over for subtotal.'>Price/ea</Tooltip>,
         dataIndex: 'price',
         key: 'price',
-        render: (text, record) => <span>{currency(record.tax ? record.price * record.tax : record.price)}</span>,
+        render: (text, record) => <Tooltip placement='left'
+          title={`Subtotal: ${currency(record.tax
+            ? record.price * record.quantity * (1 + record.tax / 100)
+            : record.price * record.quantity)}`}>
+          {currency(record.price * (1 + record.tax / 100))}
+        </Tooltip>,
         sorter: (a, b) => a.price - b.price,
         width: screen.greaterThan.medium ? 120 : 80,
         padding: 0
