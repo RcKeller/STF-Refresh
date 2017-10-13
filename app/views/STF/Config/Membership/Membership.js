@@ -43,7 +43,7 @@ const filterOption = (inputValue, option) => option.props.children.toUpperCase()
       api: bindActionCreators({toggle, addAuth, ...api}, dispatch)
     })
 ),
-  connectRequest(() => api.get('users'))
+  connectRequest(() => api.get('users', { populate: ['stf'] }))
 )
 class Membership extends React.Component {
   constructor (props) {

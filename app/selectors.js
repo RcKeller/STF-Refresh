@@ -63,7 +63,7 @@ export const unpublishedProposals = createSelector(
 )
 
 export const myProposals = createSelector(
-  [publishedProposals, user],
+  [proposals, user],
   (proposals, user) =>
     proposals.filter(({ contacts }) =>
       Array.isArray(contacts)
@@ -79,6 +79,15 @@ export const myDrafts = createSelector(
         ? contacts.findIndex(c => c.netID === user.netID) >= 0
         : false
     )
+)
+export const myPublished = createSelector(
+  [publishedProposals, user],
+  (proposals, user) =>
+  proposals.filter(({ contacts }) =>
+    Array.isArray(contacts)
+      ? contacts.findIndex(c => c.netID === user.netID) >= 0
+      : false
+  )
 )
 //  CONTACT INFORMATION & ROLES
 //  The first 4 contacts (selected in proposal drafts). Contains role prop if nonexistent

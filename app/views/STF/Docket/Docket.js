@@ -10,7 +10,9 @@ import { connectRequest } from 'redux-query'
 import api from '../../../services'
 
 import { Link } from 'react-router'
-import { Spin, Table, Switch, message } from 'antd'
+import { Spin, Table, Switch, Radio, message } from 'antd'
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
 
 import styles from './Docket.css'
 
@@ -23,9 +25,9 @@ import styles from './Docket.css'
     dispatch => ({ api: bindActionCreators(api, dispatch) })
 ),
   connectRequest(() => api.get('manifests', {
-
     //  BUG: Unpublished proposals can be pulled in docket creation.
     // query: { 'docket': true },
+    // query: { proposal: typeof string },
     populate: ['proposal']  //  Every manifest has a proposal, no need to check existence.
     //  TODO: Add docket: { metrics, voting } to manifest schema. No need to make a schema for voting only, it would only have two bools and a ref.
   }))
@@ -43,7 +45,7 @@ class Docket extends React.Component {
       dataIndex: 'number',
       key: 'number',
       sorter: (a, b) => (a.proposal.year * a.proposal.number) - (b.proposal.year * b.proposal.number),
-      render: (text, record) => <Link to={`/proposals/${record.proposal.year}/${record.proposal.number}`}>{`${record.proposal.year}-${record.proposal.number}`}</Link>,
+      render: (text, record) => <span>{`${record.proposal.year}-${record.proposal.number}`}</span>,
       width: 90
     },
     {
@@ -73,19 +75,22 @@ class Docket extends React.Component {
       render: (text, record, index) => (
         //  Only original proposals have metrics taken (otherwise it's redundant)
         <div>
-          <Switch
+          <Radio
             disabled={record.type !== 'original'}
             checked={text.metrics}
-            checkedChildren='Metrics' unCheckedChildren='Metrics'
-            onChange={metrics => this.handleToggle({ metrics }, record, index)} />
-          <Switch
+            value='metrics'
+            onChange={metrics => this.handleToggle({ metrics }, record, index)}
+          >Metrics</Radio>
+          <Radio
             checked={text.voting}
-            checkedChildren='Voting' unCheckedChildren='Voting'
-            onChange={voting => this.handleToggle({ voting }, record, index)} />
-          <Switch
+            value='voting'
+            onChange={voting => this.handleToggle({ voting }, record, index)}
+          >Voting</Radio>
+          <Radio
             checked={text.decisions}
-            checkedChildren='Decision' unCheckedChildren='Decision'
-            onChange={decisions => this.handleToggle({ decisions }, record, index)} />
+            value='decisions'
+            onChange={decisions => this.handleToggle({ decisions }, record, index)}
+          >Decision</Radio>
         </div>
       ),
       filters: [

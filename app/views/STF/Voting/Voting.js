@@ -31,7 +31,11 @@ import styles from './Voting.css'
   connectRequest(() => api.get('manifests', {
     //  BUG: Unpublished proposals can be pulled in docket creation.
     force: true,
-    populate: ['proposal.body', 'proposal.contacts', 'reviews', 'decision']
+    populate: ['reviews', 'decision',
+      { path: 'proposal', populate: { path: 'body' } },
+      { path: 'proposal', populate: { path: 'contacts' } }
+    ]
+    // populate: ['proposal.body', 'proposal.contacts', 'reviews', 'decision']
   }))
 )
 class Voting extends React.Component {
