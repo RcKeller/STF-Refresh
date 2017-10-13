@@ -30,10 +30,7 @@ export default (app) => {
   console.log(`REST: API live for all ${Object.keys(controllers).length - 1} core models.`)
 
   const router = express.Router()
-
-  // app.use(new controllers.Manifests(router))
-
-  const options = {
+  const config = {
     prefix: '',
     version: '/v1',
     //  Disabling these allows middleware to be called
@@ -41,27 +38,25 @@ export default (app) => {
     findOneAndRemove: false,
     access: (req) => 'private',
     outputFn: (req, res) => {
-      const { result, statusCode } = req.erm
+      const result = req.erm.result
+      const statusCode = req.erm.statusCode
       res.status(statusCode).json(result)
     },
     postProcess: (req, res, next) => {
-      const { method, path, erm: { statusCode } } = req.erm
-      console.info(`${method} ${path} request completed with status code ${statusCode}`)
+      const statusCode = req.erm.statusCode
+      console.info(`${req.method} ${req.path} request completed with status code ${statusCode}`)
     },
     onError: (err, req, res, next) => {
-      const { message } = err
-      const { statusCode } = req.erm
+      const statusCode = req.erm.statusCode // 400 or 404
       console.log(err)
-      res.status(statusCode).json({ message })
+      res.status(statusCode).json({ message: err.message })
     }
   }
-
-  restify.serve(router, Item, options)
-  // restify.serve(router, Manifest, Object.assign(options, manifestMiddleware))
-  // restify.serve(router, Manifest, options)
-
+  restify.serve(router, Item, config)
   app.use(new controllers.Manifests().API())
   app.use(router)
+  // restify.serve(router, Manifest, Object.assign(options, manifestMiddleware))
+  // restify.serve(router, Manifest, options)
 
   // USER PROFILE ROUTES
   console.log('USER: Initializing User REST routes and auth endpoints')

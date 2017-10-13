@@ -9,8 +9,6 @@ import { Slack } from '../../integrations'
 
 export default class Manifests {
   constructor () {
-    // super()
-    // super(Manifest, '_id')
     this.config = {
       prefix: '',
       version: '/v1',
@@ -19,18 +17,18 @@ export default class Manifests {
       findOneAndRemove: false,
       access: (req) => 'private',
       outputFn: (req, res) => {
-        const { result, statusCode } = req.erm
+        const result = req.erm.result
+        const statusCode = req.erm.statusCode
         res.status(statusCode).json(result)
       },
       postProcess: (req, res, next) => {
-        const { method, path, erm: { statusCode } } = req.erm
-        console.info(`${method} ${path} request completed with status code ${statusCode}`)
+        const statusCode = req.erm.statusCode
+        console.info(`${req.method} ${req.path} request completed with status code ${statusCode}`)
       },
       onError: (err, req, res, next) => {
-        const { message } = err
-        const { statusCode } = req.erm
+        const statusCode = req.erm.statusCode
         console.log(err)
-        res.status(statusCode).json({ message })
+        res.status(statusCode).json({ message: err.message })
       }
     }
   }
@@ -39,11 +37,11 @@ export default class Manifests {
   */
   API () {
     const router = new Router()
-    const middleware = {
+    const options = {
       preMiddleware: this.preMiddleware,
       ...this.config
     }
-    restify.serve(router, Item, middleware)
+    restify.serve(router, Item, options)
     return router
   }
   /*
@@ -51,10 +49,10 @@ export default class Manifests {
   */
   async preMiddleware (req, res, next) {
     let { body } = req
-    body.total = await this.getTotal(body.items)
+    body.total = this.getTotal(body.items)
     body.items = await this.saveItems(body.items, body._id)
     //  TODO: Update proposal
-    if (body.type === 'original' && body.proposal) this.updateProposalAsked(body.proposal, body.total)
+    // if (body.type === 'original' && body.proposal) this.updateProposalAsked(body.proposal, body.total)
     next()
   }
   /*
