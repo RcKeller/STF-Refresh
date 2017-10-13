@@ -41,7 +41,8 @@ export default class Manifests {
       preMiddleware: this.preMiddleware,
       ...this.config
     }
-    restify.serve(router, Item, options)
+    restify.serve(router, Manifest, options)
+    console.log(`REST: Instantiated controller: Manifests`)
     return router
   }
   /*
@@ -49,7 +50,7 @@ export default class Manifests {
   */
   async preMiddleware (req, res, next) {
     let { body } = req
-    body.total = this.getTotal(body.items)
+    body.total = await this.getTotal(body.items)
     body.items = await this.saveItems(body.items, body._id)
     //  TODO: Update proposal
     // if (body.type === 'original' && body.proposal) this.updateProposalAsked(body.proposal, body.total)
@@ -80,7 +81,7 @@ export default class Manifests {
   /*
   Calculate grand totals
   */
-  getTotal (items = []) {
+  async getTotal (items = []) {
     let total = 0
     for (let item of items) {
       if (item.quantity > 0) {
