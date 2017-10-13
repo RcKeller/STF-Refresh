@@ -43,20 +43,33 @@ input:
 output:
 ...v1/block?query={"number":"70692"}&populate={"path":"contacts"}
 */
-const target = (model, options) => {
-  //  Base URL, e.g. ...host/v1/proposal/:id/?params
-  let url = `${endpoint}/${singular(model)}/${options.id ? options.id : ''}`
-  //  Operator to prefix query string for joins, queries, ID specification etc
-  let operator = '?'
-  if (options.query) {
-    url = `${url}${operator}where=${JSON.stringify(options.query)}`
-    operator = '&'
-  }
-  if (options.populate) {
-    url = `${url}${operator}populate=${options.populate}`
-    operator = '&'
-  }
-  return url
+// const target = (model, options = {}) => {
+//   //  Base URL, e.g. ...host/v1/proposal/:id/?params
+//   let { id, query, populate, select, distinct, skip, limit, sort } = options
+//   let url = `${endpoint}/${singular(model)}/${options.id ? options.id : ''}`
+//   //  Operator to prefix query string for joins, queries, ID specification etc
+//   let operator = '?'
+//   if (query) {
+//     url = `${url}${operator}query=${JSON.stringify(query)}`
+//     operator = '&'
+//   }
+//   if (populate) {
+//     for (let p of populate) {
+//       url = `${url}${operator}populate=${populate}`
+//     }
+//     operator = '&'
+//   }
+//   return url
+// }
+
+const target = (model, options = {}) => {
+  const mongoParams = ['query', 'populate', 'select', 'distinct', 'sort', 'skip', 'limit']
+  let queryString = mongoParams.reduce((prev, key) => {
+    return options[key]
+      ? `${prev}${!prev ? '?' : '&'}${key}=${JSON.stringify(options[key])}`
+      : prev
+  }, '')
+  return `${endpoint}/${singular(model)}/${options.id || ''}${queryString}`
 }
 
 //  Normalize responses. If you get an array with a single object, select that object.
@@ -141,45 +154,3 @@ export default {
   patch,
   remove
 }
-
-/*
-EXAMPLE IMPLEMENTATION:
-
-import { compose, bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import { connectRequest } from 'redux-query'
-
-@compose(
-  // Compose is a redux utility that runs an array of functions:
-  //  Connect component to cached DB entities
-  connect(
-    state => ({ proposals: state.db.proposals }),
-    dispatch => ({ api: bindActionCreators(api, dispatch)
-  ),
-  connectRequest(props => api.get('proposal', {
-    query: {
-      year: props.params.year,
-      number: props.params.number
-    },
-    populate: ['contacts', 'decision', 'body', 'manifests', 'comments', 'Supplements', 'report', 'reviews']
-  }))
-)
-
-EXAMPLE FORM:
-handleSubmit = (e) => {
-  e.preventDefault()
-  let { proposalID, user, api, form } = this.props
-  form.validateFields((err, values) => {
-    if (!err) {
-      api.post('comments', {
-        proposal: proposalID,
-        user: user._id,
-        ...values
-      })
-      .then(console.log('Updated!'))
-      .catch(err => console.warn('An error occured', err)
-    }
-  })
-}
-
-*/
