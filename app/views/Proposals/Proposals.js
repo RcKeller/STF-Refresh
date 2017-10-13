@@ -43,14 +43,14 @@ import { sortProposals, publishedProposals, myProposals, myDrafts } from '../../
   //  If not logged in, query for only published proposals (performance)
   connectRequest(({user}) =>
       user._id
-        ? api.get('proposals', { join: [ 'contacts' ] })
-        : api.get('proposals', { where: { published: true }, join: [ 'contacts' ] })
+        ? api.get('proposals', { populate: [ 'contacts' ] })
+        : api.get('proposals', { query: { published: true }, populate: [ 'contacts' ] })
   )
 )
 class // Compose is a redux utility that runs an array of functions:
 //  Connect component to cached DB entities
 //  Execute necessary AJAX to load said entities
-// where: { published: true }
+// query: { published: true }
 // connectRequest((props) => api.getAll('proposals'))
 Proposals extends React.Component {
   static propTypes = {

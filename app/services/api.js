@@ -1,7 +1,7 @@
 import { API, version } from './environment'
 //  API Mutators are wrapped with async middleware
 import { requestAsync, mutateAsync } from 'redux-query'
-import pluralize from 'pluralize'
+import { plural, singular } from 'pluralize'
 const endpoint = `${API}/${version}`
 /*
 https://amplitude.github.io/redux-query/#/
@@ -38,22 +38,22 @@ NOTE: This is a temp solution while we work on the DB migration.
 input:
 {
   query: { number: props.options.number },
-  join: ['contacts']
+  populate: ['contacts']
 }
 output:
 ...v1/block?query={"number":"70692"}&populate={"path":"contacts"}
 */
 const target = (model, options) => {
-  //  Base URL, e.g. ...host/v1/proposals/:id
-  let url = `${endpoint}/${pluralize(model)}/${options.id ? options.id : ''}`
+  //  Base URL, e.g. ...host/v1/proposal/:id/?params
+  let url = `${endpoint}/${singular(model)}/${options.id ? options.id : ''}`
   //  Operator to prefix query string for joins, queries, ID specification etc
   let operator = '?'
-  if (options.where) {
-    url = `${url}${operator}where=${JSON.stringify(options.where)}`
+  if (options.query) {
+    url = `${url}${operator}where=${JSON.stringify(options.query)}`
     operator = '&'
   }
-  if (options.join) {
-    url = `${url}${operator}join=${options.join}`
+  if (options.populate) {
+    url = `${url}${operator}populate=${options.populate}`
     operator = '&'
   }
   return url
@@ -157,11 +157,11 @@ import { connectRequest } from 'redux-query'
     dispatch => ({ api: bindActionCreators(api, dispatch)
   ),
   connectRequest(props => api.get('proposal', {
-    where: {
+    query: {
       year: props.params.year,
       number: props.params.number
     },
-    join: ['contacts', 'decision', 'body', 'manifests', 'comments', 'Supplements', 'report', 'reviews']
+    populate: ['contacts', 'decision', 'body', 'manifests', 'comments', 'Supplements', 'report', 'reviews']
   }))
 )
 

@@ -25,8 +25,8 @@ import styles from './Docket.css'
   connectRequest(() => api.get('manifests', {
 
     //  BUG: Unpublished proposals can be pulled in docket creation.
-    // where: { 'docket': true },
-    join: ['proposal']  //  Every manifest has a proposal, no need to check existence.
+    // query: { 'docket': true },
+    populate: ['proposal']  //  Every manifest has a proposal, no need to check existence.
     //  TODO: Add docket: { metrics, voting } to manifest schema. No need to make a schema for voting only, it would only have two bools and a ref.
   }))
 )

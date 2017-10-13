@@ -46,12 +46,12 @@ connectRequest will force a query if there's a mismatch.
   })),
   connectRequest(props => api.get('proposal', {
     force: true,
-    where: {
+    query: {
       year: props.params.year,
       number: props.params.number
     },
     // Proposal reporting, metrics and decisions are tied to manifests, which are individual "asks"
-    join: [
+    populate: [
       'contacts', 'body', 'comments',
       'manifests.report', 'manifests.reviews', 'manifests.decision'
     ]

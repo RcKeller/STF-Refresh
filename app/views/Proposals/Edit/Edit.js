@@ -35,7 +35,7 @@ import styles from './Edit.css'
   })),
   connectRequest(props => api.get('proposal', {
     id: props.params.id,
-    join: ['contacts', 'body', 'manifests'],
+    populate: ['contacts', 'body', 'manifests'],
     force: true
   }))
 )
