@@ -1,7 +1,6 @@
 import REST from './restify'
 import { Manifest, Item, Proposal } from '../models'
 import mongoose from 'mongoose'
-import _ from 'lodash'
 
 import { Slack } from '../../integrations'
 

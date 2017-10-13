@@ -15,49 +15,20 @@ export default (app) => {
   /*
   RESTful API
   */
-  app.use(`/${version}/configs`, new controllers.Configs().api())
-  app.use(`/${version}/contacts`, new controllers.Contacts().api())
-  app.use(`/${version}/stf`, new controllers.STF().api())
-  app.use(`/${version}/comments`, new controllers.Comments().api())
-  app.use(`/${version}/proposals`, new controllers.Proposals().api())
-  app.use(`/${version}/projects`, new controllers.Projects().api())
-  // app.use(`/${version}/manifests`, new controllers.Manifests().api())
-  // app.use(`/${version}/items`, new controllers.Items().api())
-  app.use(`/${version}/blocks`, new controllers.Blocks().api())
-  app.use(`/${version}/reviews`, new controllers.Reviews().api())
-  app.use(`/${version}/decisions`, new controllers.Decisions().api())
-  // app.use(`/${version}/reports`, new controllers.Reports().api())
-  console.log(`REST: API live for all ${Object.keys(controllers).length - 1} core models.`)
-
-  const router = express.Router()
-  const config = {
-    prefix: '',
-    version: '/v1',
-    //  Disabling these allows middleware to be called
-    findOneAndUpdate: false,
-    findOneAndRemove: false,
-    access: (req) => 'private',
-    outputFn: (req, res) => {
-      const result = req.erm.result
-      const statusCode = req.erm.statusCode
-      res.status(statusCode).json(result)
-    },
-    postProcess: (req, res, next) => {
-      const statusCode = req.erm.statusCode
-      console.info(`${req.method} ${req.path} request completed with status code ${statusCode}`)
-    },
-    onError: (err, req, res, next) => {
-      const statusCode = req.erm.statusCode // 400 or 404
-      console.log(err)
-      res.status(statusCode).json({ message: err.message })
-    }
-  }
-  restify.serve(router, Item, config)
+  app.use(new controllers.Configs().API())
+  app.use(new controllers.Contacts().API())
+  app.use(new controllers.STF().API())
+  app.use(new controllers.Comments().API())
+  app.use(new controllers.Proposals().API())
+  app.use(new controllers.Projects().API())
   app.use(new controllers.Manifests().API())
+  app.use(new controllers.Items().API())
+  app.use(new controllers.Blocks().API())
+  app.use(new controllers.Reviews().API())
+  app.use(new controllers.Decisions().API())
   app.use(new controllers.Reports().API())
-  app.use(router)
-  // restify.serve(router, Manifest, Object.assign(options, manifestMiddleware))
-  // restify.serve(router, Manifest, options)
+  console.log(`REST: API live for all ${Object.keys(controllers).length - 1} core models.`)
+  //  TODO: Migrate users to the new API endpoint
 
   // USER PROFILE ROUTES
   console.log('USER: Initializing User REST routes and auth endpoints')

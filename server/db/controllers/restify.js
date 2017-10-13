@@ -11,6 +11,7 @@ export default class Restify {
     this.config = {
       prefix: '',
       version: '/v1',
+      name: this.model.modelName.toLowerCase(),
       //  Disabling these allows middleware to be called
       findOneAndUpdate: false,
       findOneAndRemove: false,
@@ -23,6 +24,7 @@ export default class Restify {
         const { method, path } = req
         const { statusCode } = req.erm
         console.info(`${method} ${path} request completed with status code ${statusCode}`)
+        //  TODO: Return population w/ this.children
       },
       onError: (err, req, res, next) => {
         const { message } = err

@@ -1,8 +1,8 @@
-import REST from './rest'
+import REST from './restify'
 import { Config } from '../models'
 
-export default class Items extends REST {
+export default class Configs extends REST {
   constructor () {
-    super(Config, '_id')
+    super(Config)
   }
 }
