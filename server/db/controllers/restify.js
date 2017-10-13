@@ -5,6 +5,7 @@ import { Slack } from '../../integrations'
 
 export default class Restify {
   constructor (model) {
+    //  Assign model
     this.model = model
     //  express-restify-mongoose configurations - common to all controllers
     this.config = {
@@ -32,7 +33,7 @@ export default class Restify {
     }
     //  Middleware = override this!
     this.middleware = { ...this.config }
-    //  Common utils / helpers
+    //  Common utils / helpers inherited.
     this.Slack = Slack
   }
   API () {

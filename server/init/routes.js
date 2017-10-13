@@ -26,7 +26,7 @@ export default (app) => {
   app.use(`/${version}/blocks`, new controllers.Blocks().api())
   app.use(`/${version}/reviews`, new controllers.Reviews().api())
   app.use(`/${version}/decisions`, new controllers.Decisions().api())
-  app.use(`/${version}/reports`, new controllers.Reports().api())
+  // app.use(`/${version}/reports`, new controllers.Reports().api())
   console.log(`REST: API live for all ${Object.keys(controllers).length - 1} core models.`)
 
   const router = express.Router()
@@ -54,6 +54,7 @@ export default (app) => {
   }
   restify.serve(router, Item, config)
   app.use(new controllers.Manifests().API())
+  app.use(new controllers.Reports().API())
   app.use(router)
   // restify.serve(router, Manifest, Object.assign(options, manifestMiddleware))
   // restify.serve(router, Manifest, options)
