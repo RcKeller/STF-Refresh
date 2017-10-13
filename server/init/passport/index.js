@@ -21,4 +21,9 @@ export default (app) => {
   config.has('prod')
     ? uw(app, passport)
     : google(app, passport)
+  //  Delete sessions
+  app.delete('/sessions', (req, res) => {
+    req.logout()
+    res.sendStatus(200)
+  })
 }

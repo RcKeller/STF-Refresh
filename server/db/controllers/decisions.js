@@ -1,9 +1,9 @@
 import REST from './restify'
-import { Item } from '../models'
+import { Decision } from '../models'
 
-export default class Items extends REST {
+export default class Decisions extends REST {
   constructor () {
-    super(Item)
+    super(Decision)
   }
   //  TODO: Update proposal received
 }

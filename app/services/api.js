@@ -28,39 +28,7 @@ Benefits:
 -Built-in utilities for handling promise-chaining
 -Automatically query when components load without polluting lifecycle methods via connectRequest().
 
-TODO: create a querystring adapter that is API specific, packages don't work for this.
-
 */
-
-/*
-Query string adapter
-NOTE: This is a temp solution while we work on the DB migration.
-input:
-{
-  query: { number: props.options.number },
-  populate: ['contacts']
-}
-output:
-...v1/block?query={"number":"70692"}&populate={"path":"contacts"}
-*/
-// const target = (model, options = {}) => {
-//   //  Base URL, e.g. ...host/v1/proposal/:id/?params
-//   let { id, query, populate, select, distinct, skip, limit, sort } = options
-//   let url = `${endpoint}/${singular(model)}/${options.id ? options.id : ''}`
-//   //  Operator to prefix query string for joins, queries, ID specification etc
-//   let operator = '?'
-//   if (query) {
-//     url = `${url}${operator}query=${JSON.stringify(query)}`
-//     operator = '&'
-//   }
-//   if (populate) {
-//     for (let p of populate) {
-//       url = `${url}${operator}populate=${populate}`
-//     }
-//     operator = '&'
-//   }
-//   return url
-// }
 
 const target = (model, options = {}) => {
   const mongoParams = ['query', 'populate', 'select', 'distinct', 'sort', 'skip', 'limit']

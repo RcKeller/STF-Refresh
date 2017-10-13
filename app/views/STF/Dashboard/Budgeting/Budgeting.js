@@ -49,7 +49,11 @@ const expandedRowRender = (record, i) => <SubTable
   connectRequest(
     () => api.get('decisions', {
       query: { approved: true },
-      populate: ['manifest.report', 'proposal.contacts']
+      populate: [
+        { path: 'manifest', populate: { path: 'report' } },
+        { path: 'manifest', populate: { path: 'items' } },
+        { path: 'proposal', populate: { path: 'contacts' } }
+      ]
     })
   )
 )

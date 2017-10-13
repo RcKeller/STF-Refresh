@@ -53,7 +53,10 @@ connectRequest will force a query if there's a mismatch.
     // Proposal reporting, metrics and decisions are tied to manifests, which are individual "asks"
     populate: [
       'contacts', 'body', 'comments',
-      'manifests.report', 'manifests.reviews', 'manifests.decision'
+      { path: 'manifests', populate: { path: 'items' } },
+      { path: 'manifests', populate: { path: 'report' } },
+      { path: 'manifests', populate: { path: 'decision' } }
+      // { path: 'manifests', populate: { path: ['report', 'reviews', 'decision'] } }
     ]
   }))
 )

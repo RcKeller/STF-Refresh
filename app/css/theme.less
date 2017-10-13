@@ -230,11 +230,6 @@ body {
   margin-left: -1px;
 }
 
-//  Break words in table cells.
-.ant-table-thead > tr > th, .ant-table-tbody > tr > td {
-  word-break: break-word;
-}
-
 //  Fix badge alignment
 .ant-badge-count p {
   color: #FFF !important;
@@ -247,6 +242,14 @@ body {
 }
 .ant-alert-with-description .ant-alert-icon {
   left: 16px;
+}
+
+//  Break words in table cells.
+.ant-table-thead > tr > th, .ant-table-tbody > tr > td {
+  word-break: break-word;
+}
+.ant-table-tbody > tr > td {
+  padding: 0px !important;
 }
 
 //  Presentation tables (antd)

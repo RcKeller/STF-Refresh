@@ -218,7 +218,7 @@ Proposals extends React.Component {
         width: 100
       },
       {
-        title: 'Awarded',
+        title: 'Award',
         dataIndex: 'received',
         key: 'received',
         render: (text, record) =>
@@ -229,7 +229,9 @@ Proposals extends React.Component {
                 ? <Progress type='circle' width={70}
                   status='exception'
                   percent={0} />
-                : <em>N/A</em>,
+                : <Progress type='circle' width={70}
+                  format={() => <Icon type='ellipsis' />}
+                  percent={0} />,
         sorter: (a, b) =>
           a.received
             ? (a.received || 0) / (a.asked || 1) -
