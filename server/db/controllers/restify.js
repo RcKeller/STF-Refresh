@@ -25,12 +25,14 @@ export default class Restify {
         const { statusCode } = req.erm
         console.info(`${method} ${path} request completed with status code ${statusCode}`)
         //  TODO: Return population w/ this.children
+        next()
       },
       onError: (err, req, res, next) => {
         const { message } = err
         const { statusCode } = req.erm
         console.log(err)
         res.status(statusCode).json({ message })
+        next()
       }
     }
     //  Middleware = override this!
@@ -41,7 +43,7 @@ export default class Restify {
   API () {
     const router = new Router()
     restify.serve(router, this.model, this.middleware)
-    console.log(`REST: Instantiated controller: Man)ifests`)
+    console.log(`REST: Instantiated controller: ${this.config.name}`)
     return router
   }
 }

@@ -9,28 +9,50 @@ export default class Manifests extends REST {
     super(Manifest)
     this.middleware = {
       ...this.config,
-      preMiddleware: this.preMiddleware,
-      postProcess: this.postProcess
+      preMiddleware: preMiddleware
+      // postProcess: postProcess
     }
   }
-  /*
-  MIDDLEWARE
-  */
-  async preMiddleware (req, res, next) {
-    let { body } = req
-    body.total = getTotal(body.items)
-    body.items = await saveItems(body.items, body._id)
-    //  TODO: Update proposal
-    if (body.type === 'original' && body.proposal) updateProposalAsked(body.proposal, body.total)
-    //  Announcements
-    next()
-  }
-  postProcess (req, res, next) {
-    const { method, path } = req
-    const { statusCode, result } = req.erm
-    console.info(`${method} ${path} request completed with status code ${statusCode}!`)
-    announceNewBudgets(result)
-  }
+}
+
+/*
+MIDDLEWARE
+*/
+// async function preMiddleware (req, res, next) {
+//   let { body } = req
+//   // console.log(Object.keys(req.erm))
+//   body.total = getTotal(body.items)
+//   body.items = await saveItems(body.items, body._id)
+//   // let total = getTotal(body.items)
+//   // let items = await saveItems(body.items, body._id)
+//   // body.total = total
+//   // body.items = items
+//   console.log(body)
+//   //  TODO: Update proposal
+//   // if (body.type === 'original' && body.proposal) await updateProposalAsked(body.proposal, body.total)
+//   //  Announcements
+//   next()
+// }
+function preMiddleware (req, res, next) {
+  let { body } = req
+  // console.log(Object.keys(req.erm))
+  body.total = getTotal(body.items)
+  body.items = saveItems(body.items, body._id).then(items => items)
+  // let total = getTotal(body.items)
+  // let items = await saveItems(body.items, body._id)
+  // body.total = total
+  // body.items = items
+  console.log(body)
+  //  TODO: Update proposal
+  // if (body.type === 'original' && body.proposal) await updateProposalAsked(body.proposal, body.total)
+  //  Announcements
+  next()
+}
+function postProcess (req, res, next) {
+  const { method, path } = req
+  const { statusCode, result } = req.erm
+  console.info(`${method} ${path} request completed with status code ${statusCode}!`)
+  announceNewBudgets(result)
 }
 
 /*
