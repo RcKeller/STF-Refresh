@@ -9,7 +9,8 @@ export default class Manifests extends REST {
     super(Manifest)
     this.middleware = {
       ...this.config,
-      preCreate: preCreate
+      preCreate: preCreateOrUpdate,
+      preUpdate: preCreateOrUpdate
       // preMiddleware: preMiddleware,
       // preCreate: function (req, res, next) {
       //   console.log(Object.keys(req.erm))
@@ -24,10 +25,12 @@ export default class Manifests extends REST {
 /*
 MIDDLEWARE
 */
-async function preCreate (req, res, next) {
+async function preCreateOrUpdate (req, res, next) {
   let { body } = req
-  console.log(Object.keys(req.erm))
-  body.type = await 'test'
+  // console.log(Object.keys(req.erm))
+  // body.type = await 'test'
+  body.total = getTotal(body.items)
+  body.items = await saveItems(body.items, body._id)
   next()
 }
 
