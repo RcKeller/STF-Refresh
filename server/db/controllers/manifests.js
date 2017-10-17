@@ -49,16 +49,13 @@ BUGFIX
 async function postUpdate (req, res, next) {
   //  get id, find items, update manifest
   let { result, bugfixrefs } = req.erm
+  const { items } = bugfixrefs
   const manifest = result._id
-  console.log('Items prerecorded', bugfixrefs)
-  console.log('Result items', result.items, 'for', result._id)
-  let updated = await Manifest
-    .findByIdAndUpdate(manifest, { items: bugfixrefs.items }, { new: true })
+  let patch = await Manifest
+    .findByIdAndUpdate(manifest, { items }, { new: true })
     .populate('items')
-    // .exec()
-    .then(doc => doc)
-  result = Object.assign(result, updated)
-  console.log(updated, 'Object assigned', result.items)
+  Object.assign(result, patch)
+  // console.log(result, 'Object assigned', result.items)
   next()
 }
 
@@ -81,7 +78,7 @@ function preMiddleware (req, res, next) {
   let { body } = req
   // console.log(Object.keys(req.erm))
   body.total = getTotal(body.items)
-  body.items = saveItems(body.items, body._id).then(items => items)
+  body.items = saveItems(body.items, body._id)
   // let total = getTotal(body.items)
   // let items = await saveItems(body.items, body._id)
   // body.total = total
@@ -108,7 +105,7 @@ and as such, can't be class methods, and wrapping them is a hack.
 getTotal: Calculate grand totals
 */
 function getTotal (items = []) {
-  console.log('GETTOTAL')
+  // console.log('GETTOTAL')
   let total = 0
   for (let item of items) {
     if (item.quantity > 0) {
@@ -117,7 +114,7 @@ function getTotal (items = []) {
         : total += (item.price * item.quantity)
     }
   }
-  console.log('TOTAL', total)
+  // console.log('TOTAL', total)
   return total
 }
 /*
@@ -128,7 +125,7 @@ Saveitems: Upserts items, then returns an array of their IDs
   //  BUG: https://github.com/florianholzapfel/express-restify-mongoose/issues/276
 */
 async function saveItems (items = [], manifest) {
-  console.log('SAVEITEMS', items)
+  // console.log('SAVEITEMS', items)
   const createOrUpdateOptions = { upsert: true, setDefaultsOnInsert: true, new: true }
   let promises = items.map((item) => {
     if (!item.manifest && manifest) item.manifest = manifest
@@ -138,7 +135,7 @@ async function saveItems (items = [], manifest) {
       .then(doc => doc._id)
   })
   let refs = await Promise.all(promises)
-  console.log('REFS', refs)
+  // console.log('REFS', refs)
   return refs
 }
 /*
