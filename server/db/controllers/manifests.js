@@ -10,6 +10,14 @@ export default class Manifests extends REST {
     this.middleware = {
       ...this.config,
       preMiddleware: this.preMiddleware,
+      preCreate: function (req, res, next) {
+        console.log('preCreate', 'Manifest')
+        next()
+      },
+      preUpdate: function (req, res, next) {
+        console.log('preUpdate', 'Manifest')
+        next()
+      },
       postProcess: this.postProcess
     }
   }
@@ -18,18 +26,21 @@ export default class Manifests extends REST {
   */
   async preMiddleware (req, res, next) {
     let { body } = req
-    body.total = getTotal(body.items)
-    body.items = await saveItems(body.items, body._id)
-    //  TODO: Update proposal
-    if (body.type === 'original' && body.proposal) updateProposalAsked(body.proposal, body.total)
+    console.log('preMiddleware', 'Manifest')
+    // body.total = getTotal(body.items)
+    // body.items = await saveItems(body.items, body._id)
+    // //  TODO: Update proposal
+    // if (body.type === 'original' && body.proposal) updateProposalAsked(body.proposal, body.total)
     //  Announcements
     next()
   }
-  postProcess (req, res, next) {
+  async postProcess (req, res, next) {
     const { method, path } = req
     const { statusCode, result } = req.erm
     console.info(`${method} ${path} request completed with status code ${statusCode}!`)
-    announceNewBudgets(result)
+    console.log(typeof result)
+    if (result) await announceNewBudgets(result)
+    next()
   }
 }
 
