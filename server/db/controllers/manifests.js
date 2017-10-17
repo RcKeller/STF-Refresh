@@ -13,13 +13,6 @@ export default class Manifests extends REST {
       preUpdate: preCreateOrUpdate,
       postCreate: postCreate,
       postUpdate: postUpdate
-      // preMiddleware: preMiddleware,
-      // preCreate: function (req, res, next) {
-      //   console.log(Object.keys(req.erm))
-      //   next()
-      // }
-      // postProcess: postProcess
-
     }
   }
 }
@@ -29,8 +22,8 @@ Mongoose will not be able to patch embedded arrays
 https://github.com/Automattic/mongoose/issues/1204
 https://stackoverflow.com/questions/24618584/mongoose-save-not-updating-value-in-an-array-in-database-document
 https://stackoverflow.com/questions/33557086/mongoose-not-saving-embedded-object-array
+*/
 /*
-
 MIDDLEWARE
 */
 async function preCreateOrUpdate (req, res, next) {
@@ -55,6 +48,7 @@ async function postCreate (req, res, next) {
     : announceNewBudgets(result)
   next()
 }
+
 //  Patch missing ref arrays
 async function postUpdate (req, res, next) {
   let { result, bugfixrefs: { items } } = req.erm
@@ -76,7 +70,6 @@ and as such, can't be class methods, and wrapping them is a hack.
 getTotal: Calculate grand totals
 */
 function getTotal (manifest) {
-  // console.log('GETTOTAL')
   const { items } = manifest
   let total = 0
   for (let item of items) {
@@ -86,7 +79,6 @@ function getTotal (manifest) {
         : total += (item.price * item.quantity)
     }
   }
-  // console.log('TOTAL', total)
   return total
 }
 /*
@@ -115,7 +107,6 @@ updateProposalAsked: Updates the ask for a proposal
 */
 async function updateProposalAsked (manifest) {
   const { proposal, total } = manifest
-  console.log('TODO: Implement updateProposalAsked', proposal, total)
   await Proposal.findByIdAndUpdate(proposal, { asked: total })
 }
 
