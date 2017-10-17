@@ -13,8 +13,8 @@ export default class Restify {
       version: '/v1',
       name: this.model.modelName.toLowerCase(),
       //  Disabling these allows middleware to be called
-      findOneAndUpdate: false,
-      findOneAndRemove: false,
+      // findOneAndUpdate: false,
+      // findOneAndRemove: false,
       access: (req) => 'private',
       outputFn: (req, res) => {
         const { result, statusCode } = req.erm
@@ -30,7 +30,7 @@ export default class Restify {
       onError: (err, req, res, next) => {
         const { message } = err
         const { statusCode } = req.erm
-        console.log(err)
+        console.error(`ERM:  ${err}`)
         res.status(statusCode).json({ message })
         next()
       }

@@ -23,7 +23,7 @@ const ItemSchema = new mongoose.Schema({
   priority: { type: Number, min: 0 }
 })
 ItemSchema.plugin(autoref, [
-  'manifest.items',
+  // 'manifest.items',
   'report.items'
 ])
 const Item = mongoose.model('Item', ItemSchema)

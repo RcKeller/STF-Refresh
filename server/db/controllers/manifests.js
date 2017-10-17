@@ -21,8 +21,14 @@ export default class Manifests extends REST {
     }
   }
 }
-
 /*
+BUG: Found the cause of the bug
+Mongoose will not be able to patch embedded arrays
+https://github.com/Automattic/mongoose/issues/1204
+https://stackoverflow.com/questions/24618584/mongoose-save-not-updating-value-in-an-array-in-database-document
+https://stackoverflow.com/questions/33557086/mongoose-not-saving-embedded-object-array
+/*
+
 MIDDLEWARE
 */
 async function preCreateOrUpdate (req, res, next) {
@@ -31,6 +37,8 @@ async function preCreateOrUpdate (req, res, next) {
   // body.type = await 'test'
   body.total = getTotal(body.items)
   body.items = await saveItems(body.items, body._id)
+  //  TODO: Parse and cast as objectID?
+  console.log(body.items, body.total)
   next()
 }
 
@@ -103,7 +111,7 @@ async function saveItems (items = [], manifest) {
   console.log('SAVEITEMS', items)
   const createOrUpdateOptions = { upsert: true, setDefaultsOnInsert: true, new: true }
   let promises = items.map((item) => {
-    if (!item.manifest && manifest) item.manifest = manifest
+    // if (!item.manifest && manifest) item.manifest = manifest
     if (!item._id) item._id = mongoose.Types.ObjectId()
     return Item
       .findByIdAndUpdate(item._id, item, createOrUpdateOptions)
