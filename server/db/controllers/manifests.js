@@ -38,8 +38,10 @@ async function preCreateOrUpdate (req, res, next) {
   // body.type = await 'test'
   body.total = getTotal(body.items)
   body.items = await saveItems(body.items, body._id)
+  req.erm.bugfixrefs = { items: body.items }
   //  TODO: Parse and cast as objectID?
-  console.log(body.items, body.total)
+  // console.log(body.items, body.total)
+  console.log(req.erm.bugfixrefs)
   next()
 }
 /*
@@ -47,17 +49,13 @@ BUGFIX
 */
 async function postUpdate (req, res, next) {
   //  get id, find items, update manifest
-  let { result } = req.erm
+  let { result, bugfixrefs } = req.erm
   const manifest = result._id
   console.log('Result items', result.items, 'for', result._id)
-  let items = await Item
-    .find({ manifest })
-    .select('_id')
-    .then(docs => docs.map(i => i._id))
-    // .then((err, docs) => !err ? docs.map(i => i._id) : [])
-  // items = items.map(i => i._id)
-  result = await Manifest.findByIdAndUpdate(manifest, { items }).populate('items')
-  console.log('POSTUPDATE ITEMS', items)
+  let updated = await Manifest.findByIdAndUpdate(manifest, { items: bugfixrefs.items }).populate('items')
+  result = Object.assign(result, updated)
+  console.log(updated, 'Object assigned', result.items)
+  // console.log('POSTUPDATE ITEMS', items)
   next()
 }
 
@@ -130,7 +128,7 @@ async function saveItems (items = [], manifest) {
   console.log('SAVEITEMS', items)
   const createOrUpdateOptions = { upsert: true, setDefaultsOnInsert: true, new: true }
   let promises = items.map((item) => {
-    // if (!item.manifest && manifest) item.manifest = manifest
+    if (!item.manifest && manifest) item.manifest = manifest
     if (!item._id) item._id = mongoose.Types.ObjectId()
     return Item
       .findByIdAndUpdate(item._id, item, createOrUpdateOptions)
