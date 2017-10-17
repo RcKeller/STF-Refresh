@@ -11,6 +11,7 @@ export default class Manifests extends REST {
       ...this.config,
       preCreate: preCreateOrUpdate,
       preUpdate: preCreateOrUpdate,
+      postCreate: postCreate,
       postUpdate: postUpdate
       // preMiddleware: preMiddleware,
       // preCreate: function (req, res, next) {
@@ -33,67 +34,37 @@ https://stackoverflow.com/questions/33557086/mongoose-not-saving-embedded-object
 MIDDLEWARE
 */
 async function preCreateOrUpdate (req, res, next) {
+  // let { _id, total, items } = req.body
   let { body } = req
   // console.log(Object.keys(req.erm))
   // body.type = await 'test'
-  body.total = getTotal(body.items)
-  body.items = await saveItems(body.items, body._id)
+  body.total = getTotal(body)
+  body.items = await saveItems(body)
+  //  BUGFIX: For PUT/PATCH, mongoose fails to save arrays of refs.
+  //  We carry ref arrays in temp vars and Object.assign after a manual patch.
   req.erm.bugfixrefs = { items: body.items }
-  //  TODO: Parse and cast as objectID?
-  // console.log(body.items, body.total)
   next()
 }
-/*
-BUGFIX
-*/
+
+//  Update proposal asked, and/or announce new budgets
+async function postCreate (req, res, next) {
+  let { result } = req.erm
+  const { type } = result
+  type === 'original'
+    ? await updateProposalAsked(result)
+    : announceNewBudgets(result)
+  next()
+}
+//  Patch missing ref arrays
 async function postUpdate (req, res, next) {
-  //  get id, find items, update manifest
-  let { result, bugfixrefs } = req.erm
-  const { items } = bugfixrefs
+  let { result, bugfixrefs: { items } } = req.erm
   const manifest = result._id
+  //  Patch missing refs from subdoc arrays - mongo bug
   let patch = await Manifest
     .findByIdAndUpdate(manifest, { items }, { new: true })
     .populate('items')
   Object.assign(result, patch)
-  // console.log(result, 'Object assigned', result.items)
   next()
-}
-
-// async function preMiddleware (req, res, next) {
-//   let { body } = req
-//   // console.log(Object.keys(req.erm))
-//   body.total = getTotal(body.items)
-//   body.items = await saveItems(body.items, body._id)
-//   // let total = getTotal(body.items)
-//   // let items = await saveItems(body.items, body._id)
-//   // body.total = total
-//   // body.items = items
-//   console.log(body)
-//   //  TODO: Update proposal
-//   // if (body.type === 'original' && body.proposal) await updateProposalAsked(body.proposal, body.total)
-//   //  Announcements
-//   next()
-// }
-function preMiddleware (req, res, next) {
-  let { body } = req
-  // console.log(Object.keys(req.erm))
-  body.total = getTotal(body.items)
-  body.items = saveItems(body.items, body._id)
-  // let total = getTotal(body.items)
-  // let items = await saveItems(body.items, body._id)
-  // body.total = total
-  // body.items = items
-  console.log(body)
-  //  TODO: Update proposal
-  // if (body.type === 'original' && body.proposal) await updateProposalAsked(body.proposal, body.total)
-  //  Announcements
-  next()
-}
-function postProcess (req, res, next) {
-  const { method, path } = req
-  const { statusCode, result } = req.erm
-  console.info(`${method} ${path} request completed with status code ${statusCode}!`)
-  announceNewBudgets(result)
 }
 
 /*
@@ -104,8 +75,9 @@ and as such, can't be class methods, and wrapping them is a hack.
 /*
 getTotal: Calculate grand totals
 */
-function getTotal (items = []) {
+function getTotal (manifest) {
   // console.log('GETTOTAL')
+  const { items } = manifest
   let total = 0
   for (let item of items) {
     if (item.quantity > 0) {
@@ -124,27 +96,27 @@ Saveitems: Upserts items, then returns an array of their IDs
   Implication - patching a manifest writes new items.
   //  BUG: https://github.com/florianholzapfel/express-restify-mongoose/issues/276
 */
-async function saveItems (items = [], manifest) {
-  // console.log('SAVEITEMS', items)
+async function saveItems (manifest) {
+  const { _id, items } = manifest
   const createOrUpdateOptions = { upsert: true, setDefaultsOnInsert: true, new: true }
   let promises = items.map((item) => {
-    if (!item.manifest && manifest) item.manifest = manifest
+    if (!item.manifest && _id) item.manifest = _id
     if (!item._id) item._id = mongoose.Types.ObjectId()
     return Item
       .findByIdAndUpdate(item._id, item, createOrUpdateOptions)
       .then(doc => doc._id)
   })
   let refs = await Promise.all(promises)
-  // console.log('REFS', refs)
   return refs
 }
+
 /*
 updateProposalAsked: Updates the ask for a proposal
 */
-async function updateProposalAsked (proposal, asked) {
-  console.log('TODO: Implement updateProposalAsked', proposal, asked)
-  Proposal.findByIdAndUpdate(proposal, { asked })
-  return 0
+async function updateProposalAsked (manifest) {
+  const { proposal, total } = manifest
+  console.log('TODO: Implement updateProposalAsked', proposal, total)
+  await Proposal.findByIdAndUpdate(proposal, { asked: total })
 }
 
 /*
