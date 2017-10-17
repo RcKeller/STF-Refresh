@@ -1,12 +1,68 @@
 import REST from './restify'
-import { Proposal } from '../models'
+import { Proposal, Config } from '../models'
 // import { Slack } from '../../integrations'
 
 export default class Proposals extends REST {
   constructor () {
     super(Proposal)
+    this.middleware = {
+      ...this.config,
+      preUpdate: preUpdate
+    }
   }
   // TODO: Assign year/number when published, and announce new proposals.
+}
+
+/*
+MIDDLEWARE
+*/
+async function preUpdate (req, res, next) {
+  // let { _id, total, items } = req.body
+  let { body } = req
+  body = await assignNumberIfPublishing(body)
+  //  BUGFIX: For PUT/PATCH, mongoose fails to save arrays of refs.
+  //  We carry ref arrays in temp vars and Object.assign after a manual patch.
+  req.erm.bugfixrefs = { items: body.items }
+  next()
+}
+
+async function assignNumberIfPublishing (proposal) {
+  let { _id, number, published } = proposal
+
+  console.log('Checking publication status:', _id, published, proposal.year, number)
+  //  If published and !numbered, check if it was previously unpublished w/o meta
+  if (published && !number) {
+    // let { published: prevPublished, number: prevNumber } = await Proposal
+    //   .findById(_id).then()
+    let { prevPublished, prevNumber } = await Proposal
+      .findById(_id)
+      .select('published number')
+      .then(({ published, number }) => ({
+        prevPublished: published || false,
+        prevNumber: number || 0
+      }))
+    console.log('Prev pub/num', prevPublished, prevNumber)
+    if (!prevPublished && !prevNumber) {
+      // It's being published. Find year from config, the next number based on others this year
+      let { year, quarter } = Config
+        .find({})[0]
+      let topNumber = await Proposal
+        .find({ year })
+        .select('number')
+        .sort({ number: 'desc' })
+        .then(doc => doc.number)[0]
+      console.log('Top', topNumber)
+      proposal.year = year
+      proposal.number = topNumber ? topNumber++ : 1
+      proposal.quarter = quarter
+      console.log('RESULT AFTER NUMBERING', proposal.year, proposal.number, proposal.quarter)
+      //  Return a mutated doc for saving
+      return proposal
+    }
+    console.log('Returning in one closure')
+  }
+  console.log('Returning out of closure')
+  return proposal
 }
 
 // export default class Proposals extends REST {
