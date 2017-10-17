@@ -41,7 +41,6 @@ async function preCreateOrUpdate (req, res, next) {
   req.erm.bugfixrefs = { items: body.items }
   //  TODO: Parse and cast as objectID?
   // console.log(body.items, body.total)
-  console.log(req.erm.bugfixrefs)
   next()
 }
 /*
@@ -51,11 +50,15 @@ async function postUpdate (req, res, next) {
   //  get id, find items, update manifest
   let { result, bugfixrefs } = req.erm
   const manifest = result._id
+  console.log('Items prerecorded', bugfixrefs)
   console.log('Result items', result.items, 'for', result._id)
-  let updated = await Manifest.findByIdAndUpdate(manifest, { items: bugfixrefs.items }).populate('items')
+  let updated = await Manifest
+    .findByIdAndUpdate(manifest, { items: bugfixrefs.items }, { new: true })
+    .populate('items')
+    // .exec()
+    .then(doc => doc)
   result = Object.assign(result, updated)
   console.log(updated, 'Object assigned', result.items)
-  // console.log('POSTUPDATE ITEMS', items)
   next()
 }
 
