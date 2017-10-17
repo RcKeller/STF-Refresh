@@ -10,7 +10,8 @@ export default class Manifests extends REST {
     this.middleware = {
       ...this.config,
       preCreate: preCreateOrUpdate,
-      preUpdate: preCreateOrUpdate
+      preUpdate: preCreateOrUpdate,
+      postUpdate: postUpdate
       // preMiddleware: preMiddleware,
       // preCreate: function (req, res, next) {
       //   console.log(Object.keys(req.erm))
@@ -39,6 +40,24 @@ async function preCreateOrUpdate (req, res, next) {
   body.items = await saveItems(body.items, body._id)
   //  TODO: Parse and cast as objectID?
   console.log(body.items, body.total)
+  next()
+}
+/*
+BUGFIX
+*/
+async function postUpdate (req, res, next) {
+  //  get id, find items, update manifest
+  let { result } = req.erm
+  const manifest = result._id
+  console.log('Result items', result.items, 'for', result._id)
+  let items = await Item
+    .find({ manifest })
+    .select('_id')
+    .then(docs => docs.map(i => i._id))
+    // .then((err, docs) => !err ? docs.map(i => i._id) : [])
+  // items = items.map(i => i._id)
+  result = await Manifest.findByIdAndUpdate(manifest, { items }).populate('items')
+  console.log('POSTUPDATE ITEMS', items)
   next()
 }
 
