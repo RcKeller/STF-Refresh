@@ -9,8 +9,14 @@ export default class Manifests extends REST {
     super(Manifest)
     this.middleware = {
       ...this.config,
-      preMiddleware: preMiddleware
+      preCreate: preCreate
+      // preMiddleware: preMiddleware,
+      // preCreate: function (req, res, next) {
+      //   console.log(Object.keys(req.erm))
+      //   next()
+      // }
       // postProcess: postProcess
+
     }
   }
 }
@@ -18,6 +24,13 @@ export default class Manifests extends REST {
 /*
 MIDDLEWARE
 */
+async function preCreate (req, res, next) {
+  let { body } = req
+  console.log(Object.keys(req.erm))
+  body.type = await 'test'
+  next()
+}
+
 // async function preMiddleware (req, res, next) {
 //   let { body } = req
 //   // console.log(Object.keys(req.erm))
