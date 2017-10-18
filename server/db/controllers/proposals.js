@@ -17,7 +17,6 @@ export default class Proposals extends REST {
 MIDDLEWARE
 */
 async function preUpdate (req, res, next) {
-  // let { _id, total, items } = req.body
   let { body } = req
   body = await assignNumberIfPublishing(body)
   //  BUGFIX: For PUT/PATCH, mongoose fails to save arrays of refs.
@@ -32,8 +31,6 @@ async function assignNumberIfPublishing (proposal) {
   console.log('Checking publication status:', _id, published, proposal.year, number)
   //  If published and !numbered, check if it was previously unpublished w/o meta
   if (published && !number) {
-    // let { published: prevPublished, number: prevNumber } = await Proposal
-    //   .findById(_id).then()
     let { prevPublished, prevNumber } = await Proposal
       .findById(_id)
       .select('published number')
@@ -41,7 +38,6 @@ async function assignNumberIfPublishing (proposal) {
         prevPublished: doc.published || false,
         prevNumber: doc.number || 0
       }))
-    console.log('Prev pub/num', prevPublished, prevNumber)
     if (!prevPublished && !prevNumber) {
       // It's being published. Find year from config, the next number based on others this year
       let { year, quarter } = await Config
@@ -49,18 +45,15 @@ async function assignNumberIfPublishing (proposal) {
         .select('year quarter')
       let topNumber = await Proposal
         .count({ year, published }) || 0
-      console.log('Top', topNumber)
+      //  Hydrate this new publication and announce it
       proposal.year = year
       proposal.number = topNumber++
       proposal.quarter = quarter
       proposal.status = 'In Review'
-      console.log('RESULT AFTER NUMBERING', proposal.year, proposal.number, proposal.quarter, proposal.status)
       //  Return a mutated doc for saving
       Slack.announceProposal(proposal)
       return proposal
     }
-    console.log('Returning in one closure')
   }
-  console.log('Returning out of closure')
   return proposal
 }

@@ -20,13 +20,7 @@ export default class Restify {
         const { result, statusCode } = req.erm
         res.status(statusCode).json(result)
       },
-      postProcess: (req, res, next) => {
-        const { method, path } = req
-        const { statusCode } = req.erm
-        console.info(`${method} ${path} request completed with status code ${statusCode}`)
-        //  TODO: Return population w/ this.children
-        next()
-      },
+      //  postProcess will shoot errors, writes on res after response is in flight.
       onError: (err, req, res, next) => {
         const { message } = err
         const { statusCode } = req.erm
