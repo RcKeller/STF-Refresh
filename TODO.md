@@ -2,7 +2,8 @@
 
 ## Restify migration
 - Populate Children on returns
-Decisions: Update proposal received amount
+Decisions: Update proposal received amount & status
+Report - same item issue as manifests. Test this
 Proposals: Assign year/number upon publication and announce
 Logout route:
 logout (req, res) {

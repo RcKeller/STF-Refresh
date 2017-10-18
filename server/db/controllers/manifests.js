@@ -27,10 +27,7 @@ https://stackoverflow.com/questions/33557086/mongoose-not-saving-embedded-object
 MIDDLEWARE
 */
 async function preCreateOrUpdate (req, res, next) {
-  // let { _id, total, items } = req.body
   let { body } = req
-  // console.log(Object.keys(req.erm))
-  // body.type = await 'test'
   body.total = getTotal(body)
   body.items = await saveItems(body)
   //  BUGFIX: For PUT/PATCH, mongoose fails to save arrays of refs.
@@ -51,11 +48,11 @@ async function postCreate (req, res, next) {
 
 //  Patch missing ref arrays
 async function postUpdate (req, res, next) {
-  let { result, bugfixrefs: { items } } = req.erm
+  let { result, bugfixrefs } = req.erm
   const manifest = result._id
   //  Patch missing refs from subdoc arrays - mongo bug
   let patch = await Manifest
-    .findByIdAndUpdate(manifest, { items }, { new: true })
+    .findByIdAndUpdate(manifest, bugfixrefs, { new: true })
     .populate('items')
   Object.assign(result, patch)
   next()
@@ -106,8 +103,8 @@ async function saveItems (manifest) {
 updateProposalAsked: Updates the ask for a proposal
 */
 async function updateProposalAsked (manifest) {
-  const { proposal, total } = manifest
-  await Proposal.findByIdAndUpdate(proposal, { asked: total })
+  const { proposal, total: asked } = manifest
+  await Proposal.findByIdAndUpdate(proposal, { asked })
 }
 
 /*
@@ -118,15 +115,12 @@ async function announceNewBudgets (manifest) {
   const { proposal, type } = manifest
   let parent = await Proposal.findById(proposal)
   console.log('Announcing', parent)
-  if (parent) {
+  if (proposal && type) {
     switch (type) {
+      // case 'original':
+      // case 'partial':
       case 'supplemental':
-        console.log('supplemental')
         Slack.announceSupplemental(manifest, parent)
-        break
-      case 'partial':
-        console.log('partial')
-        Slack.announcePartial(manifest, parent)
         break
     }
   }

@@ -1,34 +1,60 @@
 import REST from './restify'
-import { Report, Manifest, Item } from '../models'
+import { Report, Manifest, Item, Proposal } from '../models'
 import mongoose from 'mongoose'
 
 import { Slack } from '../../integrations'
 
-export default class Reports extends REST {
+export default class Manifests extends REST {
   constructor () {
     super(Report)
     this.middleware = {
       ...this.config,
-      preMiddleware: this.preMiddleware,
-      postProcess: this.postProcess
+      preCreate: preCreateOrUpdate,
+      preUpdate: preCreateOrUpdate,
+      postCreate: postCreate,
+      postUpdate: postUpdate
     }
   }
-  /*
-  MIDDLEWARE
-  */
-  async preMiddleware (req, res, next) {
-    let { body } = req
-    body.total = getTotal(body.items)
-    body.items = await saveItems(body.items, body._id)
-    //  TODO: Update proposal
-    next()
-  }
-  postProcess (req, res, next) {
-    const { method, path } = req
-    const { statusCode, result } = req.erm
-    console.info(`${method} ${path} request completed with status code ${statusCode}!`)
-    checkForOverexpenditures(result)
-  }
+}
+/*
+BUG: Found the cause of the bug
+Mongoose will not be able to patch embedded arrays
+https://github.com/Automattic/mongoose/issues/1204
+https://stackoverflow.com/questions/24618584/mongoose-save-not-updating-value-in-an-array-in-database-document
+https://stackoverflow.com/questions/33557086/mongoose-not-saving-embedded-object-array
+*/
+/*
+MIDDLEWARE
+*/
+async function preCreateOrUpdate (req, res, next) {
+  let { body } = req
+  body.total = getTotal(body)
+  body.items = await saveItems(body)
+  //  BUGFIX: For PUT/PATCH, mongoose fails to save arrays of refs.
+  //  We carry ref arrays in temp vars and Object.assign after a manual patch.
+  req.erm.bugfixrefs = { items: body.items }
+  next()
+}
+
+//  Update proposal asked, and/or announce new budgets
+async function postCreate (req, res, next) {
+  let { result } = req.erm
+  const { proposal } = result
+  console.log('Report for Proposal', proposal)
+  //  TODO: Announce new reports
+  next()
+}
+
+//  Patch missing ref arrays
+async function postUpdate (req, res, next) {
+  let { result, bugfixrefs } = req.erm
+  const report = result._id
+  //  Patch missing refs from subdoc arrays - mongo bug
+  let patch = await Report
+    .findByIdAndUpdate(report, bugfixrefs, { new: true })
+    .populate('items')
+  Object.assign(result, patch)
+  next()
 }
 
 /*
@@ -39,8 +65,8 @@ and as such, can't be class methods, and wrapping them is a hack.
 /*
 getTotal: Calculate grand totals
 */
-function getTotal (items = []) {
-  console.log('GETTOTAL')
+function getTotal (manifest) {
+  const { items } = manifest
   let total = 0
   for (let item of items) {
     if (item.quantity > 0) {
@@ -49,7 +75,6 @@ function getTotal (items = []) {
         : total += (item.price * item.quantity)
     }
   }
-  console.log('TOTAL', total)
   return total
 }
 /*
@@ -59,32 +84,20 @@ Saveitems: Upserts items, then returns an array of their IDs
   Implication - patching a manifest writes new items.
   //  BUG: https://github.com/florianholzapfel/express-restify-mongoose/issues/276
 */
-async function saveItems (items = [], report) {
-  console.log('SAVEITEMS', items)
+async function saveItems (report) {
+  const { _id, items } = report
   const createOrUpdateOptions = { upsert: true, setDefaultsOnInsert: true, new: true }
   let promises = items.map((item) => {
-    if (!item.manifest && report) item.report = report
+    if (!item.report && _id) item.report = _id
     if (!item._id) item._id = mongoose.Types.ObjectId()
     return Item
       .findByIdAndUpdate(item._id, item, createOrUpdateOptions)
       .then(doc => doc._id)
   })
   let refs = await Promise.all(promises)
-  console.log('REFS', refs)
   return refs
 }
 
 /*
-checkForOverexpenditures will report any expenses exceeding award allocations.
-//  BUG: Sometimes does not pop correctly, could be related to my postman setup
+hfghf
 */
-async function checkForOverexpenditures (report) {
-  if (!Number.isNaN(report.total) && report.manifest) {
-    let manifest = await Manifest
-      .findById(report.manifest)
-      .populate('proposal')
-      .exec()
-      .then(m => m)
-    if (report.total > manifest.total) Slack.announceOverexpenditure(report, manifest)
-  }
-}
