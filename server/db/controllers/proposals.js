@@ -37,25 +37,24 @@ async function assignNumberIfPublishing (proposal) {
     let { prevPublished, prevNumber } = await Proposal
       .findById(_id)
       .select('published number')
-      .then(({ published, number }) => ({
-        prevPublished: published || false,
-        prevNumber: number || 0
+      .then((doc) => ({
+        prevPublished: doc.published || false,
+        prevNumber: doc.number || 0
       }))
     console.log('Prev pub/num', prevPublished, prevNumber)
     if (!prevPublished && !prevNumber) {
       // It's being published. Find year from config, the next number based on others this year
-      let { year, quarter } = Config
-        .find({})[0]
+      let { year, quarter } = await Config
+        .findOne({})
+        .select('year quarter')
       let topNumber = await Proposal
-        .find({ year })
-        .select('number')
-        .sort({ number: 'desc' })
-        .then(doc => doc.number)[0]
+        .count({ year, published }) || 0
       console.log('Top', topNumber)
       proposal.year = year
-      proposal.number = topNumber ? topNumber++ : 1
+      proposal.number = topNumber++
       proposal.quarter = quarter
-      console.log('RESULT AFTER NUMBERING', proposal.year, proposal.number, proposal.quarter)
+      proposal.status = 'In Review'
+      console.log('RESULT AFTER NUMBERING', proposal.year, proposal.number, proposal.quarter, proposal.status)
       //  Return a mutated doc for saving
       return proposal
     }
