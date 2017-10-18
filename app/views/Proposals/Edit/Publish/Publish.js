@@ -16,7 +16,8 @@ API for submission, but using connectForm to instantiate initial values.
 @connect(state => ({
   id: state.db.proposal._id,
   published: state.db.proposal.published,
-  user: state.user
+  user: state.user,
+  submissions: state.config.submissions
 }),
   dispatch => ({ api: bindActionCreators(api, dispatch) })
 )
@@ -45,7 +46,7 @@ class Publish extends React.Component {
       console.warn(err)
     })
   }
-  render ({ form, proposal, published } = this.props) {
+  render ({ form, proposal, published, submissions } = this.props) {
     return (
       <div id={proposal}>
         {!published
@@ -64,7 +65,10 @@ class Publish extends React.Component {
             <Button size='large' type='primary' ghost
               style={{ width: '100%' }}
               onClick={this.handlePublish}
-              ><Icon type='rocket' />Publish !</Button>
+              disabled={!submissions}
+            >
+              <Icon type='rocket' />{submissions ? 'Publish !' : 'Submissions are Closed'}
+            </Button>
           </div>
           : <div>
             <h1>This proposal is now live!</h1>

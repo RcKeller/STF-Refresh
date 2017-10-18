@@ -17,7 +17,7 @@ import Budget from './Budget/Budget'
 import Signatures from './Signatures/Signatures'
 import Publish from './Publish/Publish'
 
-import { Spin, Icon, Tooltip, Tabs, message } from 'antd'
+import { Spin, Icon, Tooltip, Tabs, Alert, message } from 'antd'
 const TabPane = Tabs.TabPane
 
 const colors = {
@@ -31,11 +31,16 @@ import styles from './Edit.css'
     //  Loads async, don't use specific selectors.
     proposal: state.db.proposal,
     contacts: initialProposalContacts(state),
-    user: state.user
+    user: state.user,
+    submissions: state.config.submissions,
+    date: state.db.proposal && state.db.proposal.date
   })),
   connectRequest(props => api.get('proposal', {
     id: props.params.id,
-    populate: ['contacts', 'body', 'manifests'],
+    populate: [
+      'contacts', 'body',
+      { path: 'manifests', populate: { path: 'items' } }
+    ],
     force: true
   }))
 )
@@ -178,7 +183,7 @@ class Edit extends React.Component {
     }
   }
   render (
-    { router, forceRequest, proposal, user } = this.props,
+    { router, forceRequest, proposal, user, submissions, date } = this.props,
     { valid } = this.state
   ) {
     const { introduction, contacts, project, budget, signatures } = valid
@@ -186,6 +191,9 @@ class Edit extends React.Component {
       .every(key => valid[key] === true)
     //  Once proposals have loaded, redirect unaffiliated users.
     //  You can log out of Shib and push an update, but if you leave the page after that, it locks you out.
+    var gracePeriodEnd = new Date(date)
+    gracePeriodEnd.setDate(gracePeriodEnd.getDate() + 7)
+    console.log('GRACE PERIOD ENDS:', gracePeriodEnd)
     if (user && proposal) this.redirectUnaffiliatedUsers()
     return (
       <article className={styles['page']}>
@@ -199,6 +207,10 @@ class Edit extends React.Component {
             >
               <h6>{`Draft ID: ${proposal._id}`}</h6>
             </Tooltip>
+            {!submissions && <Alert type='warning' showIcon
+              message='Submissions are closed'
+              description='Unfortunately, the due date for proposal submissions has elapsed. However, we encourage you to continue working on your proposal and submitting it for the next quarterly cycle. Please reach out if you have any questions!'
+            />}
             <Tabs tabPosition='top' defaultActiveKey='1'
               onChange={() => this.validateContacts(proposal)}
             >

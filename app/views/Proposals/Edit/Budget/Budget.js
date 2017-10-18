@@ -74,13 +74,13 @@ class Budget extends React.Component {
       */
       //  https://medium.com/@bluepnume/learn-about-promises-before-you-start-using-async-await-eb148164a9c8
       async function patchBudget () {
-        const res = await api.patch('manifest', budget, { id })
+        const res = await api.patch('manifest', budget, { id, populate: ['items'] })
         if (res) await refresh()
         message.success(`Budget updated!`, 10)
         // console.log(res)
       }
       async function postBudget () {
-        const res = await api.post('manifest', budget)
+        const res = await api.post('manifest', budget, { populate: ['items'] })
         if (res) await refresh()
         message.success(`Created your first budget!`, 10)
         // console.log(res)

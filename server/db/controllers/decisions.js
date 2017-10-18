@@ -17,6 +17,7 @@ async function postCreateOrUpdate (req, res, next) {
   let { result } = req.erm
   let changes = await updateProposal(result)
   console.log('CHANGES', changes)
+  //  TODO: Find a way to test if populate.proposal, and if so, assign a new result.proposal
   next()
 }
 
