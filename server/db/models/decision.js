@@ -14,9 +14,9 @@ const DecisionSchema = new mongoose.Schema({
   //  Optional description that comes with the decision. "We liked..."
   body: String,
   //  Final decision
-  approved: Boolean,
+  approved: Boolean
   //  If this decision is an award, it will have a grant amount and associated report.
-  grant: Number
+  // grant: Number
 })
 DecisionSchema.plugin(autoref, [
   // 'proposal.decisions',
@@ -45,8 +45,8 @@ const dummyDecisions = (min, ids) => {
           manifest: ids.manifest[i],
           author: ids.user[i],
           body: faker.lorem.paragraph(),
-          approved: faker.random.boolean(),
-          grant: faker.random.number()
+          approved: faker.random.boolean()
+          // grant: faker.random.number()
         })
       }
       //  Create will push our fakes into the DB.

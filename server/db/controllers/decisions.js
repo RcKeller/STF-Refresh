@@ -15,7 +15,8 @@ export default class Decisions extends REST {
 //  Patch missing ref arrays
 async function postCreateOrUpdate (req, res, next) {
   let { result } = req.erm
-  await updateProposal(result)
+  let changes = await updateProposal(result)
+  console.log('CHANGES', changes)
   next()
 }
 
@@ -25,14 +26,14 @@ const mapBudgetToStatus = {
   supplemental: (approved) => approved ? 'Funded' : 'Denied'
 }
 async function updateProposal (decision) {
-  const { proposal, manifest, approved, grant } = decision
+  const { proposal, manifest, approved } = decision
   const { total, type } = await Manifest
     .findById(manifest)
     .select('type total')
   //  Generate status enum
   let received = approved ? total : 0
   let status = mapBudgetToStatus[type](approved)
-  let update = await Proposal
-    .findByIdAndUpdate(proposal, { received, status }, { new: true })
-  console.log('NEW PROPOSAL', update)
+  let update = type !== 'supplemental' ? { received, status } : { received }
+  return Proposal
+    .findByIdAndUpdate(proposal, update, { new: true })
 }
