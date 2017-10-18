@@ -1,10 +1,10 @@
 import REST from './restify'
-import { Report, Manifest, Item, Proposal } from '../models'
+import { Report, Item } from '../models'
 import mongoose from 'mongoose'
 
-import { Slack } from '../../integrations'
+// import { Slack } from '../../integrations'
 
-export default class Manifests extends REST {
+export default class Reports extends REST {
   constructor () {
     super(Report)
     this.middleware = {
@@ -28,11 +28,13 @@ MIDDLEWARE
 */
 async function preCreateOrUpdate (req, res, next) {
   let { body } = req
-  body.total = getTotal(body)
-  body.items = await saveItems(body)
-  //  BUGFIX: For PUT/PATCH, mongoose fails to save arrays of refs.
-  //  We carry ref arrays in temp vars and Object.assign after a manual patch.
-  req.erm.bugfixrefs = { items: body.items }
+  if (body.items) {
+    body.total = getTotal(body)
+    body.items = await saveItems(body)
+    //  BUGFIX: For PUT/PATCH, mongoose fails to save arrays of refs (they resolve as null).
+    //  We carry ref arrays in temp vars and Object.assign after a manual patch.
+    req.erm.bugfixrefs = { items: body.items }
+  }
   next()
 }
 
@@ -50,10 +52,12 @@ async function postUpdate (req, res, next) {
   let { result, bugfixrefs } = req.erm
   const report = result._id
   //  Patch missing refs from subdoc arrays - mongo bug
-  let patch = await Report
+  if (bugfixrefs) {
+    let patch = await Report
     .findByIdAndUpdate(report, bugfixrefs, { new: true })
     .populate('items')
-  Object.assign(result, patch)
+    Object.assign(result, patch)
+  }
   next()
 }
 

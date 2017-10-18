@@ -28,11 +28,13 @@ MIDDLEWARE
 */
 async function preCreateOrUpdate (req, res, next) {
   let { body } = req
-  body.total = getTotal(body)
-  body.items = await saveItems(body)
-  //  BUGFIX: For PUT/PATCH, mongoose fails to save arrays of refs.
-  //  We carry ref arrays in temp vars and Object.assign after a manual patch.
-  req.erm.bugfixrefs = { items: body.items }
+  if (body.items) {
+    body.total = getTotal(body)
+    body.items = await saveItems(body)
+    //  BUGFIX: For PUT/PATCH, mongoose fails to save arrays of refs.
+    //  We carry ref arrays in temp vars and Object.assign after a manual patch.
+    req.erm.bugfixrefs = { items: body.items }
+  }
   next()
 }
 
@@ -49,12 +51,14 @@ async function postCreate (req, res, next) {
 //  Patch missing ref arrays
 async function postUpdate (req, res, next) {
   let { result, bugfixrefs } = req.erm
-  const manifest = result._id
-  //  Patch missing refs from subdoc arrays - mongo bug
-  let patch = await Manifest
-    .findByIdAndUpdate(manifest, bugfixrefs, { new: true })
-    .populate('items')
-  Object.assign(result, patch)
+  if (bugfixrefs) {
+    const manifest = result._id
+    //  Patch missing refs from subdoc arrays - mongo bug
+    let patch = await Manifest
+      .findByIdAndUpdate(manifest, bugfixrefs, { new: true })
+      .populate('items')
+    Object.assign(result, patch)
+  }
   next()
 }
 
