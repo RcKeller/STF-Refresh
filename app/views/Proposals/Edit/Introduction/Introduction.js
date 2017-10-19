@@ -14,7 +14,7 @@ import api from '../../../../services'
 @compose(
   connect(
     state => ({
-      parent: state.db.proposal._id,
+      id: state.db.proposal._id,
       title: state.db.proposal.title,
       category: state.db.proposal.category,
       organization: state.db.proposal.organization,
@@ -32,7 +32,7 @@ class Introduction extends React.Component {
     form: PropTypes.object,
     api: PropTypes.object,
     validate: PropTypes.func,
-    parent: PropTypes.string,
+    id: PropTypes.string,
     title: PropTypes.string,
     category: PropTypes.string,
     organization: PropTypes.string,
@@ -47,16 +47,17 @@ class Introduction extends React.Component {
   }
   handleSubmit = (e) => {
     e.preventDefault()
-    let { form, api, parent, validate } = this.props
+    let { form, api, id, validate } = this.props
     form.validateFields((err, values) => {
       if (!err) {
-        const update = {
-          proposal: (prev, next) => Object.assign({}, prev, values)
+        const params = {
+          id,
+          populate: [
+            'contacts', 'body',
+            { path: 'manifests', populate: { path: 'items' } }
+          ]
         }
-        api.patch('proposal',
-          { proposal: parent, ...values },
-          { id: parent, update }
-        )
+        api.patch('proposal', values, params)
         .then(message.success('Introduction updated!'))
         .catch(err => {
           message.warning('Introduction failed to update - Unexpected client error')

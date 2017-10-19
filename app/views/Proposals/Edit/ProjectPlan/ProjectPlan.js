@@ -102,7 +102,8 @@ const projectFields = [
 @compose(
   connect(
     state => ({
-      parent: state.db.proposal._id,
+      id: state.db.proposal.body && state.db.proposal.body._id,
+      proposal: state.db.proposal._id,
       body: state.db.proposal.body
       //  Direct accessing subdoc props that may not exist === crash
     }),
@@ -112,10 +113,11 @@ const projectFields = [
 )
 class ProjectPlan extends React.Component {
   static propTypes = {
+    id: PropTypes.string,
     form: PropTypes.object,
     api: PropTypes.object,
     validate: PropTypes.func,
-    parent: PropTypes.string,
+    proposal: PropTypes.string,
     body: PropTypes.object
   }
   componentDidMount () {
@@ -128,30 +130,30 @@ class ProjectPlan extends React.Component {
   }
   handleSubmit = (e) => {
     e.preventDefault()
-    let { form, api, parent, body, validate } = this.props
+    let { form, api, id, proposal, validate } = this.props
     form.validateFields((err, values) => {
       if (!err) {
-        //  Update if the document exists, otherwise create it anew.
-        console.warn(values)
-        const update = { proposal: (prev, next) => {
-          let newData = Object.assign({}, prev)
-          newData.body = values
-          return newData
-        }}
-        body
-        ? api.patch(
-          'project',
-          { proposal: parent, ...values },
-          { id: body._id, update }
-        )
-        : api.post(
-          'project',
-          { proposal: parent, ...values },
-          { update }
-        )
-        .then(message.success('Proposal Body updated!'))
+        const project = { proposal, ...values }
+        const params = {
+          id,
+          transform: proposal => ({ proposal }),
+          update: ({ proposal: (prev, next) => {
+            let change = Object.assign({}, prev)
+            change.body = next
+            return change
+          }})
+        }
+        params.id
+        ? api.patch('project', project, params)
+        .then(message.success('Proposal Body updated!', 10))
         .catch(err => {
-          message.warning('Proposal Body failed to update - Unexpected client error')
+          message.warning('Proposal Body failed to update - Unexpected client error', 10)
+          console.warn(err)
+        })
+        : api.post('project', project, params)
+        .then(message.success('Saved your new plan!', 10))
+        .catch(err => {
+          message.warning('Proposal Body failed to update - Unexpected client error', 10)
           console.warn(err)
         })
       }

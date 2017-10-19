@@ -49,12 +49,14 @@ const columns = [{
 @connect(
   state => ({
     proposal: state.db.proposal._id,
-    manifest: state.db.proposal.manifests[0]
+    manifest: state.db.proposal.manifests[0],
+    id: state.db.proposal.manifests[0] && state.db.proposal.manifests[0]._id
   }),
   dispatch => ({ api: bindActionCreators(api, dispatch) })
 )
 class Budget extends React.Component {
   static propTypes = {
+    id: PropTypes.string,
     api: PropTypes.object,
     validate: PropTypes.func,
     proposal: PropTypes.string,
@@ -63,28 +65,52 @@ class Budget extends React.Component {
   }
   handleSubmit = (items, total) => {
     if (total && total > 0) {
-      let { api, proposal, manifest, validate, refresh } = this.props
+      let { api, proposal, manifest, validate, id, refresh } = this.props
       const budget = { proposal, type: 'original', items, total }
-      const id = manifest && manifest._id
+
+      const params = {
+        id,
+        populate: ['items'],
+        transform: proposal => ({ proposal }),
+        update: ({ proposal: (prev, next) => {
+          let change = Object.assign({}, prev)
+          change.manifests = [next]
+          return change
+        }})
+      }
+      //  BUG: Post not returning new state, but it's a redux-query issue.
+      params.id
+      ? api.patch('manifest', budget, params)
+      .then(message.success('Budget updated!', 10))
+      .catch(err => {
+        message.warning('Budget failed to update - Unexpected client error', 10)
+        console.warn(err)
+      })
+      : api.post('manifest', budget, params)
+      .then(message.success('Budget created!', 10))
+      .catch(err => {
+        message.warning('Budget failed to update - Unexpected client error', 10)
+        console.warn(err)
+      })
       /*
       BUG: Mongo is TERRIBLE at updating embedded and subdocuments.
       For this use case, we refresh the original data! Simple, reliable fix.
       NOTE: Fixing this is a HUGE effort and has failed multiple times.
       */
       //  https://medium.com/@bluepnume/learn-about-promises-before-you-start-using-async-await-eb148164a9c8
-      async function patchBudget () {
-        const res = await api.patch('manifest', budget, { id, populate: ['items'] })
-        if (res) await refresh()
-        message.success(`Budget updated!`, 10)
-        // console.log(res)
-      }
-      async function postBudget () {
-        const res = await api.post('manifest', budget, { populate: ['items'] })
-        if (res) await refresh()
-        message.success(`Created your first budget!`, 10)
-        // console.log(res)
-      }
-      manifest ? patchBudget() : postBudget()
+      // async function patchBudget () {
+      //   const res = await api.patch('manifest', budget, { id, populate: ['items'] })
+      //   if (res) await refresh()
+      //   message.success(`Budget updated!`, 10)
+      //   // console.log(res)
+      // }
+      // async function postBudget () {
+      //   const res = await api.post('manifest', budget, { populate: ['items'] })
+      //   if (res) await refresh()
+      //   message.success(`Created your first budget!`, 10)
+      //   // console.log(res)
+      // }
+      // manifest ? patchBudget() : postBudget()
       // this.props.refresh()
 
       // async function updateBudget () {
