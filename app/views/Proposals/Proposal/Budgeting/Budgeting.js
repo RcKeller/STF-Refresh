@@ -9,8 +9,8 @@ const TabPane = Tabs.TabPane
 
 import Report from './Report/Report'
 import Supplemental from './Supplemental/Supplemental'
-import Audit from './Audit/Audit'
 import Partial from './Partial/Partial'
+// import Audit from './Audit/Audit'
 
 @connect(state => ({
   budget: state.db.proposal.budget,
@@ -53,11 +53,11 @@ class Budgeting extends React.Component {
           <TabPane tab='Partial Budgets' key='3'>
             <Partial />
           </TabPane>
-          {stf && stf.admin &&
+          {/* {stf && stf.admin &&
             <TabPane tab={<span>Auditing (<em>Admin-Only</em>)</span>} key='4'>
               <Audit />
             </TabPane>
-          }
+          } */}
         </Tabs>
       </section>
     )

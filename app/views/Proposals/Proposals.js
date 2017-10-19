@@ -35,7 +35,8 @@ import { sortProposals, publishedProposals, myProposals } from '../../selectors'
   connect((state, props) => ({
     proposals: publishedProposals(state),
     myProposals: myProposals(state),
-    enums: state.config && state.config.enums,
+    enums: state.config.enums,
+    submissions: state.config.submissions,
     screen: state.screen,
     user: state.user
   })),
@@ -46,12 +47,7 @@ import { sortProposals, publishedProposals, myProposals } from '../../selectors'
         : api.get('proposals', { query: { published: true }, populate: [ 'contacts' ] })
   )
 )
-class // Compose is a redux utility that runs an array of functions:
-//  Connect component to cached DB entities
-//  Execute necessary AJAX to load said entities
-// query: { published: true }
-// connectRequest((props) => api.getAll('proposals'))
-Proposals extends React.Component {
+class Proposals extends React.Component {
   static propTypes = {
     proposals: PropTypes.array,
     screen: PropTypes.object,
@@ -102,7 +98,7 @@ Proposals extends React.Component {
   }
   //  Shorthand assignment of variables when defining render
   render (
-    { enums, screen, myProposals, myDrafts } = this.props,
+    { enums, screen, myProposals, myDrafts, submissions } = this.props,
     //  Proposals go through state since we filter
     { proposals } = this.state
   ) {
@@ -283,8 +279,10 @@ Proposals extends React.Component {
             sort
             size={screen.lessThan.medium ? 'small' : 'middle'}
             columns={columns}
-            footer={() =>
-              <Alert type='warning' banner message={<em>Any campus department or org can submit a proposal with a budget code. <b><Link to='/create'>Click Here!</Link></b></em>} />}
+            footer={submissions
+              ? () => <Alert type='warning' banner message={<em>Any campus department or org can submit a proposal with a budget code. <b><Link to='/create'>Click Here!</Link></b></em>} />
+              : () => <Alert type='warning' banner message={<em>Proposal submissions for the quarter are closed, but we encourage you to visit and endorse proposals in review!</em>} />
+            }
           />
         }
       </article>

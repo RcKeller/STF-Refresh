@@ -17,7 +17,8 @@ import Manifests from './Manifests/Manifests'
   isLegacy: state.db.proposal.body
     ? state.db.proposal.body.legacy.length > 0
     : false,
-  published: state.db.proposal.published
+  published: state.db.proposal.published,
+  inReview: state.db.proposal.status === 'In Review'
 }))
 class View extends React.Component {
   static propTypes = {
@@ -25,7 +26,7 @@ class View extends React.Component {
     isLegacy: PropTypes.bool,
     published: PropTypes.bool
   }
-  render ({ proposal, published, isLegacy } = this.props) {
+  render ({ proposal, published, isLegacy, inReview } = this.props) {
     //  Once the proposal has loaded, render it. Only render body if published.
     return (
       <div>
@@ -42,6 +43,13 @@ class View extends React.Component {
                 {isLegacy ? <Legacy /> : <div><Overview /><hr /><Body /></div>}
                 <hr />
                 <Manifests />
+                {inReview &&
+                  <Alert type='warning' style={{ marginTop: 28 }}
+                    banner showIcon={false}
+                    message={<h3>Like this proposal?</h3>}
+                    description={<span>Endorse it - <b>it could make the difference that gets this approved!</b> Use the endorsement tab at the top to leave your remarks.</span>}
+                  />
+                }
               </div>
             }
           </section>

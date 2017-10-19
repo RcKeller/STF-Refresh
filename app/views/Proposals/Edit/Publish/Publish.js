@@ -46,7 +46,8 @@ class Publish extends React.Component {
       console.warn(err)
     })
   }
-  render ({ form, proposal, published, submissions } = this.props) {
+  render ({ form, proposal, published, submissions, user } = this.props) {
+    const admin = user.stf && user.stf.admin
     return (
       <div id={proposal}>
         {!published
@@ -65,9 +66,9 @@ class Publish extends React.Component {
             <Button size='large' type='primary' ghost
               style={{ width: '100%' }}
               onClick={this.handlePublish}
-              disabled={!submissions}
+              disabled={!submissions && !admin}
             >
-              <Icon type='rocket' />{submissions ? 'Publish !' : 'Submissions are Closed'}
+              <Icon type='rocket' />{submissions || admin ? 'Publish !' : 'Submissions are Closed'}
             </Button>
           </div>
           : <div>

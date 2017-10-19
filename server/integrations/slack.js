@@ -43,7 +43,7 @@ class Bot {
         icon_emoji,
         attachments: [{
           title: `${year}-${number}: ${title} ${uac ? '(UAC)' : ''}`,
-          title_link: `https://uwstf.org/proposal/${year}/${number}/`,
+          title_link: `https://uwstf.org/proposals/${year}/${number}/`,
           fields: [
             { title: 'Asked', value: currency(asked), short: true },
             { title: 'Organization', value: organization, short: true },

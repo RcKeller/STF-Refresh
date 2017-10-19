@@ -99,7 +99,7 @@ class Partial extends React.Component {
     return (
       <section>
         <h1>Partial Budgets</h1>
-        <h4>For alternative budget choices, partial awards, etc.</h4>
+        <h6>For alternative budget choices, partial awards, etc.</h6>
         <p>Partial budgets are how we fund specific elements of a budget. The process involves us pulling data from a prior budget you can select below (the original proposal, a different partial, or supplemental award), making your modifications, and submitting it.</p>
         <p>When voting on a proposal, partials are a separate vote. This is for a variety of reasons, mostly so we can judge a proposal's merits objectively without factoring in any addenums that the committee has proposed.</p>
         <h4>Import items from:</h4>

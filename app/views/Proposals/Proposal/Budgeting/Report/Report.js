@@ -8,7 +8,7 @@ import api from '../../../../../services'
 import { layout, feedback, help, rules, disableSubmit } from '../../../../../util/form'
 import _ from 'lodash'
 
-import { Form, Input, message } from 'antd'
+import { Form, Input, Alert, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
@@ -122,6 +122,30 @@ class Report extends React.Component {
     return (
       <section>
         <h1>Expense Reporting</h1>
+        <h6>Record your expenditures - it's mandatory.</h6>
+        <p>To help the Office of Planning & Budgeting, we ask that you report the expenditures associated with any awards you may have received. OP&B uses this for accounting purposes. Some key elements to point out include:</p>
+        <p>
+          <ul style={{
+            listStyleType: 'circle',
+            listStylePosition: 'inside'
+          }}>
+            <li>
+              <b>Budget Code:</b> Not to be confused with your organization's budget number, this represents the charge line/cost center you use for your expenses.
+            </li>
+            <li>
+              <b>Summary:</b> A one to two line explaination of your purchase status, e.g. "All items purchased from Costco".
+            </li>
+            <li>
+              <b>Details:</b> Here's your chance to explain any discrepancies, such as buying different items (which is unsanctioned if not related to the proposal), changes in pricing, underexpenditures, etc.
+            </li>
+            <li>
+              <b>Vendors:</b> We collect information about your point-of-purchase (OfficeMax, U-Line, etc) to inform UW's supply partnerships.
+            </li>
+          </ul>
+        </p>
+        <p>
+          If you have any questions, please reach out to the operations manager at <a href='mailto:techfee@uw.edu'>techfee@uw.edu</a>.
+        </p>
         <FormItem label='Budget Number' {...layout} hasFeedback={feedback(form, 'budget')} help={help(form, 'budget')} >
           {form.getFieldDecorator('budget', rules.required)(
             <Input />
