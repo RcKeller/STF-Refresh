@@ -9,7 +9,7 @@ const FormItem = Form.Item
 const connectForm = Form.create()
 
 import api from '../../../../services'
-import { proposalSigners } from '../../../../selectors'
+// import { proposalSigners } from '../../../../selectors'
 import styles from './Signatures.css'
 /*
 NOTE:
@@ -34,7 +34,6 @@ class Signatures extends React.Component {
   static propTypes = {
     form: PropTypes.object,
     api: PropTypes.object,
-    validate: PropTypes.func,
     contacts: PropTypes.array,
     user: PropTypes.object
   }
@@ -50,7 +49,7 @@ class Signatures extends React.Component {
     }
   }
   handleToggle = (signature, contact) => {
-    const { api, validate } = this.props
+    const { api } = this.props
     const id = contact._id
     const update = { proposal: (prev, next) => {
       let newData = Object.assign({}, prev)
@@ -64,7 +63,6 @@ class Signatures extends React.Component {
       message.warning(`Failed to update - Unexpected client error`)
       console.warn(err)
     })
-    validate()
   }
   render ({ form, contacts, link, user } = this.props) {
     return (
@@ -92,7 +90,7 @@ class Signatures extends React.Component {
                     {form.getFieldDecorator(c.role, { valuePropName: 'checked' })(
                       //  Valueprop is a selector for antd switches, it's in the docs.
                       <Checkbox size='large'
-                        disabled={c.netID !== user.netID}
+                        // disabled={c.netID !== user.netID}
                         onChange={(e) => this.handleToggle(e.target.checked, c)}
                       >
                         <span className={styles['checkbox-text']}>

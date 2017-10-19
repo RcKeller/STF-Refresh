@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { connect } from 'react-redux'
-import { initialProposalContacts } from '../../../../selectors'
+// import { connect } from 'react-redux'
+// import { initialProposalContacts } from '../../../../selectors'
 
 import { Row, Col, Alert } from 'antd'
 

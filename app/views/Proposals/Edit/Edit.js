@@ -218,31 +218,31 @@ class Edit extends React.Component {
                 tab={<span style={{ color: introduction ? colors.green : colors.gold }}>
                   <Icon type='file' />Introduction</span>
                 }>
-                <Introduction validate={this.validateIntroduction} />
+                <Introduction />
               </TabPane>
               <TabPane key='2'
                 tab={<span style={{ color: contacts ? colors.green : colors.gold }}>
                   <Icon type='team' />Contacts</span>
                 }>
-                <Contacts validate={this.validateContacts} />
+                <Contacts />
               </TabPane>
               <TabPane key='3'
                 tab={<span style={{ color: project ? colors.green : colors.gold }}>
                   <Icon type='book' />Project Plan</span>
                 }>
-                <ProjectPlan validate={this.validateProject} />
+                <ProjectPlan />
               </TabPane>
               <TabPane key='4'
                 tab={<span style={{ color: budget ? colors.green : colors.gold }}>
                   <Icon type='wallet' />Budget</span>
                 }>
-                <Budget validate={this.validateBudget} refresh={this.props.forceRequest} />
+                <Budget />
               </TabPane>
               <TabPane key='5'
                 tab={<span style={{ color: signatures ? colors.green : colors.gold }}>
                   <Icon type='edit' />Signatures</span>
                 }>
-                <Signatures validate={this.validateSignatures} />
+                <Signatures />
               </TabPane>
               <TabPane key='6' disabled={!complete}
                 tab={<span><Icon type='rocket' />Publish !</span>}>

@@ -14,10 +14,10 @@ import Endorse from './Endorse/Endorse'
   endorsements: state.db.proposal.comments,
   endorsed: state.db.proposal.comments
     .some(endorsement =>
-      endorsement.user === state.user._id ||
       endorsement.user._id === state.user._id
     ),
-  decisionIssued: state.db.proposal.manifests.findIndex(m => m.decision && typeof m.decision.approved === 'boolean') >= 0,
+  decisionIssued: state.db.proposal.manifests
+    .findIndex(m => m.decision && typeof m.decision.approved === 'boolean') >= 0,
   user: state.user,
   screen: state.screen
 }))

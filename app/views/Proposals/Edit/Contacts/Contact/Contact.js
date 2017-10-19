@@ -10,8 +10,8 @@ const connectForm = Form.create()
 
 import { feedback, help, rules, disableSubmit } from '../../../../../util/form'
 import api from '../../../../../services'
-import { getRole } from '../../../../../util/selectors'
-import { initialProposalContacts } from '../../../../../selectors'
+// import { getRole } from '../../../../../util/selectors'
+// import { initialProposalContacts } from '../../../../../selectors'
 
 const jss = { icon: { fontSize: 13 } }
 @compose(
@@ -44,32 +44,35 @@ class Contact extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault()
     let { form, api, proposal, contact, role, index } = this.props
-    const values = form.getFieldsValue()
-    //  Set role type, it's not in the form for security.
-    const info = { proposal, role, ...values }
-    const params = {
-      id: contact && contact._id,
-      transform: proposal => ({ proposal }),
-      update: ({ proposal: (prev, next) => {
-        let change = Object.assign({}, prev)
-        index >= 0
-          ? change.contacts[index] = next
-          : change.contacts = [...change.contacts, next]
-        return change
-      }})
-    }
-    params.id
-    ? api.patch('contact', info, params)
-    .then(message.success(`Created contact!`))
-    .catch(err => {
-      message.warning(`Failed to create contact - Unexpected client error`)
-      console.warn(err)
-    })
-    : api.post('contact', info, params)
-    .then(message.success(`Updated contact!`))
-    .catch(err => {
-      message.warning(`Failed to update contact - Unexpected client error`)
-      console.warn(err)
+    form.validateFields((err, values) => {
+      //  Create Proposal w/ budget code if valid
+      if (!err) {
+        const info = { proposal, role, ...values }
+        const params = {
+          id: contact && contact._id,
+          transform: proposal => ({ proposal }),
+          update: ({ proposal: (prev, next) => {
+            let change = Object.assign({}, prev)
+            index >= 0
+            ? change.contacts[index] = next
+            : change.contacts = [...change.contacts, next]
+            return change
+          }})
+        }
+        params.id
+        ? api.patch('contact', info, params)
+        .then(message.success(`Created contact!`))
+        .catch(err => {
+          message.warning(`Failed to create contact - Unexpected client error`)
+          console.warn(err)
+        })
+        : api.post('contact', info, params)
+        .then(message.success(`Updated contact!`))
+        .catch(err => {
+          message.warning(`Failed to update contact - Unexpected client error`)
+          console.warn(err)
+        })
+      }
     })
   }
 
@@ -78,27 +81,27 @@ class Contact extends React.Component {
       <Form layout='inline' onSubmit={this.handleSubmit}>
         <h3>{title}</h3>
         <p>{subtitle}</p>
-        <FormItem hasFeedback={feedback(form, 'name')} help={help(form, 'name')} >
+        <FormItem hasFeedback={feedback(form, 'name')} >
           {form.getFieldDecorator('name', rules.required)(
             <Input prefix={<Icon type='edit' style={jss.icon} />} placeholder='Name' />
           )}
         </FormItem>
-        <FormItem hasFeedback={feedback(form, 'netID')} help={help(form, 'netID')} >
+        <FormItem hasFeedback={feedback(form, 'netID')} >
           {form.getFieldDecorator('netID', rules.required)(
             <Input prefix={<Icon type='idcard' style={jss.icon} />} placeholder='NetID' />
           )}
         </FormItem>
-        <FormItem hasFeedback={feedback(form, 'title')} help={help(form, 'title')} >
+        <FormItem hasFeedback={feedback(form, 'title')} >
           {form.getFieldDecorator('title', rules.required)(
             <Input prefix={<Icon type='info-circle-o' style={jss.icon} />} placeholder='Title' />
           )}
         </FormItem>
-        <FormItem hasFeedback={feedback(form, 'phone')} help={help(form, 'phone')} >
+        <FormItem hasFeedback={feedback(form, 'phone')} >
           {form.getFieldDecorator('phone', rules.required)(
             <Input prefix={<Icon type='phone' style={jss.icon} />} placeholder='Phone' />
           )}
         </FormItem>
-        <FormItem hasFeedback={feedback(form, 'mailbox')} help={help(form, 'mailbox')} >
+        <FormItem hasFeedback={feedback(form, 'mailbox')} >
           {form.getFieldDecorator('mailbox')(
             <Input prefix={<Icon type='inbox' style={jss.icon} />} placeholder='Mailbox #' />
           )}

@@ -8,7 +8,7 @@ import { Row, Col, Icon, Alert, Form, Input, Button, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
-import { layout, feedback, help, rules, disableSubmit } from '../../../../util/form'
+import { layout, feedback, rules, disableSubmit } from '../../../../util/form'
 import api from '../../../../services'
 
 const impactFields = [
@@ -116,7 +116,6 @@ class ProjectPlan extends React.Component {
     id: PropTypes.string,
     form: PropTypes.object,
     api: PropTypes.object,
-    validate: PropTypes.func,
     proposal: PropTypes.string,
     body: PropTypes.object
   }
@@ -129,7 +128,7 @@ class ProjectPlan extends React.Component {
   }
   handleSubmit = (e) => {
     e.preventDefault()
-    let { form, api, id, proposal, validate } = this.props
+    let { form, api, id, proposal } = this.props
     const values = form.getFieldsValue()
     const project = { proposal, ...values }
     const params = {
@@ -154,9 +153,6 @@ class ProjectPlan extends React.Component {
       message.warning('Proposal Body failed to update - Unexpected client error', 10)
       console.warn(err)
     })
-    //   }
-    // })
-    // validate()
   }
 
   // render ({ form, overview = {}, plan = {} } = this.props) {

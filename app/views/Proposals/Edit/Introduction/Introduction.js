@@ -8,7 +8,7 @@ import { Form, Icon, Input, AutoComplete, Checkbox, Button, Alert, message } fro
 const FormItem = Form.Item
 const connectForm = Form.create()
 
-import { layout, feedback, help, rules, disableSubmit } from '../../../../util/form'
+import { layout, feedback, rules } from '../../../../util/form'
 import api from '../../../../services'
 
 @compose(
@@ -31,7 +31,6 @@ class Introduction extends React.Component {
   static propTypes = {
     form: PropTypes.object,
     api: PropTypes.object,
-    validate: PropTypes.func,
     id: PropTypes.string,
     title: PropTypes.string,
     category: PropTypes.string,
@@ -43,27 +42,28 @@ class Introduction extends React.Component {
     if (title) {
       form.setFieldsValue({ title, category, organization, uac })
     }
-    // form.validateFields()
   }
   handleSubmit = (e) => {
     e.preventDefault()
-    let { form, api, id, validate } = this.props
-    const values = form.getFieldsValue()
-    const params = {
-      id,
-      populate: [
-        'contacts', 'body',
-        { path: 'manifests', populate: { path: 'items' } }
-      ]
-    }
-    api.patch('proposal', values, params)
-    .then(message.success('Introduction updated!'))
-    .catch(err => {
-      message.warning('Introduction failed to update - Unexpected client error')
-      console.warn(err)
+    let { form, api, id } = this.props
+    form.validateFields((err, values) => {
+      //  Create Proposal w/ budget code if valid
+      if (!err) {
+        const params = {
+          id,
+          populate: [
+            'contacts', 'body',
+            { path: 'manifests', populate: { path: 'items' } }
+          ]
+        }
+        api.patch('proposal', values, params)
+        .then(message.success('Introduction updated!'))
+        .catch(err => {
+          message.warning('Introduction failed to update - Unexpected client error')
+          console.warn(err)
+        })
+      }
     })
-    .then(validate)
-  // validate()
   }
 
   render ({ form, categories, title, category, organization, uac } = this.props) {

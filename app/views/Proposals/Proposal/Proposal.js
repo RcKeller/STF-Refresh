@@ -55,7 +55,8 @@ connectRequest will force a query if there's a mismatch.
       'contacts', 'body', 'comments',
       { path: 'manifests', populate: { path: 'items' } },
       { path: 'manifests', populate: { path: 'report', populate: { path: 'items' } } },
-      { path: 'manifests', populate: { path: 'decision' } }
+      { path: 'manifests', populate: { path: 'decision' } },
+      { path: 'comments', populate: { path: 'user' } },
       // { path: 'manifests', populate: { path: ['report', 'reviews', 'decision'] } }
     ]
   }))

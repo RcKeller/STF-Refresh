@@ -60,10 +60,8 @@ class Budget extends React.Component {
     id: PropTypes.string,
     type: PropTypes.string,
     api: PropTypes.object,
-    validate: PropTypes.func,
     proposal: PropTypes.string,
-    manifest: PropTypes.object,
-    refresh: PropTypes.func
+    manifest: PropTypes.object
   }
   handleSubmit = (items, total) => {
     if (total && total > 0) {
