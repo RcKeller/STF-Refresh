@@ -17,8 +17,8 @@ const jss = { icon: { fontSize: 13 } }
 @compose(
   connect((state, props) => ({
     proposal: state.db.proposal._id,
-    contacts: initialProposalContacts(state),
-    contact: initialProposalContacts(state)[props.index]
+    contact: state.db.proposal.contacts.find(c => c.role === props.role),
+    index: state.db.proposal.contacts.findIndex(c => c.role === props.role)
   }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
@@ -39,41 +39,38 @@ class Contact extends React.Component {
   }
   componentDidMount () {
     const { form, contact } = this.props
-    if (contact) {
-      form.setFieldsValue(contact)
-    }
+    if (contact) form.setFieldsValue(contact)
     form.validateFields()
   }
   handleSubmit = (e) => {
     e.preventDefault()
-    let { form, api, proposal, contact, contacts, index, title, validate } = this.props
+    let { form, api, proposal, contact, contacts, role, index } = this.props
     form.validateFields((err, values) => {
       if (!err && values) {
         //  Set role type, it's not in the form for security.
-        const submission = { proposal, role: contact.role, ...values }
-        /*
-        NOTE: Since we're operating on state.db.proposal and need the new ID
-        we transform proposal data (the res being our new/updated contact)
-        and set the contact at our index to the transformed (selected) value
-        */
-        const transform = res => ({ proposal: res })
-        const update = { proposal: (prev, next) => {
-          let newData = Object.assign({}, prev)
-          let contactIndex = newData.contacts.findIndex(c => c.role === contact.role)
-          contactIndex >= 0
-            ? newData.contacts[contactIndex] = next
-            : newData.contacts.push(next)
-          return newData
-        }}
-        contact._id
-        ? api.patch('contact', submission, { id: contact._id, transform, update })
-        : api.post('contact', submission, { transform, update })
-        .then(() => {
-          message.success(`Updated ${title} !`)
-          validate()
-        })
+        const info = { proposal, role, ...values }
+        const params = {
+          id: contact && contact._id,
+          transform: proposal => ({ proposal }),
+          update: ({ proposal: (prev, next) => {
+            let change = Object.assign({}, prev)
+            index >= 0
+              ? change.contacts[index] = next
+              : change.contacts = [...change.contacts, next]
+            return change
+          }})
+        }
+        params.id
+        ? api.patch('contact', info, params)
+        .then(message.success(`Created contact!`))
         .catch(err => {
-          message.warning(`Failed to update ${title} - Unexpected client error`)
+          message.warning(`Failed to create contact - Unexpected client error`)
+          console.warn(err)
+        })
+        : api.post('contact', info, params)
+        .then(message.success(`Updated contact!`))
+        .catch(err => {
+          message.warning(`Failed to update contact - Unexpected client error`)
           console.warn(err)
         })
       }

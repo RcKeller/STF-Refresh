@@ -27,7 +27,9 @@ const contactFields = {
   }
 }
 
-@connect(state => ({ contacts: initialProposalContacts(state) }))
+// @connect(state => ({
+//   contacts: initialProposalContacts(state)
+// }))
 class Contacts extends React.Component {
   static propTypes = {
     validate: PropTypes.func
@@ -42,14 +44,12 @@ class Contacts extends React.Component {
         />
         <h1>Contact Information</h1>
         <Row gutter={32}>
-          {contacts.map((contact, i) => (
-            <Col key={contact.role} className='gutter-row' xs={24} md={12} lg={6} >
+          {Object.keys(contactFields).map((key) => (
+            <Col key={key} className='gutter-row' xs={24} md={12} lg={6} >
               <Contact
-                // contact={contact}
-                index={i}
-                title={contactFields[contact.role].title}
-                subtitle={contactFields[contact.role].subtitle}
-                validate={validate}
+                role={key}
+                title={contactFields[key].title}
+                subtitle={contactFields[key].subtitle}
               />
             </Col>
           ))}
