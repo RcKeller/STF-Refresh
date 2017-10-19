@@ -44,7 +44,7 @@ const columns = [{
       proposal: state.db.proposal._id,
       //  Use the most recent report (target document) and recent manifest (initial data)
       manifest: state.db.proposal.manifests[props.indexInStore],
-      report: state.db.proposal.manifests[props.indexInStore].report,
+      report: state.db.proposal.manifests[props.indexInStore].report || {},
       user: state.user._id
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
@@ -53,6 +53,7 @@ const columns = [{
 )
 class Report extends React.Component {
   static propTypes = {
+    indexInStore: PropTypes.number,
     awardNumber: PropTypes.number,  //  used as the manifest index in store for this report.
     form: PropTypes.object,
     api: PropTypes.object,
@@ -70,28 +71,39 @@ class Report extends React.Component {
     form.validateFields()
   }
   handleSubmit = (items, total) => {
-    let { form, api, proposal, manifest, user } = this.props
+    let { form, api, proposal, indexInStore,
+      user: author,
+      manifest: { _id: manifest }
+    } = this.props
     //  Verify that the budget number (and hopefully other data) is there, add it to what we know.
     form.validateFields((err, values) => {
       if (!err) {
         items = items.map((item) => _.omit(item, ['_id', '__v']))
-        let report = { proposal, manifest: manifest._id, author: user, items, total }
-        //  Hydrate the report with form data
-        report = Object.assign(report, values)
-        // const transform = res => ({ proposal: res })
-        // const update = { proposal: (prev, next) => {
-        //   let newData = Object.assign({}, prev)
-        //   let indexOfManifest = newData.manifests.findIndex(m => m._id === report.manifest)
-        //   if (indexOfManifest >= 0) {
-        //     newData.manifests[indexOfManifest].report =
-        //       Object.assign(next, report)
-        //   }
-        //   return newData
-        // }}
-        this.props.report
-        ? api.patch('report', report, { id: this.props.report._id })
-        : api.post('report', report)
+        let report = { proposal, manifest, author, items, total, ...values }
+
+        const { _id: id } = this.props.report
+        const populate = ['items']
+        // //  THESE WORK
+        // const transform = res => ({ report: res })
+        // const update = ({ report: (prev, next) => next })
+        // const node = `proposal.manifests[${indexInStore}].report`
+        // const transform = res => ({ [node]: res })
+        // const update = ({ [node]: (prev, next) => next })
+        const transform = proposal => ({ proposal })
+        const update = ({ proposal: (prev, next) => {
+          prev.manifests[indexInStore].report = next
+          return prev
+        }})
+        // const transform = (res) => ({ proposal: { manifests: { [indexInStore]: { report: res } } } })
+        // const transform = (res) => {
+        //   return { proposal: { manifests: { [indexInStore]: { report: res } } } }
+        // }
+        // const transform = (res) => ({ [`proposal.manifests[${indexInStore}].report`]: res })
+        id
+        ? api.patch('report', report, { id, populate, transform, update })
         .then(message.success('Report updated!'))
+        : api.post('report', report, { populate, transform, update })
+        .then(message.success('Report created!'))
         .catch(err => {
           message.warning('Report failed to update - Unexpected client error')
           console.warn(err)
