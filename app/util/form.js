@@ -46,12 +46,16 @@ const hasErrors = (fields) => Object.keys(fields).some(field => fields[field])
 const feedback = (form, field) => form.isFieldTouched(field)
 //  Help text for FormItems. Doesn't display anything if it hasn't been touched (aka just loaded)
 //  <FormItem help={help(form, 'comment')} ...
-const help = (form, field) => (form.isFieldTouched(field) && form.getFieldError(field)) || ''
+// const help = (form, field) => (form.isFieldTouched(field) && form.getFieldError(field)) || ''
+const help = (form, field) => form.getFieldError(field)
 
 //  Set of useful default form rules, reduces boilerplate. Does NOT fill all use cases.
 //  {form.getFieldDecorator('comment', rule.required)(<input... />)}
+// const rules = {
+//   required: { rules: [{ required: true, message: 'Required.' }] }
+// }
 const rules = {
-  required: { rules: [{ required: true, message: 'Required.' }] }
+  required: { rules: [{ required: true, message: 'Required' }] }
 }
 
 //  Disable a form's submit button

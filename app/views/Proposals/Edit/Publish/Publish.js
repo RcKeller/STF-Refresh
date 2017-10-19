@@ -17,7 +17,9 @@ API for submission, but using connectForm to instantiate initial values.
   id: state.db.proposal._id,
   published: state.db.proposal.published,
   user: state.user,
-  submissions: state.config.submissions
+  submissions: state.config.submissions,
+  year: state.config.year,
+  quarter: state.config.quarter
 }),
   dispatch => ({ api: bindActionCreators(api, dispatch) })
 )
@@ -25,21 +27,19 @@ class Publish extends React.Component {
   static propTypes = {
     api: PropTypes.object,
     id: PropTypes.string,
-    published: PropTypes.bool
+    published: PropTypes.bool,
+    submissions: PropTypes.bool,
+    year: PropTypes.number,
+    quarter: PropTypes.string
   }
   handlePublish = () => {
-    const { api, id } = this.props
-    const body = {
-      published: true,
-      //  TODO: Using connectRequest, get all proposals, filter current year and get the number. Use that to determine proposal number.
-      number: 999999,
-      year: 99999,
-      quarter: 'Spring'
+    const { api, id, year, quarter } = this.props
+    const proposal = { published: true, year, quarter }
+    const params = {
+      id,
+      update: { proposal: (prev, next) => Object.assign(prev, { published: true }) }
     }
-    const update = { proposal: (prev, next) =>
-      Object.assign(prev, { published: next.published })
-    }
-    api.patch('proposal', body, { id, update })
+    api.patch('proposal', proposal, params)
     .then(message.warning(`Proposal is now live!`), 10)
     .catch(err => {
       message.warning(`Failed to update - client error`)

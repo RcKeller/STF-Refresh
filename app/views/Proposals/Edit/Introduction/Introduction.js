@@ -43,29 +43,27 @@ class Introduction extends React.Component {
     if (title) {
       form.setFieldsValue({ title, category, organization, uac })
     }
-    form.validateFields()
+    // form.validateFields()
   }
   handleSubmit = (e) => {
     e.preventDefault()
     let { form, api, id, validate } = this.props
-    form.validateFields((err, values) => {
-      if (!err) {
-        const params = {
-          id,
-          populate: [
-            'contacts', 'body',
-            { path: 'manifests', populate: { path: 'items' } }
-          ]
-        }
-        api.patch('proposal', values, params)
-        .then(message.success('Introduction updated!'))
-        .catch(err => {
-          message.warning('Introduction failed to update - Unexpected client error')
-          console.warn(err)
-        })
-      }
+    const values = form.getFieldsValue()
+    const params = {
+      id,
+      populate: [
+        'contacts', 'body',
+        { path: 'manifests', populate: { path: 'items' } }
+      ]
+    }
+    api.patch('proposal', values, params)
+    .then(message.success('Introduction updated!'))
+    .catch(err => {
+      message.warning('Introduction failed to update - Unexpected client error')
+      console.warn(err)
     })
-    validate()
+    .then(validate)
+  // validate()
   }
 
   render ({ form, categories, title, category, organization, uac } = this.props) {
@@ -77,12 +75,12 @@ class Introduction extends React.Component {
         />
         <h1>Introduction</h1>
         <Form onSubmit={this.handleSubmit}>
-          <FormItem label='Title' {...layout} hasFeedback={feedback(form, 'title')} help={help(form, 'title')} >
+          <FormItem label='Title' {...layout} hasFeedback={feedback(form, 'title')}>
             {form.getFieldDecorator('title', rules.required)(
               <Input type='textarea' />
             )}
           </FormItem>
-          <FormItem label='Category' {...layout} hasFeedback={feedback(form, 'category')} help={help(form, 'category')} >
+          <FormItem label='Category' {...layout} hasFeedback={feedback(form, 'category')}>
             {form.getFieldDecorator('category', rules.required)(
               <AutoComplete dataSource={categories} />
             )}
@@ -100,7 +98,7 @@ class Introduction extends React.Component {
           </FormItem>
           <FormItem>
             <Button size='large' type='primary'
-              htmlType='submit' disabled={disableSubmit(form)}
+              htmlType='submit'
               style={{ width: '100%' }}
               ><Icon type='cloud-upload-o' />Update</Button>
           </FormItem>

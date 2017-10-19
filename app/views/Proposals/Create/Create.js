@@ -44,7 +44,7 @@ class Create extends React.Component {
   showModal = () => {
     this.setState({ modal: true })
     //  Trigger required prompt, disabling submit button.
-    this.props.form.validateFields()
+    // this.props.form.validateFields()
   }
   handleOk = () => {
     // const { form, api, user: { name, netID } } = this.props
@@ -75,7 +75,7 @@ class Create extends React.Component {
           confirmLoading: false
         }))
       } else {
-        message.warning('Failed to update - Form Invalid')
+        message.warning('Failed to update - Missing Data')
       }
     })
   }

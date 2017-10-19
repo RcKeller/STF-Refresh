@@ -28,7 +28,7 @@ class Contact extends React.Component {
   static propTypes = {
     form: PropTypes.object,
     api: PropTypes.object,
-    validate: PropTypes.func,
+    role: PropTypes.string,
     proposal: PropTypes.string,
     //  Contact is selected by its index within the redux store
     index: PropTypes.number,
@@ -40,40 +40,36 @@ class Contact extends React.Component {
   componentDidMount () {
     const { form, contact } = this.props
     if (contact) form.setFieldsValue(contact)
-    form.validateFields()
   }
   handleSubmit = (e) => {
     e.preventDefault()
-    let { form, api, proposal, contact, contacts, role, index } = this.props
-    form.validateFields((err, values) => {
-      if (!err && values) {
-        //  Set role type, it's not in the form for security.
-        const info = { proposal, role, ...values }
-        const params = {
-          id: contact && contact._id,
-          transform: proposal => ({ proposal }),
-          update: ({ proposal: (prev, next) => {
-            let change = Object.assign({}, prev)
-            index >= 0
-              ? change.contacts[index] = next
-              : change.contacts = [...change.contacts, next]
-            return change
-          }})
-        }
-        params.id
-        ? api.patch('contact', info, params)
-        .then(message.success(`Created contact!`))
-        .catch(err => {
-          message.warning(`Failed to create contact - Unexpected client error`)
-          console.warn(err)
-        })
-        : api.post('contact', info, params)
-        .then(message.success(`Updated contact!`))
-        .catch(err => {
-          message.warning(`Failed to update contact - Unexpected client error`)
-          console.warn(err)
-        })
-      }
+    let { form, api, proposal, contact, role, index } = this.props
+    const values = form.getFieldsValue()
+    //  Set role type, it's not in the form for security.
+    const info = { proposal, role, ...values }
+    const params = {
+      id: contact && contact._id,
+      transform: proposal => ({ proposal }),
+      update: ({ proposal: (prev, next) => {
+        let change = Object.assign({}, prev)
+        index >= 0
+          ? change.contacts[index] = next
+          : change.contacts = [...change.contacts, next]
+        return change
+      }})
+    }
+    params.id
+    ? api.patch('contact', info, params)
+    .then(message.success(`Created contact!`))
+    .catch(err => {
+      message.warning(`Failed to create contact - Unexpected client error`)
+      console.warn(err)
+    })
+    : api.post('contact', info, params)
+    .then(message.success(`Updated contact!`))
+    .catch(err => {
+      message.warning(`Failed to update contact - Unexpected client error`)
+      console.warn(err)
     })
   }
 

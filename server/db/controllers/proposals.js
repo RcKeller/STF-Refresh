@@ -35,8 +35,8 @@ async function assignNumberIfPublishing (proposal) {
       .findById(_id)
       .select('published number')
       .then((doc) => ({
-        prevPublished: doc.published || false,
-        prevNumber: doc.number || 0
+        prevPublished: doc ? doc.published : false,
+        prevNumber: doc ? doc.number : 0
       }))
     if (!prevPublished && !prevNumber) {
       // It's being published. Find year from config, the next number based on others this year
@@ -47,7 +47,7 @@ async function assignNumberIfPublishing (proposal) {
         .count({ year, published }) || 0
       //  Hydrate this new publication and announce it
       proposal.year = year
-      proposal.number = topNumber++
+      proposal.number = ++topNumber
       proposal.quarter = quarter
       proposal.status = 'In Review'
       //  Return a mutated doc for saving

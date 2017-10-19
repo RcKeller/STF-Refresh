@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { layout } from '../../../../util/form'
 import api from '../../../../services'
 
-import { Form, Input, Select, Checkbox, Switch, Alert, message } from 'antd'
+import { Form, Input, InputNumber, Select, Checkbox, Switch, Alert, message } from 'antd'
 const Option = Select.Option
 const FormItem = Form.Item
 const connectForm = Form.create()
@@ -167,12 +167,12 @@ class Settings extends React.Component {
         <Form>
           <FormItem label='Year' {...layout} >
             {form.getFieldDecorator('year')(
-              <Input onPressEnter={(e) => this.handleYear(e.target.value)} />
+              <InputNumber min={2000} max={2030} onChange={value => this.handleYear(value)} />
             )}
           </FormItem>
           <FormItem label='Number' {...layout} >
             {form.getFieldDecorator('number')(
-              <Input onPressEnter={(e) => this.handleNumber(e.target.value)} />
+              <InputNumber min={1} max={300} onChange={value => this.handleNumber(value)} />
             )}
           </FormItem>
           <FormItem label='Category' {...layout} >

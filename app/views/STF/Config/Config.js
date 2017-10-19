@@ -10,7 +10,7 @@ import api from '../../../services'
 import { updateConfig } from '../../../services/config'
 import { layout, Label } from '../../../util/form'
 
-import { Spin, Tabs, Form, Icon, Tooltip, Input, Select, Checkbox, Switch, Alert, message } from 'antd'
+import { Spin, Tabs, Form, Icon, Tooltip, Input, InputNumber, Select, Checkbox, Switch, Alert, message } from 'antd'
 const TabPane = Tabs.TabPane
 const Option = Select.Option
 const FormItem = Form.Item
@@ -24,11 +24,13 @@ import styles from './Config.css'
   connect(
     state => ({
       user: state.user,
-      id: state.config && state.config._id,
-      enums: state.config && state.config.enums,
-      submissions: state.config && state.config.submissions,
-      news: state.config && state.config.news,
-      timeline: state.config && state.config.timeline
+      id: state.config._id,
+      enums: state.config.enums,
+      submissions: state.config.submissions,
+      year: state.config.year,
+      quarter: state.config.quarter,
+      news: state.config.news,
+      timeline: state.config.timeline
     }),
     /*
     NOTE: state.config exists in an isomorphic context, loads before page render.
@@ -54,7 +56,7 @@ class Config extends React.Component {
     })
   }
   componentDidMount () {
-    const { form, enums, submissions, news, timeline } = this.props
+    const { form, enums, submissions, year, quarter, news, timeline } = this.props
     if (form && enums) {
       const { organizations, categories, questions } = enums
       const orgCodeMap = Object.keys(organizations)
@@ -64,6 +66,8 @@ class Config extends React.Component {
         news,
         timeline,
         categories,
+        year,
+        quarter,
         reviewQuestions: questions.review,
         organizations: orgCodeMap
       })
@@ -72,6 +76,15 @@ class Config extends React.Component {
   handleSubmissions = (submissions) => {
     const { updateConfig, id } = this.props
     updateConfig({ submissions }, { id })
+  }
+  handleYear = (year) => {
+    console.log(year)
+    const { updateConfig, id } = this.props
+    updateConfig({ year }, { id })
+  }
+  handleQuarter = (quarter) => {
+    const { updateConfig, id } = this.props
+    updateConfig({ quarter }, { id })
   }
   handleNews = (news) => {
     const { updateConfig, id } = this.props
@@ -129,6 +142,22 @@ class Config extends React.Component {
                 <Switch onChange={this.handleSubmissions}
                   checkedChildren='Open' unCheckedChildren='Closed'
                 />
+              )}
+            </FormItem>
+            <FormItem {...layout} label='Fiscal Year'>
+              {form.getFieldDecorator('year')(
+                <InputNumber min={2000} max={2030} onChange={(year) => this.handleYear(year)} />
+                // <InputNumber min={2000} max={2030} onChange={(e) => this.handleYear(e.target.value)} />
+              )}
+            </FormItem>
+            <FormItem {...layout} label='Quarter'>
+              {form.getFieldDecorator('quarter')(
+                <Select onChange={this.handleQuarter}>
+                  <Option value='Autumn'>Autumn</Option>
+                  <Option value='Winter'>Winter</Option>
+                  <Option value='Spring'>Spring</Option>
+                  <Option value='Summer'>Summer</Option>
+                </Select>
               )}
             </FormItem>
             <FormItem {...layout} label='News'>
