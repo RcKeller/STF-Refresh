@@ -80,32 +80,28 @@ class Report extends React.Component {
       if (!err) {
         items = items.map((item) => _.omit(item, ['_id', '__v']))
         let report = { proposal, manifest, author, items, total, ...values }
-
         const { _id: id } = this.props.report
-        const populate = ['items']
-        // //  THESE WORK
-        // const transform = res => ({ report: res })
-        // const update = ({ report: (prev, next) => next })
-        // const node = `proposal.manifests[${indexInStore}].report`
-        // const transform = res => ({ [node]: res })
-        // const update = ({ [node]: (prev, next) => next })
-        const transform = proposal => ({ proposal })
-        const update = ({ proposal: (prev, next) => {
-          prev.manifests[indexInStore].report = next
-          return prev
-        }})
-        // const transform = (res) => ({ proposal: { manifests: { [indexInStore]: { report: res } } } })
-        // const transform = (res) => {
-        //   return { proposal: { manifests: { [indexInStore]: { report: res } } } }
-        // }
-        // const transform = (res) => ({ [`proposal.manifests[${indexInStore}].report`]: res })
-        id
-        ? api.patch('report', report, { id, populate, transform, update })
+        const params = {
+          id,
+          populate: ['items'],
+          transform: proposal => ({ proposal }),
+          update: ({ proposal: (prev, next) => {
+            let change = Object.assign({}, prev)
+            change.manifests[indexInStore].report = next
+            return change
+          }})
+        }
+        params.id
+        ? api.patch('report', report, params)
         .then(message.success('Report updated!'))
-        : api.post('report', report, { populate, transform, update })
-        .then(message.success('Report created!'))
         .catch(err => {
           message.warning('Report failed to update - Unexpected client error')
+          console.warn(err)
+        })
+        : api.post('report', report, params)
+        .then(message.success('Report created!'))
+        .catch(err => {
+          message.warning('Report failed to post - Unexpected client error')
           console.warn(err)
         })
       } else {
@@ -113,9 +109,6 @@ class Report extends React.Component {
       }
     })
   }
-  //  NOTE: Good for testing:
-  //  http://localhost:3000/proposals/2017/39061
-  //  http://localhost:3000/proposals/2017/94939
 
   render ({ form, awardNumber, manifest, report } = this.props) {
     //  Use the associated manifest for initial data if report has not been created.

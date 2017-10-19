@@ -21,16 +21,10 @@ const columns = [{
   key: 'name',
   editable: true
 }, {
-  name: 'Vendor',
-  key: 'vendor',
+  name: 'Description',
+  key: 'description',
   editable: true,
   width: 300
-}, {
-  name: 'Quantity',
-  key: 'quantity',
-  editable: true,
-  editor: SimpleNumber,
-  width: 85
 }, {
   name: 'Price',
   key: 'price',
@@ -42,6 +36,12 @@ const columns = [{
   key: 'tax',
   editable: true,
   editor: TaxRate,
+  width: 85
+}, {
+  name: 'Quantity',
+  key: 'quantity',
+  editable: true,
+  editor: SimpleNumber,
   width: 85
 }]
 @compose(
@@ -66,29 +66,25 @@ class Supplemental extends React.Component {
   }
   componentDidMount () {
     const { form } = this.props
-    // if (report) {
-    //   const { budget } = report
-    //   form.setFieldsValue({ budget })
-    // }
     form.validateFields()
   }
   handleSubmit = (items, total) => {
-    let { form, api, proposal, manifest } = this.props
+    let { form, api, proposal } = this.props
     //  Verify that the budget number (and hopefully other data) is there, add it to what we know.
     form.validateFields((err, values) => {
       if (!err) {
         items = items.map((item) => _.omit(item, ['_id', '__v']))
-        let supplemental = { proposal, type: 'supplemental', items, total }
-        //  Hydrate the supplement with form data (title/body, totally optional)
-        supplemental = Object.assign(supplemental, values)
-        // const update = { proposal: (prev, next) => prev }
-        const transform = res => ({ proposal: res })
-        const update = { proposal: (prev, next) => {
-          let newData = Object.assign({}, prev)
-          newData.manifests.push(next)
-          return newData
-        }}
-        api.post('manifest', supplemental, { transform, update })
+        let supplemental = { proposal, type: 'supplemental', items, total, ...values }
+        const params = {
+          populate: ['items'],
+          transform: proposal => ({ proposal }),
+          update: ({ proposal: (prev, next) => {
+            let changed = Object.assign({}, prev)
+            changed.manifests.push(next)
+            return changed
+          }})
+        }
+        api.post('manifest', supplemental, params)
         .then(message.success('Supplemental request submitted!'))
         .catch(err => {
           message.warning('Supplemental request failed - Unexpected client error')

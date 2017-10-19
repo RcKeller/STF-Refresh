@@ -10,7 +10,7 @@ const Option = Select.Option
 const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
 const expandedRowRender = record => record.description
-  ? <div><h6>Description: </h6>{record.description}</div>
+  ? <div><em>{record.tax ? 'Tax-Free' : `${record.tax}% tax included in calculation`}</em><h6>Description: </h6>{record.description}</div>
   : <em>No description provided.</em>
 
 import { indexOfApprovedManifest } from '../../../../../selectors'

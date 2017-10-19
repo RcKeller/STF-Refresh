@@ -11,6 +11,12 @@ import Spreadsheet, { Editors } from '../../../../components/Spreadsheet'
 const { SimpleNumber, TaxRate } = Editors
 
 const columns = [{
+  name: 'Priority #',
+  key: 'priority',
+  editable: true,
+  editor: SimpleNumber,
+  width: 85
+}, {
   name: 'Name',
   key: 'name',
   editable: true,
@@ -19,13 +25,6 @@ const columns = [{
   name: 'Description',
   key: 'description',
   editable: true
-  //  Takes up remaining width.
-}, {
-  name: 'Quantity',
-  key: 'quantity',
-  editable: true,
-  editor: SimpleNumber,
-  width: 85
 }, {
   name: 'Price',
   key: 'price',
@@ -39,8 +38,8 @@ const columns = [{
   editor: TaxRate,
   width: 85
 }, {
-  name: 'Priority',
-  key: 'priority',
+  name: 'Quantity',
+  key: 'quantity',
   editable: true,
   editor: SimpleNumber,
   width: 85

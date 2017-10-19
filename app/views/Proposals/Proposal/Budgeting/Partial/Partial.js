@@ -19,11 +19,10 @@ const columns = [{
   key: 'name',
   editable: true
 }, {
-  name: 'Quantity',
-  key: 'quantity',
+  name: 'Description',
+  key: 'description',
   editable: true,
-  editor: SimpleNumber,
-  width: 85
+  width: 300
 }, {
   name: 'Price',
   key: 'price',
@@ -35,6 +34,12 @@ const columns = [{
   key: 'tax',
   editable: true,
   editor: TaxRate,
+  width: 85
+}, {
+  name: 'Quantity',
+  key: 'quantity',
+  editable: true,
+  editor: SimpleNumber,
   width: 85
 }]
 @connect(
@@ -63,17 +68,19 @@ class Partial extends React.Component {
   }
   handleChange = (index) => this.setState({ index })
   handleSubmit = (items, total) => {
-    const { api, proposal, user } = this.props
-    const partial = { proposal, type: 'partial', author: user, items, total }
-
-    const transform = res => ({ proposal: res })
-    const update = { proposal: (prev, next) => {
-      let newData = Object.assign({}, prev)
-      newData.manifests.push(next)
-      return newData
-    }}
+    const { api, proposal, user: author } = this.props
+    const partial = { proposal, type: 'partial', author, items, total }
+    const params = {
+      populate: ['items'],
+      transform: proposal => ({ proposal }),
+      update: ({ proposal: (prev, next) => {
+        let changed = Object.assign({}, prev)
+        changed.manifests.push(next)
+        return changed
+      }})
+    }
     //  Post it - partials are a one-time deal, they aren't patched after the fact.
-    api.post('manifest', partial, { transform, update })
+    api.post('manifest', partial, params)
     .then(message.success(`Partial budget created! Please add it to the docket.`))
     .catch(err => {
       message.warning(`Failed to create partial budget - Unexpected client error`)
