@@ -1,7 +1,7 @@
 node_modules
 public
 compiled
-config
+config/*
 security
 logs
 npm-debug.log
