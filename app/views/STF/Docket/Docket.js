@@ -10,9 +10,7 @@ import { connectRequest } from 'redux-query'
 import api from '../../../services'
 
 import { Link } from 'react-router'
-import { Spin, Table, Switch, Radio, message } from 'antd'
-const RadioButton = Radio.Button;
-const RadioGroup = Radio.Group;
+import { Spin, Table, Radio, message } from 'antd'
 
 import styles from './Docket.css'
 

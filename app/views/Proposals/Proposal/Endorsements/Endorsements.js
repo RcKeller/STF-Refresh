@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
-import { Row, Col, Card, Collapse } from 'antd'
+import { Collapse } from 'antd'
 const Panel = Collapse.Panel
 
 import Endorse from './Endorse/Endorse'
@@ -14,6 +14,7 @@ import Endorse from './Endorse/Endorse'
   endorsements: state.db.proposal.comments,
   endorsed: state.db.proposal.comments
     .some(endorsement =>
+      endorsement.user === state.user._id ||
       endorsement.user._id === state.user._id
     ),
   decisionIssued: state.db.proposal.manifests

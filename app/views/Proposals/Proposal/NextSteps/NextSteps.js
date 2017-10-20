@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Row, Col, Alert } from 'antd'
+// import { Row, Col, Alert } from 'antd'
 
 class NextSteps extends React.Component {
   render () {

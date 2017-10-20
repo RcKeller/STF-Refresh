@@ -21,7 +21,7 @@ import Budgeting from './Budgeting/Budgeting'
 import NextSteps from './NextSteps/NextSteps'
 import Update from './Update/Update'
 //  STF Memeber and admin views
-import Reviews from './Reviews/Reviews'
+// import Reviews from './Reviews/Reviews'
 import Settings from './Settings/Settings'
 
 import styles from './Proposal.css'
@@ -56,8 +56,7 @@ connectRequest will force a query if there's a mismatch.
       { path: 'manifests', populate: { path: 'items' } },
       { path: 'manifests', populate: { path: 'report', populate: { path: 'items' } } },
       { path: 'manifests', populate: { path: 'decision' } },
-      { path: 'comments', populate: { path: 'user' } },
-      // { path: 'manifests', populate: { path: ['report', 'reviews', 'decision'] } }
+      { path: 'comments', populate: { path: 'user' } }
     ]
   }))
 )

@@ -7,12 +7,11 @@ import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
 import api from '../../../services'
 
-import { layout, feedback, help, rules, Label } from '../../../util/form'
+import { layout, feedback, rules, Label } from '../../../util/form'
 
 import { Modal, Button, Form, Input, AutoComplete, Select, message } from 'antd'
 const FormItem = Form.Item
 const Option = Select.Option
-const AutoCompleteOption = AutoComplete.Option
 const connectForm = Form.create()
 
 import Agreements from './Agreements/Agreements'

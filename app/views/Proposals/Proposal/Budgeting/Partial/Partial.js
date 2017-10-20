@@ -91,7 +91,7 @@ class Partial extends React.Component {
     { manifests } = this.props,
     { index } = this.state
   ) {
-    const { title, body, type, items, total } = manifests[index]
+    const { title, body, items, total } = manifests[index]
     const data = items.length > 0
       ? items.map(item => _.omit(item, ['_id', '__v', 'manifest', 'report']))
       : []

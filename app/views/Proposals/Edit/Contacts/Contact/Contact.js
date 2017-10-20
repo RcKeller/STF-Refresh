@@ -8,7 +8,7 @@ import { Form, Icon, Input, Button, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
-import { feedback, help, rules, disableSubmit } from '../../../../../util/form'
+import { feedback, rules, disableSubmit } from '../../../../../util/form'
 import api from '../../../../../services'
 // import { getRole } from '../../../../../util/selectors'
 // import { initialProposalContacts } from '../../../../../selectors'

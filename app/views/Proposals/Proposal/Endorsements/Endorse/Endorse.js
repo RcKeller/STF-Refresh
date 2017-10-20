@@ -8,7 +8,7 @@ import { Form, Input, Button, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
-import { layout, feedback, help, rules, disableSubmit } from '../../../../../util/form'
+import { layout, feedback, help, rules } from '../../../../../util/form'
 import api from '../../../../../services'
 
 // import styles from './Body.css'
@@ -44,9 +44,6 @@ class Endorse extends React.Component {
           update: { proposal: (prev, next) => {
             let changed = Object.assign({}, prev)
             changed.comments.push(next)
-            // Array.isArray(changed.endorsements)
-            //   ? changed.endorsements.push(next)
-            //   : Object.assign(changed, { endorsements: [next] })
             return changed
           }}
         }

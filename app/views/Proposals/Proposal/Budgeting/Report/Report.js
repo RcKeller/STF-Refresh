@@ -8,7 +8,7 @@ import api from '../../../../../services'
 import { layout, feedback, help, rules, disableSubmit } from '../../../../../util/form'
 import _ from 'lodash'
 
-import { Form, Input, Alert, message } from 'antd'
+import { Form, Input, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
