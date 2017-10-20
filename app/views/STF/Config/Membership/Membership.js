@@ -73,7 +73,6 @@ class Membership extends React.Component {
           >Member</Checkbox>
           <Checkbox
             checked={text.admin}
-            // value={text.admin}
             onChange={e => this.handleToggle({ admin: e.target.checked }, record, index)}
           >Admin</Checkbox>
         </div>

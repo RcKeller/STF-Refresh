@@ -16,6 +16,17 @@ export const sortProposals = (a, b) => {
   if (a.year >= b.year && a.number > b.number) return -1
   return 1
 }
+
+export const sortManifestsByProposal = (a, b) => {
+  const { proposal: prevProposal } = a
+  const { proposal } = b
+  if (prevProposal && proposal) {
+    if (prevProposal.year > proposal.year) return -1
+    if (prevProposal.year >= proposal.year && prevProposal.number > proposal.number) return -1
+  }
+  return 1
+}
+
 /*
 BASIC ASYNC SELECTORS
 */
@@ -131,6 +142,16 @@ export const readyToPublish = createSelector(
 )
 
 //  PROPOSAL MANIFEST SELECTORS
+// export const manifestsByProposal = ({ db }) => {
+//   return Array.isArray(db.manifests)
+//     ? db.manifests.sort(sortManifestsByProposal)
+//     : []
+// }
+export const manifestsByProposal = ({ db }) => {
+  return Array.isArray(db.manifests)
+    ? db.manifests.filter(m => m.proposal).sort(sortManifestsByProposal)
+    : []
+}
 export const proposalDecision = createSelector(
   [proposalManifests],
   (manifests) => {
