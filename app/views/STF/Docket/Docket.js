@@ -30,7 +30,6 @@ import styles from './Docket.css'
 @compose(
   connect(
     state => ({
-      // manifests: state.db.manifests,
       manifests: manifestsByProposal(state),
       screen: state.screen
     }),
@@ -119,16 +118,10 @@ class Docket extends React.Component {
         <div>
           {record.type === 'original' &&
             <Checkbox
-              disabled={record.type !== 'original'}
               checked={text.metrics}
               onChange={e => this.handleToggle({ metrics: e.target.checked }, record, index)}
             >Metrics</Checkbox>
           }
-          {/* <Checkbox
-            disabled={record.type !== 'original'}
-            checked={text.metrics}
-            onChange={e => this.handleToggle({ metrics: e.target.checked }, record, index)}
-          >Metrics</Checkbox> */}
           <Checkbox
             checked={text.voting}
             onChange={e => this.handleToggle({ voting: e.target.checked }, record, index)}

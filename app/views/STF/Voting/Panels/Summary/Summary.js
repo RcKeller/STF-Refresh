@@ -2,45 +2,52 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-const currency = number =>
-  number.toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD'
-  })
+// const currency = number =>
+//   number.toLocaleString('en-US', {
+//     style: 'currency',
+//     currency: 'USD'
+//   })
+const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
-import { Row, Col, Spin, Alert, Collapse, Table } from 'antd'
+import { Row, Col, Spin, Alert, Collapse, Table, Tooltip } from 'antd'
 const Panel = Collapse.Panel
 
 const columns = [
   {
-    title: 'Priority',
+    title: <Tooltip placement='right' title='Author-supplied priority number used to stack rank the importance of items.'>#</Tooltip>,
     dataIndex: 'priority',
     key: 'priority',
     sorter: (a, b) => (a.priority) - (b.priority),
-    width: 90
+    width: 50
   },
   {
-    title: 'Name',
+    title: 'Priority / Name',
     dataIndex: 'name',
     key: 'name',
-    render: text => <h5>{text}</h5>
+    render: (text, record) => <b>{text}</b>
   },
-  { title: 'Price',
+  { title: <Tooltip placement='left' title='Tax Included. Mouse over for item subtotals.'>Price/ea</Tooltip>,
     dataIndex: 'price',
     key: 'price',
-    render: (text, record) => <span>{currency(record.tax ? record.price * record.tax : record.price)}</span>,
-    sorter: (a, b) => (a.price * a.tax) - (b.price * b.tax),
-    width: 120
+    render: (text, record) => <Tooltip placement='left'
+      title={`Subtotal: ${currency(record.tax
+        ? record.price * record.quantity * (1 + record.tax / 100)
+        : record.price * record.quantity)}`}>
+      {currency(record.price * (1 + record.tax / 100))}
+    </Tooltip>,
+    sorter: (a, b) => a.price - b.price,
+    width: 120,
+    padding: 0
   },
-  { title: 'Quantity',
+  { title: 'Q',
     dataIndex: 'quantity',
     key: 'quantity',
-    width: 90
+    width: 50
   }
 ]
 
 const expandedRowRender = record => record.description
-  ? <div><h6>Description: </h6>{record.description}</div>
+  ? <div><em>{record.tax ? 'Tax-Free' : `${record.tax}% tax included in calculation`}</em><h6>Description: </h6>{record.description}</div>
   : <em>No description provided.</em>
 
 @connect(
@@ -71,7 +78,7 @@ class Summary extends React.Component {
     const impactTitles = ['Academic Experience', 'Research Opportunities', 'Career Development']
     const planKeys = body.plan ? Object.keys(body.plan) : []
     const planTitles = ['State Analysis', 'Availability', 'Implementation Strategy', 'Outreach Efforts', 'Risk Assessment']
-    const footer = () => <h2>{`Grand Total: ${currency(manifest.total)}`}</h2>
+    const footer = () => <span><h2>{`Grand Total: ${currency(manifest.total || 0)}`}</h2><h6>Tax Included in Calculation</h6></span>
     return (
       <section>
         {!body

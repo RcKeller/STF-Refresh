@@ -152,6 +152,11 @@ export const manifestsByProposal = ({ db }) => {
     ? db.manifests.filter(m => m.proposal).sort(sortManifestsByProposal)
     : []
 }
+export const manifestsOnDocket = createSelector(
+  [manifestsByProposal],
+  (manifests) => manifests.filter(({docket}) => docket.metrics || docket.voting || docket.decisions)
+)
+
 export const proposalDecision = createSelector(
   [proposalManifests],
   (manifests) => {

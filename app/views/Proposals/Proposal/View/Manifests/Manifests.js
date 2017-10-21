@@ -50,7 +50,7 @@ class Manifests extends React.Component {
         key: 'name',
         render: text => <b>{text}</b>
       },
-      { title: <Tooltip placement='left' title='Tax Included. Mouse over for subtotal.'>Price/ea</Tooltip>,
+      { title: <Tooltip placement='left' title='Tax Included. Mouse over for item subtotals.'>Price/ea</Tooltip>,
         dataIndex: 'price',
         key: 'price',
         render: (text, record) => <Tooltip placement='left'
@@ -69,7 +69,7 @@ class Manifests extends React.Component {
         width: 50
       }
     ]
-    const footer = () => <h2>{`Grand Total: ${currency(manifest.total || 0)}`}</h2>
+    const footer = () => <span><h2>{`Grand Total: ${currency(manifest.total || 0)}`}</h2><h6>Tax Included in Calculation</h6></span>
     const dataSource = manifest.items || []
     return (
       <div>

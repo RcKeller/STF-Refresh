@@ -8,8 +8,9 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
+import { manifestsOnDocket } from '../../../selectors'
 
-import { Spin, Tabs, Alert, Button } from 'antd'
+import { Spin, Tabs, Alert, Button, Tooltip } from 'antd'
 const TabPane = Tabs.TabPane
 
 import Panels from './Panels/Panels'
@@ -18,24 +19,26 @@ import styles from './Voting.css'
 @compose(
   connect(
     state => ({
-      docket: Array.isArray(state.db.manifests)
-        ? state.db.manifests
-          .filter(budget => {
-            let { docket } = budget
-            if (docket) return docket.metrics || docket.voting || docket.decisions
-          })
-        : []
+      docket: manifestsOnDocket(state)
+      // docket: Array.isArray(state.db.manifests)
+      //   ? state.db.manifests
+      //     .filter(budget => {
+      //       let { docket } = budget
+      //       if (docket) return docket.metrics || docket.voting || docket.decisions
+      //     })
+      //   : []
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
 ),
   connectRequest(() => api.get('manifests', {
-    //  BUG: Unpublished proposals can be pulled in docket creation.
-    force: true,
-    populate: ['reviews', 'decision',
+    populate: [
+      'items',
+      'reviews',
+      'decision',
       { path: 'proposal', populate: { path: 'body' } },
       { path: 'proposal', populate: { path: 'contacts' } }
-    ]
-    // populate: ['proposal.body', 'proposal.contacts', 'reviews', 'decision']
+    ],
+    force: true
   }))
 )
 class Voting extends React.Component {
@@ -64,10 +67,12 @@ class Voting extends React.Component {
             {docket.map((manifest, i) => (
               <TabPane key={manifest._id} className={styles['tab-pane']}
                 tab={
-                  `${manifest.proposal.year}-${manifest.proposal.number}
-                  ${manifest.type !== 'original' ? `(${_.capitalize(manifest.type)})` : ''}
-                `}
-              >
+                  <Tooltip placement='bottom' title={manifest.proposal.title}>{`
+                    ${manifest.proposal.year}-${manifest.proposal.number}
+                    ${manifest.type !== 'original' ? `(${manifest.type[0].toUpperCase()})` : ''}
+                  `}
+                  </Tooltip>
+                }>
                 <Panels index={i} id={manifest._id} />
               </TabPane>
             ))}

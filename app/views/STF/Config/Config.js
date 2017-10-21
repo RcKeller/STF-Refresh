@@ -137,14 +137,16 @@ class Config extends React.Component {
             <h6>Here be dragons...</h6>
             <p>Please be advised that changes go into effect IMMEDIATELY, users will experience the change after refreshing their page.</p>
             <hr />
-            <FormItem {...layout} label='Submissions'>
+            <FormItem {...layout} label={<Label title='Timeline Points'
+              message={'Open or close submissions for authors. Admins can still log into proposals and change them after closure.'} />}>
               {form.getFieldDecorator('submissions', { valuePropName: 'checked' })(
                 <Switch onChange={this.handleSubmissions}
                   checkedChildren='Open' unCheckedChildren='Closed'
                 />
               )}
             </FormItem>
-            <FormItem {...layout} label='Fiscal Year'>
+            <FormItem {...layout} label={<Label title='Fiscal Year'
+              message={'Set the year of your proposal cycle. This may not be intuitive, for example, Autumn 2017 proposals are in the 2018 FY'} />}>
               {form.getFieldDecorator('year')(
                 <InputNumber min={2000} max={2030} onChange={(year) => this.handleYear(year)} />
                 // <InputNumber min={2000} max={2030} onChange={(e) => this.handleYear(e.target.value)} />
@@ -160,12 +162,13 @@ class Config extends React.Component {
                 </Select>
               )}
             </FormItem>
-            <FormItem {...layout} label='News'>
+            <FormItem {...layout} label={<Label title='Announcements'
+              message={'Frontpage content directly underneath "Announcements"'} />}>
               {form.getFieldDecorator('news')(
                 <Input type='textarea' rows={6} onPressEnter={(e) => this.handleNews(e.target.value)} />
               )}
             </FormItem>
-            <FormItem {...layout} label={<Label title='Timeline Points'
+            <FormItem {...layout} label={<Label title='Timeline'
               message={'Add or remove timeline points from the frontpage. The last elementa added is shown as the pending or upcoming event..'} />}
             >
               {form.getFieldDecorator('timeline')(
@@ -201,8 +204,8 @@ class Config extends React.Component {
                 </Select>
               )}
             </FormItem>
-            <FormItem {...layout} label={<Label title='Review Questions'
-              message={'Add or remove review / metrics questions. These are best kept brief, without symbols.'} />}
+            <FormItem {...layout} label={<Label title='Metric Questions'
+              message={'Add or remove metrics questions. These are best kept brief, without symbols.'} />}
             >
               {form.getFieldDecorator('reviewQuestions')(
                 <Select mode='tags'

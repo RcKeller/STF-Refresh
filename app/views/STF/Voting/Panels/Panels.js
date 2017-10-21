@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 
 import api from '../../../../services'
 
-import { Col, Row, Spin, Tabs } from 'antd'
+import { Col, Row, Spin, Tabs, Tooltip } from 'antd'
 const TabPane = Tabs.TabPane
 
 import Summary from './Summary/Summary'
@@ -20,6 +20,7 @@ const currency = number =>
     style: 'currency',
     currency: 'USD'
   })
+const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
 /*
 There are two kinds of meetings:
 - QA meetings (metrics, no votes)
@@ -43,7 +44,7 @@ class Panels extends React.Component {
   render (
     { index, manifest, stf } = this.props
   ) {
-    const { _id, proposal, docket, total } = manifest
+    const { _id, type, proposal, docket, total } = manifest
     const { id, title, organization, uac, year, number, date, comments } = proposal
     const { metrics, voting, decisions } = docket
     console.log('DOCKET', docket)
@@ -54,7 +55,7 @@ class Panels extends React.Component {
           : <div id={_id} >
             <Row type="flex" justify="space-between" align="top">
               <Col sm={24} lg={12}>
-                <h1>{title}</h1>
+                <h1><em>{capitalize(type)}</em> - {title}</h1>
                 {uac && <h4><em>Universal Access Committee</em></h4>}
                 <h3>For {organization}</h3>
                 <h6 id={id}>{`ID: ${year}-${number}`}</h6>
@@ -74,16 +75,16 @@ class Panels extends React.Component {
               <TabPane tab='Proposal' key='1'>
                 <Summary id={_id} />
               </TabPane>
-              <TabPane tab='Scores' key='2'>
+              <TabPane tab={<Tooltip placement='top' title='View committee votes & metrics'>Scores</Tooltip>} key='2'>
                 <Scores id={_id} />
               </TabPane>
-              <TabPane disabled={!metrics && !voting && !decisions} tab='Metrics' key='3'>
+              <TabPane disabled={!metrics && !voting && !decisions} tab={<Tooltip placement='top' title='Score this proposal by merits.'>Metrics</Tooltip>} key='3'>
                 <Metrics id={_id} />
               </TabPane>
-              <TabPane disabled={!voting || !stf.member} tab='Vote' key='4'>
+              <TabPane disabled={!voting || !stf.member} tab={<Tooltip placement='top' title='Make an official vote to approve or deny.'>Vote</Tooltip>} key='4'>
                 <Vote id={_id} />
               </TabPane>
-              <TabPane disabled={!decisions || !stf.admin} tab={<span>Decision (<em>Admin-Only</em>)</span>} key='5'>
+              <TabPane disabled={!decisions || !stf.admin} tab={<Tooltip placement='top' title='Admins may issue a decision here.'>Decision (<em>Admin-Only</em>)</Tooltip>} key='5'>
                 <Decision id={_id} />
               </TabPane>
             </Tabs>

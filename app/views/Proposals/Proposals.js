@@ -42,9 +42,14 @@ import { sortProposals, publishedProposals, myProposals } from '../../selectors'
   })),
   //  If not logged in, query for only published proposals (performance)
   connectRequest(({user}) =>
-      user._id
-        ? api.get('proposals', { populate: [ 'contacts' ] })
-        : api.get('proposals', { query: { published: true }, populate: [ 'contacts' ] })
+      user.netID
+        ? api.get('proposals', {
+          populate: [{ path: 'contacts', select: 'netID' }]
+        })
+        : api.get('proposals', {
+          query: { published: true },
+          populate: [{ path: 'contacts', select: 'netID' }]
+        })
   )
 )
 class Proposals extends React.Component {

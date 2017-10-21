@@ -24,7 +24,7 @@ class Legacy extends React.Component {
             Our proposal process has changed significantly since Summer 2017.
           </span>
         }
-          closeText={<span><Link to='/create'>Learn More</Link></span>}
+          closeText={<Link to='/create'>Learn More</Link>}
         />
         {Array.isArray(legacy) && legacy.map((e, i) =>
           <div key={i}>
@@ -33,10 +33,6 @@ class Legacy extends React.Component {
               : <h3>{e.title}</h3>
             }
             <p>{e.body}</p>
-            {/* <p>
-              <b>{e.body.split(':')[0]}</b>
-              <span>{e.body.split(':')[1]}</span>
-            </p> */}
           </div>
         )}
       </div>
