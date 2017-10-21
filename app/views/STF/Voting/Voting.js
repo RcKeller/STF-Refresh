@@ -53,8 +53,8 @@ class Voting extends React.Component {
         <Helmet title='Voting' />
         {!docket
           ? <Spin size='large' tip='Loading...' />
-          : <Tabs className='tab-container' type='card'
-            tabBarExtraContent={<Button type='ghost' icon='reload' onClick={forceRequest}>Refresh</Button>}
+          : <Tabs type='mini' tabPosition='left'
+            // tabBarExtraContent={<Button type='ghost' icon='reload' onClick={forceRequest}>Refresh</Button>}
             >
             <TabPane tab='Overview' key='1' className={styles['tab-pane']}>
               <h1>Reviews & Voting</h1>
