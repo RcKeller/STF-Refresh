@@ -71,15 +71,15 @@ class Vote extends React.Component {
         //  TODO: Add custom update func
         review._id
           ? api.patch('review', submission, { id: review._id })
-          .then(message.success('Review updated!'), 10)
+          .then(message.success('Vote updated!'), 10)
           .catch(err => {
-            message.warning('Review failed to update - Unexpected client error')
+            message.warning('Vote failed to update - Unexpected client error')
             console.warn(err)
           })
           : api.post('review', submission)
-          .then(message.success('Review posted!'))
+          .then(message.success('Vote posted!'))
           .catch(err => {
-            message.warning('Review failed to post - Unexpected client error')
+            message.warning('Vote failed to post - Unexpected client error')
             console.warn(err)
           })
       }
@@ -90,21 +90,20 @@ class Vote extends React.Component {
   ) {
     return (
       <section>
+        <br />
         {!manifest
           ? <Spin size='large' tip='Loading...' />
-          : <Form onSubmit={this.handleSubmit}>
-            <h2>Your Final Vote</h2>
-            <h6>For internal use only.</h6>
-            <FormItem label={<b>Final Vote</b>} {...layout}>
+          : <Form onSubmit={this.handleSubmit} layout='inline' >
+            <FormItem label={<b>Final Vote</b>}>
               {form.getFieldDecorator('approved', { valuePropName: 'checked' })(
                 //  Valueprop is a selector for antd switches, it's in the docs.
                 <Switch checkedChildren='APPROVE' unCheckedChildren='DENY' />
               )}
             </FormItem>
-            <FormItem label='Submit' {...layout}>
+            <FormItem label='Submit'>
               <Button size='large' type='primary'
                 htmlType='submit' ghost disabled={!active}
-                >Update your Review</Button>
+                >Save Vote</Button>
             </FormItem>
           </Form>
           }

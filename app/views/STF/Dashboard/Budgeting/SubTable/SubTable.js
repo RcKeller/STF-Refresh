@@ -100,6 +100,7 @@ class SubTable extends React.Component {
             <h6>{`${_.capitalize(manifest.type)} - ${manifest.title || 'Untitled Award'}`}</h6>
             <Table id={manifest._id}
               columns={manifestColumns}
+              rowKey={record => record._id}
               dataSource={manifest.items || []}
               size='middle'
               pagination={false}
@@ -116,6 +117,7 @@ class SubTable extends React.Component {
                 {Array.isArray(report.items) && report.items > 0 &&
                   <Table id={report._id}
                     columns={reportColumns}
+                    rowKey={record => record._id}
                     dataSource={report.items || []}
                     size='middle'
                     pagination={false}
@@ -135,6 +137,7 @@ class SubTable extends React.Component {
         {Array.isArray(contacts) && contacts.length > 0
           ? <Table
             columns={contactColumns}
+            rowKey={record => record._id}
             dataSource={contacts || []}
             size='middle'
             pagination={false}

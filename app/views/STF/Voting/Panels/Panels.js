@@ -85,10 +85,10 @@ class Panels extends React.Component {
               <TabPane disabled={!metrics && !voting && !decisions} tab={<Tooltip placement='top' title='Score this proposal by merits.'>Metrics</Tooltip>} key='4'>
                 <Metrics id={_id} />
               </TabPane>
-              <TabPane disabled={!voting || !stf.member} tab={<Tooltip placement='top' title='Make an official vote to approve or deny.'>Vote</Tooltip>} key='5'>
+              <TabPane disabled={!voting || !stf.member} tab={<Tooltip placement='top' title='Make an official vote to approve or deny.'>Vote (<em>Members</em>)</Tooltip>} key='5'>
                 <Vote id={_id} />
               </TabPane>
-              <TabPane disabled={!decisions || !stf.admin} tab={<Tooltip placement='top' title='Admins may issue a decision here.'>Decision (<em>Admin-Only</em>)</Tooltip>} key='6'>
+              <TabPane disabled={!decisions || !stf.admin} tab={<Tooltip placement='top' title='Admins may issue a decision here.'>Decision (<em>Admins</em>)</Tooltip>} key='6'>
                 <Decision id={_id} />
               </TabPane>
             </Tabs>

@@ -106,23 +106,7 @@ class Scores extends React.Component {
         {!manifest
           ? <Spin size='large' tip='Loading...' />
           : <div>
-            <h2>Committee Scores</h2>
-            <h6>For internal use only.</h6>
-            <h4>Filter by Commitee Roles</h4>
-            <Switch checked={filter.admin}
-              unCheckedChildren='Admins' checkedChildren='Admins'
-              onChange={admin => this.handleFilter({ admin })}
-            />
-            <Switch checked={filter.member}
-              unCheckedChildren='Members' checkedChildren='Members'
-              onChange={member => this.handleFilter({ member })}
-            />
-            <Switch checked={filter.spectator}
-              unCheckedChildren='Ex-Officios' checkedChildren='Ex-Officios'
-              onChange={spectator => this.handleFilter({ spectator })}
-            />
-            <p><em>Note: If you cast a vote, it won't automatically update these totals (hit refresh in the top right).</em></p>
-            <Row type='flex' justify='space-around' align='middle'>
+            <Row type='flex' justify='space-between' align='middle'>
               <Col span={24} lg={8}>
                 <h2>Approval Rating</h2>
                 <Progress type='circle' width={200}
@@ -136,7 +120,7 @@ class Scores extends React.Component {
                 />
               </Col>
               <Col span={24} lg={16}>
-                <h2>Review Breakdown</h2>
+                <h2>Metrics</h2>
                 <Table dataSource={dataSource} pagination={false}
                   size='middle'
                   rowKey={record => record.prompt}
@@ -144,6 +128,20 @@ class Scores extends React.Component {
                 />
               </Col>
             </Row>
+            <h4>Filter by Commitee Roles</h4>
+            <Switch checked={filter.admin}
+              unCheckedChildren='Admins' checkedChildren='Admins'
+              onChange={admin => this.handleFilter({ admin })}
+            />
+            <Switch checked={filter.member}
+              unCheckedChildren='Members' checkedChildren='Members'
+              onChange={member => this.handleFilter({ member })}
+            />
+            <Switch checked={filter.spectator}
+              unCheckedChildren='Ex-Officios' checkedChildren='Ex-Officios'
+              onChange={spectator => this.handleFilter({ spectator })}
+            />
+            <p><em>Note: If you cast a vote, it won't automatically update these totals (hit the refresh button at the top right).</em></p>
           </div>
           }
       </section>

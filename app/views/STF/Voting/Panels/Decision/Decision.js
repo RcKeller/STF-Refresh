@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { layout } from '../../../../../util/form'
 import api from '../../../../../services'
 
-import { Spin, Form, Checkbox, Input, Button, message } from 'antd'
+import { Spin, Form, Checkbox, Input, Button, Alert, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
@@ -80,12 +80,10 @@ class Decision extends React.Component {
         {!manifest
           ? <Spin size='large' tip='Loading...' />
           : <Form onSubmit={this.handleSubmit}>
-            <h1>Committee Decision</h1>
-            <h6>For internal use only.</h6>
-            <h4>{decisions ? 'Issue the final decision. Be forewarned, these decisions go into effect immediately!' : 'Decision submissions are closed'}</h4>
-            <p>
-              This tool exists to issue a decision on a proposal AFTER a formal vote is taken by the committee. Only admins can issue a decision, but they should not do so without committee approval. This tool was put in place to provide manual oversight of funding decisions to ensure that errors with the website do not cause incorrect decisions to be issued.
-            </p>
+            <Alert type='warning' showIcon banner
+              message='Warning - Use AFTER Official Voting'
+              description='Only admins can issue a decision, but only with committee approval. This tool was put in place to provide manual oversight to ensure that errors with the website do not cause incorrect decisions to be issued.'
+            />
             <FormItem label='Remarks (Public)' {...layout} >
               {form.getFieldDecorator('body')(
                 <Input disabled={!decisions}type='textarea' rows={4} />

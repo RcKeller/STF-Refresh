@@ -17,10 +17,10 @@ class SliderAndNumber extends React.Component {
   ) {
     return (
       <Row>
-        <Col span={12}>
+        <Col xs={16} sm={18} md={20} lg={22}>
           <Slider {...this.props} />
         </Col>
-        <Col span={4}>
+        <Col span={4} lg={2}>
           <InputNumber {...this.props} style={{ marginLeft: 16 }} />
         </Col>
       </Row>
@@ -105,15 +105,15 @@ class Metrics extends React.Component {
         //  TODO: Add custom update func
         review._id
           ? api.patch('review', submission, { id: review._id })
-          .then(message.success('Review updated!'), 10)
+          .then(message.success('Metrics updated!'), 10)
           .catch(err => {
-            message.warning('Review failed to update - Unexpected client error')
+            message.warning('Metrics failed to update - Unexpected client error')
             console.warn(err)
           })
           : api.post('review', submission)
-          .then(message.success('Review posted!'))
+          .then(message.success('Metrics posted!'))
           .catch(err => {
-            message.warning('Review failed to post - Unexpected client error')
+            message.warning('Metrics failed to post - Unexpected client error')
             console.warn(err)
           })
       }
@@ -124,30 +124,30 @@ class Metrics extends React.Component {
   ) {
     return (
       <section>
+        <br />
         {!manifest
           ? <Spin size='large' tip='Loading...' />
           : <Form onSubmit={this.handleSubmit}>
-            <h2>Submit Your Metrics</h2>
-            <h6>For internal use only.</h6>
-            <h4>{active ? 'This proposal is up for review - you may score this proposal as you like (0-100).' : 'Review submissions are closed, but you may view your previous scores'}</h4>
+            {!active && <h4>Metric submissions are closed, but you may view previous scores</h4>}
             {questions.map(q => (
-              <FormItem key={q} label={q} {...layout} >
+              <FormItem key={q} label={q}>
                 {form.getFieldDecorator(`metrics[${q}]`)(
                   <SliderAndNumber disabled={!active} min={0} max={100} step={1} />
                 )}
               </FormItem>
             ))}
             <br />
-            <FormItem label={<b>Overall Score</b>} {...layout} >
+            <FormItem label={<b>Overall Score</b>}>
               {form.getFieldDecorator('score')(
                 <SliderAndNumber disabled={!active} min={0} max={100} step={1} />
               )}
             </FormItem>
             {active &&
-              <FormItem label='Submit' {...layout}>
+              <FormItem>
                 <Button size='large' type='primary'
+                  style={{ width: '100%' }}
                   htmlType='submit' ghost disabled={!active}
-                  >Update your Review</Button>
+                  >Save Metrics</Button>
               </FormItem>
             }
           </Form>
