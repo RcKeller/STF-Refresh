@@ -8,6 +8,10 @@
 @import '../../../css/layout';
 @import '../../../css/colors';
 
+.article {
+  @apply --page;
+}
+
 .tabbed-article {
   @apply --page;
   padding: 0;

@@ -10,6 +10,7 @@ import { Col, Row, Spin, Tabs, Tooltip } from 'antd'
 const TabPane = Tabs.TabPane
 
 import Summary from './Summary/Summary'
+import Budget from './Budget/Budget'
 import Scores from './Scores/Scores'
 import Metrics from './Metrics/Metrics'
 import Vote from './Vote/Vote'
@@ -72,19 +73,22 @@ class Panels extends React.Component {
             <hr />
             <hr />
             <Tabs defaultActiveKey='1'>
-              <TabPane tab='Proposal' key='1'>
+              <TabPane tab='Summary' key='1'>
                 <Summary id={_id} />
               </TabPane>
-              <TabPane tab={<Tooltip placement='top' title='View committee votes & metrics'>Scores</Tooltip>} key='2'>
+              <TabPane tab='Budget' key='2'>
+                <Budget id={_id} />
+              </TabPane>
+              <TabPane tab={<Tooltip placement='top' title='View committee votes & metrics'>Scores</Tooltip>} key='3'>
                 <Scores id={_id} />
               </TabPane>
-              <TabPane disabled={!metrics && !voting && !decisions} tab={<Tooltip placement='top' title='Score this proposal by merits.'>Metrics</Tooltip>} key='3'>
+              <TabPane disabled={!metrics && !voting && !decisions} tab={<Tooltip placement='top' title='Score this proposal by merits.'>Metrics</Tooltip>} key='4'>
                 <Metrics id={_id} />
               </TabPane>
-              <TabPane disabled={!voting || !stf.member} tab={<Tooltip placement='top' title='Make an official vote to approve or deny.'>Vote</Tooltip>} key='4'>
+              <TabPane disabled={!voting || !stf.member} tab={<Tooltip placement='top' title='Make an official vote to approve or deny.'>Vote</Tooltip>} key='5'>
                 <Vote id={_id} />
               </TabPane>
-              <TabPane disabled={!decisions || !stf.admin} tab={<Tooltip placement='top' title='Admins may issue a decision here.'>Decision (<em>Admin-Only</em>)</Tooltip>} key='5'>
+              <TabPane disabled={!decisions || !stf.admin} tab={<Tooltip placement='top' title='Admins may issue a decision here.'>Decision (<em>Admin-Only</em>)</Tooltip>} key='6'>
                 <Decision id={_id} />
               </TabPane>
             </Tabs>
