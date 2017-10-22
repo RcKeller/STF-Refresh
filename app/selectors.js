@@ -6,11 +6,6 @@ import _ from 'lodash'
 /*
 SORTATION FUNCTIONS
 */
-// export const sortProposals = (a, b) => {
-//   if (a.year > b.year) return 1
-//   if (a.year >= b.year && a.number > b.number) return 1
-//   return -1
-// }
 export const sortProposals = (a, b) => {
   if (a.year > b.year) return -1
   if (a.year >= b.year && a.number > b.number) return -1
@@ -35,24 +30,7 @@ const config = ({ config }) => config || {}
 const proposals = ({ db }) => Array.isArray(db.proposals)
   ? db.proposals.sort(sortProposals)
   : []
-  // ? db.proposals.sort((a, b) => {
-  //   if (a.year > b.year) {
-  //     return -1
-  //   } else if (a.number > b.number) {
-  //     return -1
-  //   }
-  //   return 1
-  //   // if (a.year === b.year && a.number > b.number) return 1
-  //
-  //   // console.log(typeof a.year, typeof a.number)
-  //   // if (a.year > b.year) return 1
-  //   // if (a.year === b.year && a.number > b.number) return 1
-  //   // return -1
-  //   // return a.year < b.year && a.number < b.number && 1
-  //   // (a.year * a.number) - (b.year * b.number)
-  // })
-  // // ? db.proposals.sort((a, b) => (a.year * a.number) - (b.year * b.number))
-  // : []
+
 const proposal = ({ db }) => db.proposal || {}
 const proposalContacts = ({ db }) => db.proposal ? db.proposal.contacts : []
 const proposalManifests = ({ db }) => db.proposal ? db.proposal.manifests : []
@@ -141,21 +119,7 @@ export const readyToPublish = createSelector(
   }
 )
 
-//  PROPOSAL MANIFEST SELECTORS
-// export const manifestsByProposal = ({ db }) => {
-//   return Array.isArray(db.manifests)
-//     ? db.manifests.sort(sortManifestsByProposal)
-//     : []
-// }
-export const manifestsByProposal = ({ db }) => {
-  return Array.isArray(db.manifests)
-    ? db.manifests.filter(m => m.proposal).sort(sortManifestsByProposal)
-    : []
-}
-export const manifestsOnDocket = createSelector(
-  [manifestsByProposal],
-  (manifests) => manifests.filter(({docket}) => docket.metrics || docket.voting || docket.decisions)
-)
+//  MANIFEST-PROPOSAL SELECTORS
 
 export const proposalDecision = createSelector(
   [proposalManifests],
@@ -164,7 +128,6 @@ export const proposalDecision = createSelector(
     return manifest ? manifest.decision : {}
   }
 )
-
 export const indexOfApprovedManifest = createSelector(
   [proposalManifests],
   (manifests) => {
@@ -172,3 +135,26 @@ export const indexOfApprovedManifest = createSelector(
     return index > 0 ? index : 0
   }
 )
+
+export const manifestsByProposal = ({ db }) => {
+  return Array.isArray(db.manifests)
+  ? db.manifests.filter(m => m.proposal).sort(sortManifestsByProposal)
+  : []
+}
+export const manifestsOnDocket = createSelector(
+  [manifestsByProposal],
+  (manifests) => manifests.filter(({docket}) => docket.metrics || docket.voting || docket.decisions)
+)
+
+const manifests = ({db}) => db.manifests || []
+//  PRIVATE SELECTOR - construct one per component
+//  const manifestByID = makeManifestByID()
+// const manifest = makeManifestByID(props.id)(state)
+export const makeManifestByID = (id) => createSelector(
+  [manifests],
+  (manifests) => Array.isArray(manifests)
+    ? manifests.find(m => m._id === id)
+    : {}
+)
+
+//

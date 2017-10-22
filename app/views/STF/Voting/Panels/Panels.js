@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import api from '../../../../services'
+import { makeManifestByID } from '../../../../selectors'
 
 import { Col, Row, Spin, Tabs, Tooltip } from 'antd'
 const TabPane = Tabs.TabPane
@@ -16,11 +17,8 @@ import Metrics from './Metrics/Metrics'
 import Vote from './Vote/Vote'
 import Decision from './Decision/Decision'
 
-const currency = number =>
-  number.toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD'
-  })
+const currency = value => `$${Number.parseInt(value).toLocaleString()}`
+
 const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
 /*
 There are two kinds of meetings:
@@ -29,11 +27,19 @@ There are two kinds of meetings:
 */
 @connect(
     //  Might seem counterintuitive, but we're connecting to a manifest and pulling its proposal data.
-    (state, props) => ({
-      manifest: state.db.manifests
-        .find(manifest => manifest._id === props.id),
-      stf: state.user.stf
-    }),
+    (state, props) => {
+      const manifest = makeManifestByID(props.id)(state)
+      const { _id: id, type, docket, total, proposal } = manifest
+      return {
+        manifest,
+        id,
+        type,
+        docket,
+        total,
+        proposal,
+        stf: state.user.stf
+      }
+    },
     dispatch => ({ api: bindActionCreators(api, dispatch) })
 )
 class Panels extends React.Component {
@@ -43,23 +49,22 @@ class Panels extends React.Component {
     admin: PropTypes.object
   }
   render (
-    { index, manifest, stf } = this.props
+    { id, type, docket, total, proposal, stf } = this.props
   ) {
-    const { _id, type, proposal, docket, total } = manifest
-    const { id, title, organization, uac, year, number, date, comments } = proposal
     const { metrics, voting, decisions } = docket
+    const { _id: proposalID, title, organization, uac, year, number, date, comments } = proposal
     console.log('DOCKET', docket)
     return (
       <section>
         {!proposal
           ? <Spin size='large' tip='Loading...' />
-          : <div id={_id} >
-            <Row type="flex" justify="space-between" align="top">
+          : <div id={id} >
+            <Row type='flex' justify='space-between' align='top'>
               <Col sm={24} lg={12}>
-                <h1><em>{capitalize(type)}</em> - {title}</h1>
+                <h1 id={id}><em>{capitalize(type)}</em> - {title}</h1>
                 {uac && <h4><em>Universal Access Committee</em></h4>}
                 <h3>For {organization}</h3>
-                <h6 id={id}>{`ID: ${year}-${number}`}</h6>
+                <h6 id={proposalID}>{`ID: ${year}-${number}`}</h6>
               </Col>
               <Col sm={24} lg={12} style={{ textAlign: 'right' }}>
                 <h2>{currency(total)}</h2>
@@ -74,22 +79,22 @@ class Panels extends React.Component {
             <hr />
             <Tabs defaultActiveKey='1'>
               <TabPane tab='Summary' key='1'>
-                <Summary id={_id} />
+                <Summary id={id} />
               </TabPane>
               <TabPane tab='Budget' key='2'>
-                <Budget id={_id} />
+                <Budget id={id} />
               </TabPane>
               <TabPane tab={<Tooltip placement='top' title='View committee votes & metrics'>Scores</Tooltip>} key='3'>
-                <Scores id={_id} />
+                <Scores id={id} />
               </TabPane>
               <TabPane disabled={!metrics && !voting && !decisions} tab={<Tooltip placement='top' title='Score this proposal by merits.'>Metrics</Tooltip>} key='4'>
-                <Metrics id={_id} />
+                <Metrics id={id} />
               </TabPane>
               <TabPane disabled={!voting || !stf.member} tab={<Tooltip placement='top' title='Make an official vote to approve or deny.'>Vote (<em>Members</em>)</Tooltip>} key='5'>
-                <Vote id={_id} />
+                <Vote id={id} />
               </TabPane>
               <TabPane disabled={!decisions || !stf.admin} tab={<Tooltip placement='top' title='Admins may issue a decision here.'>Decision (<em>Admins</em>)</Tooltip>} key='6'>
-                <Decision id={_id} />
+                <Decision id={id} />
               </TabPane>
             </Tabs>
           </div>

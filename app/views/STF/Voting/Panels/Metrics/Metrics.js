@@ -4,10 +4,12 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { layout } from '../../../../../util/form'
+import { makeManifestByID } from '../../../../../selectors'
+
+// import { layout } from '../../../../../util/form'
 import api from '../../../../../services'
 
-import { Spin, Form, Row, Col, Switch, Slider, InputNumber, Button, message } from 'antd'
+import { Spin, Form, Row, Col, Slider, InputNumber, Button, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
@@ -33,23 +35,20 @@ class SliderAndNumber extends React.Component {
 
 @compose(
   connect(
-    (state, props) => ({
-      active: state.db.manifests
-        .find(manifest => manifest._id === props.id)
-        .docket.metrics,
-      proposal: state.db.manifests
-        .find(manifest => manifest._id === props.id)
-        .proposal._id,
-      manifest: state.db.manifests
-        .find(manifest => manifest._id === props.id),
-      review: state.db.manifests
-        .find(manifest => manifest._id === props.id)
-        .reviews
-        .find(review => review.author._id === state.user._id) || {},
-      user: state.user,
-      questions: state.config.enums.questions.review || [],
-      stf: state.user.stf
-    }),
+    (state, props) => {
+      const manifest = makeManifestByID(props.id)(state)
+      const { docket, proposal, reviews } = manifest
+      return {
+        manifest,
+        active: docket.metrics,
+        proposal: proposal._id,
+        review: reviews
+          .find(review => review.author._id === state.user._id) || {},
+        questions: state.config.enums.questions.review || [],
+        author: state.user._id,
+        stf: state.user.stf
+      }
+    },
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
   connectForm
@@ -62,7 +61,7 @@ class Metrics extends React.Component {
     proposal: PropTypes.string,
     manifest: PropTypes.object,
     review: PropTypes.object,
-    user: PropTypes.object
+    author: PropTypes.object
   }
   componentDidMount () {
     const { form, review } = this.props
@@ -83,7 +82,7 @@ class Metrics extends React.Component {
   }
   handleSubmit = (e) => {
     e.preventDefault()
-    let { form, api, proposal, manifest, review, user } = this.props
+    let { form, api, proposal, manifest, review, author } = this.props
     form.validateFields((err, values) => {
       if (!err) {
         console.warn('Submitting', values)
@@ -96,8 +95,8 @@ class Metrics extends React.Component {
         const submission = {
           proposal,
           manifest: manifest._id,
-          author: user._id,
           ratings: denormalizedMetrics,
+          author,
           score,
           approved
         }
@@ -120,7 +119,7 @@ class Metrics extends React.Component {
     })
   }
   render (
-    { form, active, manifest, user, stf, questions } = this.props
+    { form, active, manifest, stf, questions } = this.props
   ) {
     return (
       <section>

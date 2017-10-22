@@ -2,20 +2,23 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
+import { makeManifestByID } from '../../../../../selectors'
+
 import { Row, Col, Spin, Alert, Collapse } from 'antd'
 const Panel = Collapse.Panel
 
 @connect(
     //  Might seem counterintuitive, but we're connecting to a manifest and pulling its proposal data.
-    (state, props) => ({
-      body: state.db.manifests
-        .find(manifest => manifest._id === props.id).proposal.body || {},
-      isLegacy: state.db.manifests
-        .find(manifest => manifest._id === props.id).proposal.body.legacy.length > 0,
-      manifest: state.db.manifests
-        .find(manifest => manifest._id === props.id) || {},
-      screen: state.screen
-    })
+    (state, props) => {
+      const manifest = makeManifestByID(props.id)(state)
+      const { proposal: { body } } = manifest
+      return {
+        manifest,
+        body,
+        isLegacy: body.legacy.length > 0,
+        screen: state.screen
+      }
+    }
 )
 class Summary extends React.Component {
   static propTypes = {

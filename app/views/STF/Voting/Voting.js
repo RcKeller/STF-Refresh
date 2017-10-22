@@ -20,13 +20,6 @@ import styles from './Voting.css'
   connect(
     state => ({
       docket: manifestsOnDocket(state)
-      // docket: Array.isArray(state.db.manifests)
-      //   ? state.db.manifests
-      //     .filter(budget => {
-      //       let { docket } = budget
-      //       if (docket) return docket.metrics || docket.voting || docket.decisions
-      //     })
-      //   : []
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
 ),

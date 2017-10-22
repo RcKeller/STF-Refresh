@@ -2,6 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
+import { makeManifestByID } from '../../../../../selectors'
+
 import { Spin, Row, Col, Switch, Progress, Table } from 'antd'
 
 const columns = [
@@ -10,11 +12,13 @@ const columns = [
 ]
 
 @ connect(
-    (state, props) => ({
-      manifest: state.db.manifests
-        .find(manifest => manifest._id === props.id),
-      user: state.user
-    })
+    (state, props) => {
+      const manifest = makeManifestByID(props.id)(state)
+      return {
+        manifest,
+        user: state.user
+      }
+    }
 )
 class Scores extends React.Component {
   static propTypes = {

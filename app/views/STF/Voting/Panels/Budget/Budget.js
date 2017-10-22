@@ -2,11 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-// const currency = number =>
-//   number.toLocaleString('en-US', {
-//     style: 'currency',
-//     currency: 'USD'
-//   })
+import { makeManifestByID } from '../../../../../selectors'
+
 const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
 import { Spin, Table, Tooltip } from 'antd'
@@ -51,13 +48,13 @@ const expandedRowRender = record => record.description
 
 @connect(
     //  Might seem counterintuitive, but we're connecting to a manifest and pulling its proposal data.
-    (state, props) => ({
-      manifest: state.db.manifests
-        .find(manifest => manifest._id === props.id) || {},
-      items: state.db.manifests
-        .find(manifest => manifest._id === props.id).items || [],
-      screen: state.screen
-    })
+    (state, props) => {
+      const manifest = makeManifestByID(props.id)(state)
+      return {
+        manifest,
+        screen: state.screen
+      }
+    }
 )
 class Budget extends React.Component {
   static propTypes = {
@@ -68,8 +65,8 @@ class Budget extends React.Component {
   render (
     { screen, manifest } = this.props
   ) {
-    const footer = () => <span><h2>{`Grand Total: ${currency(manifest.total || 0)}`}</h2><h6>Tax Included in Calculation</h6></span>
-    const { type, title, body, items } = manifest
+    const { type, title, body, items, total } = manifest
+    const footer = () => <span><h2>{`Grand Total: ${currency(total || 0)}`}</h2><h6>Tax Included in Calculation</h6></span>
     return (
       <div>
         {manifest
