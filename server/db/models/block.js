@@ -1,6 +1,5 @@
 import mongoose from 'mongoose'
 import autoref from 'mongoose-autorefs'
-import autopopulate from 'mongoose-autopopulate'
 import faker from 'faker'
 
 const BlockSchema = new mongoose.Schema({
@@ -9,38 +8,60 @@ const BlockSchema = new mongoose.Schema({
   might be a good field to fill manually, prevents namespace issues later.
   */
   date: { type: Date, default: Date.now },
-  year: { type: Number, required: true },
-  number: { type: Number, required: true },
-  //  Overall data, probably renders everywhere.
-  title: { type: String, unique: true, required: true },
-  category: { type: String, required: true },
-  uac: { type: Boolean, default: false }, // UAC === uniform access / tri-campus.
-  organization: { type: String, required: true }, // === department in legacy code
-  // Contacts - array of objects, can iterate over via client with Object.keys().forEach(k, i) {}
-  contacts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Contact', autopopulate: true }],
-  status: { type: String, default: 'In Review' },
+  year: Number,
+  number: Number,
+  published: { type: Boolean, default: false },
+
+  title: String,
+  category: String,
+  organization: String,
+
+  status: { type: String, default: 'Approved' },
+  // "Estimated Yearly Ask"
   asked: Number,
   received: Number,
+
+  contacts: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Contact' }],
   /*
   Body contains the business case/details, de-coupled from the core doc so that searching proposals is more efficient.
   While it has its similarities, this is decoupled because Blocks are distinct entities we don't want associated with standard proposals. Coupling their subdocuments introduces undue complexity to the query process.
   (as of today, we've only funded 3 blocks).
   */
   body: {
+    //  "Block Induction Invitation"
+    invitation: String,
     overview: {
-      abstract: { type: String, required: true },
-      objectives: [{ type: String, required: true }]
+      history: String,
+      //  "Vision Statement"
+      vision: String,
+      goals: String
     },
+    //  Business Plan
     plan: {
-      state: { type: String, required: true },
-      strategy: { type: String, required: true },
-      risk: { type: String, required: true }
+      //  "Structure"
+      structure: String,
+      //  "Services Provided"
+      services: String,
+      //  "Accessibility & Usage"
+      accessibility: String
+    },
+    funding: {
+      //  "Justification"
+      budget: String,
+      //  "Scope of Funding"
+      scope: String,
+      //  "External Support"
+      external: String
+    },
+    reliability: {
+      //  "Turnover Plan"
+      risks: String,
+      //  "Contingency Plan"
+      mitigations: String
     }
   }
-  //  Proposal status, differs from decisions in that this is "summary" data for table viewing.
 })
 BlockSchema.plugin(autoref, ['contacts.block'])
-BlockSchema.plugin(autopopulate)
 const Block = mongoose.model('Block', BlockSchema)
 export default Block
 
@@ -63,30 +84,39 @@ const dummyBlocks = (min, ids) => {
           number: faker.random.number(),
           title: faker.company.catchPhrase(),
           category: faker.name.jobArea(),
-          uac: faker.random.boolean(),
           organization: faker.commerce.department(),
+          status: faker.company.bsAdjective(),
+          asked: faker.random.number(),
+          received: faker.random.number(),
           contacts: [
             ids.contact[i],
             ids.contact[i]
             //  Note: duplicates
           ],
           body: {
+            invitation: faker.lorem.paragraph(),
             overview: {
-              abstract: faker.lorem.paragraph(),
-              objectives: [
-                faker.lorem.sentence(),
-                faker.lorem.sentence()
-              ]
+              history: faker.lorem.paragraph(),
+              vision: faker.lorem.paragraph(),
+              goals: faker.lorem.paragraph()
             },
             plan: {
-              state: faker.lorem.paragraph(),
-              strategy: faker.lorem.paragraph(),
-              risk: faker.lorem.paragraph()
+              structure: faker.lorem.paragraph(),
+              services: faker.lorem.paragraph(),
+              accessibility: faker.lorem.paragraph()
+            },
+            funding: {
+              budget: faker.lorem.paragraph(),
+              scope: faker.lorem.paragraph(),
+              external: faker.lorem.paragraph()
+            },
+            reliability: {
+              risks: faker.lorem.paragraph(),
+              mitigations: faker.lorem.paragraph()
             }
-          },
-          status: faker.company.bsAdjective(),
-          asked: faker.random.number(),
-          received: faker.random.number()
+          }
+          // faker.lorem.sentence()
+          // risk: faker.lorem.paragraph()
         })
       }
         //  Create will push our fakes into the DB.

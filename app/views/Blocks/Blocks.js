@@ -29,7 +29,10 @@ const columns = [
     blocks: state.db.blocks,
     screen: state.screen
   })),
-  connectRequest(() => api.get('blocks'))
+  connectRequest(() => api.get('blocks', {
+    select: ['year', 'number', 'title', 'organization', 'status'],
+    populate: [{ path: 'contacts', select: 'netID' }]
+  }))
 )
 class Blocks extends React.Component {
   static propTypes = {
