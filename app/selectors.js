@@ -146,10 +146,11 @@ export const manifestsByProposal = ({ db }) => {
   ? db.manifests.filter(m => m.proposal).sort(sortManifestsByProposal)
   : []
 }
-export const manifestsOnDocket = createSelector(
-  [manifestsByProposal],
-  (manifests) => manifests.filter(({docket}) => docket.metrics || docket.voting || docket.decisions)
-)
+//  NOTE: This selector isn't in use, because a mongo query was vastly more efficient.
+// export const manifestsOnDocket = createSelector(
+//   [manifestsByProposal],
+//   (manifests) => manifests.filter(({docket}) => docket.metrics || docket.voting || docket.decisions)
+// )
 
 //  PRIVATE SELECTOR - construct one per component
 //  const manifestByID = makeManifestByID()

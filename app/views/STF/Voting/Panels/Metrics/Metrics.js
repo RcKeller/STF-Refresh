@@ -38,7 +38,7 @@ class SliderAndNumber extends React.Component {
     (state, props) => {
       const manifest = makeManifestByID(props.id)(state)
       const review = makeManifestReview(manifest)(state)
-      const { docket, proposal, reviews } = manifest
+      const { docket, proposal } = manifest
       return {
         review,
         manifest: manifest._id,

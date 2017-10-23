@@ -1,14 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
-import _ from 'lodash'
 
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
-import { manifestsOnDocket } from '../../../selectors'
+// import { manifestsOnDocket } from '../../../selectors'
 
 import { Spin, Tabs, Alert, Button, Tooltip } from 'antd'
 const TabPane = Tabs.TabPane
@@ -18,20 +17,24 @@ import Panels from './Panels/Panels'
 import styles from './Voting.css'
 @compose(
   connect(
-    state => ({
-      docket: manifestsOnDocket(state)
-    }),
+    state => ({ docket: state.db.manifests || [] }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
 ),
   connectRequest(() => api.get('manifests', {
+    query: {
+      //  NOTE: I found out by trial/error that mongo will allow or conditions with dot notation.
+      //  https://docs.mongodb.com/manual/reference/operator/query/or/
+      $or: [
+        { 'docket.metrics': true },
+        { 'docket.voting': true },
+        { 'docket.decisions': true }
+      ]
+    },
     populate: [
       'items',
       'decision',
-      // 'reviews',
-      // { path: 'decision', populate: { path: 'author', populate: ['stf'] } },
       { path: 'reviews', populate: { path: 'author', populate: ['stf'] } },
-      { path: 'proposal', populate: { path: 'body' } },
-      { path: 'proposal', populate: { path: 'contacts' } }
+      { path: 'proposal', populate: { path: 'body' } }
     ],
     force: true
   }))
