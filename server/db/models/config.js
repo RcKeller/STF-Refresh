@@ -6,6 +6,8 @@ import faker from 'faker'
 */
 const ConfigSchema = new mongoose.Schema({
   //  Submissions: Open or closed (default to open)
+  year: { type: Number, default: 2018 },
+  quarter: { type: String, default: 'Autumn' },
   submissions: { type: Boolean, default: true },
   //  Stage: Where we are on the frontpage timeline (voting, deliberation, etc)
   news: {

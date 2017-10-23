@@ -8,26 +8,39 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
+import { manifestsByProposal, sortManifestsByProposal } from '../../../selectors'
 
 import { Link } from 'react-router'
-import { Spin, Table, Switch, message } from 'antd'
+import { Spin, Table, Checkbox, Badge, message } from 'antd'
+
+//  Status indicator mapping for badge components
+const indicators = {
+  'Submitted': 'default',
+  'Funded': 'success',
+  'Partially Funded': 'warning',
+  'In Review': 'warning',
+  'Awaiting Decision': 'warning',
+  'Denied': 'error',
+  'Draft': 'error',
+  'Withdrawn': 'error'
+}
 
 import styles from './Docket.css'
 
 @compose(
   connect(
     state => ({
-      manifests: state.db.manifests,
+      manifests: manifestsByProposal(state),
       screen: state.screen
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
 ),
   connectRequest(() => api.get('manifests', {
-
-    //  BUG: Unpublished proposals can be pulled in docket creation.
-    // where: { 'docket': true },
-    join: ['proposal']  //  Every manifest has a proposal, no need to check existence.
-    //  TODO: Add docket: { metrics, voting } to manifest schema. No need to make a schema for voting only, it would only have two bools and a ref.
+    select: ['type', 'proposal', 'docket', 'decision'],
+    populate: [
+      { path: 'proposal', select: ['title', 'year', 'number', 'status'] },
+      { path: 'decision', select: ['approved'] }
+    ]
   }))
 )
 class Docket extends React.Component {
@@ -40,30 +53,60 @@ class Docket extends React.Component {
     super(props)
     this.columns = [{
       title: 'ID',
-      dataIndex: 'number',
-      key: 'number',
-      sorter: (a, b) => (a.proposal.year * a.proposal.number) - (b.proposal.year * b.proposal.number),
-      render: (text, record) => <Link to={`/proposals/${record.proposal.year}/${record.proposal.number}`}>{`${record.proposal.year}-${record.proposal.number}`}</Link>,
+      dataIndex: 'proposal.number',
+      key: 'proposal.number',
+      sorter: sortManifestsByProposal,
+      render: (text, record) => {
+        return text
+          ? <span>{`${record.proposal.year}-${record.proposal.number}`}</span>
+          : <span>N/A</span>
+      },
       width: 90
     },
     {
       title: 'Title',
       dataIndex: 'proposal.title',
       key: 'proposal.title',
-      render: (text, record) => <Link to={`/proposals/${record.proposal.year}/${record.proposal.number}`}>{text}</Link>
+      // render: (text, record) => <Link to={`/proposals/${record.proposal.year}/${record.proposal.number}`}>{text}</Link>,
+      render: (text = 'Untitled Proposal', record) => {
+        return record.proposal
+          ? <span>
+            <Link to={`/proposals/${record.proposal.year}/${record.proposal.number}`}>{text}</Link>
+            <br />
+            <Badge status={indicators[record.proposal.status] || 'default'} text={record.proposal.status.toString()} />
+          </span>
+          : <span>
+            <span>{text}</span>
+            <br />
+            <Badge status='error' text='Unknown' />
+          </span>
+      },
+      filters: [
+        { text: 'In Review', value: 'In Review' },
+        { text: 'Funded', value: 'Funded' },
+        { text: 'Partially Funded', value: 'Partially Funded' },
+        { text: 'Denied', value: 'Denied' }
+      ],
+      onFilter: (value, record) => {
+        const { proposal } = record
+        return proposal && proposal.status.includes(value)
+      }
     },
     {
-      title: 'Motion',
+      title: 'Type',
       dataIndex: 'type',
       key: 'type',
-      render: (text) => <span>{_.capitalize(text)}</span>,
+      // render: (text, record) => <Link to={`/proposals/${record.proposal.year}/${record.proposal.number}`}>{text}</Link>,
+      render: (text, record) => <span>{_.capitalize(text)}</span>,
       filters: [
-        { text: 'Original Proposal', value: 'original' },
-        { text: 'Supplemental Award', value: 'supplemental' },
-        { text: 'Partial Funding', value: 'partial' }
+        { text: 'Original Budget', value: 'original' },
+        { text: 'Supplemental Request', value: 'supplemental' },
+        { text: 'Partial / Alternates', value: 'partial' }
       ],
-      onFilter: (value, record) => record.type === value,
-      // onFilter: (value, record) => record.type.includes(value),
+      onFilter: (value, record) => {
+        const { type } = record
+        return type.includes(value)
+      },
       width: 120
     },
     {
@@ -73,19 +116,20 @@ class Docket extends React.Component {
       render: (text, record, index) => (
         //  Only original proposals have metrics taken (otherwise it's redundant)
         <div>
-          <Switch
-            disabled={record.type !== 'original'}
-            checked={text.metrics}
-            checkedChildren='Metrics' unCheckedChildren='Metrics'
-            onChange={metrics => this.handleToggle({ metrics }, record, index)} />
-          <Switch
+          {record.type === 'original' &&
+            <Checkbox
+              checked={text.metrics}
+              onChange={e => this.handleToggle({ metrics: e.target.checked }, record, index)}
+            >Metrics</Checkbox>
+          }
+          <Checkbox
             checked={text.voting}
-            checkedChildren='Voting' unCheckedChildren='Voting'
-            onChange={voting => this.handleToggle({ voting }, record, index)} />
-          <Switch
+            onChange={e => this.handleToggle({ voting: e.target.checked }, record, index)}
+          >Voting</Checkbox>
+          <Checkbox
             checked={text.decisions}
-            checkedChildren='Decision' unCheckedChildren='Decision'
-            onChange={decisions => this.handleToggle({ decisions }, record, index)} />
+            onChange={e => this.handleToggle({ decisions: e.target.checked }, record, index)}
+          >Decisions</Checkbox>
         </div>
       ),
       filters: [
@@ -94,7 +138,7 @@ class Docket extends React.Component {
         { text: 'Decision', value: 'decisions' }
       ],
       onFilter: (value, record) => record.docket[value],
-      width: 150
+      width: 120
     }]
   }
   handleToggle = (change, record, index) => {

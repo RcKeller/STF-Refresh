@@ -230,11 +230,6 @@ body {
   margin-left: -1px;
 }
 
-//  Break words in table cells.
-.ant-table-thead > tr > th, .ant-table-tbody > tr > td {
-  word-break: break-word;
-}
-
 //  Fix badge alignment
 .ant-badge-count p {
   color: #FFF !important;
@@ -249,9 +244,23 @@ body {
   left: 16px;
 }
 
+//  Break words in table cells.
+.ant-table-thead > tr > th, .ant-table-tbody > tr > td {
+  word-break: break-word;
+}
+.ant-table-tbody > tr > td {
+  padding: 4px !important;
+}
+.ant-table-footer {
+  padding: 0 !important;
+}
 //  Presentation tables (antd)
 .ant-table-thead > tr > th {
   font-weight: 600;
+}
+.ant-table-expand-icon-th, .ant-table-row-expand-icon-cell {
+  min-width: 24px;
+  width: 24px;
 }
 
 //  Editable tables

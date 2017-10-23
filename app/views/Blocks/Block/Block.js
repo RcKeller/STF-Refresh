@@ -17,8 +17,8 @@ import styles from './Block.css'
 @compose(
   connect((state, props) => ({ block: state.db.block })),
   connectRequest(props => api.get('block', {
-    where: { number: props.params.number },
-    join: ['contacts', 'decision']
+    query: { number: props.params.number },
+    populate: ['contacts', 'decision']
   }))
 )
 class Block extends React.Component {

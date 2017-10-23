@@ -30,7 +30,7 @@ const ProposalSchema = new mongoose.Schema({
   // organization === department in legacy code. This is more inclusive.
   organization: String,
   //  Proposal status, differs from decisions in that this is "summary" data for table viewing.
-  status: { type: String, default: 'In Review' },
+  status: { type: String, default: 'Draft' },
   asked: Number,
   received: Number,
   // Contacts - array of objects, can iterate over via client with Object.keys().forEach(k, i) {}

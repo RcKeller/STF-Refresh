@@ -44,7 +44,7 @@ const columns = [{
       proposal: state.db.proposal._id,
       //  Use the most recent report (target document) and recent manifest (initial data)
       manifest: state.db.proposal.manifests[props.indexInStore],
-      report: state.db.proposal.manifests[props.indexInStore].report,
+      report: state.db.proposal.manifests[props.indexInStore].report || {},
       user: state.user._id
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
@@ -53,6 +53,7 @@ const columns = [{
 )
 class Report extends React.Component {
   static propTypes = {
+    indexInStore: PropTypes.number,
     awardNumber: PropTypes.number,  //  used as the manifest index in store for this report.
     form: PropTypes.object,
     api: PropTypes.object,
@@ -70,30 +71,37 @@ class Report extends React.Component {
     form.validateFields()
   }
   handleSubmit = (items, total) => {
-    let { form, api, proposal, manifest, user } = this.props
+    let { form, api, proposal, indexInStore,
+      user: author,
+      manifest: { _id: manifest }
+    } = this.props
     //  Verify that the budget number (and hopefully other data) is there, add it to what we know.
     form.validateFields((err, values) => {
       if (!err) {
         items = items.map((item) => _.omit(item, ['_id', '__v']))
-        let report = { proposal, manifest: manifest._id, author: user, items, total }
-        //  Hydrate the report with form data
-        report = Object.assign(report, values)
-        // const transform = res => ({ proposal: res })
-        // const update = { proposal: (prev, next) => {
-        //   let newData = Object.assign({}, prev)
-        //   let indexOfManifest = newData.manifests.findIndex(m => m._id === report.manifest)
-        //   if (indexOfManifest >= 0) {
-        //     newData.manifests[indexOfManifest].report =
-        //       Object.assign(next, report)
-        //   }
-        //   return newData
-        // }}
-        this.props.report
-        ? api.patch('report', report, { id: this.props.report._id })
-        : api.post('report', report)
+        let report = { proposal, manifest, author, items, total, ...values }
+        const { _id: id } = this.props.report
+        const params = {
+          id,
+          populate: ['items'],
+          transform: proposal => ({ proposal }),
+          update: ({ proposal: (prev, next) => {
+            let change = Object.assign({}, prev)
+            change.manifests[indexInStore].report = next
+            return change
+          }})
+        }
+        params.id
+        ? api.patch('report', report, params)
         .then(message.success('Report updated!'))
         .catch(err => {
           message.warning('Report failed to update - Unexpected client error')
+          console.warn(err)
+        })
+        : api.post('report', report, params)
+        .then(message.success('Report created!'))
+        .catch(err => {
+          message.warning('Report failed to post - Unexpected client error')
           console.warn(err)
         })
       } else {
@@ -101,9 +109,6 @@ class Report extends React.Component {
       }
     })
   }
-  //  NOTE: Good for testing:
-  //  http://localhost:3000/proposals/2017/39061
-  //  http://localhost:3000/proposals/2017/94939
 
   render ({ form, awardNumber, manifest, report } = this.props) {
     //  Use the associated manifest for initial data if report has not been created.
@@ -117,6 +122,30 @@ class Report extends React.Component {
     return (
       <section>
         <h1>Expense Reporting</h1>
+        <h6>Record your expenditures - it's mandatory.</h6>
+        <p>To help the Office of Planning & Budgeting, we ask that you report the expenditures associated with any awards you may have received. OP&B uses this for accounting purposes. Some key elements to point out include:</p>
+        <p>
+          <ul style={{
+            listStyleType: 'circle',
+            listStylePosition: 'inside'
+          }}>
+            <li>
+              <b>Budget Code:</b> Not to be confused with your organization's budget number, this represents the charge line/cost center you use for your expenses.
+            </li>
+            <li>
+              <b>Summary:</b> A one to two line explaination of your purchase status, e.g. "All items purchased from Costco".
+            </li>
+            <li>
+              <b>Details:</b> Here's your chance to explain any discrepancies, such as buying different items (which is unsanctioned if not related to the proposal), changes in pricing, underexpenditures, etc.
+            </li>
+            <li>
+              <b>Vendors:</b> We collect information about your point-of-purchase (OfficeMax, U-Line, etc) to inform UW's supply partnerships.
+            </li>
+          </ul>
+        </p>
+        <p>
+          If you have any questions, please reach out to the operations manager at <a href='mailto:techfee@uw.edu'>techfee@uw.edu</a>.
+        </p>
         <FormItem label='Budget Number' {...layout} hasFeedback={feedback(form, 'budget')} help={help(form, 'budget')} >
           {form.getFieldDecorator('budget', rules.required)(
             <Input />

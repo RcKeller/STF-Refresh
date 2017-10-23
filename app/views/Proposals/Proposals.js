@@ -11,7 +11,7 @@ import { connectRequest } from 'redux-query'
 import api from '../../services'
 
 import { Link } from 'react-router'
-import { Spin, Table, Progress, Badge, Input, Icon } from 'antd'
+import { Spin, Table, Progress, Badge, Input, Icon, Alert } from 'antd'
 
 //  Status indicator mapping for badge components
 const indicators = {
@@ -30,29 +30,29 @@ const currency = number => `$${Number.parseInt(number).toLocaleString('en-US')}`
 //  Import modular CSS. Needs to run through JS because styles are hashed.
 import styles from './Proposals.css'
 //  This is a decorator, a function that wraps another class (which in JS is essentially a func)
-import { sortProposals, publishedProposals, myProposals, myDrafts } from '../../selectors'
+import { sortProposals, publishedProposals, myProposals } from '../../selectors'
 @compose(
   connect((state, props) => ({
     proposals: publishedProposals(state),
     myProposals: myProposals(state),
-    myDrafts: myDrafts(state),
-    enums: state.config && state.config.enums,
+    enums: state.config.enums,
+    submissions: state.config.submissions,
     screen: state.screen,
     user: state.user
   })),
   //  If not logged in, query for only published proposals (performance)
   connectRequest(({user}) =>
-      user._id
-        ? api.get('proposals', { join: [ 'contacts' ] })
-        : api.get('proposals', { where: { published: true }, join: [ 'contacts' ] })
+      user.netID
+        ? api.get('proposals', {
+          populate: [{ path: 'contacts', select: 'netID' }]
+        })
+        : api.get('proposals', {
+          query: { published: true },
+          populate: [{ path: 'contacts', select: 'netID' }]
+        })
   )
 )
-class // Compose is a redux utility that runs an array of functions:
-//  Connect component to cached DB entities
-//  Execute necessary AJAX to load said entities
-// where: { published: true }
-// connectRequest((props) => api.getAll('proposals'))
-Proposals extends React.Component {
+class Proposals extends React.Component {
   static propTypes = {
     proposals: PropTypes.array,
     screen: PropTypes.object,
@@ -103,7 +103,7 @@ Proposals extends React.Component {
   }
   //  Shorthand assignment of variables when defining render
   render (
-    { enums, screen, myProposals, myDrafts } = this.props,
+    { enums, screen, myProposals, myDrafts, submissions } = this.props,
     //  Proposals go through state since we filter
     { proposals } = this.state
   ) {
@@ -218,7 +218,7 @@ Proposals extends React.Component {
         width: 100
       },
       {
-        title: 'Awarded',
+        title: 'Award',
         dataIndex: 'received',
         key: 'received',
         render: (text, record) =>
@@ -229,7 +229,9 @@ Proposals extends React.Component {
                 ? <Progress type='circle' width={70}
                   status='exception'
                   percent={0} />
-                : <em>N/A</em>,
+                : <Progress type='circle' width={70}
+                  format={() => <Icon type='ellipsis' />}
+                  percent={0} />,
         sorter: (a, b) =>
           a.received
             ? (a.received || 0) / (a.asked || 1) -
@@ -238,46 +240,6 @@ Proposals extends React.Component {
         width: 110
       }
     ]
-    const title = () => (
-      <div>
-        {(myProposals && myProposals.length > 0) &&
-          <div>
-            <h6>Your Proposals</h6>
-            <ul>
-              {myProposals.map((p, i) => (
-                <li key={p._id}>
-                  <Badge status={indicators[p.status] || 'default'}
-                    text={
-                      <Link to={`/proposals/${p.year}/${p.number}`}>
-                        {`${p.year}-${p.number}: ${p.title}`}
-                      </Link>
-                      }
-                  />
-                </li>
-                ))}
-            </ul>
-          </div>
-        }
-        {(myDrafts && myDrafts.length > 0) &&
-          <div>
-            <h6>Pending Drafts</h6>
-            <ul>
-              {myDrafts.map((p, i) => (
-                <li key={p._id}>
-                  <Badge status='error'
-                    text={
-                      <Link to={`/edit/${p._id}`}>
-                        {`${p._id}: ${p.title || 'Untitled Draft'}`}
-                      </Link>
-                    }
-                  />
-                </li>
-                ))}
-            </ul>
-          </div>
-        }
-      </div>
-    )
     if (screen.lessThan.large && !screen.lessThan.medium) {
       columns = [...columns.slice(0, 3), ...columns.slice(6)]
     } else if (screen.lessThan.medium) {
@@ -285,26 +247,49 @@ Proposals extends React.Component {
     }
     return (
       <article className={styles['article']}>
+        <Helmet title='Proposals' />
         <h1>STF Proposals</h1>
         <p>
           All STF proposals from the past 2 years can be viewed here.
         </p>
-        <h5>
-          <em>Any campus department or org can submit a proposal with a budget code. <Link to='/create'>
-            Click Here!</Link></em>
-        </h5>
-        <Helmet title='Proposals' />
+        {(myProposals && myProposals.length > 0) &&
+          <Alert type='info' showIcon={false} banner
+            style={{ padding: 8 }}
+            message='Your Proposals'
+            description={<ul>
+              {myProposals.map((p, i) => (
+                <li key={p._id}>
+                  {p.published
+                   ? <Badge status={indicators[p.status] || 'default'}
+                     text={<Link to={`/proposals/${p.year}/${p.number}`}>
+                       {`${p.year}-${p.number}: ${p.title}`}
+                     </Link>}
+                  />
+                  : <Badge status='error'
+                    text={<Link to={`/edit/${p._id}`}>
+                      {`Draft ${p._id}: ${p.title || 'Untitled'}`}
+                    </Link>}
+                  />
+                }
+                </li>
+              ))}
+            </ul>}
+          />
+        }
         {!proposals
-            ? <Spin size='large' tip='Loading...' />
-            : <Table
-              rowKey={record => record._id}
-              dataSource={proposals}
-              sort
-              size={screen.lessThan.medium ? 'small' : 'middle'}
-              columns={columns}
-              title={title}
-            />
-          }
+          ? <Spin size='large' tip='Loading...' />
+          : <Table
+            rowKey={record => record._id}
+            dataSource={proposals}
+            sort
+            size={screen.lessThan.medium ? 'small' : 'middle'}
+            columns={columns}
+            footer={submissions
+              ? () => <Alert type='warning' banner message={<em>Any campus department or org can submit a proposal with a budget code. <b><Link to='/create'>Click Here!</Link></b></em>} />
+              : () => <Alert type='warning' banner message={<em>Proposal submissions for the quarter are closed, but we encourage you to visit and endorse proposals in review!</em>} />
+            }
+          />
+        }
       </article>
     )
   }

@@ -1,4 +1,18 @@
 # TODO list
+
+## Restify migration
+- Populate Children on returns
+Decisions: Update proposal received amount & status
+Report - same item issue as manifests. Test this
+Proposals: Assign year/number upon publication and announce
+Logout route:
+logout (req, res) {
+  req.logout()
+  res.sendStatus(200)
+}
+
+
+
 DONE: Close nav on navigation events
 Fix top bar flexbox/responsiveness.
 Add search for docket

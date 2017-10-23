@@ -3,47 +3,28 @@ import PropTypes from 'prop-types'
 
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { connectRequest, mutateAsync } from 'redux-query'
+import { connectRequest } from 'redux-query'
 
 import api from '../../../../services'
 
-import { Spin, Table, Switch, AutoComplete, Tooltip } from 'antd'
+import { usersOnCommittee, usersNotOnCommittee } from '../../../../selectors'
+
+import { Spin, Table, Checkbox, AutoComplete, Tooltip, message } from 'antd'
 const Option = AutoComplete.Option
 
-const addAuth = (body, update) => mutateAsync({
-  url: `${api.endpoint}/stf/`,
-  options: { method: 'POST' },
-  transform: res => ({ users: res }),
-  body,
-  update
-})
-const toggle = (id, body, update) => mutateAsync({
-  url: `${api.endpoint}/stf/${id}`,
-  options: { method: 'PATCH' },
-  transform: res => ({ users: res }),
-  body,
-  update
-})
-
-const filterOption = (inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+const filterOption = (inputValue, option) =>
+  option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
 
 @compose(
   connect(
     //  Committee members vs. potential members to add.
     state => ({
-      committee: Array.isArray(state.db.users)
-      ? state.db.users.filter(user => typeof user.stf === 'object')
-      : [],
-      users: Array.isArray(state.db.users)
-        ? state.db.users.filter(user => !user.stf)
-        : []
+      committee: usersOnCommittee(state),
+      users: usersNotOnCommittee(state)
     }),
-    //  NOTE: Bind custom mutators to deal with plurality constraints for the 'stf' controller.
-    dispatch => ({
-      api: bindActionCreators({toggle, addAuth, ...api}, dispatch)
-    })
+    dispatch => ({ api: bindActionCreators(api, dispatch) })
 ),
-  connectRequest(() => api.get('users'))
+  connectRequest(() => api.get('users', { populate: ['stf'] }))
 )
 class Membership extends React.Component {
   constructor (props) {
@@ -64,18 +45,18 @@ class Membership extends React.Component {
       key: 'stf',
       render: (text, record, index) => (
         <div>
-          <Switch
-            checked={text && text.spectator}
-            checkedChildren='Ex-Officio' unCheckedChildren='Ex-Officio'
-            onChange={spectator => this.handleToggle({ spectator }, record, index)} />
-          <Switch
-            checked={text && text.member}
-            checkedChildren='Member' unCheckedChildren='Member'
-            onChange={member => this.handleToggle({ member }, record, index)} />
-          <Switch
-            checked={text && text.admin}
-            checkedChildren='Admin' unCheckedChildren='Admin'
-            onChange={admin => this.handleToggle({ admin }, record, index)} />
+          <Checkbox
+            checked={text.spectator}
+            onChange={e => this.handleToggle({ spectator: e.target.checked }, record, index)}
+          >Ex-Officio</Checkbox>
+          <Checkbox
+            checked={text.member}
+            onChange={e => this.handleToggle({ member: e.target.checked }, record, index)}
+          >Member</Checkbox>
+          <Checkbox
+            checked={text.admin}
+            onChange={e => this.handleToggle({ admin: e.target.checked }, record, index)}
+          >Admin</Checkbox>
         </div>
       ),
       filters: [
@@ -103,16 +84,26 @@ class Membership extends React.Component {
     }}
     api.addAuth(body, update)
   }
-  handleToggle = (change, record, index) => {
-    //  Assign the change to a body, send it to the server.
+  handleToggle = (value, record, index) => {
     const { api } = this.props
-    const body = Object.assign(record.stf, change)
-    const id = body._id
-    // // Update the record at the table's index
-    const update = { users: (prev, next) => {
-      return prev
-    }}
-    api.toggle(id, body, update)
+    const { _id: id, spectator, member, admin } = record.stf
+    const permissions = { spectator, member, admin, ...value }
+    const params = {
+      id,
+      transform: (users) => ({ users }),
+      update: { users: (prev, next) => {
+        let update = prev.slice()
+        let index = update.findIndex(u => u.stf && u.stf._id === id)
+        if (index >= 0) update[index].stf = next
+        return update
+      }}
+    }
+    api.patch('stf', permissions, params)
+    .then(message.success('Updated user', 10))
+    .catch(err => {
+      message.warning(`Failed to update - client error`)
+      console.warn(err)
+    })
   }
   render (
     { columns } = this,

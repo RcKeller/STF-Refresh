@@ -23,7 +23,8 @@ const ReportSchema = new mongoose.Schema({
   title: String,
   body: String,
   items: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item', autopopulate: true }],
-  total: { type: Number, required: true, default: 0 }
+  total: { type: Number, required: true, default: 0 },
+  published: { type: Boolean, default: false }
 })
 ReportSchema.plugin(autoref, [
   'proposal.reports',

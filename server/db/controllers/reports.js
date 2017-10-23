@@ -1,82 +1,107 @@
-import REST from './rest'
-import { Report, Item, Manifest } from '../models'
+import REST from './restify'
+import { Report, Item } from '../models'
 import mongoose from 'mongoose'
-import _ from 'lodash'
 
-import { Slack } from '../../integrations'
+// import { Slack } from '../../integrations'
 
 export default class Reports extends REST {
   constructor () {
-    super(Report, '_id')
-  }
-  /* *****
-    POST: Add a model
-    Modified to insertMany(<items>)
-  ***** */
-  post (data, query) {
-    //  Omit subdocs, create the parent, then patch it in order to create items
-    let { items } = data
-    let report = _.omit(data, ['_v', 'items'])
-    return this.model.create(report)
-    .then(modelInstance => this.patch(modelInstance._id, { items }, query))
-  }
-
-  /* *****
-    PATCH: Update a model
-    (also known as PUT in other REST api specs)
-    Modified to insertMany(<items>)
-  ***** */
-  patch (id, data, query) {
-    //  https://codexample.org/questions/306428/mongodb-mongoose-subdocuments-created-twice.c
-    //  https://github.com/linnovate/mean/issues/511
-    //  BUG: Fails when trying to patch other data. Solution - call super() if there aren't any items?
-    if (!data.items) {
-      return super.patch(id, data, query)
-    } else {
-      /*
-      We're using findOneAndUpdate with upsertion (creation of documents if null is returned)
-      HOWEVER, this does not automatically create a new objectID. So we do that part.
-      We'll also keep track of refs so we can update the parent.
-      Related:
-      https://stackoverflow.com/questions/17244363/mongoose-findoneandupdate-upsert-id-null
-      https://stackoverflow.com/questions/39761771/mongoose-findbyidandupdate-doesnt-generate-id-on-insert
-      https://medium.skyrocketdev.com/es6-to-the-rescue-c832c286d28f
-      */
-      //  Keep track of item refs to update report.
-      let { items } = data
-      let itemRefs = []
-      for (let item of items) {
-        item = _.omit(item, ['__v'])
-        item.report = id
-        let _id = item._id ? item._id : new mongoose.Types.ObjectId()
-        Item.findOneAndUpdate({ _id }, item, { upsert: true, setDefaultsOnInsert: true, new: true })
-        .exec((err, doc) => {
-          if (!err && doc) itemRefs.push(doc._id)
-        })
-      }
-      let model = this.model.findOne({ [this.key]: id })
-      return model
-       .then((modelInstance) => {
-         for (var attribute in data) {
-           if (data.hasOwnProperty(attribute) && attribute !== this.key && attribute !== '_id') {
-             modelInstance[attribute] = data[attribute]
-           }
-         }
-         // Update the report with the new child refs. Replace the entire thing to handle deleted records.
-         modelInstance.items = itemRefs
-         // Check for overexpenditure here
-         if (!Number.isNaN(data.total) && data.manifest) {
-           Manifest
-            .findById(data.manifest)
-            .populate('proposal')
-            .exec()
-            .then(manifest => {
-              if (data.total > manifest.total) Slack.announceOverexpenditure(data, manifest)
-            })
-         }
-         return modelInstance.save()
-       })
-       .then(modelInstance => modelInstance)
+    super(Report)
+    this.middleware = {
+      ...this.config,
+      preCreate: preCreateOrUpdate,
+      preUpdate: preCreateOrUpdate,
+      postCreate: postCreate,
+      postUpdate: postUpdate
     }
   }
 }
+/*
+BUG: Found the cause of the bug
+Mongoose will not be able to patch embedded arrays
+https://github.com/Automattic/mongoose/issues/1204
+https://stackoverflow.com/questions/24618584/mongoose-save-not-updating-value-in-an-array-in-database-document
+https://stackoverflow.com/questions/33557086/mongoose-not-saving-embedded-object-array
+*/
+/*
+MIDDLEWARE
+*/
+async function preCreateOrUpdate (req, res, next) {
+  let { body } = req
+  if (body.items) {
+    body.total = getTotal(body)
+    body.items = await saveItems(body)
+    //  BUGFIX: For PUT/PATCH, mongoose fails to save arrays of refs (they resolve as null).
+    //  We carry ref arrays in temp vars and Object.assign after a manual patch.
+    req.erm.bugfixrefs = { items: body.items }
+  }
+  next()
+}
+
+//  Update proposal asked, and/or announce new budgets
+async function postCreate (req, res, next) {
+  let { result } = req.erm
+  const { proposal } = result
+  console.log('Report for Proposal', proposal)
+  //  TODO: Announce new reports
+  next()
+}
+
+//  Patch missing ref arrays
+async function postUpdate (req, res, next) {
+  let { result, bugfixrefs } = req.erm
+  const report = result._id
+  //  Patch missing refs from subdoc arrays - mongo bug
+  if (bugfixrefs) {
+    let patch = await Report
+    .findByIdAndUpdate(report, bugfixrefs, { new: true })
+    .populate('items')
+    Object.assign(result, patch)
+  }
+  next()
+}
+
+/*
+METHODS
+These are outside class scope because async functions are really just wrapped promises
+and as such, can't be class methods, and wrapping them is a hack.
+*/
+/*
+getTotal: Calculate grand totals
+*/
+function getTotal (manifest) {
+  const { items } = manifest
+  let total = 0
+  for (let item of items) {
+    if (item.quantity > 0) {
+      item.tax
+        ? total += (item.price * item.quantity * (1 + item.tax / 100))
+        : total += (item.price * item.quantity)
+    }
+  }
+  return total
+}
+/*
+Saveitems: Upserts items, then returns an array of their IDs
+  NOTE: Saving items will overwrite whatever exists.
+  This is for security, and left because we do not have a use case where sub items need to be merged.
+  Implication - patching a manifest writes new items.
+  //  BUG: https://github.com/florianholzapfel/express-restify-mongoose/issues/276
+*/
+async function saveItems (report) {
+  const { _id, items } = report
+  const createOrUpdateOptions = { upsert: true, setDefaultsOnInsert: true, new: true }
+  let promises = items.map((item) => {
+    if (!item.report && _id) item.report = _id
+    if (!item._id) item._id = mongoose.Types.ObjectId()
+    return Item
+      .findByIdAndUpdate(item._id, item, createOrUpdateOptions)
+      .then(doc => doc._id)
+  })
+  let refs = await Promise.all(promises)
+  return refs
+}
+
+/*
+hfghf
+*/

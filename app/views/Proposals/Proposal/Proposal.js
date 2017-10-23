@@ -21,7 +21,7 @@ import Budgeting from './Budgeting/Budgeting'
 import NextSteps from './NextSteps/NextSteps'
 import Update from './Update/Update'
 //  STF Memeber and admin views
-import Reviews from './Reviews/Reviews'
+// import Reviews from './Reviews/Reviews'
 import Settings from './Settings/Settings'
 
 import styles from './Proposal.css'
@@ -46,14 +46,17 @@ connectRequest will force a query if there's a mismatch.
   })),
   connectRequest(props => api.get('proposal', {
     force: true,
-    where: {
+    query: {
       year: props.params.year,
       number: props.params.number
     },
     // Proposal reporting, metrics and decisions are tied to manifests, which are individual "asks"
-    join: [
+    populate: [
       'contacts', 'body', 'comments',
-      'manifests.report', 'manifests.reviews', 'manifests.decision'
+      { path: 'manifests', populate: { path: 'items' } },
+      { path: 'manifests', populate: { path: 'report', populate: { path: 'items' } } },
+      { path: 'manifests', populate: { path: 'decision' } },
+      { path: 'comments', populate: { path: 'user' } }
     ]
   }))
 )
@@ -93,7 +96,7 @@ class Proposal extends React.Component {
               </TabPane>
             }
             {(author || stf) &&
-              <TabPane tab='Next Steps' disabled key='5' className={styles['tab-pane']}>
+              <TabPane tab='Next Steps' key='5' className={styles['tab-pane']}>
                 <NextSteps />
               </TabPane>
             }

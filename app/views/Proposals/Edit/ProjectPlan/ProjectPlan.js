@@ -8,7 +8,7 @@ import { Row, Col, Icon, Alert, Form, Input, Button, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
-import { layout, feedback, help, rules, disableSubmit } from '../../../../util/form'
+import { layout, feedback, rules, disableSubmit } from '../../../../util/form'
 import api from '../../../../services'
 
 const impactFields = [
@@ -102,7 +102,8 @@ const projectFields = [
 @compose(
   connect(
     state => ({
-      parent: state.db.proposal._id,
+      id: state.db.proposal.body && state.db.proposal.body._id,
+      proposal: state.db.proposal._id,
       body: state.db.proposal.body
       //  Direct accessing subdoc props that may not exist === crash
     }),
@@ -112,10 +113,10 @@ const projectFields = [
 )
 class ProjectPlan extends React.Component {
   static propTypes = {
+    id: PropTypes.string,
     form: PropTypes.object,
     api: PropTypes.object,
-    validate: PropTypes.func,
-    parent: PropTypes.string,
+    proposal: PropTypes.string,
     body: PropTypes.object
   }
   componentDidMount () {
@@ -124,39 +125,34 @@ class ProjectPlan extends React.Component {
       const { overview, plan } = body
       form.setFieldsValue({ overview, plan })
     }
-    form.validateFields()
   }
   handleSubmit = (e) => {
     e.preventDefault()
-    let { form, api, parent, body, validate } = this.props
-    form.validateFields((err, values) => {
-      if (!err) {
-        //  Update if the document exists, otherwise create it anew.
-        console.warn(values)
-        const update = { proposal: (prev, next) => {
-          let newData = Object.assign({}, prev)
-          newData.body = values
-          return newData
-        }}
-        body
-        ? api.patch(
-          'project',
-          { proposal: parent, ...values },
-          { id: body._id, update }
-        )
-        : api.post(
-          'project',
-          { proposal: parent, ...values },
-          { update }
-        )
-        .then(message.success('Proposal Body updated!'))
-        .catch(err => {
-          message.warning('Proposal Body failed to update - Unexpected client error')
-          console.warn(err)
-        })
-      }
+    let { form, api, id, proposal } = this.props
+    const values = form.getFieldsValue()
+    const project = { proposal, ...values }
+    const params = {
+      id,
+      transform: proposal => ({ proposal }),
+      update: ({ proposal: (prev, next) => {
+        let change = Object.assign({}, prev)
+        change.body = next
+        return change
+      }})
+    }
+    params.id
+    ? api.patch('project', project, params)
+    .then(message.success('Proposal Body updated!', 10))
+    .catch(err => {
+      message.warning('Proposal Body failed to update - Unexpected client error', 10)
+      console.warn(err)
     })
-    validate()
+    : api.post('project', project, params)
+    .then(message.success('Saved your new plan!', 10))
+    .catch(err => {
+      message.warning('Proposal Body failed to update - Unexpected client error', 10)
+      console.warn(err)
+    })
   }
 
   // render ({ form, overview = {}, plan = {} } = this.props) {
@@ -170,17 +166,17 @@ class ProjectPlan extends React.Component {
             description='We are using a traditional project plan format for our proposals going forward. The committee has decided on this because it covers the questions traditionally addressed in Q&A, and ensures that proposals are comprehensive, covering the full lifecycle of the project. We understand that a lot of these questions may not apply directly to all cases, so for those fields, feel free to write "N/A".'
           />
           <h1>Overview</h1>
-          <FormItem label='Abstract' {...layout} hasFeedback={feedback(form, 'overview.abstract')} help={help(form, 'overview.abstract')} >
+          <FormItem label='Abstract' {...layout} hasFeedback={feedback(form, 'overview.abstract')}>
             {form.getFieldDecorator('overview.abstract', rules.required)(
               <Input type='textarea' rows={6} />
             )}
           </FormItem>
-          <FormItem label='Objectives' {...layout} hasFeedback={feedback(form, 'overview.objectives')} help={help(form, 'overview.objectives')} >
+          <FormItem label='Objectives' {...layout} hasFeedback={feedback(form, 'overview.objectives')}>
             {form.getFieldDecorator('overview.objectives', rules.required)(
               <Input type='textarea' rows={4} />
             )}
           </FormItem>
-          <FormItem label='Core Justification' {...layout} hasFeedback={feedback(form, 'overview.justification')} help={help(form, 'overview.justification')} >
+          <FormItem label='Core Justification' {...layout} hasFeedback={feedback(form, 'overview.justification')}>
             {form.getFieldDecorator('overview.justification', rules.required)(
               <Input type='textarea' rows={4} />
             )}
@@ -191,7 +187,7 @@ class ProjectPlan extends React.Component {
               <Col key={i} className='gutter-row' xs={24} md={8}>
                 <h4>{impact.title}</h4>
                 <p><em>{impact.subtitle}</em></p>
-                <FormItem hasFeedback={feedback(form, impact.field)} help={help(form, impact.field)} >
+                <FormItem hasFeedback={feedback(form, impact.field)}>
                   {form.getFieldDecorator(impact.field, rules.required)(
                     <Input type='textarea' rows={3} />
                   )}
@@ -209,7 +205,7 @@ class ProjectPlan extends React.Component {
                 <Col className='gutter-row' xs={24} md={12} >
                   <h4>{area.current.title}</h4>
                   <em>{area.current.subtitle}</em>
-                  <FormItem hasFeedback={feedback(form, area.current.field)} help={help(form, area.current.field)} >
+                  <FormItem hasFeedback={feedback(form, area.current.field)}>
                     {form.getFieldDecorator(area.current.field, rules.required)(
                       <Input type='textarea' rows={4} />
                     )}
@@ -218,7 +214,7 @@ class ProjectPlan extends React.Component {
                 <Col className='gutter-row' xs={24} md={12} >
                   <h4>{area.future.title}</h4>
                   <em>{area.future.subtitle}</em>
-                  <FormItem hasFeedback={feedback(form, area.future.field)} help={help(form, area.future.field)} >
+                  <FormItem hasFeedback={feedback(form, area.future.field)}>
                     {form.getFieldDecorator(area.future.field, rules.required)(
                       <Input type='textarea' rows={4} />
                     )}

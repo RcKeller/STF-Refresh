@@ -8,17 +8,17 @@ import { Form, Icon, Input, Button, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
-import { feedback, help, rules, disableSubmit } from '../../../../../util/form'
+import { feedback, rules, disableSubmit } from '../../../../../util/form'
 import api from '../../../../../services'
-import { getRole } from '../../../../../util/selectors'
-import { initialProposalContacts } from '../../../../../selectors'
+// import { getRole } from '../../../../../util/selectors'
+// import { initialProposalContacts } from '../../../../../selectors'
 
 const jss = { icon: { fontSize: 13 } }
 @compose(
   connect((state, props) => ({
     proposal: state.db.proposal._id,
-    contacts: initialProposalContacts(state),
-    contact: initialProposalContacts(state)[props.index]
+    contact: state.db.proposal.contacts.find(c => c.role === props.role),
+    index: state.db.proposal.contacts.findIndex(c => c.role === props.role)
   }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
@@ -28,7 +28,7 @@ class Contact extends React.Component {
   static propTypes = {
     form: PropTypes.object,
     api: PropTypes.object,
-    validate: PropTypes.func,
+    role: PropTypes.string,
     proposal: PropTypes.string,
     //  Contact is selected by its index within the redux store
     index: PropTypes.number,
@@ -39,41 +39,37 @@ class Contact extends React.Component {
   }
   componentDidMount () {
     const { form, contact } = this.props
-    if (contact) {
-      form.setFieldsValue(contact)
-    }
-    form.validateFields()
+    if (contact) form.setFieldsValue(contact)
   }
   handleSubmit = (e) => {
     e.preventDefault()
-    let { form, api, proposal, contact, contacts, index, title, validate } = this.props
+    let { form, api, proposal, contact, role, index } = this.props
     form.validateFields((err, values) => {
-      if (!err && values) {
-        //  Set role type, it's not in the form for security.
-        const submission = { proposal, role: contact.role, ...values }
-        /*
-        NOTE: Since we're operating on state.db.proposal and need the new ID
-        we transform proposal data (the res being our new/updated contact)
-        and set the contact at our index to the transformed (selected) value
-        */
-        const transform = res => ({ proposal: res })
-        const update = { proposal: (prev, next) => {
-          let newData = Object.assign({}, prev)
-          let contactIndex = newData.contacts.findIndex(c => c.role === contact.role)
-          contactIndex >= 0
-            ? newData.contacts[contactIndex] = next
-            : newData.contacts.push(next)
-          return newData
-        }}
-        contact._id
-        ? api.patch('contact', submission, { id: contact._id, transform, update })
-        : api.post('contact', submission, { transform, update })
-        .then(() => {
-          message.success(`Updated ${title} !`)
-          validate()
-        })
+      //  Create Proposal w/ budget code if valid
+      if (!err) {
+        const info = { proposal, role, ...values }
+        const params = {
+          id: contact && contact._id,
+          transform: proposal => ({ proposal }),
+          update: ({ proposal: (prev, next) => {
+            let change = Object.assign({}, prev)
+            index >= 0
+            ? change.contacts[index] = next
+            : change.contacts = [...change.contacts, next]
+            return change
+          }})
+        }
+        params.id
+        ? api.patch('contact', info, params)
+        .then(message.success(`Created contact!`))
         .catch(err => {
-          message.warning(`Failed to update ${title} - Unexpected client error`)
+          message.warning(`Failed to create contact - Unexpected client error`)
+          console.warn(err)
+        })
+        : api.post('contact', info, params)
+        .then(message.success(`Updated contact!`))
+        .catch(err => {
+          message.warning(`Failed to update contact - Unexpected client error`)
           console.warn(err)
         })
       }
@@ -85,27 +81,27 @@ class Contact extends React.Component {
       <Form layout='inline' onSubmit={this.handleSubmit}>
         <h3>{title}</h3>
         <p>{subtitle}</p>
-        <FormItem hasFeedback={feedback(form, 'name')} help={help(form, 'name')} >
+        <FormItem hasFeedback={feedback(form, 'name')} >
           {form.getFieldDecorator('name', rules.required)(
             <Input prefix={<Icon type='edit' style={jss.icon} />} placeholder='Name' />
           )}
         </FormItem>
-        <FormItem hasFeedback={feedback(form, 'netID')} help={help(form, 'netID')} >
+        <FormItem hasFeedback={feedback(form, 'netID')} >
           {form.getFieldDecorator('netID', rules.required)(
             <Input prefix={<Icon type='idcard' style={jss.icon} />} placeholder='NetID' />
           )}
         </FormItem>
-        <FormItem hasFeedback={feedback(form, 'title')} help={help(form, 'title')} >
+        <FormItem hasFeedback={feedback(form, 'title')} >
           {form.getFieldDecorator('title', rules.required)(
             <Input prefix={<Icon type='info-circle-o' style={jss.icon} />} placeholder='Title' />
           )}
         </FormItem>
-        <FormItem hasFeedback={feedback(form, 'phone')} help={help(form, 'phone')} >
+        <FormItem hasFeedback={feedback(form, 'phone')} >
           {form.getFieldDecorator('phone', rules.required)(
             <Input prefix={<Icon type='phone' style={jss.icon} />} placeholder='Phone' />
           )}
         </FormItem>
-        <FormItem hasFeedback={feedback(form, 'mailbox')} help={help(form, 'mailbox')} >
+        <FormItem hasFeedback={feedback(form, 'mailbox')} >
           {form.getFieldDecorator('mailbox')(
             <Input prefix={<Icon type='inbox' style={jss.icon} />} placeholder='Mailbox #' />
           )}

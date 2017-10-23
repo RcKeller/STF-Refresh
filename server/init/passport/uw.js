@@ -21,7 +21,7 @@ export default (app, passport) => {
     console.warn('Error: MongoDB unable to initialize passport-google-oauth')
     return
   } else {
-    console.warn('TMID: Initializing Shibboleth')
+    console.warn('SHIB: Initializing Shibboleth')
   }
   /*
   SAML 2.0 -> Shibboleth (UW) strategy credit to Dr. Stearns:
@@ -61,8 +61,8 @@ export default (app, passport) => {
   */
   const domain = config.get('domain')
   const { entityId, loginUrl, callbackUrl } = config.get('uw')
-  console.warn(`TMID: Connecting as: ${entityId}`)
-  console.warn(`TMID: Login, Callback and Metadata routes: ${loginUrl} | ${callbackUrl} | ${Shibboleth.urls.metadata}`)
+  console.warn(`SHIB: Connecting as: ${entityId}`)
+  console.warn(`SHIB: Login, Callback and Metadata routes: ${loginUrl} | ${callbackUrl} | ${Shibboleth.urls.metadata}`)
 
   var UWStrategy = new Shibboleth.Strategy({
     entityId,
@@ -92,5 +92,5 @@ export default (app, passport) => {
     Shibboleth.urls.metadata,
     Shibboleth.metadataRoute(UWStrategy, pubCert)
   )
-  console.log('TMID: Shibboleth Enabled')
+  console.log('SHIB: Shibboleth Enabled')
 }

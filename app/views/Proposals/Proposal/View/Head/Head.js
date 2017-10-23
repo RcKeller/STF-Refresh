@@ -3,10 +3,9 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
-import { Row, Col, Collapse, Alert, Progress } from 'antd'
-const Panel = Collapse.Panel
+import { Row, Col, Alert, Progress } from 'antd'
 
-const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
+// const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
 const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
 import { proposalDecision } from '../../../../../selectors'
@@ -20,6 +19,7 @@ import { proposalDecision } from '../../../../../selectors'
   year: state.db.proposal.year,
   number: state.db.proposal.number,
   uac: state.db.proposal.uac,
+  fast: state.db.proposal.fast,
   contacts: state.db.proposal.contacts,
   status: state.db.proposal.status,
   decision: proposalDecision(state),
@@ -32,7 +32,7 @@ class Head extends React.Component {
     status: PropTypes.string,
     decision: PropTypes.object
   }
-  render ({ screen, id, title, organization, uac, year, number, contacts, status, decision, asked, received } = this.props) {
+  render ({ screen, id, title, organization, uac, fast, year, number, contacts, status, decision, asked, received } = this.props) {
     return (
       <section>
         <Row gutter={32} type='flex' justify='space-between' align='top' >
@@ -41,8 +41,10 @@ class Head extends React.Component {
             <h3>For {organization}</h3>
             <h6 id={id}>{`ID: ${year}-${number}`}</h6>
             {uac && <Alert type='warning' showIcon={false} banner
-              style={{padding: '8px 0'}}
-              message={<span><b>Tri-Campus</b>: This is a Universal Access Committe (UAC) proposal</span>}
+              message={<span><b>Tri-Campus</b>: This is a tri-campus project reviewed by the Universal Access Committe (UAC)</span>}
+            />}
+            {fast && <Alert type='warning' showIcon={false} banner
+              message={<span><b>Fast Track</b>: This proposal was Fast-Tracked - a former process for expediting review</span>}
             />}
             <hr />
             <ul style={{

@@ -10,7 +10,7 @@ const Option = Select.Option
 const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
 const expandedRowRender = record => record.description
-  ? <div><h6>Description: </h6>{record.description}</div>
+  ? <div><em>{record.tax ? 'Tax-Free' : `${record.tax}% tax included in calculation`}</em><h6>Description: </h6>{record.description}</div>
   : <em>No description provided.</em>
 
 import { indexOfApprovedManifest } from '../../../../../selectors'
@@ -50,7 +50,7 @@ class Manifests extends React.Component {
         key: 'name',
         render: text => <b>{text}</b>
       },
-      { title: <Tooltip placement='left' title='Tax Included. Mouse over for subtotal.'>Price/ea</Tooltip>,
+      { title: <Tooltip placement='left' title='Tax Included. Mouse over for item subtotals.'>Price/ea</Tooltip>,
         dataIndex: 'price',
         key: 'price',
         render: (text, record) => <Tooltip placement='left'
@@ -69,7 +69,7 @@ class Manifests extends React.Component {
         width: 50
       }
     ]
-    const footer = () => <h2>{`Grand Total: ${currency(manifest.total || 0)}`}</h2>
+    const footer = () => <span><h2>{`Grand Total: ${currency(manifest.total || 0)}`}</h2><h6>Tax Included in Calculation</h6></span>
     const dataSource = manifest.items || []
     return (
       <div>

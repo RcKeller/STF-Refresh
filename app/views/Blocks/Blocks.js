@@ -15,8 +15,6 @@ import styles from './Blocks.css'
 // const renderTitle = (text, record) => <Link to={`/${record.number}`}>{record.title}</Link>
 
 const columns = [
-  { title: 'Year', dataIndex: 'year', key: 'year', width: 60 },
-  { title: '#', dataIndex: 'number', key: 'number', width: 80 },
   { title: 'Title',
     dataIndex: 'title',
     key: 'title',

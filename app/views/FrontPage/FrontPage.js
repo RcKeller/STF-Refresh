@@ -39,7 +39,9 @@ class FrontPage extends React.Component {
               <p>
                 All STF projects involve student outreach, where project leaders reach out and inform the student body about resources they can benefit from. The STF holds <a href='http://apps.leg.wa.gov/rcw/default.aspx?cite=42.30'>Open Meetings</a> every week during the academic year to hear, deliberate and vote on campus projects. We encourage students to attend.
               </p>
-              <Alert type='info' showIcon banner
+            </Col>
+            <Col className='gutter-row' span={24} md={8}>
+              <Alert type='info' showIcon
                 message='Weekly Meetings'
                 description={<ul>
                   <li>Every Monday</li>
@@ -47,8 +49,6 @@ class FrontPage extends React.Component {
                   <li>HUB 303</li>
                 </ul>}
               />
-            </Col>
-            <Col className='gutter-row' span={24} md={8}>
               <h2>Announcements</h2>
               <p>{news || 'No news for now.'}</p>
               {past && future

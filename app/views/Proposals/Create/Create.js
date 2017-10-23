@@ -7,12 +7,11 @@ import { connect } from 'react-redux'
 import { browserHistory } from 'react-router'
 import api from '../../../services'
 
-import { layout, feedback, help, rules, Label } from '../../../util/form'
+import { layout, feedback, rules, Label } from '../../../util/form'
 
 import { Modal, Button, Form, Input, AutoComplete, Select, message } from 'antd'
 const FormItem = Form.Item
 const Option = Select.Option
-const AutoCompleteOption = AutoComplete.Option
 const connectForm = Form.create()
 
 import Agreements from './Agreements/Agreements'
@@ -44,7 +43,7 @@ class Create extends React.Component {
   showModal = () => {
     this.setState({ modal: true })
     //  Trigger required prompt, disabling submit button.
-    this.props.form.validateFields()
+    // this.props.form.validateFields()
   }
   handleOk = () => {
     // const { form, api, user: { name, netID } } = this.props
@@ -75,7 +74,7 @@ class Create extends React.Component {
           confirmLoading: false
         }))
       } else {
-        message.warning('Failed to update - Form Invalid')
+        message.warning('Failed to update - Missing Data')
       }
     })
   }
@@ -122,7 +121,7 @@ class Create extends React.Component {
           </ul>
           <p>To start your proposal, you must specify your role with the project, and the associated UW budget code.</p>
           <Form onSubmit={this.handleSubmit}>
-            <FormItem label='I am the...' {...layout} hasFeedback={feedback(form, 'role')} help={help(form, 'role')} >
+            <FormItem label='I am the...' {...layout} hasFeedback={feedback(form, 'role')}>
               {form.getFieldDecorator('role', rules.required)(
                 <Select>
                   <Option value='primary'>Primary Contact</Option>
@@ -132,19 +131,19 @@ class Create extends React.Component {
                 </Select>
               )}
             </FormItem>
-            <FormItem label='Job Title' {...layout} hasFeedback={feedback(form, 'title')} help={help(form, 'title')} >
+            <FormItem label='Job Title' {...layout} hasFeedback={feedback(form, 'title')}>
               {form.getFieldDecorator('title', rules.required)(
                 <Input />
               )}
             </FormItem>
-            <FormItem label='Phone' {...layout} hasFeedback={feedback(form, 'phone')} help={help(form, 'phone')} >
+            <FormItem label='Phone' {...layout} hasFeedback={feedback(form, 'phone')}>
               {form.getFieldDecorator('phone', rules.required)(
                 <Input />
               )}
             </FormItem>
             <FormItem label={<Label title='Org'
               message={'Your department or RSO - fill in if yours is not listed. For your convenience, budget codes for orgs we have worked with before are autopopulated.'} />}
-              {...layout} hasFeedback={feedback(form, 'organization')} help={help(form, 'organization')} >
+              {...layout} hasFeedback={feedback(form, 'organization')}>
               {form.getFieldDecorator('organization', rules.required)(
                 <AutoComplete
                   dataSource={Object.keys(organizations)}
@@ -157,7 +156,7 @@ class Create extends React.Component {
             </FormItem>
             <FormItem label={<Label title='Budget'
               message={'Your department or RSO\'s budget code. A financial contact will know this. Awards are dispersed to the financial org with this code.'} />}
-              {...layout} hasFeedback={feedback(form, 'budget')} help={help(form, 'budget')} >
+              {...layout} hasFeedback={feedback(form, 'budget')}>
               {form.getFieldDecorator('budget', rules.required)(
                 <Input />
               )}

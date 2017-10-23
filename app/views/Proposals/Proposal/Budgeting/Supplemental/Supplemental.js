@@ -21,16 +21,10 @@ const columns = [{
   key: 'name',
   editable: true
 }, {
-  name: 'Vendor',
-  key: 'vendor',
+  name: 'Description',
+  key: 'description',
   editable: true,
   width: 300
-}, {
-  name: 'Quantity',
-  key: 'quantity',
-  editable: true,
-  editor: SimpleNumber,
-  width: 85
 }, {
   name: 'Price',
   key: 'price',
@@ -42,6 +36,12 @@ const columns = [{
   key: 'tax',
   editable: true,
   editor: TaxRate,
+  width: 85
+}, {
+  name: 'Quantity',
+  key: 'quantity',
+  editable: true,
+  editor: SimpleNumber,
   width: 85
 }]
 @compose(
@@ -66,29 +66,25 @@ class Supplemental extends React.Component {
   }
   componentDidMount () {
     const { form } = this.props
-    // if (report) {
-    //   const { budget } = report
-    //   form.setFieldsValue({ budget })
-    // }
     form.validateFields()
   }
   handleSubmit = (items, total) => {
-    let { form, api, proposal, manifest } = this.props
+    let { form, api, proposal } = this.props
     //  Verify that the budget number (and hopefully other data) is there, add it to what we know.
     form.validateFields((err, values) => {
       if (!err) {
         items = items.map((item) => _.omit(item, ['_id', '__v']))
-        let supplemental = { proposal, type: 'supplemental', items, total }
-        //  Hydrate the supplement with form data (title/body, totally optional)
-        supplemental = Object.assign(supplemental, values)
-        // const update = { proposal: (prev, next) => prev }
-        const transform = res => ({ proposal: res })
-        const update = { proposal: (prev, next) => {
-          let newData = Object.assign({}, prev)
-          newData.manifests.push(next)
-          return newData
-        }}
-        api.post('manifest', supplemental, { transform, update })
+        let supplemental = { proposal, type: 'supplemental', items, total, ...values }
+        const params = {
+          populate: ['items'],
+          transform: proposal => ({ proposal }),
+          update: ({ proposal: (prev, next) => {
+            let changed = Object.assign({}, prev)
+            changed.manifests.push(next)
+            return changed
+          }})
+        }
+        api.post('manifest', supplemental, params)
         .then(message.success('Supplemental request submitted!'))
         .catch(err => {
           message.warning('Supplemental request failed - Unexpected client error')
@@ -112,14 +108,16 @@ class Supplemental extends React.Component {
       <section>
         <h1>Request Supplemental</h1>
         <h6>For proposals that face an unforseen and minor increase in budgetary needs</h6>
-        <Alert type='warning' showIcon={false} banner
-          message={<span><b>Important:</b> The STF Committee will not consider Supplemental requests which ask for funding and/or technology outside of the range of the original proposal.</span>}
+        <Alert type='warning' showIcon banner
+          message='Important Delinitations'
+          description='The STF Committee will not consider Supplemental requests which ask for funding and/or technology outside of the range of the original proposal. If you have underspent, submit a report instead.'
         />
         <p>
           Welcome to the Request Supplemental page. The purpose of a Supplemental is to request additional funding, additional technology, and/or modify specific details regarding the technology listed in the original proposal, <b>due to needs due to circumstances that could not have been reasonably anticipated.</b>
 
           We've copied all your proposal's items over into this new supplemental. Please use this pages to change items to reflect changes (or lack thereof) for all items initially funded, as well as add requests for additional technology.
         </p>
+        <p><b>If you have underspent your award, there is no consequence - just complete a budget report and you're covered.</b></p>
         <p>
           Common acceptable reasons for a Supplemental request may include situations such as:
           <ul style={{
@@ -159,10 +157,6 @@ class Supplemental extends React.Component {
 
           If you have additional questions, please contact the STF Proposal Officer at stfagent@uw.edu
         </p>
-        <Alert type='info' showIcon banner
-          message='Important Note reg. Award Supplements'
-          description='If you have underspent your award, there is no consequence - simply fill out the above budget report so we can log your spending. If your project has changed significantly, we ask that you create a new proposal instead of requesting a large supplement. By requesting a supplement, you signify that you understand these conditions.'
-        />
         <FormItem label='Request Title' {...layout} >
           {form.getFieldDecorator('title')(
             <Input />

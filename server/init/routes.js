@@ -1,33 +1,24 @@
-// import passport from 'passport'
-import config from 'config'
 import db from '../db'
-const version = config.get('version')
 const controllers = db.controllers
 
 //  GENERATE ROUTES
 export default (app) => {
   console.log('REST: Initializing rest API routes')
   /*
-  RESTful API
+  RESTful APIs
   */
-  app.use(`/${version}/configs`, new controllers.Configs().api())
-  app.use(`/${version}/contacts`, new controllers.Contacts().api())
-  app.use(`/${version}/stf`, new controllers.STF().api())
-  app.use(`/${version}/comments`, new controllers.Comments().api())
-  app.use(`/${version}/proposals`, new controllers.Proposals().api())
-  app.use(`/${version}/projects`, new controllers.Projects().api())
-  app.use(`/${version}/manifests`, new controllers.Manifests().api())
-  app.use(`/${version}/items`, new controllers.Items().api())
-  app.use(`/${version}/blocks`, new controllers.Blocks().api())
-  app.use(`/${version}/reviews`, new controllers.Reviews().api())
-  app.use(`/${version}/decisions`, new controllers.Decisions().api())
-  app.use(`/${version}/reports`, new controllers.Reports().api())
+  app.use(new controllers.Configs().API())
+  app.use(new controllers.Users().API())
+  app.use(new controllers.Contacts().API())
+  app.use(new controllers.STF().API())
+  app.use(new controllers.Comments().API())
+  app.use(new controllers.Proposals().API())
+  app.use(new controllers.Projects().API())
+  app.use(new controllers.Manifests().API())
+  app.use(new controllers.Items().API())
+  app.use(new controllers.Blocks().API())
+  app.use(new controllers.Reviews().API())
+  app.use(new controllers.Decisions().API())
+  app.use(new controllers.Reports().API())
   console.log(`REST: API live for all ${Object.keys(controllers).length - 1} core models.`)
-
-  // USER PROFILE ROUTES
-  console.log('USER: Initializing User REST routes and auth endpoints')
-  const Users = new controllers.Users()
-  app.use(`/${version}/users`, Users.api())
-  app.delete('/sessions', Users.logout)
-  console.log(`REST: API live for Users.`)
 }

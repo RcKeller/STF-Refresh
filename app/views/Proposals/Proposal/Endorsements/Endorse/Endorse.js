@@ -8,7 +8,7 @@ import { Form, Input, Button, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
-import { layout, feedback, help, rules, disableSubmit } from '../../../../../util/form'
+import { layout, feedback, help, rules } from '../../../../../util/form'
 import api from '../../../../../services'
 
 // import styles from './Body.css'
@@ -16,7 +16,7 @@ import api from '../../../../../services'
   connect(
     state => ({
       proposal: state.db.proposal._id,
-      user: state.user
+      user: state.user && state.user._id
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
@@ -30,20 +30,24 @@ class Endorse extends React.Component {
     form: PropTypes.object
   }
   // Disable submit button at the beginning by running validation.
-  componentDidMount () { this.props.form.validateFields() }
+  // componentDidMount () { this.props.form.validateFields() }
   handleSubmit = (e) => {
     e.preventDefault()
     let { proposal, user, api, form } = this.props
     form.validateFields((err, values) => {
+      //  Create Proposal w/ budget code if valid
       if (!err) {
-        const comment = { proposal, user: user._id, ...values }
-        const update = { proposal: (prev, next) => {
-          let newData = Object.assign({}, prev)
-          let newComment = Object.assign({}, comment, { user })
-          newData.comments.push(newComment)
-          return newData
-        }}
-        api.post('comments', comment, { update })
+        const comment = { proposal, user, ...values }
+        const params = {
+          populate: ['user'],
+          transform: proposal => ({ proposal }),
+          update: { proposal: (prev, next) => {
+            let changed = Object.assign({}, prev)
+            changed.comments.push(next)
+            return changed
+          }}
+        }
+        api.post('comments', comment, params)
         .then(message.success('Endorsement posted!'))
         .catch(err => {
           message.error('An error occured - Failed to post endorsement.')
@@ -60,14 +64,14 @@ class Endorse extends React.Component {
         <Form onSubmit={this.handleSubmit}>
           <FormItem label='Comment' {...layout} hasFeedback={feedback(form, 'body')} help={help(form, 'body')} >
             {form.getFieldDecorator('body', rules.required)(
-              <Input type='textarea' rows={6} disabled={!user._id} />
+              <Input type='textarea' rows={6} disabled={!user} />
             )}
           </FormItem>
           <FormItem>
             <Button size='large' type='primary'
-              htmlType='submit' disabled={disableSubmit(form)}
+              htmlType='submit' disabled={!user}
               style={{ width: '100%' }}
-            >Update</Button>
+            >{user ? 'Update' : 'Log In to endorse!'}</Button>
           </FormItem>
         </Form>
       </div>

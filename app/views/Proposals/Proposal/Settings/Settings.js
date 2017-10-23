@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { layout } from '../../../../util/form'
 import api from '../../../../services'
 
-import { Form, Input, Select, Checkbox, Switch, Alert, message } from 'antd'
+import { Form, Input, InputNumber, Select, Checkbox, Switch, Alert, message } from 'antd'
 const Option = Select.Option
 const FormItem = Form.Item
 const connectForm = Form.create()
@@ -17,6 +17,8 @@ const connectForm = Form.create()
     state => ({
       id: state.db.proposal._id,
       category: state.db.proposal.category,
+      year: state.db.proposal.year,
+      number: state.db.proposal.number,
       organization: state.db.proposal.organization,
       budget: state.db.proposal.budget,
       uac: state.db.proposal.uac,
@@ -33,6 +35,8 @@ class Settings extends React.Component {
     form: PropTypes.object,
     api: PropTypes.object,
     id: PropTypes.string,
+    year: PropTypes.number,
+    number: PropTypes.number,
     category: PropTypes.string,
     organization: PropTypes.string,
     budget: PropTypes.string,
@@ -42,10 +46,36 @@ class Settings extends React.Component {
   }
   componentDidMount () {
     //  Take contacts, make an object with role-to-signature bool, use this to set initial vals.
-    const { form, id, category, organization, budget, uac, status, published } = this.props
+    const { form, id, year, number, category, organization, budget, uac, status, published } = this.props
     if (id) {
-      form.setFieldsValue({ category, organization, budget, uac, status, published })
+      form.setFieldsValue({ year, number, category, organization, budget, uac, status, published })
     }
+  }
+  handleYear = (year) => {
+    const { api, id } = this.props
+    const update = {
+      proposal: (prev, next) =>
+      Object.assign(prev, { year: next.year })
+    }
+    api.patch('proposal', { year }, { id, update })
+    .then(message.success(`Updated year: ${year}`), 10)
+    .catch(err => {
+      message.warning(`Failed to update - client error`)
+      console.warn(err)
+    })
+  }
+  handleNumber = (number) => {
+    const { api, id } = this.props
+    const update = {
+      proposal: (prev, next) =>
+      Object.assign(prev, { number: next.number })
+    }
+    api.patch('proposal', { number }, { id, update })
+    .then(message.success(`Updated number: ${number}`), 10)
+    .catch(err => {
+      message.warning(`Failed to update - client error`)
+      console.warn(err)
+    })
   }
   handleCategory = (category) => {
     const { api, id } = this.props
@@ -135,6 +165,16 @@ class Settings extends React.Component {
           description='Changes made here go into production immediately. Be advised that making such changes during daytime is generally poor practice. Do not tab through this section.'
         />
         <Form>
+          <FormItem label='Year' {...layout} >
+            {form.getFieldDecorator('year')(
+              <InputNumber min={2000} max={2030} onChange={value => this.handleYear(value)} />
+            )}
+          </FormItem>
+          <FormItem label='Number' {...layout} >
+            {form.getFieldDecorator('number')(
+              <InputNumber min={1} max={300} onChange={value => this.handleNumber(value)} />
+            )}
+          </FormItem>
           <FormItem label='Category' {...layout} >
             {form.getFieldDecorator('category')(
               <Select onChange={this.handleCategory}>

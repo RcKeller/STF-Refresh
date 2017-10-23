@@ -19,11 +19,10 @@ const columns = [{
   key: 'name',
   editable: true
 }, {
-  name: 'Quantity',
-  key: 'quantity',
+  name: 'Description',
+  key: 'description',
   editable: true,
-  editor: SimpleNumber,
-  width: 85
+  width: 300
 }, {
   name: 'Price',
   key: 'price',
@@ -35,6 +34,12 @@ const columns = [{
   key: 'tax',
   editable: true,
   editor: TaxRate,
+  width: 85
+}, {
+  name: 'Quantity',
+  key: 'quantity',
+  editable: true,
+  editor: SimpleNumber,
   width: 85
 }]
 @connect(
@@ -63,17 +68,19 @@ class Partial extends React.Component {
   }
   handleChange = (index) => this.setState({ index })
   handleSubmit = (items, total) => {
-    const { api, proposal, user } = this.props
-    const partial = { proposal, type: 'partial', author: user, items, total }
-
-    const transform = res => ({ proposal: res })
-    const update = { proposal: (prev, next) => {
-      let newData = Object.assign({}, prev)
-      newData.manifests.push(next)
-      return newData
-    }}
+    const { api, proposal, user: author } = this.props
+    const partial = { proposal, type: 'partial', author, items, total }
+    const params = {
+      populate: ['items'],
+      transform: proposal => ({ proposal }),
+      update: ({ proposal: (prev, next) => {
+        let changed = Object.assign({}, prev)
+        changed.manifests.push(next)
+        return changed
+      }})
+    }
     //  Post it - partials are a one-time deal, they aren't patched after the fact.
-    api.post('manifest', partial, { transform, update })
+    api.post('manifest', partial, params)
     .then(message.success(`Partial budget created! Please add it to the docket.`))
     .catch(err => {
       message.warning(`Failed to create partial budget - Unexpected client error`)
@@ -84,7 +91,7 @@ class Partial extends React.Component {
     { manifests } = this.props,
     { index } = this.state
   ) {
-    const { title, body, type, items, total } = manifests[index]
+    const { title, body, items, total } = manifests[index]
     const data = items.length > 0
       ? items.map(item => _.omit(item, ['_id', '__v', 'manifest', 'report']))
       : []
@@ -92,7 +99,7 @@ class Partial extends React.Component {
     return (
       <section>
         <h1>Partial Budgets</h1>
-        <h4>For alternative budget choices, partial awards, etc.</h4>
+        <h6>For alternative budget choices, partial awards, etc.</h6>
         <p>Partial budgets are how we fund specific elements of a budget. The process involves us pulling data from a prior budget you can select below (the original proposal, a different partial, or supplemental award), making your modifications, and submitting it.</p>
         <p>When voting on a proposal, partials are a separate vote. This is for a variety of reasons, mostly so we can judge a proposal's merits objectively without factoring in any addenums that the committee has proposed.</p>
         <h4>Import items from:</h4>

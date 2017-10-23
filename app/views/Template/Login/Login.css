@@ -10,12 +10,15 @@
   clip-path: polygon(15% 0, 100% 0%, 100% 100%, 0% 100%);
   height: var(--header-height, 60px);
   padding: 4px 8px 4px 16px;
-  @media (min-width: 768px) {
-    padding: 4px 30px 4px 60px;
-  }
-  background-color: var(--metallic-gold, goldenrod);
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   color: white;
+  background-color: var(--metallic-gold, goldenrod);
   border: none;
+  @media (min-width: 480px) {
+    padding: 4px 16px 4px 32px;
+  }
 }
 
 .button strong, small {
@@ -24,9 +27,11 @@
 }
 .button strong {
   display: block;
-  font-size: 24px;
   font-weight: 800;
   line-height: 32px;
+  @media (min-width: 480px) {
+    font-size: 24px;
+  }
 }
 .button small {
   display: block;

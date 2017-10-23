@@ -4,10 +4,12 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { layout } from '../../../../../util/form'
+import { makeManifestByID, makeManifestReview } from '../../../../../selectors'
+
+// import { layout } from '../../../../../util/form'
 import api from '../../../../../services'
 
-import { Spin, Form, Row, Col, Switch, Slider, InputNumber, Button, message } from 'antd'
+import { Spin, Form, Row, Col, Slider, InputNumber, Button, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
@@ -17,10 +19,10 @@ class SliderAndNumber extends React.Component {
   ) {
     return (
       <Row>
-        <Col span={12}>
+        <Col xs={16} sm={18} md={20} lg={22}>
           <Slider {...this.props} />
         </Col>
-        <Col span={4}>
+        <Col span={4} lg={2}>
           <InputNumber {...this.props} style={{ marginLeft: 16 }} />
         </Col>
       </Row>
@@ -33,23 +35,19 @@ class SliderAndNumber extends React.Component {
 
 @compose(
   connect(
-    (state, props) => ({
-      active: state.db.manifests
-        .find(manifest => manifest._id === props.id)
-        .docket.metrics,
-      proposal: state.db.manifests
-        .find(manifest => manifest._id === props.id)
-        .proposal._id,
-      manifest: state.db.manifests
-        .find(manifest => manifest._id === props.id),
-      review: state.db.manifests
-        .find(manifest => manifest._id === props.id)
-        .reviews
-        .find(review => review.author._id === state.user._id) || {},
-      user: state.user,
-      questions: state.config.enums.questions.review || [],
-      stf: state.user.stf
-    }),
+    (state, props) => {
+      const manifest = makeManifestByID(props.id)(state)
+      const review = makeManifestReview(manifest)(state)
+      const { docket, proposal } = manifest
+      return {
+        review,
+        manifest: manifest._id,
+        active: docket.metrics,
+        proposal: proposal._id,
+        questions: state.config.enums.questions.review || [],
+        author: state.user._id
+      }
+    },
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
   connectForm
@@ -60,9 +58,9 @@ class Metrics extends React.Component {
     api: PropTypes.object,
     id: PropTypes.string.isRequired,
     proposal: PropTypes.string,
-    manifest: PropTypes.object,
+    manifest: PropTypes.string,
     review: PropTypes.object,
-    user: PropTypes.object
+    author: PropTypes.string
   }
   componentDidMount () {
     const { form, review } = this.props
@@ -83,71 +81,86 @@ class Metrics extends React.Component {
   }
   handleSubmit = (e) => {
     e.preventDefault()
-    let { form, api, proposal, manifest, review, user } = this.props
+    let { form, api, proposal, manifest, review, author } = this.props
     form.validateFields((err, values) => {
       if (!err) {
-        console.warn('Submitting', values)
-        const { metrics, score, approved } = values
+        const { _id: id } = review
+        const { metrics, score } = values
         let denormalizedMetrics = []
         //  Denormalize prompts into scores: [{ prompt, score }]
         Object.keys(metrics).forEach((key, i) => {
           denormalizedMetrics.push({ prompt: key, score: metrics[key] })
         })
         const submission = {
+          manifest,
           proposal,
-          manifest: manifest._id,
-          author: user._id,
-          ratings: denormalizedMetrics,
+          author,
           score,
-          approved
+          ratings: denormalizedMetrics
         }
         console.warn('Review', submission)
-        //  TODO: Add custom update func
-        review._id
-          ? api.patch('review', submission, { id: review._id })
-          .then(message.success('Review updated!'), 10)
+        const params = {
+          id,
+          populate: ['author'],
+          transform: manifests => ({ manifests }),
+          update: ({ manifests: (prev, next) => {
+            let change = prev.slice()
+            let manifestIndex = change.findIndex(m => m._id === manifest)
+            let reviewIndex = manifestIndex >= 0
+              ? change[manifestIndex].reviews
+                  .findIndex(r => r._id === id)
+              : -1
+            reviewIndex >= 0
+              ? change[manifestIndex].reviews[reviewIndex] = next
+              : change[manifestIndex].reviews.push(next)
+            return change
+          }})
+        }
+        params.id
+          ? api.patch('review', submission, params)
+          .then(message.success('Metrics updated!'), 10)
           .catch(err => {
-            message.warning('Review failed to update - Unexpected client error')
+            message.warning('Metrics failed to update - Unexpected client error')
             console.warn(err)
           })
-          : api.post('review', submission)
-          .then(message.success('Review posted!'))
+          : api.post('review', submission, params)
+          .then(message.success('Metrics posted!'))
           .catch(err => {
-            message.warning('Review failed to post - Unexpected client error')
+            message.warning('Metrics failed to post - Unexpected client error')
             console.warn(err)
           })
       }
     })
   }
   render (
-    { form, active, manifest, user, stf, questions } = this.props
+    { form, active, manifest, questions } = this.props
   ) {
     return (
       <section>
+        <br />
         {!manifest
           ? <Spin size='large' tip='Loading...' />
           : <Form onSubmit={this.handleSubmit}>
-            <h2>Submit Your Metrics</h2>
-            <h6>For internal use only.</h6>
-            <h4>{active ? 'This proposal is up for review - you may score this proposal as you like (0-100).' : 'Review submissions are closed, but you may view your previous scores'}</h4>
+            {!active && <h4>Metric submissions are closed, but you may view previous scores</h4>}
             {questions.map(q => (
-              <FormItem key={q} label={q} {...layout} >
+              <FormItem key={q} label={q}>
                 {form.getFieldDecorator(`metrics[${q}]`)(
                   <SliderAndNumber disabled={!active} min={0} max={100} step={1} />
                 )}
               </FormItem>
             ))}
             <br />
-            <FormItem label={<b>Overall Score</b>} {...layout} >
+            <FormItem label={<b>Overall Score</b>}>
               {form.getFieldDecorator('score')(
                 <SliderAndNumber disabled={!active} min={0} max={100} step={1} />
               )}
             </FormItem>
             {active &&
-              <FormItem label='Submit' {...layout}>
+              <FormItem>
                 <Button size='large' type='primary'
+                  style={{ width: '100%' }}
                   htmlType='submit' ghost disabled={!active}
-                  >Update your Review</Button>
+                  >Save Metrics</Button>
               </FormItem>
             }
           </Form>

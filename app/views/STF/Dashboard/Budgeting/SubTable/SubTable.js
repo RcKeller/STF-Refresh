@@ -19,7 +19,7 @@ const manifestColumns = [
     title: 'Price',
     dataIndex: 'price',
     key: 'price',
-    render: (text, record) => <span>{currency(record.tax ? text * record.tax : text)}</span>,
+    render: (text, record) => <span>{text ? currency(record.tax ? text * record.tax : text) : 'n/a'}</span>,
     sorter: (a, b) => (a.price * a.tax) - (b.price * b.tax)
   }, {
     title: 'Quantity',
@@ -27,7 +27,7 @@ const manifestColumns = [
     key: 'quantity'
   }, {
     title: 'Subtotal',
-    render: (text, record) => <span>{currency(record.price * record.quantity) || '$0'}</span>,
+    render: (text, record) => <span>{text ? currency(record.price * record.quantity) : '$0'}</span>,
     sorter: (a, b) => (a.price * a.quantity) - (b.price * b.quantity)
   }
 ]
@@ -44,7 +44,7 @@ const reportColumns = [{
   title: 'Price',
   dataIndex: 'price',
   key: 'price',
-  render: (text, record) => <span>{currency(text) || '$0'}</span>,
+  render: (text, record) => <span>{text ? currency(text) : '$0'}</span>,
   sorter: (a, b) => a.price - b.price
 }, {
   title: 'Quantity',
@@ -53,7 +53,7 @@ const reportColumns = [{
   width: 90
 }, {
   title: 'Subtotal',
-  render: (text, record) => <span>{currency(record.price * record.quantity) || '$0'}</span>,
+  render: (text, record) => <span>{text ? currency(record.price * record.quantity) : '$0'}</span>,
   sorter: (a, b) => (a.price * a.quantity) - (b.price * b.quantity)
 }
 ]
@@ -100,6 +100,7 @@ class SubTable extends React.Component {
             <h6>{`${_.capitalize(manifest.type)} - ${manifest.title || 'Untitled Award'}`}</h6>
             <Table id={manifest._id}
               columns={manifestColumns}
+              rowKey={record => record._id}
               dataSource={manifest.items || []}
               size='middle'
               pagination={false}
@@ -116,6 +117,7 @@ class SubTable extends React.Component {
                 {Array.isArray(report.items) && report.items > 0 &&
                   <Table id={report._id}
                     columns={reportColumns}
+                    rowKey={record => record._id}
                     dataSource={report.items || []}
                     size='middle'
                     pagination={false}
@@ -132,13 +134,12 @@ class SubTable extends React.Component {
             }
           </Col>
         </Row>
-        <hr />
-        <h2>Contact Information</h2>
         {Array.isArray(contacts) && contacts.length > 0
           ? <Table
             columns={contactColumns}
+            rowKey={record => record._id}
             dataSource={contacts || []}
-            size='small'
+            size='middle'
             pagination={false}
             bordered={false}
           />

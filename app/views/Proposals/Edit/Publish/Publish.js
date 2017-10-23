@@ -16,7 +16,10 @@ API for submission, but using connectForm to instantiate initial values.
 @connect(state => ({
   id: state.db.proposal._id,
   published: state.db.proposal.published,
-  user: state.user
+  user: state.user,
+  submissions: state.config.submissions,
+  year: state.config.year,
+  quarter: state.config.quarter
 }),
   dispatch => ({ api: bindActionCreators(api, dispatch) })
 )
@@ -24,28 +27,27 @@ class Publish extends React.Component {
   static propTypes = {
     api: PropTypes.object,
     id: PropTypes.string,
-    published: PropTypes.bool
+    published: PropTypes.bool,
+    submissions: PropTypes.bool,
+    year: PropTypes.number,
+    quarter: PropTypes.string
   }
   handlePublish = () => {
-    const { api, id } = this.props
-    const body = {
-      published: true,
-      //  TODO: Using connectRequest, get all proposals, filter current year and get the number. Use that to determine proposal number.
-      number: 999999,
-      year: 99999,
-      quarter: 'Spring'
+    const { api, id, year, quarter } = this.props
+    const proposal = { published: true, year, quarter }
+    const params = {
+      id,
+      update: { proposal: (prev, next) => Object.assign(prev, { published: true }) }
     }
-    const update = { proposal: (prev, next) =>
-      Object.assign(prev, { published: next.published })
-    }
-    api.patch('proposal', body, { id, update })
+    api.patch('proposal', proposal, params)
     .then(message.warning(`Proposal is now live!`), 10)
     .catch(err => {
       message.warning(`Failed to update - client error`)
       console.warn(err)
     })
   }
-  render ({ form, proposal, published } = this.props) {
+  render ({ form, proposal, published, submissions, user } = this.props) {
+    const admin = user.stf && user.stf.admin
     return (
       <div id={proposal}>
         {!published
@@ -64,7 +66,10 @@ class Publish extends React.Component {
             <Button size='large' type='primary' ghost
               style={{ width: '100%' }}
               onClick={this.handlePublish}
-              ><Icon type='rocket' />Publish !</Button>
+              disabled={!submissions && !admin}
+            >
+              <Icon type='rocket' />{submissions || admin ? 'Publish !' : 'Submissions are Closed'}
+            </Button>
           </div>
           : <div>
             <h1>This proposal is now live!</h1>

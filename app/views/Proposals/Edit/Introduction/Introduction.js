@@ -8,13 +8,13 @@ import { Form, Icon, Input, AutoComplete, Checkbox, Button, Alert, message } fro
 const FormItem = Form.Item
 const connectForm = Form.create()
 
-import { layout, feedback, help, rules, disableSubmit } from '../../../../util/form'
+import { layout, feedback, rules } from '../../../../util/form'
 import api from '../../../../services'
 
 @compose(
   connect(
     state => ({
-      parent: state.db.proposal._id,
+      id: state.db.proposal._id,
       title: state.db.proposal.title,
       category: state.db.proposal.category,
       organization: state.db.proposal.organization,
@@ -31,8 +31,7 @@ class Introduction extends React.Component {
   static propTypes = {
     form: PropTypes.object,
     api: PropTypes.object,
-    validate: PropTypes.func,
-    parent: PropTypes.string,
+    id: PropTypes.string,
     title: PropTypes.string,
     category: PropTypes.string,
     organization: PropTypes.string,
@@ -43,20 +42,21 @@ class Introduction extends React.Component {
     if (title) {
       form.setFieldsValue({ title, category, organization, uac })
     }
-    form.validateFields()
   }
   handleSubmit = (e) => {
     e.preventDefault()
-    let { form, api, parent, validate } = this.props
+    let { form, api, id } = this.props
     form.validateFields((err, values) => {
+      //  Create Proposal w/ budget code if valid
       if (!err) {
-        const update = {
-          proposal: (prev, next) => Object.assign({}, prev, values)
+        const params = {
+          id,
+          populate: [
+            'contacts', 'body',
+            { path: 'manifests', populate: { path: 'items' } }
+          ]
         }
-        api.patch('proposal',
-          { proposal: parent, ...values },
-          { id: parent, update }
-        )
+        api.patch('proposal', values, params)
         .then(message.success('Introduction updated!'))
         .catch(err => {
           message.warning('Introduction failed to update - Unexpected client error')
@@ -64,7 +64,6 @@ class Introduction extends React.Component {
         })
       }
     })
-    validate()
   }
 
   render ({ form, categories, title, category, organization, uac } = this.props) {
@@ -76,12 +75,12 @@ class Introduction extends React.Component {
         />
         <h1>Introduction</h1>
         <Form onSubmit={this.handleSubmit}>
-          <FormItem label='Title' {...layout} hasFeedback={feedback(form, 'title')} help={help(form, 'title')} >
+          <FormItem label='Title' {...layout} hasFeedback={feedback(form, 'title')}>
             {form.getFieldDecorator('title', rules.required)(
               <Input type='textarea' />
             )}
           </FormItem>
-          <FormItem label='Category' {...layout} hasFeedback={feedback(form, 'category')} help={help(form, 'category')} >
+          <FormItem label='Category' {...layout} hasFeedback={feedback(form, 'category')}>
             {form.getFieldDecorator('category', rules.required)(
               <AutoComplete dataSource={categories} />
             )}
@@ -99,7 +98,7 @@ class Introduction extends React.Component {
           </FormItem>
           <FormItem>
             <Button size='large' type='primary'
-              htmlType='submit' disabled={disableSubmit(form)}
+              htmlType='submit'
               style={{ width: '100%' }}
               ><Icon type='cloud-upload-o' />Update</Button>
           </FormItem>

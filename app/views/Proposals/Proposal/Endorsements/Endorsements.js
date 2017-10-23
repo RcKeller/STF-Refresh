@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
-import { Row, Col, Card, Collapse } from 'antd'
+import { Collapse } from 'antd'
 const Panel = Collapse.Panel
 
 import Endorse from './Endorse/Endorse'
@@ -17,7 +17,8 @@ import Endorse from './Endorse/Endorse'
       endorsement.user === state.user._id ||
       endorsement.user._id === state.user._id
     ),
-  decisionIssued: state.db.proposal.manifests.findIndex(m => m.decision && typeof m.decision.approved === 'boolean') >= 0,
+  decisionIssued: state.db.proposal.manifests
+    .findIndex(m => m.decision && typeof m.decision.approved === 'boolean') >= 0,
   user: state.user,
   screen: state.screen
 }))
