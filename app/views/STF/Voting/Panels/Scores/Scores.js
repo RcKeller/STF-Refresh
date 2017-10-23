@@ -14,8 +14,10 @@ const columns = [
 @ connect(
     (state, props) => {
       const manifest = makeManifestByID(props.id)(state)
+      const { reviews } = manifest
       return {
         manifest,
+        reviews,
         user: state.user
       }
     }
@@ -51,9 +53,9 @@ class Scores extends React.Component {
       //  FILTER REVIEWS BY ROLE
       //  All reviews, filtered and sorted by type (will have duplicates across keys, STF members have many roles)
       const reviews = {
-        admin: manifest.reviews.filter(rev => filter.admin && rev.author.stf.admin === true),
-        member: manifest.reviews.filter(rev => filter.member && rev.author.stf.member === true),
-        spectator: manifest.reviews.filter(rev => filter.spectator && rev.author.stf.spectator === true)
+        admin: manifest.reviews.filter(rev => filter.admin && rev.author.stf && rev.author.stf.admin === true),
+        member: manifest.reviews.filter(rev => filter.member && rev.author.stf && rev.author.stf.member === true),
+        spectator: manifest.reviews.filter(rev => filter.spectator && rev.author.stf && rev.author.stf.spectator === true)
       }
       //  Create a set (array w/ unique values) by spreading all the review types we've filtered
       //  https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set

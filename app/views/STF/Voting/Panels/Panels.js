@@ -52,7 +52,7 @@ class Panels extends React.Component {
     { id, type, docket, total, proposal, stf } = this.props
   ) {
     const { metrics, voting, decisions } = docket
-    const { _id: proposalID, title, organization, uac, year, number, date, comments } = proposal
+    const { _id: proposalID, title, organization, uac, year, number, date, status, comments } = proposal
     console.log('DOCKET', docket)
     return (
       <section>
@@ -71,6 +71,7 @@ class Panels extends React.Component {
                 <ul>
                   {date && <li>Submitted {new Date(date).toLocaleDateString('en-US')}</li>}
                   <li>{comments.length} Endorsements</li>
+                  <li>Status: {status}</li>
                 </ul>
 
               </Col>

@@ -3,43 +3,25 @@ import PropTypes from 'prop-types'
 
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { connectRequest, mutateAsync } from 'redux-query'
+import { connectRequest } from 'redux-query'
 
 import api from '../../../../services'
+
+import { usersOnCommittee, usersNotOnCommittee } from '../../../../selectors'
 
 import { Spin, Table, Checkbox, AutoComplete, Tooltip, message } from 'antd'
 const Option = AutoComplete.Option
 
-const addAuth = (body, update) => mutateAsync({
-  url: `${api.endpoint}/stf/`,
-  options: { method: 'POST' },
-  transform: res => ({ users: res }),
-  body,
-  update
-})
-const toggle = (id, body, update) => mutateAsync({
-  url: `${api.endpoint}/stf/${id}`,
-  options: { method: 'PATCH' },
-  transform: res => ({ users: res }),
-  body,
-  update
-})
-
-const filterOption = (inputValue, option) => option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
+const filterOption = (inputValue, option) =>
+  option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
 
 @compose(
   connect(
     //  Committee members vs. potential members to add.
     state => ({
-      committee: Array.isArray(state.db.users)
-      ? state.db.users.filter(user => typeof user.stf === 'object')
-      : [],
-      users: Array.isArray(state.db.users)
-        ? state.db.users.filter(user => !user.stf)
-        : []
+      committee: usersOnCommittee(state),
+      users: usersNotOnCommittee(state)
     }),
-    //  NOTE: Bind custom mutators to deal with plurality constraints for the 'stf' controller.
-    // api: bindActionCreators({toggle, addAuth, ...api}, dispatch)
     dispatch => ({ api: bindActionCreators(api, dispatch) })
 ),
   connectRequest(() => api.get('users', { populate: ['stf'] }))

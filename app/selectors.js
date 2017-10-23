@@ -1,8 +1,9 @@
 import { createSelector } from 'reselect'
-import _ from 'lodash'
+// import _ from 'lodash'
 //  https://hackernoon.com/usage-of-reselect-in-a-react-redux-application-fcdca05cc00d
 //  http://engineering.blogfoster.com/managing-complexity-in-redux-higher-order-reducers-and-async-state/
 //  https://docs.mobify.com/progressive-web/0.15.0/guides/reselect/
+
 /*
 SORTATION FUNCTIONS
 */
@@ -27,13 +28,17 @@ BASIC ASYNC SELECTORS
 */
 const user = ({ user }) => user || {}
 const config = ({ config }) => config || {}
+
 const proposals = ({ db }) => Array.isArray(db.proposals)
   ? db.proposals.sort(sortProposals)
   : []
-
 const proposal = ({ db }) => db.proposal || {}
 const proposalContacts = ({ db }) => db.proposal ? db.proposal.contacts : []
 const proposalManifests = ({ db }) => db.proposal ? db.proposal.manifests : []
+
+const manifests = ({db}) => db.manifests || []
+
+const users = ({db}) => db.users || []
 // (a, b) =>
 //   a.year * a.number - b.year * b.number,
 /*
@@ -146,7 +151,6 @@ export const manifestsOnDocket = createSelector(
   (manifests) => manifests.filter(({docket}) => docket.metrics || docket.voting || docket.decisions)
 )
 
-const manifests = ({db}) => db.manifests || []
 //  PRIVATE SELECTOR - construct one per component
 //  const manifestByID = makeManifestByID()
 // const manifest = makeManifestByID(props.id)(state)
@@ -156,5 +160,29 @@ export const makeManifestByID = (id) => createSelector(
     ? manifests.find(m => m._id === id)
     : {}
 )
+export const makeManifestReview = (manifest) => createSelector(
+  [user],
+  (user) => Array.isArray(manifest.reviews)
+    ? manifest.reviews.find(r => r.author && r.author._id === user._id)
+    : {}
+)
 
-//
+//  USER SELECTORS
+export const usersOnCommittee = createSelector(
+  [users],
+  (users) => Array.isArray(users)
+    ? users.filter(user => typeof user.stf === 'object')
+    : []
+)
+export const usersNotOnCommittee = createSelector(
+  [users],
+  (users) => Array.isArray(users)
+    ? users.filter(user => !user.stf)
+    : []
+)
+// export const makeManifestReviewByAuthor = (manifest) => createSelector(
+//   [user],
+//   (manifest) => Array.isArray(manifest.reviews)
+//     ? manifest.reviews.find(r => r.netID === user.netID)
+//     : {}
+// )

@@ -26,8 +26,10 @@ import styles from './Voting.css'
   connectRequest(() => api.get('manifests', {
     populate: [
       'items',
-      'reviews',
       'decision',
+      // 'reviews',
+      // { path: 'decision', populate: { path: 'author', populate: ['stf'] } },
+      { path: 'reviews', populate: { path: 'author', populate: ['stf'] } },
       { path: 'proposal', populate: { path: 'body' } },
       { path: 'proposal', populate: { path: 'contacts' } }
     ],

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { makeManifestByID } from '../../../../../selectors'
+import { makeManifestByID, makeManifestReview } from '../../../../../selectors'
 
 // import { layout } from '../../../../../util/form'
 import api from '../../../../../services'
@@ -37,16 +37,15 @@ class SliderAndNumber extends React.Component {
   connect(
     (state, props) => {
       const manifest = makeManifestByID(props.id)(state)
+      const review = makeManifestReview(manifest)(state)
       const { docket, proposal, reviews } = manifest
       return {
-        manifest,
+        review,
+        manifest: manifest._id,
         active: docket.metrics,
         proposal: proposal._id,
-        review: reviews
-          .find(review => review.author._id === state.user._id) || {},
         questions: state.config.enums.questions.review || [],
-        author: state.user._id,
-        stf: state.user.stf
+        author: state.user._id
       }
     },
     dispatch => ({ api: bindActionCreators(api, dispatch) })
@@ -59,9 +58,9 @@ class Metrics extends React.Component {
     api: PropTypes.object,
     id: PropTypes.string.isRequired,
     proposal: PropTypes.string,
-    manifest: PropTypes.object,
+    manifest: PropTypes.string,
     review: PropTypes.object,
-    author: PropTypes.object
+    author: PropTypes.string
   }
   componentDidMount () {
     const { form, review } = this.props
@@ -85,31 +84,46 @@ class Metrics extends React.Component {
     let { form, api, proposal, manifest, review, author } = this.props
     form.validateFields((err, values) => {
       if (!err) {
-        console.warn('Submitting', values)
-        const { metrics, score, approved } = values
+        const { _id: id } = review
+        const { metrics, score } = values
         let denormalizedMetrics = []
         //  Denormalize prompts into scores: [{ prompt, score }]
         Object.keys(metrics).forEach((key, i) => {
           denormalizedMetrics.push({ prompt: key, score: metrics[key] })
         })
         const submission = {
+          manifest,
           proposal,
-          manifest: manifest._id,
-          ratings: denormalizedMetrics,
           author,
           score,
-          approved
+          ratings: denormalizedMetrics
         }
         console.warn('Review', submission)
-        //  TODO: Add custom update func
-        review._id
-          ? api.patch('review', submission, { id: review._id })
+        const params = {
+          id,
+          populate: ['author'],
+          transform: manifests => ({ manifests }),
+          update: ({ manifests: (prev, next) => {
+            let change = prev.slice()
+            let manifestIndex = change.findIndex(m => m._id === manifest)
+            let reviewIndex = manifestIndex >= 0
+              ? change[manifestIndex].reviews
+                  .findIndex(r => r._id === id)
+              : -1
+            reviewIndex >= 0
+              ? change[manifestIndex].reviews[reviewIndex] = next
+              : change[manifestIndex].reviews.push(next)
+            return change
+          }})
+        }
+        params.id
+          ? api.patch('review', submission, params)
           .then(message.success('Metrics updated!'), 10)
           .catch(err => {
             message.warning('Metrics failed to update - Unexpected client error')
             console.warn(err)
           })
-          : api.post('review', submission)
+          : api.post('review', submission, params)
           .then(message.success('Metrics posted!'))
           .catch(err => {
             message.warning('Metrics failed to post - Unexpected client error')
@@ -119,7 +133,7 @@ class Metrics extends React.Component {
     })
   }
   render (
-    { form, active, manifest, stf, questions } = this.props
+    { form, active, manifest, questions } = this.props
   ) {
     return (
       <section>

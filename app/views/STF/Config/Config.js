@@ -4,14 +4,12 @@ import Helmet from 'react-helmet'
 
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { connectRequest } from 'redux-query'
 
-import api from '../../../services'
+// import api from '../../../services'
 import { updateConfig } from '../../../services/config'
 import { layout, Label } from '../../../util/form'
 
-import { Spin, Tabs, Form, Icon, Tooltip, Input, InputNumber, Select, Checkbox, Switch, Alert, message } from 'antd'
-const TabPane = Tabs.TabPane
+import { Spin, Form, Input, InputNumber, Select, Switch } from 'antd'
 const Option = Select.Option
 const FormItem = Form.Item
 const connectForm = Form.create()
@@ -19,7 +17,6 @@ const connectForm = Form.create()
 import Membership from './Membership/Membership'
 
 import styles from './Config.css'
-// @connect(state => ({ user: state.user }))
 @compose(
   connect(
     state => ({
@@ -47,6 +44,10 @@ class Config extends React.Component {
     id: PropTypes.string,
     status: PropTypes.string,
     submissions: PropTypes.bool,
+    year: PropTypes.number,
+    quarter: PropTypes.string,
+    news: PropTypes.string,
+    timeline: PropTypes.array,
     enums: PropTypes.shape({
       categories: PropTypes.array,
       organizations: PropTypes.object,
@@ -78,7 +79,6 @@ class Config extends React.Component {
     updateConfig({ submissions }, { id })
   }
   handleYear = (year) => {
-    console.log(year)
     const { updateConfig, id } = this.props
     updateConfig({ year }, { id })
   }
