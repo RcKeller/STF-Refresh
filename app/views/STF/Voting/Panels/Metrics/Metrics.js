@@ -37,7 +37,7 @@ class SliderAndNumber extends React.Component {
   connect(
     (state, props) => {
       const manifest = makeManifestByID(props.id)(state)
-      const review = makeManifestReview(manifest)(state)
+      const review = makeManifestReview(manifest)(state) || {}
       const { docket, proposal } = manifest
       return {
         review,
@@ -98,7 +98,6 @@ class Metrics extends React.Component {
           score,
           ratings: denormalizedMetrics
         }
-        console.warn('Review', submission)
         const params = {
           id,
           populate: ['author'],

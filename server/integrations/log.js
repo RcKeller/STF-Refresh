@@ -43,29 +43,61 @@ class Logger {
   }
 
   log (message, encoding) {
-    this.info(message)
+    try {
+      this.info(message)
+    } catch (err) {
+      console.error('LOGS:', err)
+    }
   }
   error (message, encoding) {
-    this.logger.error(message)
+    try {
+      this.logger.error(message)
+    } catch (err) {
+      console.error('LOGS:', err)
+    }
   }
   warn (message, encoding) {
-    this.logger.warn(message)
+    try {
+      this.logger.warn(message)
+    } catch (err) {
+      console.error('LOGS:', err)
+    }
   }
   info (message, encoding) {
-    this.logger.info(message)
+    try {
+      this.logger.info(message)
+    } catch (err) {
+      console.error('LOGS:', err)
+    }
   }
   verbose (message, encoding) {
-    this.logger.verbose(message)
+    try {
+      this.logger.verbose(message)
+    } catch (err) {
+      console.error('LOGS:', err)
+    }
   }
   debug (message, encoding) {
-    this.logger.debug(message)
+    try {
+      this.logger.debug(message)
+    } catch (err) {
+      console.error('LOGS:', err)
+    }
   }
   silly (message, encoding) {
-    this.logger.silly(message)
+    try {
+      this.logger.silly(message)
+    } catch (err) {
+      console.error('LOGS:', err)
+    }
   }
 
   userAction (netID, action, model, data) {
-    this.logger.verbose(`${netID}: ${action} for ${model}:\n${JSON.stringify(data)}`)
+    try {
+      this.logger.verbose(`${netID}: ${action} for ${model}:\n${JSON.stringify(data)}`)
+    } catch (err) {
+      console.error('LOGS:', err)
+    }
   }
 }
 //  https://k94n.com/es6-modules-single-instance-pattern

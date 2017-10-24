@@ -36,8 +36,7 @@ class Decision extends React.Component {
     id: PropTypes.string.isRequired,
     proposal: PropTypes.string,
     decision: PropTypes.object,
-    manifest: PropTypes.object,
-    review: PropTypes.object,
+    manifest: PropTypes.string,
     author: PropTypes.string
   }
   componentDidMount () {

@@ -40,9 +40,9 @@ async function preCreateOrUpdate (req, res, next) {
 
 //  Update proposal asked, and/or announce new budgets
 async function postCreate (req, res, next) {
-  let { result } = req.erm
-  const { proposal } = result
-  console.log('Report for Proposal', proposal)
+  // let { result } = req.erm
+  // const { proposal } = result
+  // console.log('Report for Proposal', proposal)
   //  TODO: Announce new reports
   next()
 }

@@ -118,7 +118,7 @@ We get proposal data first so that we can use it when logging to slack.
 async function announceNewBudgets (manifest) {
   const { proposal, type } = manifest
   let parent = await Proposal.findById(proposal)
-  console.log('Announcing', parent)
+  // console.log('Announcing', parent)
   if (proposal && type) {
     switch (type) {
       // case 'original':

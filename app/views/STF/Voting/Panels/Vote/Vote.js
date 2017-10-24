@@ -17,7 +17,7 @@ const connectForm = Form.create()
   connect(
     (state, props) => {
       const manifest = makeManifestByID(props.id)(state)
-      const review = makeManifestReview(manifest)(state)
+      const review = makeManifestReview(manifest)(state) || {}
       const { docket, proposal } = manifest
       return {
         review,

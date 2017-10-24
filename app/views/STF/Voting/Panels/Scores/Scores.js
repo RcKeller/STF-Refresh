@@ -11,7 +11,7 @@ const columns = [
   { title: 'Score', dataIndex: 'score', key: 'score', width: 100 }
 ]
 
-@ connect(
+@connect(
     (state, props) => {
       const manifest = makeManifestByID(props.id)(state)
       const { reviews } = manifest
@@ -65,7 +65,7 @@ class Scores extends React.Component {
         ...reviews.member,
         ...reviews.spectator
       ])]
-      console.warn('summary', filteredReviews)
+      // console.warn('summary', filteredReviews)
 
       //  CALCULATE AVERAGE SCORES
       metrics = filteredReviews.reduce((total, votes) => {

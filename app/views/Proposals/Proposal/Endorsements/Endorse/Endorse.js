@@ -25,7 +25,7 @@ import api from '../../../../../services'
 class Endorse extends React.Component {
   static propTypes = {
     proposal: PropTypes.string,
-    user: PropTypes.object,
+    user: PropTypes.string,
     api: PropTypes.object,
     form: PropTypes.object
   }
@@ -43,7 +43,9 @@ class Endorse extends React.Component {
           transform: proposal => ({ proposal }),
           update: { proposal: (prev, next) => {
             let changed = Object.assign({}, prev)
-            changed.comments.push(next)
+            Array.isArray(changed.comments)
+              ? changed.comments.push(next)
+              : [next]
             return changed
           }}
         }
