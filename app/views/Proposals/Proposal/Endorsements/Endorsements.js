@@ -31,7 +31,7 @@ class Endorsements extends React.Component {
       <div>
         <h1>Community Endorsements</h1>
         <p>Anyone with a UW NetID can endorse a proposal! We highly encourage our proposal authors to exemplify their community engagement by having their proposals endorsed by students and staff alike. You may endorse as many proposals as you like.</p>
-        {/* {endorsed
+        {endorsed
           ? <em>
             <h4>You have already endorsed this proposal.</h4>
             <span>Thank you for your feedback.</span>
@@ -40,8 +40,7 @@ class Endorsements extends React.Component {
             ? <Endorse />
             : <h4>This proposal cannot be endorsed after a committee decision.</h4>
           )
-        } */}
-        <Endorse />
+        }
         {endorsements && <hr />}
         <Collapse bordered={false} defaultActiveKey={endorsements ? Object.keys(endorsements) : '0'}>
           {endorsements.map((c, i) => (

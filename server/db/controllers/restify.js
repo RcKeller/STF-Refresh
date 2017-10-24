@@ -11,7 +11,7 @@ export default class Restify {
     //  express-restify-mongoose configurations - common to all controllers
     this.config = {
       prefix: '',
-      version: '/v1',
+      version: '/v2',
       name: this.model.modelName.toLowerCase(),
       //  Disabling these allows middleware to be called
       // findOneAndUpdate: false,

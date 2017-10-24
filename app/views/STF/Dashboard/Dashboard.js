@@ -29,7 +29,7 @@ class Dashboard extends React.Component {
           <TabPane tab={<span>Activity Report (<em>WIP</em>)</span>} disabled key='3'>
             <h2>Under Development</h2>
           </TabPane>
-          <TabPane tab='Query Tool' key='4'>
+          <TabPane tab='Query Tool' disabled key='4'>
             <Queries />
           </TabPane>
         </Tabs>

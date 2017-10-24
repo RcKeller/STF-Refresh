@@ -11,7 +11,7 @@ const API = (process.env.NODE_ENV === 'development'
   ? 'http://localhost:3000'
   : 'https://uwstf.org'
 )
-const version = process.env.VERSION || 'v1'
+const version = process.env.VERSION || 'v2'
 
 export { ENV, API, version }
 export default { ENV, API, version }
