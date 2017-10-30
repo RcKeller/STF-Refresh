@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Form, Input, Button, Alert, message } from 'antd'
+import { Form, Input, Button, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
@@ -63,9 +63,6 @@ class Endorse extends React.Component {
     return (
       <div>
         <h1>Endorse this proposal!</h1>
-        <Alert type='warning' showIcon={false} banner
-          message={<span><b>Note: </b>Endorsements are taken up until the committee makes a decision, so it's not too late to endorse a proposal, so long as a decision hasn't been issued!</span>}
-        />
         <Form onSubmit={this.handleSubmit}>
           <FormItem label='Comment' {...layout} hasFeedback={feedback(form, 'body')} help={help(form, 'body')} >
             {form.getFieldDecorator('body', rules.required)(

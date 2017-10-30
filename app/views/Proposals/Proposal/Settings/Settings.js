@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { Link } from 'react-router'
 
 import { layout } from '../../../../util/form'
 import api from '../../../../services'
@@ -155,13 +156,13 @@ class Settings extends React.Component {
       console.warn(err)
     })
   }
-  render ({ form, enums } = this.props) {
+  render ({ form, enums, id } = this.props) {
     return (
       <section>
         <h1>Proposal Settings</h1>
         <h6>Internal use only.</h6>
         <Alert type='warning' showIcon banner
-          message='Fair Warning'
+          message={<span><b>WARNING: For major changes only.</b><br />Revise original content at <Link to={`/edit/${id}`}>{` https://uwstf.org/edit/${id}`}</Link></span>}
           description='Changes made here go into production immediately. Be advised that making such changes during daytime is generally poor practice. Do not tab through this section.'
         />
         <Form>

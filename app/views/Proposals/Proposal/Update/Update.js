@@ -23,7 +23,7 @@ class Update extends React.Component {
         <h1>Post-Submission Updates</h1>
         <Alert type='info' showIcon banner
           // message='Minor Edits'
-          message='For typos and minor corrections, e-mail stfagent@uw.edu to have your revisions approved. For major corrections, we suggest withdrawing this proposal and re-submitting a new one.'
+          message='For typos and minor corrections, e-mail stfagent@uw.edu to request revisions. For major corrections, we suggest withdrawing this proposal and re-submitting next quarter.'
         />
         <h2>Contact Information</h2>
         <p>Life happens and authors may not always stay involved with projects on a continuing basis. Because of this, you may appoint someone else with your same position, given you have their information.</p>

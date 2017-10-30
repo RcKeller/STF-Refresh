@@ -53,7 +53,6 @@ class Panels extends React.Component {
   ) {
     const { metrics, voting, decisions } = docket
     const { _id: proposalID, title, organization, uac, year, number, date, status, comments } = proposal
-    console.log('DOCKET', docket)
     return (
       <section>
         {!proposal

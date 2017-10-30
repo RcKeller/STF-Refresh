@@ -53,14 +53,14 @@ class Summary extends React.Component {
                     <p>{body.overview.justification}</p>
                   </Col>
                 </Row>
-                <Collapse bordered={false} defaultActiveKey={['0', '1', '2']}>
+                <div>
                   {impactKeys.map((area, i) => (
-                    <div key={i}>
+                    <span key={i}>
                       <h4>{impactTitles[i]}</h4>
                       <p>{body.overview.impact[area]}</p>
-                    </div>
+                    </span>
                   ))}
-                </Collapse>
+                </div>
                 <h1>Project Plan</h1>
                 <Collapse bordered={false} >
                   {planKeys.map((area, i) => (

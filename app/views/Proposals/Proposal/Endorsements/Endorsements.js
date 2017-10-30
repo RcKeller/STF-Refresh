@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
-import { Collapse } from 'antd'
+import { Collapse, Alert } from 'antd'
 const Panel = Collapse.Panel
 
 import Endorse from './Endorse/Endorse'
@@ -37,7 +37,13 @@ class Endorsements extends React.Component {
             <span>Thank you for your feedback.</span>
           </em>
           : (!decisionIssued
-            ? <Endorse />
+            ? <div>
+              <Alert type='info' showIcon={false} banner
+                message="There's still time!"
+                description="Endorsements are taken up until the committee makes a decision, so it's not too late to endorse a proposal, so long as a decision hasn't been issued!"
+              />
+              <Endorse />
+            </div>
             : <h4>This proposal cannot be endorsed after a committee decision.</h4>
           )
         }

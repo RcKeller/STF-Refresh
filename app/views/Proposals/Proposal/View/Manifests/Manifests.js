@@ -4,14 +4,17 @@ import _ from 'lodash'
 
 import { connect } from 'react-redux'
 
-import { Table, Alert, Select, Tooltip } from 'antd'
+import { Table, Alert, Select, Tooltip, Icon } from 'antd'
 const Option = Select.Option
 
 const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
-const expandedRowRender = record => record.description
-  ? <div><em>{record.tax ? 'Tax-Free' : `${record.tax}% tax included in calculation`}</em><h6>Description: </h6>{record.description}</div>
-  : <em>No description provided.</em>
+const expandedRowRender = ({ price, tax, description } = {}) => {
+  return <span>
+    <em>{Number.parseFloat(tax) > 0 ? `${tax}% tax applied to base cost (${currency(price)})` : 'Untaxed or taxed separately'}</em>
+    <p>{description || <em>No description provided</em>}</p>
+  </span>
+}
 
 import { indexOfApprovedManifest } from '../../../../../selectors'
 
@@ -50,7 +53,14 @@ class Manifests extends React.Component {
         key: 'name',
         render: text => <b>{text}</b>
       },
-      { title: <Tooltip placement='left' title='Tax Included. Mouse over for item subtotals.'>Price/ea</Tooltip>,
+      {
+        title: <span>
+          <Tooltip placement='left' title='Tax Included. Hover for item subtotals.'>
+            Price/ea&nbsp;
+            <Icon type='question-circle-o' />
+          </Tooltip>
+        </span>,
+        // title: <Tooltip placement='left' title='Tax Included. Mouse over for item subtotals.'>Price/ea</Tooltip>,
         dataIndex: 'price',
         key: 'price',
         render: (text, record) => <Tooltip placement='left'
@@ -60,7 +70,8 @@ class Manifests extends React.Component {
           {currency(record.price * (1 + record.tax / 100))}
         </Tooltip>,
         sorter: (a, b) => a.price - b.price,
-        width: screen.greaterThan.medium ? 120 : 80,
+        width: 120,
+        // width: screen.greaterThan.medium ? 120 : 100,
         padding: 0
       },
       { title: 'Q',
@@ -99,11 +110,11 @@ class Manifests extends React.Component {
         }
         <Table dataSource={dataSource} sort
           size='middle'
-          columns={screen.lessThan.medium ? columns.slice(0, 4) : columns}
+          columns={columns}
           rowKey={record => record._id}
           //  The above will throw an error if using faker data, since duplicates are involved.
-          expandedRowRender={screen.greaterThan.medium ? expandedRowRender : false}
-          defaultExpandAllRows={screen.greaterThan.medium}
+          expandedRowRender={screen.greaterThan.small ? expandedRowRender : false}
+          defaultExpandAllRows={screen.greaterThan.small}
           pagination={false}
           footer={footer}
         />

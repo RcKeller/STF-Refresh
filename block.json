@@ -1,0 +1,34 @@
+{
+  "year": 2015,
+  "number": 1,
+  "published": true,
+  "title": " ",
+  "category": " ",
+  "organization": " ",
+  "status": "Approved",
+  "asked": 0,
+  "received": 0,
+  "contacts": [],
+  "body": {
+    "invitation": " ",
+    "overview": {
+      "history": " ",
+      "vision": " ",
+      "goals": " "
+    },
+    "plan": {
+      "structure": " ",
+      "services": " ",
+      "accessibility": " "
+    },
+    "funding": {
+      "budget": " ",
+      "scope": " ",
+      "external": " "
+    },
+    "reliability": {
+      "risks": " ",
+      "mitigations": " "
+    }
+  }
+}

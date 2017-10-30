@@ -27,6 +27,11 @@ const filterOption = (inputValue, option) =>
   connectRequest(() => api.get('users', { populate: ['stf'] }))
 )
 class Membership extends React.Component {
+  static propTypes = {
+    api: PropTypes.object,
+    manifests: PropTypes.array,
+    screen: PropTypes.object
+  }
   constructor (props) {
     super(props)
     this.columns = [{
@@ -71,18 +76,16 @@ class Membership extends React.Component {
   handleAddMember = (user) => {
     const { api } = this.props
     const body = { user, spectator: false, member: false, admin: false }
-    console.log(body)
-    const update = { users: (prev, next) => {
-      let newData = prev.slice()
-      //  If we got a valid response (contains an STF auth object)
-      if (typeof next === 'object') {
-        //  Find the user's data within our list of members. Complete the object via merge, add to our user list
-        let index = newData.findIndex(member => member._id === next.user)
-        Object.assign(newData[index], { stf: next })
-      }
-      return newData
-    }}
-    api.addAuth(body, update)
+    const params = {
+      transform: users => ({ users }),
+      update: ({ users: (prev, next) => {
+        let changed = prev.slice()
+        let index = changed.findIndex(u => u._id === user)
+        if (index >= 0) changed[index].stf = next
+        return changed
+      }})
+    }
+    api.post('stf', body, params)
   }
   handleToggle = (value, record, index) => {
     const { api } = this.props
@@ -128,7 +131,7 @@ class Membership extends React.Component {
                   placeholder='Add STF members...'
                   onSelect={this.handleAddMember}
                   filterOption={filterOption}
-                  >
+                >
                   {users.map(user => <Option key={user._id}>{`${user.name} (${user.netID})`}</Option>)}
                 </AutoComplete>
               </Tooltip>
@@ -138,10 +141,5 @@ class Membership extends React.Component {
       </section>
     )
   }
-}
-Membership.propTypes = {
-  api: PropTypes.object,
-  manifests: PropTypes.array,
-  screen: PropTypes.object
 }
 export default Membership

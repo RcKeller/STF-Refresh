@@ -126,7 +126,7 @@ class Scores extends React.Component {
                 />
               </Col>
               <Col span={24} lg={16}>
-                <h2>Metrics</h2>
+                <h2>Scores</h2>
                 <Table dataSource={dataSource} pagination={false}
                   size='middle'
                   rowKey={record => record.prompt}

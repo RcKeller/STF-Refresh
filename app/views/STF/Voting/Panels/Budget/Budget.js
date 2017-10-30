@@ -6,23 +6,35 @@ import { makeManifestByID } from '../../../../../selectors'
 
 const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
-import { Spin, Table, Tooltip } from 'antd'
+import { Spin, Table, Tooltip, Icon } from 'antd'
 
 const columns = [
   {
-    title: <Tooltip placement='right' title='Author-supplied priority number used to stack rank the importance of items.'>#</Tooltip>,
-    dataIndex: 'priority',
-    key: 'priority',
-    sorter: (a, b) => (a.priority) - (b.priority),
-    width: 50
-  },
-  {
-    title: 'Priority / Name',
+    title: <span>
+      <Tooltip placement='right' title='Some proposals have author supplied priority numbers that stack-rank items by importance.'>
+        Name&nbsp;
+        <Icon type='question-circle-o' />
+      </Tooltip>
+    </span>,
     dataIndex: 'name',
     key: 'name',
-    render: (text, record) => <b>{text}</b>
+    render: (text, record) => <b>{
+      record.priority
+        ? `${record.priority}: ${text}`
+        // ? <span><em>#{record.priority}: </em> {text}</span>
+        : text
+      }</b>,
+    sorter: (a, b) => (b.priority) - (a.priority)
+    // sorter: (a, b) => (a.priority) - (b.priority)
   },
-  { title: <Tooltip placement='left' title='Tax Included. Mouse over for item subtotals.'>Price/ea</Tooltip>,
+  {
+    title: <span>
+      <Tooltip placement='left' title='Tax Included. Hover for item subtotals.'>
+        Price/ea&nbsp;
+        <Icon type='question-circle-o' />
+      </Tooltip>
+    </span>,
+    // title: <Tooltip placement='left' title='Tax Included. Mouse over for item subtotals.'>Price/ea</Tooltip>,
     dataIndex: 'price',
     key: 'price',
     render: (text, record) => <Tooltip placement='left'
@@ -33,6 +45,7 @@ const columns = [
     </Tooltip>,
     sorter: (a, b) => a.price - b.price,
     width: 120,
+    // width: screen.greaterThan.medium ? 120 : 100,
     padding: 0
   },
   { title: 'Q',
@@ -42,9 +55,12 @@ const columns = [
   }
 ]
 
-const expandedRowRender = record => record.description
-  ? <div><em>{record.tax ? 'Tax-Free' : `${record.tax}% tax included in calculation`}</em><h6>Description: </h6>{record.description}</div>
-  : <em>No description provided.</em>
+const expandedRowRender = ({ price, tax, description } = {}) => {
+  return <span>
+    <em>{Number.parseFloat(tax) > 0 ? `${tax}% tax applied to base cost (${currency(price)})` : 'Untaxed or taxed separately'}</em>
+    <p>{description || <em>No description provided</em>}</p>
+  </span>
+}
 
 @connect(
     //  Might seem counterintuitive, but we're connecting to a manifest and pulling its proposal data.

@@ -137,7 +137,7 @@ class Config extends React.Component {
             <h6>Here be dragons...</h6>
             <p>Please be advised that changes go into effect IMMEDIATELY, users will experience the change after refreshing their page.</p>
             <hr />
-            <FormItem {...layout} label={<Label title='Timeline Points'
+            <FormItem {...layout} label={<Label title='Submissions'
               message={'Open or close submissions for authors. Admins can still log into proposals and change them after closure.'} />}>
               {form.getFieldDecorator('submissions', { valuePropName: 'checked' })(
                 <Switch onChange={this.handleSubmissions}
@@ -209,6 +209,7 @@ class Config extends React.Component {
             >
               {form.getFieldDecorator('reviewQuestions')(
                 <Select mode='tags'
+                  style={{ maxWidth: '100%' }}
                   onChange={this.handleQuestions}
                 >
                   {enums.questions.review && enums.questions.review
