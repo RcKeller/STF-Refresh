@@ -8,11 +8,9 @@ import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
 
-import { Row, Col, Spin, Progress, Collapse, Alert } from 'antd'
-const Panel = Collapse.Panel
+import { Row, Col, Spin, Progress, Alert } from 'antd'
 
 const currency = value => `$${Number.parseInt(value).toLocaleString()}`
-const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
 
 import styles from './Block.css'
 @compose(
