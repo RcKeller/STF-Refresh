@@ -70,7 +70,7 @@ class Report extends React.Component {
     }
     form.validateFields()
   }
-  handleSubmit = (items, total) => {
+  handleSubmit = (items) => {
     let { form, api, proposal, indexInStore,
       user: author,
       manifest: { _id: manifest }
@@ -79,7 +79,7 @@ class Report extends React.Component {
     form.validateFields((err, values) => {
       if (!err) {
         items = items.map((item) => _.omit(item, ['_id', '__v']))
-        let report = { proposal, manifest, author, items, total, ...values }
+        let report = { proposal, manifest, author, items, ...values }
         const { _id: id } = this.props.report
         const params = {
           id,
@@ -115,8 +115,7 @@ class Report extends React.Component {
     //  Make sure to omit mongo data, preventing the original from being mutated.
     let data = (report && report.items)
       ? report.items
-      : manifest.items.map((item) =>
-        _.omit(item, ['_id', '__v', 'manifest', 'description', 'priority', 'tax']))
+      : manifest.items.map((item) => _.omit(item, ['_id', '__v', 'manifest', 'description', 'priority', 'tax']))
     const newData = { quantity: 1, price: 0 }
     const total = report && report.total
     return (

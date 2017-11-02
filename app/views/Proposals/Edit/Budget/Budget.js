@@ -63,10 +63,10 @@ class Budget extends React.Component {
     proposal: PropTypes.string,
     manifest: PropTypes.object
   }
-  handleSubmit = (items, total) => {
-    if (total && total > 0) {
+  handleSubmit = (items) => {
+    if (Array.isArray(items) && items.length > 0) {
       let { api, proposal, type, id } = this.props
-      const budget = { proposal, type, items, total }
+      const budget = { proposal, type, items }
 
       const params = {
         id,

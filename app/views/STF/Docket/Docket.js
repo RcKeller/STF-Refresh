@@ -116,12 +116,11 @@ class Docket extends React.Component {
       render: (text, record, index) => (
         //  Only original proposals have metrics taken (otherwise it's redundant)
         <div>
-          {record.type === 'original' &&
-            <Checkbox
-              checked={text.metrics}
-              onChange={e => this.handleToggle({ metrics: e.target.checked }, record, index)}
-            >Metrics</Checkbox>
-          }
+          <Checkbox
+            disabled={record.type !== 'original'}
+            checked={text.metrics}
+            onChange={e => this.handleToggle({ metrics: e.target.checked }, record, index)}
+          >Metrics</Checkbox>
           <Checkbox
             checked={text.voting}
             onChange={e => this.handleToggle({ voting: e.target.checked }, record, index)}
@@ -141,26 +140,6 @@ class Docket extends React.Component {
       width: 120
     }]
   }
-  // handleToggle = (change, record, index) => {
-  //   //  Change is an object that can be easily assigned, like { docket: true } or { voting: false }
-  //   //  We do this so we can accept a key/bool in one arg and use it in a one-liner, so we can share this toggle func.
-  //   const { api } = this.props
-  //   let { _id, docket } = record
-  //   docket = Object.assign(docket, change)
-  //   console.log('Change introduced', docket, record)
-  //   //  Update the manifest at the correct index.
-  //   const update = { manifests: (prev, next) => {
-  //     let newData = prev.slice()
-  //     newData[index].docket = docket
-  //     return newData
-  //   }}
-  //   api.patch('manifest', { docket }, { id: _id, update })
-  //   .then(message.success(('Docket updated!'), 10))
-  //   .catch(err => {
-  //     message.warning(`Failed to update - client error`)
-  //     console.warn(err)
-  //   })
-  // }
   handleToggle = (change, record) => {
     //  Change is an object that can be easily assigned, like { docket: true } or { voting: false }
     //  We do this so we can accept a key/bool in one arg and use it in a one-liner, so we can share this toggle func.

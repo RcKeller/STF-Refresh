@@ -67,9 +67,9 @@ class Partial extends React.Component {
     this.state = { index }
   }
   handleChange = (index) => this.setState({ index })
-  handleSubmit = (items, total) => {
+  handleSubmit = (items) => {
     const { api, proposal, user: author } = this.props
-    const partial = { proposal, type: 'partial', author, items, total }
+    const partial = { proposal, type: 'partial', author, items }
     const params = {
       populate: ['items'],
       transform: proposal => ({ proposal }),

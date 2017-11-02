@@ -49,6 +49,7 @@ class Spreadsheet extends React.Component {
     Otherwise, we have bugs where spreadsheets rerender for no good reason.
     */
     if (Array.isArray(data) && !_.isEqual(data, this.props.data)) {
+      console.log('Spreadsheet CWRP unequal', data, this.props.data)
       let rows = data || []
       this.setState({ rows })
     }
@@ -97,9 +98,10 @@ class Spreadsheet extends React.Component {
   insertRowBelow = (e, { rowIdx }) => this.insertRow(++rowIdx)
 
   handleSubmit = () => {
-    let { rows, total } = this.state
+    // let { rows, total } = this.state
     const { onSubmit } = this.props
-    onSubmit(rows, total)
+    let { rows } = this.state
+    onSubmit(rows)
   }
 
   render (

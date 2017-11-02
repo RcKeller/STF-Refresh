@@ -68,13 +68,13 @@ class Supplemental extends React.Component {
     const { form } = this.props
     form.validateFields()
   }
-  handleSubmit = (items, total) => {
+  handleSubmit = (items) => {
     let { form, api, proposal } = this.props
     //  Verify that the budget number (and hopefully other data) is there, add it to what we know.
     form.validateFields((err, values) => {
       if (!err) {
         items = items.map((item) => _.omit(item, ['_id', '__v']))
-        let supplemental = { proposal, type: 'supplemental', items, total, ...values }
+        let supplemental = { proposal, type: 'supplemental', items, ...values }
         const params = {
           populate: ['items'],
           transform: proposal => ({ proposal }),

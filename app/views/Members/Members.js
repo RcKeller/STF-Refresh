@@ -7,89 +7,78 @@ import { Table } from 'antd'
 const votingMembers = [{
   name: 'Alexander Novokhodko',
   representing: 'ASUW',
-  title: '',
   from: '2017-2018',
   bio: ''
 }, {
   name: "Brian O'Rouke",
   representing: 'ASUW',
-  title: '',
   from: '2017-2018',
   bio: ''
 }, {
   name: 'Godwin Vincent',
   representing: 'ASUW',
-  title: '',
   from: '2017-2018',
   bio: ''
 }, {
   name: 'Abhishek Joshi',
   representing: 'ASUW',
-  title: '',
   from: '2017-2018',
   bio: ''
 }, {
   name: 'Satvik Vats',
   representing: 'ASUW',
-  title: '',
   from: '2017-2018',
   bio: ''
 }, {
   name: 'Abhijit Patil',
   representing: 'ASUW',
-  title: '',
   from: '2017-2018',
   bio: ''
 }, {
   name: 'Harsh Dev',
   representing: 'GPSS',
-  title: '',
   from: '2017-2018',
   bio: ''
 }, {
   name: 'Brad Copenhaver',
   representing: 'GPSS',
-  title: '',
   from: '2017-2018',
   bio: ''
 }, {
   name: 'Alvin Chen',
   representing: 'GPSS',
-  title: '',
   from: '2017-2018',
   bio: ''
 }, {
   name: 'Peder Digre',
   representing: 'GPSS',
-  title: 'Chair, Student Activities Fee',
   from: '2017-2018',
   bio: ''
 }, {
   name: 'Alec Meade',
   representing: 'STF Chair',
-  title: '',
   from: '2017-2018',
   bio: ''
 }]
 
 const exOfficios = [{
   name: 'Jennifer Ward',
-  title: 'UW Libraries',
+  representing: 'UW Libraries',
   from: '',
   bio: ''
 }, {
   name: 'Jeremy Caci',
-  title: 'Undergraduate Academic Affairs',
+  representing: 'Undergraduate Academic Affairs',
   from: '',
   bio: ''
 }, {
   name: 'Tom Lewis',
-  title: 'UW-IT, Academic Experience',
+  representing: 'UW-IT, Academic Experience',
   from: '',
   bio: ''
 }, {
   name: 'Sharyl Burson',
-  title: 'Office of Planning & Budgeting',
+  representing: 'Office of Planning & Budgeting',
   from: '',
   bio: ''
 }]
@@ -140,13 +129,12 @@ class Members extends React.Component {
     )
     const representativeColumns = [
       { title: 'Name', dataIndex: 'name', key: 'name' },
-      { title: 'Representing', dataIndex: 'representing', key: 'representing' },
-      { title: 'Title', dataIndex: 'title', key: 'title' },
+      { title: 'Representing', dataIndex: 'representing', key: 'representing', width: 200 },
       { title: 'From', dataIndex: 'from', key: 'from', width: 80 }
     ]
     const adminColumns = [
       { title: 'Name', dataIndex: 'name', key: 'name' },
-      { title: 'Title', dataIndex: 'title', key: 'title' },
+      { title: 'Title', dataIndex: 'title', key: 'title', width: 200 },
       { title: 'From', dataIndex: 'from', key: 'from', width: 80 }
       //  Admins should have a duties prop, shown upon expansion.
     ]
@@ -164,7 +152,7 @@ class Members extends React.Component {
               columns={screen.lessThan.medium ? representativeColumns.slice(0, 2) : representativeColumns}
               rowKey={record => record.name}
               expandedRowRender={expandedRowRender}
-              defaultExpandAllRows={screen.greaterThan.medium}
+              // defaultExpandAllRows={screen.greaterThan.medium}
               pagination={false}
               size='middle'
             />
@@ -179,7 +167,7 @@ class Members extends React.Component {
               columns={screen.lessThan.medium ? representativeColumns.slice(0, 2) : representativeColumns}
               rowKey={record => record.name}
               expandedRowRender={expandedRowRender}
-              defaultExpandAllRows={screen.greaterThan.medium}
+              // defaultExpandAllRows={screen.greaterThan.medium}
               pagination={false}
               size='middle'
             />
@@ -194,7 +182,7 @@ class Members extends React.Component {
               columns={screen.lessThan.medium ? adminColumns.slice(0, 2) : adminColumns}
               rowKey={record => record.name}
               expandedRowRender={expandedRowRender}
-              defaultExpandAllRows={screen.greaterThan.medium}
+              // defaultExpandAllRows={screen.greaterThan.medium}
               pagination={false}
               size='middle'
             />
