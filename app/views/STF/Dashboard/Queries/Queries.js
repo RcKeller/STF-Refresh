@@ -8,12 +8,16 @@ import { connect } from 'react-redux'
 import { Label } from '../../../../util/form'
 import api from '../../../../services'
 
-import { Form, Select, Button, Icon } from 'antd'
+import { Form, Select, Input, Button, Icon, message } from 'antd'
 const Option = Select.Option
 const FormItem = Form.Item
 const connectForm = Form.create()
 
-import ReactJson from 'react-json-view'
+import Inspector from 'react-json-inspector'
+//  Vendor styles
+import './Queries.less'
+
+import Examples from './Examples/Examples'
 
 //  Legible names for DB models
 const modelNames = {
@@ -29,8 +33,8 @@ const modelNames = {
   'Users': 'users',
   'Blocks': 'blocks'
 }
-//  Joins possible per model (not necessarily comprehensive)
-const modelJoins = {
+//  Populates possible per model (not necessarily comprehensive)
+const modelPopulates = {
   'proposals': ['body', 'contacts', 'manifests', 'comments'],
   'projects': ['proposal'],
   'contacts': ['proposal', 'block'],
@@ -43,33 +47,12 @@ const modelJoins = {
   'users': [],
   'blocks': ['contacts']
 }
-//  Preset, stringified JSON "WHERE" clauses for models.
-/*
-Department, funded, year, category
-*/
-const modelWhere = {
-  proposals: {
-    'Published': { published: true },
-    'Unpublished': { published: false },
-    'Draft': { status: 'Draft' },
-    'In Review': { status: 'In Review' },
-    'Funded': { status: 'Funded' },
-    'Partially Funded': { status: 'Partially Funded' },
-    'Denied': { status: 'Denied' },
-    'UAC': { uac: true },
-    'Fast Track': { fast: true },
-    'Autumn': { quarter: 'Autumn' },
-    'Winter': { quarter: 'Winter' },
-    'Spring': { quarter: 'Spring' },
-    'Summer': { quarter: 'Summer' }
-  }
-}
 
 //  This is a decorator, a function that wraps another class (which in JS is essentially a func)
 @compose(
   connect(
     state => ({
-      enums: state.config && state.config.enums,
+      enums: state.config.enums,
       screen: state.screen,
       querytool: state.db.querytool || {}
     }),
@@ -98,19 +81,47 @@ class Queries extends React.Component {
   handleSelect (model) {
     this.setState({ model })
   }
+  // handleSubmit (e) {
+  //   e.preventDefault()
+  //   let { form, api } = this.props
+  //   let { model } = this.state
+  //   form.validateFields((err, values) => {
+  //     if (!err) {
+  //       let params = {}
+  //       console.log(values)
+  //       if (Array.isArray(values.populate)) params.populate = values.populate
+  //       if (values.Query) params.Query = modelQuery[model][values.Query]
+  //       params.transform = res => ({ querytool: res })
+  //       params.update = { querytool: (prev, next) => next }
+  //       params.force = true
+  //       api.getAsync(model, params)
+  //     }
+  //   })
+  // }
   handleSubmit (e) {
     e.preventDefault()
     let { form, api } = this.props
     let { model } = this.state
     form.validateFields((err, values) => {
       if (!err) {
-        let params = {}
         console.log(values)
-        if (Array.isArray(values.join)) params.join = values.join
-        if (values.where) params.where = modelWhere[model][values.where]
-        params.transform = res => ({ querytool: res })
-        params.update = { querytool: (prev, next) => next }
-        params.force = true
+        let { id, query, populate } = values
+        //  Wrap querystrings in curly braces and parse.
+        if (query) {
+          try {
+            query = JSON.parse(`{${query}}`)
+          } catch (err) {
+            message.warning('Invalid "Where" clause. Running the rest of the query. Example format: <published: true, quarter: "Autumn">', 10)
+            query = undefined
+          }
+        }
+        let params = {
+          id,
+          query,
+          populate,
+          transform: querytool => ({ querytool }),
+          update: ({ querytool: (prev, next) => next })
+        }
         api.getAsync(model, params)
       }
     })
@@ -121,8 +132,8 @@ class Queries extends React.Component {
   ) {
     return (
       <div>
-        <p>Query Tool can fetch and relate specific data from our backend based on simple conditions. For example, you can get proposals and associated contact information for anything unpublished by the query <em>proposal, contacts, unpublished</em>. This tool exists to cater for any edge cases our current BI views cannot cover for you. The script bundle for this component cannot be fetched without an administrative netID, so it should not pose a security concern.</p>
-        <p>Please note, this feature is NOT a best practice for webapps. Page slowness and freezing is to be expected at this scale. An alternative would be to learn the query syntax from me and use <a href='https://www.hurl.it/'>hurl.it</a>.</p>
+        <Examples />
+        <br />
         <Form layout='inline' onSubmit={this.handleSubmit}>
           <FormItem label={<Label title='Model'
             message={'Models are document stores in the database - standalone records pulled together to generate site content.'} />} >
@@ -139,47 +150,41 @@ class Queries extends React.Component {
               </Select>
             )}
           </FormItem>
-          <FormItem label={<Label title='Joins'
-            message={'A Join allows you to connect related documents on a shared field, usually a Universal Unique ID (UUID) that appears to be gibberish, allowing you to expand the depth of your queries.'} />}
+          <FormItem label={<Label title='ID'
+            message={'The unique ID of a specific item you want to look up, like a draft ID. The DB assigns this as "_id" for every new document.'} />}
           >
-            {form.getFieldDecorator('join')(
+            {form.getFieldDecorator('id')(
+              <Input style={{ width: 200 }} />
+            )}
+          </FormItem>
+          <FormItem label={<Label title='Where'
+            message={'Find documents that match a set of conditions. Format: <"published": true, "quarter": "Autumn">'} />}
+          >
+            {form.getFieldDecorator('query')(
+              <Input style={{ width: 200 }} />
+            )}
+          </FormItem>
+          <FormItem label={<Label title='Join'
+            message={'A Join ("Populate" in MongoDB) allows you to connect related documents on a shared field, usually a Universal Unique ID (UUID) that appears to be gibberish.'} />}
+          >
+            {form.getFieldDecorator('populate')(
               <Select mode='multiple' style={{ minWidth: 120 }}>
-                {modelJoins[model].map(j => (
+                {modelPopulates[model].map(j => (
                   <Option key={j}>{j}</Option>
                 ))}
               </Select>
             )}
           </FormItem>
-          {modelWhere[model] &&
-            <FormItem label={<Label title='Condition'
-              message={'Also known as a "where" clause, these are preset conditions for filtering your queries, like finding published proposals. These conditions are not common and support will not extend to many models.'} />} >
-              {form.getFieldDecorator('where')(
-                <Select style={{ minWidth: 150 }}>
-                  {Object.keys(modelWhere[model]).map(j => (
-                    <Option key={j}>{j}</Option>
-                  ))}
-                </Select>
-              )}
-            </FormItem>
-          }
           <FormItem>
             <Button size='large' type='primary' ghost
               htmlType='submit' disabled={!model}
             >
-              <Icon type='api' />Query Database
+              <Icon type='api' />Run Query
             </Button>
           </FormItem>
         </Form>
         <br />
-        {window &&
-          <ReactJson
-            name={model}
-            src={querytool}
-            theme='shapeshifter:inverted'
-            displayDataTypes={false}
-            collapseStringsAfterLength={100}
-          />
-        }
+        <Inspector data={querytool} />
       </div>
     )
   }

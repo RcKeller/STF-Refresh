@@ -21,8 +21,8 @@ import styles from './Create.css'
   connect(
     state => ({
       user: state.user,
-      organizations: (state.config && state.config.enums.organizations) || {},
-      submissions: state.config && state.config.submissions
+      organizations: (state.config.enums.organizations) || {},
+      submissions: state.config.submissions
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),

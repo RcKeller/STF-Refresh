@@ -42,7 +42,7 @@ const expandedRowRender = (record, i) => <SubTable
 @compose(
   connect((state, props) => ({
     awards: state.db.decisions,
-    enums: state.config && state.config.enums,
+    enums: state.config.enums,
     screen: state.screen,
     user: state.user
   })),

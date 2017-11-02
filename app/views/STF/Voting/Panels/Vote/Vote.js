@@ -98,7 +98,7 @@ class Vote extends React.Component {
     })
   }
   render (
-    { form, active, manifest, questions } = this.props
+    { form, active, questions, manifest, review } = this.props
   ) {
     return (
       <section>
@@ -106,6 +106,15 @@ class Vote extends React.Component {
         {!manifest
           ? <Spin size='large' tip='Loading...' />
           : <Form onSubmit={this.handleSubmit} layout='inline' >
+            {review &&
+              <div>
+                <h2>Final Vote:</h2>
+                {review.body
+                  ? <span><em>Your Notes</em>{`: ${review.body}`}</span>
+                  : <em>You didn't make any notes during proposal review.</em>
+                }
+              </div>
+            }
             <FormItem label={<b>Final Vote</b>}>
               {form.getFieldDecorator('approved', { valuePropName: 'checked' })(
                 //  Valueprop is a selector for antd switches, it's in the docs.

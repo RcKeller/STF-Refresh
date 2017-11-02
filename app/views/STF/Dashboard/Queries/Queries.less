@@ -1,0 +1,123 @@
+// Source: https://github.com/Lapple/react-json-inspector/blob/master/json-inspector.css
+
+@color_1: #505050;
+@color_2: #b0b0b0;
+@color_3: #798953;
+@color_4: #75b5aa;
+@color_5: #d28445;
+@color_6: #666;
+@color_7: #111;
+
+.json-inspector {
+	font: 14px/1.4 Consolas, monospace;
+}
+.json-inspector__selection {
+	font: 14px/1.4 Consolas, monospace;
+}
+.json-inspector__leaf {
+	padding-left: 10px;
+}
+.json-inspector__line {
+	display: block;
+	position: relative;
+	cursor: default;
+	&:after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: -200px;
+		right: -50px;
+		bottom: 0;
+		z-index: -1;
+		pointer-events: none;
+	}
+	&:hover {
+		&:after {
+			background: rgba(0, 0, 0, 0.06);
+		}
+	}
+}
+.json-inspector__leaf_composite {
+	>.json-inspector__line {
+		cursor: pointer;
+	}
+}
+.json-inspector__radio {
+	display: none;
+}
+.json-inspector__flatpath {
+	display: none;
+}
+.json-inspector__value {
+	margin-left: 5px;
+}
+// .json-inspector__search {
+// 	min-width: 300px;
+// 	margin: 0 10px 10px 0;
+// 	padding: 2px;
+// }
+.json-inspector__search {
+  position: relative;
+   display: inline-block;
+   padding: 6px 7px;
+   height: 32px;
+   width: 100%;
+   cursor: text;
+   font-size: 16px;
+   line-height: 1.5;
+   color: rgba(0, 0, 0, 0.65);
+   background-color: #fff;
+   background-image: none;
+   border: 1px solid #d9d9d9;
+   border-radius: 4px;
+   transition: all .3s;
+   &:hover {
+     border-color: #c8bb9a;
+   }
+   &:focus {
+     border-color: #c8bb9a;
+     outline: 0;
+     box-shadow: 0 0 0 2px rgba(183, 165, 122, 0.2);
+ 	}
+}
+.json-inspector__key {
+	color: @color_1;
+}
+.json-inspector__value_helper {
+	color: @color_2;
+}
+.json-inspector__value_null {
+	color: @color_2;
+}
+.json-inspector__not-found {
+	color: @color_2;
+}
+.json-inspector__value_string {
+	color: @color_3;
+}
+.json-inspector__value_boolean {
+	color: @color_4;
+}
+.json-inspector__value_number {
+	color: @color_5;
+}
+.json-inspector__hl {
+	background: #ff0;
+	box-shadow: 0 -1px 0 2px #ff0;
+	border-radius: 2px;
+}
+.json-inspector__show-original {
+	display: inline-block;
+	padding: 0 6px;
+	color: @color_6;
+	cursor: pointer;
+	&:hover {
+		color: @color_7;
+		&:after {
+			content: ' expand';
+		}
+	}
+	&:before {
+		content: '⥂';
+	}
+}

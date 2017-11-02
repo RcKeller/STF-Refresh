@@ -9,7 +9,7 @@ import { makeManifestByID, makeManifestReview } from '../../../../../selectors'
 // import { layout } from '../../../../../util/form'
 import api from '../../../../../services'
 
-import { Spin, Form, Row, Col, Slider, InputNumber, Button, message } from 'antd'
+import { Spin, Form, Row, Col, Slider, InputNumber, Input, Button, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
@@ -66,7 +66,7 @@ class Metrics extends React.Component {
     const { form, review } = this.props
     if (form && review) {
       //  Consistent fields
-      const { score, ratings } = review
+      const { score, ratings, body } = review
       //  Dynamic fields - metric prompts change all the time. Normalize
       //  rc-form format: { metrics: { prompt: score }}
       let metrics = { }
@@ -75,7 +75,7 @@ class Metrics extends React.Component {
           metrics[q.prompt] = q.score
         }
       }
-      let fields = { score, metrics }
+      let fields = { metrics, score, body }
       form.setFieldsValue(fields)
     }
   }
@@ -85,7 +85,7 @@ class Metrics extends React.Component {
     form.validateFields((err, values) => {
       if (!err) {
         const { _id: id } = review
-        const { metrics, score } = values
+        const { metrics, score, body } = values
         let denormalizedMetrics = []
         //  Denormalize prompts into scores: [{ prompt, score }]
         Object.keys(metrics).forEach((key, i) => {
@@ -95,8 +95,9 @@ class Metrics extends React.Component {
           manifest,
           proposal,
           author,
+          ratings: denormalizedMetrics,
           score,
-          ratings: denormalizedMetrics
+          body
         }
         const params = {
           id,
@@ -144,14 +145,19 @@ class Metrics extends React.Component {
             {questions.map(q => (
               <FormItem key={q} label={q}>
                 {form.getFieldDecorator(`metrics[${q}]`)(
-                  <SliderAndNumber disabled={!active} min={0} max={100} step={1} />
+                  <SliderAndNumber disabled={!active} min={0} max={5} step={1} />
                 )}
               </FormItem>
             ))}
+            <FormItem label='Remarks (Public)' >
+              {form.getFieldDecorator('body')(
+                <Input type='textarea' rows={4} />
+              )}
+            </FormItem>
             <br />
             <FormItem label={<b>Overall Score</b>}>
               {form.getFieldDecorator('score')(
-                <SliderAndNumber disabled={!active} min={0} max={100} step={1} />
+                <SliderAndNumber disabled={!active} min={0} max={5} step={1} />
               )}
             </FormItem>
             {active &&
