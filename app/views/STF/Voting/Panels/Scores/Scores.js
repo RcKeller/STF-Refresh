@@ -6,11 +6,14 @@ import { makeManifestByID } from '../../../../../selectors'
 
 import { Spin, Row, Col, Switch, Progress, Table } from 'antd'
 
-const columns = [
+const metricsColumns = [
   { title: 'Prompt', dataIndex: 'prompt', key: 'prompt' },
   { title: 'Score', dataIndex: 'score', key: 'score', width: 100 }
 ]
-
+const remarksColumns = [
+  { title: 'Name', dataIndex: 'name', key: 'name', width: 100 },
+  { title: 'Remarks', dataIndex: 'body', key: 'body' }
+]
 @connect(
     (state, props) => {
       const manifest = makeManifestByID(props.id)(state)
@@ -48,6 +51,7 @@ class Scores extends React.Component {
     //  Initialize returns. If reviews exist, we filter, otherwise just return defaults.
     let pass = 0
     let fail = 0
+    let remarks = []
     let metrics = []
     if (manifest.reviews && manifest.reviews.length > 0) {
       //  FILTER REVIEWS BY ROLE
@@ -72,6 +76,11 @@ class Scores extends React.Component {
         //  Assign approvals, accounting for null/undef
         if (votes.approved === true) pass++
         if (votes.approved === false) fail++
+        // console.log('VOTES', votes)
+        if (votes.body && votes.author.name) {
+          const { body, author: { name } } = votes
+          remarks.push({ body, name })
+        }
         //  Loop over unique ratings
         for (const i in votes.ratings) {
           const { prompt, score } = votes.ratings[i]
@@ -97,21 +106,36 @@ class Scores extends React.Component {
       })
     }
     //  Final return, assign as const { a,  b, c } =...
-    return { pass, fail, metrics }
+    return { pass, fail, metrics, remarks }
   }
   render (
     { form, manifest, user } = this.props,
     { filter } = this.state
   ) {
-    const { pass, fail, metrics } = this.filterReviews()
+    const { pass, fail, metrics, remarks } = this.filterReviews()
     const dataSource = Object.keys(metrics).map(key => {
       return { prompt: key, score: metrics[key] }
     })
+    console.log('GOT REMARKS', remarks)
     return (
       <section>
         {!manifest
           ? <Spin size='large' tip='Loading...' />
           : <div>
+            <h4>Filter by Commitee Roles</h4>
+            <Switch checked={filter.admin}
+              unCheckedChildren='Admins' checkedChildren='Admins'
+              onChange={admin => this.handleFilter({ admin })}
+            />
+            <Switch checked={filter.member}
+              unCheckedChildren='Members' checkedChildren='Members'
+              onChange={member => this.handleFilter({ member })}
+            />
+            <Switch checked={filter.spectator}
+              unCheckedChildren='Ex-Officios' checkedChildren='Ex-Officios'
+              onChange={spectator => this.handleFilter({ spectator })}
+            />
+            <p><em>Note: If you cast a vote, it won't automatically update these totals (hit the refresh button at the top right).</em></p>
             <Row type='flex' justify='space-between' align='middle'>
               <Col span={24} lg={8}>
                 <h2>Approval Rating</h2>
@@ -130,24 +154,18 @@ class Scores extends React.Component {
                 <Table dataSource={dataSource} pagination={false}
                   size='middle'
                   rowKey={record => record.prompt}
-                  columns={columns}
+                  columns={metricsColumns}
                 />
               </Col>
             </Row>
-            <h4>Filter by Commitee Roles</h4>
-            <Switch checked={filter.admin}
-              unCheckedChildren='Admins' checkedChildren='Admins'
-              onChange={admin => this.handleFilter({ admin })}
-            />
-            <Switch checked={filter.member}
-              unCheckedChildren='Members' checkedChildren='Members'
-              onChange={member => this.handleFilter({ member })}
-            />
-            <Switch checked={filter.spectator}
-              unCheckedChildren='Ex-Officios' checkedChildren='Ex-Officios'
-              onChange={spectator => this.handleFilter({ spectator })}
-            />
-            <p><em>Note: If you cast a vote, it won't automatically update these totals (hit the refresh button at the top right).</em></p>
+            <h2>Committee Remarks</h2>
+            {remarks &&
+              <Table dataSource={remarks} pagination={false}
+                size='middle'
+                rowKey={record => record.name}
+                columns={remarksColumns}
+              />
+            }
           </div>
           }
       </section>

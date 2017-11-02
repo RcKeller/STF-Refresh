@@ -4,12 +4,12 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { layout, rules } from '../../../../../util/form'
+import { layout } from '../../../../../util/form'
 import api from '../../../../../services'
 
 import { makeManifestByID } from '../../../../../selectors'
 
-import { Spin, Form, Checkbox, Input, Button, Alert, message } from 'antd'
+import { Spin, Form, Switch, Input, Button, Alert, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
@@ -43,7 +43,7 @@ class Decision extends React.Component {
     const { form, decision } = this.props
     if (form && decision) {
       let { body, approved } = decision
-      if (typeof approved === 'undefined') approved = false
+      if (!approved) approved = false
       form.setFieldsValue({ body, approved })
     }
   }
@@ -86,7 +86,7 @@ class Decision extends React.Component {
     })
   }
   render (
-    { form, manifest } = this.props
+    { form, manifest, decision } = this.props
   ) {
     // const { decisions } = manifest.docket
     return (
@@ -94,19 +94,26 @@ class Decision extends React.Component {
         {!manifest
           ? <Spin size='large' tip='Loading...' />
           : <Form onSubmit={this.handleSubmit}>
-            <Alert type='warning' showIcon banner
-              message='Warning - Use AFTER Official Voting'
-              description='Only admins can issue a decision, but only with committee approval. This tool was put in place to provide manual oversight to ensure that errors with the website do not cause incorrect decisions to be issued.'
-            />
+            {!decision || !decision._id
+              ? <Alert type='warning' showIcon banner
+                message='Warning - Use AFTER Official Voting'
+                description='Only admins can issue a decision, but only with committee approval. This tool was put in place to provide manual oversight to ensure that errors with the website do not cause incorrect decisions to be issued.'
+              />
+              : <Alert showIcon banner
+                type={decision.approved ? 'success' : 'error'}
+                message={`This budget was ${decision.approved ? 'approved' : 'denied'}`}
+                description='You may change this value later if this was a mistake. If so, be sure to change the status of the proposal on its main page.'
+              />
+            }
             <FormItem label='Remarks (Public)' {...layout} >
               {form.getFieldDecorator('body')(
                 <Input type='textarea' rows={4} />
               )}
             </FormItem>
-            <FormItem label='Approved' {...layout}>
-              {form.getFieldDecorator('approved', { valuePropName: 'checked', ...rules.required })(
+            <FormItem label={<b>Decision</b>} {...layout}>
+              {form.getFieldDecorator('approved', { valuePropName: 'checked' })(
                 //  Valueprop is a selector for antd switches, it's in the docs.
-                <Checkbox size='large' />
+                <Switch checkedChildren='APPROVE' unCheckedChildren='DENY' />
               )}
             </FormItem>
             <FormItem label='Submit' {...layout}>

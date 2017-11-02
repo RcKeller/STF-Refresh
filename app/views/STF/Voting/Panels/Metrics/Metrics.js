@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 
 import { makeManifestByID, makeManifestReview } from '../../../../../selectors'
 
-// import { layout } from '../../../../../util/form'
+import { layout } from '../../../../../util/form'
 import api from '../../../../../services'
 
 import { Spin, Form, Row, Col, Slider, InputNumber, Input, Button, message } from 'antd'
@@ -149,17 +149,17 @@ class Metrics extends React.Component {
                 )}
               </FormItem>
             ))}
-            <FormItem label='Remarks (Public)' >
+            <FormItem label='Remarks (Public)' {...layout} >
               {form.getFieldDecorator('body')(
                 <Input type='textarea' rows={4} />
               )}
             </FormItem>
-            <br />
+            {/* <br />
             <FormItem label={<b>Overall Score</b>}>
               {form.getFieldDecorator('score')(
                 <SliderAndNumber disabled={!active} min={0} max={5} step={1} />
               )}
-            </FormItem>
+            </FormItem> */}
             {active &&
               <FormItem>
                 <Button size='large' type='primary'

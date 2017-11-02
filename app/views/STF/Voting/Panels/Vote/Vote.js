@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-// import { layout } from '../../../../../util/form'
+import { layout } from '../../../../../util/form'
 import api from '../../../../../services'
 
 import { makeManifestByID, makeManifestReview } from '../../../../../selectors'
@@ -98,30 +98,21 @@ class Vote extends React.Component {
     })
   }
   render (
-    { form, active, questions, manifest, review } = this.props
+    { form, active, questions, manifest } = this.props
   ) {
     return (
       <section>
         <br />
         {!manifest
           ? <Spin size='large' tip='Loading...' />
-          : <Form onSubmit={this.handleSubmit} layout='inline' >
-            {review &&
-              <div>
-                <h2>Final Vote:</h2>
-                {review.body
-                  ? <span><em>Your Notes</em>{`: ${review.body}`}</span>
-                  : <em>You didn't make any notes during proposal review.</em>
-                }
-              </div>
-            }
-            <FormItem label={<b>Final Vote</b>}>
+          : <Form onSubmit={this.handleSubmit}>
+            <FormItem label={<b>Final Vote</b>} {...layout} >
               {form.getFieldDecorator('approved', { valuePropName: 'checked' })(
                 //  Valueprop is a selector for antd switches, it's in the docs.
                 <Switch checkedChildren='APPROVE' unCheckedChildren='DENY' />
               )}
             </FormItem>
-            <FormItem label='Submit'>
+            <FormItem label='Submit' {...layout}>
               <Button size='large' type='primary'
                 htmlType='submit' ghost disabled={!active}
                 >Save Vote</Button>
