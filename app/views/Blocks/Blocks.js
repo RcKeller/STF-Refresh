@@ -9,7 +9,9 @@ import { connectRequest } from 'redux-query'
 import api from '../../services'
 
 import { Link } from 'react-router'
-import { Spin, Table } from 'antd'
+import { Spin, Table, Alert } from 'antd'
+
+const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
 import styles from './Blocks.css'
 // const renderTitle = (text, record) => <Link to={`/${record.number}`}>{record.title}</Link>
@@ -21,16 +23,17 @@ const columns = [
     render: (text, record) => <Link to={`/blocks/${record.number}`}>{record.title}</Link>
   },
   { title: 'Organization', dataIndex: 'organization', key: 'organization' },
-  { title: 'Status', dataIndex: 'status', key: 'status' }
+  { title: 'Status', dataIndex: 'status', key: 'status', width: 100 },
+  { title: 'Award', dataIndex: 'received', key: 'received', render: (title) => <span>{currency(title || 0)}</span>, width: 80 }
 ]
 
 @compose(
   connect(state => ({
-    blocks: state.db.blocks,
+    blocks: state.db.blocks || [],
     screen: state.screen
   })),
   connectRequest(() => api.get('blocks', {
-    select: ['year', 'number', 'title', 'organization', 'status'],
+    select: ['year', 'number', 'title', 'organization', 'status', 'received'],
     populate: [{ path: 'contacts', select: 'netID' }]
   }))
 )
@@ -40,6 +43,7 @@ class Blocks extends React.Component {
     screen: PropTypes.object
   }
   render ({ blocks, screen } = this.props) {
+    const total = blocks ? blocks.reduce((a, b) => a + b.received, 0) : 0
     return (
       <article className={styles['blocks']}>
         <Helmet title='Block Funding' />
@@ -76,7 +80,13 @@ class Blocks extends React.Component {
           : <Table dataSource={blocks} pagination={false}
             rowKey={record => record._id}
             size='middle'
-            columns={columns}
+            // columns={columns}
+            columns={screen.lessThan.medium ? [columns[0], columns[3]] : columns}
+            footer={() =>
+              <Alert type='info' banner showIcon={false}
+                message={<h2>{`Estimated Annual Funding: ${currency(total || 0)}`}</h2>}
+              />
+            }
             // columns={screen.lessThan.medium ? columns.slice(1, 3) : columns}
           />
         }

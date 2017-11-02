@@ -249,9 +249,6 @@ class Proposals extends React.Component {
       <article className={styles['article']}>
         <Helmet title='Proposals' />
         <h1>STF Proposals</h1>
-        <p>
-          All STF proposals from the past 2 years can be viewed here.
-        </p>
         {(myProposals && myProposals.length > 0) &&
           <Alert type='info' showIcon={false} banner
             style={{ padding: 8 }}
