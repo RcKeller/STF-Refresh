@@ -2,7 +2,7 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { Link } from 'react-router'
 
-import { Row, Col, Card, Avatar } from 'antd'
+import { Avatar } from 'antd'
 
 const leadership = [
   {
@@ -55,13 +55,6 @@ class ContactUs extends React.Component {
             </div>
             <p className={styles['duties']}>{p.duties}</p>
           </div>
-          // <Card key={i}
-          //   title={p.position}
-          //   extra={<a href={`mailto:${p.email}`}>{p.email}</a>}
-          //   >
-          //   <span>Current: <b>{p.name}</b></span>
-          //   <p>{p.duties}</p>
-          // </Card>
         ))}
       </article>
     )

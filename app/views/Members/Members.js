@@ -4,9 +4,95 @@ import Helmet from 'react-helmet'
 
 import { Table } from 'antd'
 
-const votingMembers = []
+const votingMembers = [{
+  name: 'Alexander Novokhodko',
+  representing: 'ASUW',
+  title: '',
+  from: '2017-2018',
+  bio: ''
+}, {
+  name: "Brian O'Rouke",
+  representing: 'ASUW',
+  title: '',
+  from: '2017-2018',
+  bio: ''
+}, {
+  name: 'Godwin Vincent',
+  representing: 'ASUW',
+  title: '',
+  from: '2017-2018',
+  bio: ''
+}, {
+  name: 'Abhishek Joshi',
+  representing: 'ASUW',
+  title: '',
+  from: '2017-2018',
+  bio: ''
+}, {
+  name: 'Satvik Vats',
+  representing: 'ASUW',
+  title: '',
+  from: '2017-2018',
+  bio: ''
+}, {
+  name: 'Abhijit Patil',
+  representing: 'ASUW',
+  title: '',
+  from: '2017-2018',
+  bio: ''
+}, {
+  name: 'Harsh Dev',
+  representing: 'GPSS',
+  title: '',
+  from: '2017-2018',
+  bio: ''
+}, {
+  name: 'Brad Copenhaver',
+  representing: 'GPSS',
+  title: '',
+  from: '2017-2018',
+  bio: ''
+}, {
+  name: 'Alvin Chen',
+  representing: 'GPSS',
+  title: '',
+  from: '2017-2018',
+  bio: ''
+}, {
+  name: 'Peder Digre',
+  representing: 'GPSS',
+  title: 'Chair, Student Activities Fee',
+  from: '2017-2018',
+  bio: ''
+}, {
+  name: 'Alec Meade',
+  representing: 'STF Chair',
+  title: '',
+  from: '2017-2018',
+  bio: ''
+}]
 
-const exOfficios = []
+const exOfficios = [{
+  name: 'Jennifer Ward',
+  title: 'UW Libraries',
+  from: '',
+  bio: ''
+}, {
+  name: 'Jeremy Caci',
+  title: 'Undergraduate Academic Affairs',
+  from: '',
+  bio: ''
+}, {
+  name: 'Tom Lewis',
+  title: 'UW-IT, Academic Experience',
+  from: '',
+  bio: ''
+}, {
+  name: 'Sharyl Burson',
+  title: 'Office of Planning & Budgeting',
+  from: '',
+  bio: ''
+}]
 
 const admins = [{
   name: 'Alec Meade',
@@ -36,7 +122,7 @@ const admins = [{
   name: 'Ryan Keller',
   title: 'Software Engineer',
   from: '2017-2018',
-  bio: 'Keller is an ex-researcher who led trauma research at the University of North Texas shortly before changing careers. After moving to Seattle he worked for UW-IT in Network Implementation and later Critical Infrastructure, developing automation systems and streamlining IT system deployments. Keller joined the STF administration last spring to share his interdisciplinary passion and improve the proposal process.',
+  bio: 'Keller is an Informatics student and former UW-IT employee with Network Implementation and Critical Infrastructure. He has developed automation systems for scaling infrastructure and IT services for UW-IT. Keller is a ex-academic from the University of North Texas, where he used to be a manager in a trauma research lab.',
   duties: 'The Web Developer is is responsible for maintaining, updating, and improving upon the STF’s web resources.'
 }]
 
@@ -54,7 +140,7 @@ class Members extends React.Component {
     )
     const representativeColumns = [
       { title: 'Name', dataIndex: 'name', key: 'name' },
-      { title: 'Representing', dataIndex: 'representing', key: 'representing', width: 120 },
+      { title: 'Representing', dataIndex: 'representing', key: 'representing' },
       { title: 'Title', dataIndex: 'title', key: 'title' },
       { title: 'From', dataIndex: 'from', key: 'from', width: 80 }
     ]

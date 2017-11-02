@@ -141,21 +141,50 @@ class Docket extends React.Component {
       width: 120
     }]
   }
-  handleToggle = (change, record, index) => {
+  // handleToggle = (change, record, index) => {
+  //   //  Change is an object that can be easily assigned, like { docket: true } or { voting: false }
+  //   //  We do this so we can accept a key/bool in one arg and use it in a one-liner, so we can share this toggle func.
+  //   const { api } = this.props
+  //   let { _id, docket } = record
+  //   docket = Object.assign(docket, change)
+  //   console.log('Change introduced', docket, record)
+  //   //  Update the manifest at the correct index.
+  //   const update = { manifests: (prev, next) => {
+  //     let newData = prev.slice()
+  //     newData[index].docket = docket
+  //     return newData
+  //   }}
+  //   api.patch('manifest', { docket }, { id: _id, update })
+  //   .then(message.success(('Docket updated!'), 10))
+  //   .catch(err => {
+  //     message.warning(`Failed to update - client error`)
+  //     console.warn(err)
+  //   })
+  // }
+  handleToggle = (change, record) => {
     //  Change is an object that can be easily assigned, like { docket: true } or { voting: false }
     //  We do this so we can accept a key/bool in one arg and use it in a one-liner, so we can share this toggle func.
     const { api } = this.props
-    let { _id, docket } = record
-    docket = Object.assign(docket, change)
-    console.log('Change introduced', docket, record)
+    let { _id: id, docket } = record
+    let body = { docket: Object.assign(docket, change) }
     //  Update the manifest at the correct index.
-    const update = { manifests: (prev, next) => {
-      let newData = prev.slice()
-      newData[index].docket = docket
-      return newData
-    }}
-    api.patch('manifest', { docket }, { id: _id, update })
-    .then(message.success(('Docket updated!'), 10))
+    console.log('Change introduced', record, change, docket, body)
+    const params = {
+      id,
+      // select: ['type', 'proposal', 'docket', 'decision'],
+      // populate: [
+      //   { path: 'proposal', select: ['title', 'year', 'number', 'status'] },
+      //   { path: 'decision', select: ['approved'] }
+      // ],
+      update: { manifests: (prev, next) => {
+        let newData = prev.slice()
+        let index = newData.findIndex(m => m._id === record._id)
+        if (index >= 0) Object.assign(newData[index].docket, change)
+        return newData
+      }}
+    }
+    api.patch('manifest', body, params)
+    .then(message.success('Docket updated!', 10))
     .catch(err => {
       message.warning(`Failed to update - client error`)
       console.warn(err)
@@ -176,7 +205,7 @@ class Docket extends React.Component {
         {!manifests
           ? <Spin size='large' tip='Loading...' />
           : <Table dataSource={manifests} sort
-            size={screen.lessThan.medium ? 'small' : 'middle'}
+            size='title'
             columns={screen.lessThan.medium ? columns.filter(col => col.title !== 'Title') : columns}
             rowKey={record => record._id}
           />
