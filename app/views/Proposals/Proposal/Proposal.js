@@ -21,7 +21,7 @@ import Budgeting from './Budgeting/Budgeting'
 import NextSteps from './NextSteps/NextSteps'
 import Update from './Update/Update'
 //  STF Memeber and admin views
-// import Reviews from './Reviews/Reviews'
+import Metrics from './Metrics/Metrics'
 import Settings from './Settings/Settings'
 
 import styles from './Proposal.css'
@@ -59,6 +59,21 @@ connectRequest will force a query if there's a mismatch.
       { path: 'comments', populate: { path: 'user' } }
     ]
   }))
+  // connectRequest(props => api.get('proposal', {
+  //   force: true,
+  //   query: {
+  //     year: props.params.year,
+  //     number: props.params.number
+  //   },
+  //   // Proposal reporting, metrics and decisions are tied to manifests, which are individual "asks"
+  //   populate: [
+  //     'contacts', 'body', 'comments',
+  //     { path: 'manifests', populate: { path: 'items' } },
+  //     { path: 'manifests', populate: { path: 'report', populate: { path: 'items' } } },
+  //     { path: 'manifests', populate: { path: 'decision' } },
+  //     { path: 'comments', populate: { path: 'user' } }
+  //   ]
+  // }))
 )
 class Proposal extends React.Component {
   static propTypes = {
@@ -101,11 +116,11 @@ class Proposal extends React.Component {
               </TabPane>
             }
             {/* FIXME: This component is failing w/ actual data */}
-            {/* {stf &&
-              <TabPane disabled tab={<span>Reviews (<em>STF-Only</em>)</span>} key='6' className={styles['tab-pane']}>
-                <Reviews />
+            {stf &&
+              <TabPane tab='Metrics' key='6' className={styles['tab-pane']}>
+                <Metrics proposal={id} />
               </TabPane>
-            } */}
+            }
             {admin &&
               <TabPane tab={<span>Settings (<em>Admin-Only</em>)</span>} key='7' className={styles['tab-pane']}>
                 <Settings />

@@ -15,11 +15,6 @@ const votingMembers = [{
   from: '2017-2018',
   bio: ''
 }, {
-  name: 'Godwin Vincent',
-  representing: 'ASUW',
-  from: '2017-2018',
-  bio: ''
-}, {
   name: 'Abhishek Joshi',
   representing: 'ASUW',
   from: '2017-2018',
@@ -74,11 +69,6 @@ const exOfficios = [{
 }, {
   name: 'Tom Lewis',
   representing: 'UW-IT, Academic Experience',
-  from: '',
-  bio: ''
-}, {
-  name: 'Sharyl Burson',
-  representing: 'Office of Planning & Budgeting',
   from: '',
   bio: ''
 }]

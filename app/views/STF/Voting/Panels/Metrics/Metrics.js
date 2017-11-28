@@ -149,7 +149,7 @@ class Metrics extends React.Component {
                 )}
               </FormItem>
             ))}
-            <FormItem label='Remarks (Public)' {...layout} >
+            <FormItem label='Remarks' {...layout} >
               {form.getFieldDecorator('body')(
                 <Input type='textarea' rows={4} />
               )}

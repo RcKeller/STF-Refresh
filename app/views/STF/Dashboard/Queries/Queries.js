@@ -184,7 +184,7 @@ class Queries extends React.Component {
           </FormItem>
         </Form>
         <br />
-        <Inspector data={querytool} />
+        {window ? <Inspector data={querytool} /> : <span>Loading...</span>}
       </div>
     )
   }
