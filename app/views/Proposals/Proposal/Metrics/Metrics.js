@@ -12,8 +12,11 @@ import api from '../../../../services'
 import { Spin, Tabs, Button } from 'antd'
 const TabPane = Tabs.TabPane
 
+import Review from './Review/Review'
+
 @compose(
   connect(state => ({
+    asked: state.db.proposal.asked,
     manifests: state.db.proposal ? state.db.proposal.manifests : [],
     reviews: state.db.reviews || [],
     user: state.user
@@ -25,11 +28,11 @@ const TabPane = Tabs.TabPane
     populate: ['author']
   }))
 )
-class Proposal extends React.Component {
+class Metrics extends React.Component {
   static propTypes = {
     proposal: PropTypes.string
   }
-  render ({ proposal, manifests, reviews } = this.props) {
+  render ({ asked, manifests, reviews } = this.props) {
     //  Merge reviews into proposal.manifests
     manifests = manifests.map(m => ({ ...m, reviews: [] }))
     for (let r of reviews) {
@@ -50,10 +53,13 @@ class Proposal extends React.Component {
               {_.capitalize(m.title || 'Untitled')}
             </span>}
             >
-              <div>
+              <Review {...m} asked={asked} />
+              {/*
+                <div>
                 <h1>{_.capitalize(m.title || 'Untitled Budget')}</h1>
-                <span>{m._id}</span>
+                {/* <span>{m._id}</span>
               </div>
+              */}
             </TabPane>
           ))}
         </Tabs>
@@ -62,4 +68,4 @@ class Proposal extends React.Component {
   }
 }
 
-export default Proposal
+export default Metrics
