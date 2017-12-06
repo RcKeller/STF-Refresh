@@ -21,7 +21,7 @@ import Budgeting from './Budgeting/Budgeting'
 import NextSteps from './NextSteps/NextSteps'
 import Update from './Update/Update'
 //  STF Memeber and admin views
-import Metrics from './Metrics/Metrics'
+import Committee from './Committee/Committee'
 import Settings from './Settings/Settings'
 
 import styles from './Proposal.css'
@@ -115,10 +115,9 @@ class Proposal extends React.Component {
                 <NextSteps />
               </TabPane>
             }
-            {/* FIXME: This component is failing w/ actual data */}
             {stf &&
-              <TabPane tab='Metrics' key='6' className={styles['tab-pane']}>
-                <Metrics proposal={id} />
+              <TabPane tab='Committee' key='6' className={styles['tab-pane']}>
+                <Committee proposal={id} />
               </TabPane>
             }
             {admin &&

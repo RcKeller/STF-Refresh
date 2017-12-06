@@ -9,10 +9,12 @@ import _ from 'lodash'
 
 import api from '../../../../services'
 
-import { Spin, Tabs, Button } from 'antd'
+import { Tabs } from 'antd'
 const TabPane = Tabs.TabPane
 
 import Review from './Review/Review'
+
+const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
 @compose(
   connect(state => ({
@@ -28,7 +30,7 @@ import Review from './Review/Review'
     populate: ['author']
   }))
 )
-class Metrics extends React.Component {
+class Committee extends React.Component {
   static propTypes = {
     proposal: PropTypes.string
   }
@@ -51,6 +53,8 @@ class Metrics extends React.Component {
               {`${_.capitalize(m.type || '')} Budget (#${++i})`}
               <br />
               {_.capitalize(m.title || 'Untitled')}
+              <br />
+              {`${currency(m.total)} (${parseInt(m.total / asked * 100)}%)`}
             </span>}
             >
               <Review {...m} asked={asked} />
@@ -68,4 +72,4 @@ class Metrics extends React.Component {
   }
 }
 
-export default Metrics
+export default Committee
