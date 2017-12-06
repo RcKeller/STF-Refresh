@@ -159,12 +159,18 @@ class Settings extends React.Component {
   render ({ form, enums, id } = this.props) {
     return (
       <section>
-        <h1>Proposal Settings</h1>
-        <h6>Internal use only.</h6>
         <Alert type='warning' showIcon banner
-          message={<span><b>WARNING: For major changes only.</b><br />Revise original content at <Link to={`/edit/${id}`}>{` https://uwstf.org/edit/${id}`}</Link></span>}
-          description='Changes made here go into production immediately. Be advised that making such changes during daytime is generally poor practice. Do not tab through this section.'
+          message='Proposal Settings'
+          description={<div>
+            <h6>WARNING: For major changes only.</h6>
+            <p>
+              Revise original content at <Link to={`/edit/${id}`}>{` https://uwstf.org/edit/${id}`}</Link>
+            </p><p>
+              Changes made here go into production immediately. Be advised that making such changes during daytime is generally poor practice. Do not tab through this section.'
+            </p>
+          </div>}
         />
+        <br />
         <Form>
           <FormItem label='Year' {...layout} >
             {form.getFieldDecorator('year')(

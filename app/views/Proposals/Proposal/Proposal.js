@@ -18,7 +18,6 @@ import View from './View/View'
 import Endorsements from './Endorsements/Endorsements'
 //  Contact view
 import Budgeting from './Budgeting/Budgeting'
-import NextSteps from './NextSteps/NextSteps'
 import Update from './Update/Update'
 //  STF Memeber and admin views
 import Committee from './Committee/Committee'
@@ -106,22 +105,17 @@ class Proposal extends React.Component {
               </TabPane>
             }
             {(author || admin) &&
-              <TabPane tab='Contact Info' key='4' className={styles['tab-pane']}>
+              <TabPane tab='Update' key='4' className={styles['tab-pane']}>
                 <Update />
               </TabPane>
             }
-            {(author || stf) &&
-              <TabPane tab='Next Steps' key='5' className={styles['tab-pane']}>
-                <NextSteps />
-              </TabPane>
-            }
             {stf &&
-              <TabPane tab='Committee' key='6' className={styles['tab-pane']}>
+              <TabPane tab='Decisions' key='5' className={styles['tab-pane']}>
                 <Committee proposal={id} />
               </TabPane>
             }
             {admin &&
-              <TabPane tab={<span>Settings (<em>Admin-Only</em>)</span>} key='7' className={styles['tab-pane']}>
+              <TabPane tab={<span>Settings (<em>Admin-Only</em>)</span>} key='6' className={styles['tab-pane']}>
                 <Settings />
               </TabPane>
             }

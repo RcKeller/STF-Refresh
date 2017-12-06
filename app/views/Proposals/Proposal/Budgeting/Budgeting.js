@@ -32,8 +32,6 @@ class Budgeting extends React.Component {
     }, [])
     return (
       <section>
-        <h1>Budgeting</h1>
-        {budget && <h3>{`Organization Budget Code: ${budget}`}</h3>}
         {approvedManifests.length <= 0 &&
           <em>This proposal has not received funding, so advanced budgeting tools are unavailable for now.</em>
         }
@@ -53,11 +51,6 @@ class Budgeting extends React.Component {
           <TabPane tab='Partial Budgets' key='3'>
             <Partial />
           </TabPane>
-          {/* {stf && stf.admin &&
-            <TabPane tab={<span>Auditing (<em>Admin-Only</em>)</span>} key='4'>
-              <Audit />
-            </TabPane>
-          } */}
         </Tabs>
       </section>
     )

@@ -45,8 +45,6 @@ class Committee extends React.Component {
     console.warn('MANIFESTS', manifests)
     return (
       <section>
-        <h1>Metrics and Reviews</h1>
-        <h6>Internal use only.</h6>
         <Tabs>
           {manifests.map((m, i) => (
             <TabPane key={m._id} tab={<span>
@@ -58,12 +56,6 @@ class Committee extends React.Component {
             </span>}
             >
               <Review {...m} asked={asked} />
-              {/*
-                <div>
-                <h1>{_.capitalize(m.title || 'Untitled Budget')}</h1>
-                {/* <span>{m._id}</span>
-              </div>
-              */}
             </TabPane>
           ))}
         </Tabs>

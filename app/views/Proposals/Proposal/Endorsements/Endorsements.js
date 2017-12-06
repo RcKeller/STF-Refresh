@@ -29,8 +29,10 @@ class Endorsements extends React.Component {
   render ({ endorsements, endorsed, decisionIssued, user } = this.props) {
     return (
       <div>
-        <h1>Community Endorsements</h1>
-        <p>Anyone with a UW NetID can endorse a proposal! We highly encourage our proposal authors to exemplify their community engagement by having their proposals endorsed by students and staff alike. You may endorse as many proposals as you like.</p>
+        <Alert type='info' showIcon={false} banner
+          message='Community Endorsements'
+          description='Anyone with a UW NetID can endorse a proposal! We highly encourage our proposal authors to exemplify their community engagement by having their proposals endorsed by students and staff alike. You may endorse as many proposals as you like.'
+        />
         {endorsed
           ? <em>
             <h4>You have already endorsed this proposal.</h4>
@@ -44,7 +46,7 @@ class Endorsements extends React.Component {
               />
               <Endorse />
             </div>
-            : <h4>This proposal cannot be endorsed after a committee decision.</h4>
+            : <h3>This proposal cannot be endorsed after a committee decision.</h3>
           )
         }
         {endorsements && <hr />}

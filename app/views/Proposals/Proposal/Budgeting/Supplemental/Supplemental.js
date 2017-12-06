@@ -106,11 +106,17 @@ class Supplemental extends React.Component {
     const total = manifest && manifest.total
     return (
       <section>
-        <h1>Request Supplemental</h1>
-        <h6>For proposals that face an unforseen and minor increase in budgetary needs</h6>
-        <Alert type='warning' showIcon banner
-          message='Important Delinitations'
-          description='The STF Committee will not consider Supplemental requests which ask for funding and/or technology outside of the range of the original proposal. If you have underspent, submit a report instead.'
+        <Alert type='info' showIcon banner
+          message='Request Supplemental'
+          description={<div>
+            <p>
+              For proposals that face an unforseen and minor increase in budgetary needs.
+            </p>
+            <b>Important Delinitation: </b>
+            <p>
+              The STF Committee will not consider Supplemental requests which ask for funding and/or technology outside of the range of the original proposal. If you have underspent, submit a report instead.
+            </p>
+          </div>}
         />
         <p>
           Welcome to the Request Supplemental page. The purpose of a Supplemental is to request additional funding, additional technology, and/or modify specific details regarding the technology listed in the original proposal, <b>due to needs due to circumstances that could not have been reasonably anticipated.</b>

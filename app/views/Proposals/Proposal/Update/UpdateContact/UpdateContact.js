@@ -68,7 +68,7 @@ class UpdateContact extends React.Component {
     // const unAuthorized = !self
     return (
       <Form layout='inline' onSubmit={this.handleContact}>
-        <h3>{contact.role ? `${_.capitalize(contact.role)} Contact` : 'Misc Contact'}</h3>
+        <h4>{contact.role ? `${_.capitalize(contact.role)} Contact` : 'Misc Contact'}</h4>
         <FormItem hasFeedback={feedback(form, 'name')} help={help(form, 'name')} >
           {form.getFieldDecorator('name', rules.required)(
             <Input disabled={unAuthorized} prefix={<Icon type='edit' style={jss.icon} />} placeholder='Name' />

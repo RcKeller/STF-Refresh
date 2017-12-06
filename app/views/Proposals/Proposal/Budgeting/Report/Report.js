@@ -8,7 +8,7 @@ import api from '../../../../../services'
 import { layout, feedback, help, rules, disableSubmit } from '../../../../../util/form'
 import _ from 'lodash'
 
-import { Form, Input, message } from 'antd'
+import { Form, Input, Icon, Alert, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
@@ -42,6 +42,8 @@ const columns = [{
   connect(
     (state, props) => ({
       proposal: state.db.proposal._id,
+      //  Budget = org budget code, != the individual budget
+      orgCode: state.db.proposal.budget,
       //  Use the most recent report (target document) and recent manifest (initial data)
       manifest: state.db.proposal.manifests[props.indexInStore],
       report: state.db.proposal.manifests[props.indexInStore].report || {},
@@ -58,6 +60,7 @@ class Report extends React.Component {
     form: PropTypes.object,
     api: PropTypes.object,
     proposal: PropTypes.string, //  _id
+    budget: PropTypes.string,
     user: PropTypes.string,
     manifest: PropTypes.object,
     report: PropTypes.object
@@ -110,7 +113,7 @@ class Report extends React.Component {
     })
   }
 
-  render ({ form, awardNumber, manifest, report } = this.props) {
+  render ({ form, awardNumber, orgCode, manifest, report } = this.props) {
     //  Use the associated manifest for initial data if report has not been created.
     //  Make sure to omit mongo data, preventing the original from being mutated.
     let data = (report && report.items)
@@ -120,8 +123,11 @@ class Report extends React.Component {
     const total = report && report.total
     return (
       <section>
-        <h1>Expense Reporting</h1>
-        <h6>Record your expenditures - it's mandatory.</h6>
+        <Alert type='info' showIcon banner
+          message='Expense Reporting'
+          description='Recording expenditures is mandatory for all awards.'
+        />
+        <br />
         <p>To help the Office of Planning & Budgeting, we ask that you report the expenditures associated with any awards you may have received. OP&B uses this for accounting purposes. Some key elements to point out include:</p>
         <p>
           <ul style={{
@@ -142,6 +148,10 @@ class Report extends React.Component {
             </li>
           </ul>
         </p>
+        {orgCode && <h6>
+          <Icon type='exclamation-circle-o' />
+          {` Your Organization Code: ${orgCode}`}
+        </h6>}
         <p>
           If you have any questions, please reach out to the operations manager at <a href='mailto:techfee@uw.edu'>techfee@uw.edu</a>.
         </p>
