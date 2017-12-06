@@ -9,7 +9,7 @@ import api from '../../../../services'
 
 import { usersOnCommittee, usersNotOnCommittee } from '../../../../selectors'
 
-import { Spin, Table, Checkbox, AutoComplete, Tooltip, message } from 'antd'
+import { Spin, Table, Checkbox, AutoComplete, Tooltip, Alert, message } from 'antd'
 const Option = AutoComplete.Option
 
 const filterOption = (inputValue, option) =>
@@ -114,9 +114,10 @@ class Membership extends React.Component {
   ) {
     return (
       <section>
-        <h1>Committee Membership</h1>
-        <h6>WARNING: Reviews are tied to author accounts</h6>
-        <p>Adjusting membership will alter the visibility of their voting record.</p>
+        <Alert type='info' showIcon banner
+          message='Add and Configure Members'
+          description='WARNING: Reviews are tied to author accounts! Adjusting membership will alter the visibility of their voting record. Members can be added via the textbox in the footer.'
+        />
         {!committee
           ? <Spin size='large' tip='Loading...' />
           : <Table dataSource={committee} sort pagination={false}

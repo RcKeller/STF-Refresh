@@ -14,10 +14,8 @@
 
 .tabbed-article {
   @apply --page;
+  margin-top: 16px;
   padding: 0;
-  @media (min-width: 992px) {
-    padding: 0;
-  }
   background-color: inherit;
 }
 

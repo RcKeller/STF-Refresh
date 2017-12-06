@@ -1,5 +1,5 @@
 @import '../../../css/layout';
 
 .article {
-  @apply --page;
+  @apply --slim-page;
 }

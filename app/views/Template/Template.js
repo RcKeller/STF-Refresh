@@ -63,7 +63,8 @@ const keyserver = 'http://itconnect.uw.edu/wares/acquiring-software-and-hardware
   nextLocation: state.routing.locationBeforeTransitions
     ? state.routing.locationBeforeTransitions.pathname
     : '1',
-  stf: (state.user && state.user.stf) || {}
+  stf: (state.user && state.user.stf) || {},
+  year: state.config.year
 }))
 class Template extends React.Component {
   static propTypes = {
@@ -87,7 +88,7 @@ class Template extends React.Component {
     }
   }
   render (
-    { children, screen, nextLocation, router, stf } = this.props,
+    { children, screen, nextLocation, router, stf, year } = this.props,
     { open } = this.state
   ) {
     // React-router is separated from redux store - too heavy to persist.
@@ -170,7 +171,7 @@ class Template extends React.Component {
                     </Item>
                     {stf.admin &&
                       <ItemGroup key='g1' title='Admin Tools'>
-                        <Item key='/docket'>
+                        <Item key={`/docket/${year}`}>
                           <Icon type='schedule' /><span className='nav-text'>Docket</span>
                         </Item>
                         <Item key='/config'>

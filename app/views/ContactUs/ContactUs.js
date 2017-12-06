@@ -2,7 +2,7 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { Link } from 'react-router'
 
-import { Avatar } from 'antd'
+import { Avatar, Row, Col } from 'antd'
 
 const leadership = [
   {
@@ -45,17 +45,21 @@ class ContactUs extends React.Component {
         <p>
           We're here if you need us. Before reaching out, please consider learning more <Link to='/about'>about the STF</Link> first, and then viewing our <Link to='/faq'>Frequently Asked Questions</Link>. Otherwise, feel free to contact us at any of us below. If in doubt, contact the chair.
         </p>
-        {leadership.map((p, i) => (
-          <div key={i}>
-            <Avatar shape='square' size='large' icon='user' />
-            <div className={styles['avatar-text']}>
-              <b>{p.position} | <em>{p.name}</em></b>
-              <br />
-              <a href={`mailto:${p.email}`}>{p.email}</a>
+        {/* <Row type='flex' justify='space-between' gutter={32}> */}
+          {leadership.map((p, i) => (
+            // <Col xs={24} lg={12}>
+            <div>
+              <Avatar shape='square' size='large' icon='user' />
+              <div className={styles['avatar-text']}>
+                <b>{p.position} | <em>{p.name}</em></b>
+                <br />
+                <a href={`mailto:${p.email}`}>{p.email}</a>
+              </div>
+              <p className={styles['duties']}>{p.duties}</p>
             </div>
-            <p className={styles['duties']}>{p.duties}</p>
-          </div>
-        ))}
+            //  </Col>
+          ))}
+        {/* </Row> */}
       </article>
     )
   }

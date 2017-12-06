@@ -146,6 +146,13 @@ export const manifestsByProposal = ({ db }) => {
   ? db.manifests.filter(m => m.proposal).sort(sortManifestsByProposal)
   : []
 }
+
+export const manifestsOnDocket = ({ db }) => {
+  return Array.isArray(db.docket)
+  ? db.docket.filter(m => m.proposal).sort(sortManifestsByProposal)
+  : []
+}
+
 //  NOTE: This selector isn't in use, because a mongo query was vastly more efficient.
 // export const manifestsOnDocket = createSelector(
 //   [manifestsByProposal],

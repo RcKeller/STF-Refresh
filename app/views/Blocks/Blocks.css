@@ -1,7 +1,7 @@
 @import '../../css/layout';
 
 .blocks {
-  @apply --page;
+  @apply --slim-page;
   /*Cut all padding for small, table has its own*/
   @media (max-width: 768px) {
     padding: 0;

@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Helmet from 'react-helmet'
 
-import { Table } from 'antd'
+import { Table, Row, Col } from 'antd'
 
 const votingMembers = [{
   name: 'Alexander Novokhodko',
@@ -131,7 +131,8 @@ class Members extends React.Component {
     return (
       <article className={styles['about']}>
         <Helmet title='About' />
-        <div>
+        <Row type="flex" justify="space-between" gutter={16}>
+         <Col xs={24} lg={12}>
           <h1>Voting Members</h1>
           <p>
             Voting members are appointed by the <a href='http://asuw.org'>Associated Students of the University of Washington</a>, and the <a href='http://depts.washington.edu/gpss/home'>Graduate and Professional Student Senate</a>. In addition, the STF chair, elected by the committe, is also a voting member.
@@ -141,14 +142,14 @@ class Members extends React.Component {
               dataSource={votingMembers}
               columns={screen.lessThan.medium ? representativeColumns.slice(0, 2) : representativeColumns}
               rowKey={record => record.name}
-              expandedRowRender={expandedRowRender}
+              // expandedRowRender={expandedRowRender}
               // defaultExpandAllRows={screen.greaterThan.medium}
               pagination={false}
               size='middle'
             />
           }
-        </div>
-        <div>
+        </Col>
+        <Col xs={24} lg={12}>
           <h1>Ex-Officios</h1>
           <p>Ex-Officios are non-voting members that represent other campus institutions, like UW-IT, Learning Technologies, Library Programs, so on and forth.</p>
           {exOfficios.length > 0 &&
@@ -156,14 +157,12 @@ class Members extends React.Component {
               dataSource={exOfficios}
               columns={screen.lessThan.medium ? representativeColumns.slice(0, 2) : representativeColumns}
               rowKey={record => record.name}
-              expandedRowRender={expandedRowRender}
+              // expandedRowRender={expandedRowRender}
               // defaultExpandAllRows={screen.greaterThan.medium}
               pagination={false}
               size='middle'
             />
           }
-        </div>
-        <div>
           <h1>Administration</h1>
           <p>The Staff and advisors that manage committee operations.</p>
           {admins.length > 0 &&
@@ -171,13 +170,14 @@ class Members extends React.Component {
               dataSource={admins}
               columns={screen.lessThan.medium ? adminColumns.slice(0, 2) : adminColumns}
               rowKey={record => record.name}
-              expandedRowRender={expandedRowRender}
+              // expandedRowRender={expandedRowRender}
               // defaultExpandAllRows={screen.greaterThan.medium}
               pagination={false}
               size='middle'
             />
           }
-        </div>
+        </Col>
+        </Row>
       </article>
     )
   }

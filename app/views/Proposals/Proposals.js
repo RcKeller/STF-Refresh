@@ -248,7 +248,7 @@ class Proposals extends React.Component {
     return (
       <article className={styles['article']}>
         <Helmet title='Proposals' />
-        <h1>STF Proposals</h1>
+        <h1 className={styles['heading']}>Student Technology Proposals</h1>
         {(myProposals && myProposals.length > 0) &&
           <Alert type='info' showIcon={false} banner
             style={{ padding: 8 }}
@@ -279,7 +279,7 @@ class Proposals extends React.Component {
             rowKey={record => record._id}
             dataSource={proposals}
             sort
-            size={screen.lessThan.medium ? 'small' : 'middle'}
+            size={screen.lessThan.medium ? 'small' : 'large'}
             columns={columns}
             footer={submissions
               ? () => <Alert type='warning' banner message={<em>Any campus department or org can submit a proposal with a budget code. <b><Link to='/create'>Click Here!</Link></b></em>} />

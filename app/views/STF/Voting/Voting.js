@@ -9,7 +9,7 @@ import { connectRequest } from 'redux-query'
 import api from '../../../services'
 // import { manifestsOnDocket } from '../../../selectors'
 
-import { Spin, Tabs, Alert, Button, Tooltip } from 'antd'
+import { Spin, Tabs, Button, Tooltip } from 'antd'
 const TabPane = Tabs.TabPane
 
 import Panels from './Panels/Panels'
@@ -54,14 +54,6 @@ class Voting extends React.Component {
           : <Tabs className='tab-container' type='card'
             tabBarExtraContent={<Button type='ghost' icon='reload' onClick={forceRequest}>Refresh</Button>}
             >
-            <TabPane tab='Overview' key='1' className={styles['tab-pane']}>
-              <h1>Reviews & Voting</h1>
-              <p>Instructions here.</p>
-              <Alert type='info' banner showIcon={false}
-                message='Major Changes for Ex-Officios'
-                description='Permissions have been expanded to allow Ex-Officios to review proposals, sans final voting. Officios also have read access to more content in general. We are grateful for their involvement and want the web platform to reflect that.'
-              />
-            </TabPane>
             {docket.map((manifest, i) => (
               <TabPane key={manifest._id} className={styles['tab-pane']}
                 tab={

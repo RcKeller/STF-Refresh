@@ -1,5 +1,9 @@
 @import '../../css/layout';
 
 .faq {
-  @apply --page;
+  @apply --slim-page;
+  padding: 0 !important;
+}
+.heading {
+  padding: 16px;
 }

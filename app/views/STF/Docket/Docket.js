@@ -29,13 +29,17 @@ import styles from './Docket.css'
 
 @compose(
   connect(
-    state => ({
-      manifests: manifestsByProposal(state),
-      screen: state.screen
-    }),
+    (state, props) => {
+      const year = parseInt(props.params.year)
+      return {
+        manifests: manifestsByProposal(state)
+          .filter(m => m.proposal && m.proposal.year === year),
+        screen: state.screen
+      }
+    },
     dispatch => ({ api: bindActionCreators(api, dispatch) })
 ),
-  connectRequest(() => api.get('manifests', {
+  connectRequest(props => api.get('manifests', {
     select: ['type', 'proposal', 'docket', 'decision'],
     populate: [
       { path: 'proposal', select: ['title', 'year', 'number', 'status'] },
@@ -173,6 +177,7 @@ class Docket extends React.Component {
     { columns } = this,
     { manifests, screen } = this.props
   ) {
+    console.log('DOCKET PROPS', this.props)
     return (
       <article className={styles['article']}>
         <Helmet title='Docket' />
@@ -187,6 +192,7 @@ class Docket extends React.Component {
             size='title'
             columns={screen.lessThan.medium ? columns.filter(col => col.title !== 'Title') : columns}
             rowKey={record => record._id}
+            pagination={false}
           />
         }
       </article>

@@ -52,19 +52,21 @@ const authorContent = [
 import styles from './FAQ.css'
 class FAQ extends React.Component {
   render () {
+    // To re-enable auto-open:
+    // defaultActiveKey={Object.keys(generalContent)}
     return (
       <article className={styles['faq']}>
         <Helmet title='FAQ' />
-        <h1>General Questions</h1>
-        <Collapse bordered={false} defaultActiveKey={Object.keys(generalContent)} >
+        <h1 className={styles['heading']}>General Questions</h1>
+        <Collapse bordered={false}>
           {generalContent.map((qa, i) => (
             <Panel header={qa.q} key={i}>
               {qa.a}
             </Panel>
         ))}
         </Collapse>
-        <h1>Proposal Authors</h1>
-        <Collapse bordered={false} defaultActiveKey={Object.keys(authorContent)} >
+        <h1 className={styles['heading']}>Proposal Authors</h1>
+        <Collapse bordered={false}>
           {authorContent.map((qa, i) => (
             <Panel header={qa.q} key={i}>{qa.a}</Panel>
           ))}

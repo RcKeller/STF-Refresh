@@ -11,7 +11,7 @@ import { connectRequest } from 'redux-query'
 import api from '../../../../services'
 
 import { Link } from 'react-router'
-import { Spin, Table, Progress, Badge, Input, Icon } from 'antd'
+import { Spin, Table, Progress, Badge, Input, Icon, Alert } from 'antd'
 
 import SubTable from './SubTable/SubTable'
 
@@ -314,9 +314,10 @@ class Budgeting extends React.Component {
     return (
       <section>
         <Helmet title='Dashboard' />
-        <h2>Budgeting Dashboard</h2>
-        <p>Check STF awards and expense reporting here. As we migrate away from text-based auditing towards a new standard involving itemized expenses, this will help admin staff cross-reference reports.</p>
-        <p>Note, our Slackbot Calcifer will automatically log any overexpenditures reported.</p>
+        <Alert type='info' banner showIcon={false}
+          message='Budgeting Dashboard'
+          description='Check STF awards and expense reporting here. As we migrate away from text-based auditing towards a new standard involving itemized expenses, this will help admin staff cross-reference reports. Note, our Slackbot Calcifer will automatically log any overexpenditures reported.'
+        />
         {!awards
             ? <Spin size='large' tip='Loading...' />
             : <Table

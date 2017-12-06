@@ -1,7 +1,7 @@
 @import '../../css/layout';
 
 .contact {
-  @apply --page;
+  @apply --slim-page;
 }
 
 .contact-block {
