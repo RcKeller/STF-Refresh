@@ -6,6 +6,8 @@ import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
+import _ from 'lodash'
+
 import api from '../../../services'
 // import { manifestsOnDocket } from '../../../selectors'
 
@@ -13,6 +15,19 @@ import { Spin, Tabs, Button, Tooltip } from 'antd'
 const TabPane = Tabs.TabPane
 
 import Panels from './Panels/Panels'
+
+// ${manifest.type !== 'original' ? `(${manifest.type[0].toUpperCase()})` : ''}
+const manifestType = (type) => {
+  switch (type) {
+    case 'original':
+      return _.capitalize(type)
+    case 'partial':
+      return _.capitalize(type)
+    case 'supplemental':
+      return _.capitalize(type)
+  }
+  return null
+}
 
 import styles from './Voting.css'
 @compose(
@@ -34,7 +49,8 @@ import styles from './Voting.css'
       'items',
       'decision',
       { path: 'reviews', populate: { path: 'author', populate: ['stf'] } },
-      { path: 'proposal', populate: { path: 'body' } }
+      { path: 'proposal', populate: { path: 'body' } },
+      { path: 'proposal', populate: { path: 'endorsements' } }
     ],
     force: true
   }))
@@ -47,22 +63,24 @@ class Voting extends React.Component {
     { user, docket, forceRequest } = this.props
   ) {
     return (
-      <article className={styles['tabbed-article']}>
+      <article className={styles['article']}>
         <Helmet title='Voting' />
         {!docket
           ? <Spin size='large' tip='Loading...' />
-          : <Tabs className='tab-container' type='card'
-            tabBarExtraContent={<Button type='ghost' icon='reload' onClick={forceRequest}>Refresh</Button>}
-            >
+          : <Tabs size='small' tabPosition='left'>
             {docket.map((manifest, i) => (
-              <TabPane key={manifest._id} className={styles['tab-pane']}
-                tab={
-                  <Tooltip placement='bottom' title={manifest.proposal.title}>{`
-                    ${manifest.proposal.year}-${manifest.proposal.number}
-                    ${manifest.type !== 'original' ? `(${manifest.type[0].toUpperCase()})` : ''}
-                  `}
-                  </Tooltip>
-                }>
+              // <TabPane key={manifest._id} tab={
+              //   <span>{manifest.proposal.title}</span>
+              // }>
+              <TabPane key={manifest._id} tab={
+                <Tooltip placement='rightTop' title={manifest.proposal.title}>
+                  <div className={styles['tab-title']}>
+                    <span>{`${manifest.proposal.year}-${manifest.proposal.number}`}</span>
+                    <br />
+                    {manifest.type !== 'original' && <small>{_.capitalize(manifest.type)}</small>}
+                  </div>
+                </Tooltip>
+              }>
                 <Panels index={i} id={manifest._id} />
               </TabPane>
             ))}

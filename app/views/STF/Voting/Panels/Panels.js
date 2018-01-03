@@ -11,6 +11,7 @@ import { Col, Row, Spin, Tabs, Tooltip } from 'antd'
 const TabPane = Tabs.TabPane
 
 import Summary from './Summary/Summary'
+import Endorsements from './Endorsements/Endorsements'
 import Budget from './Budget/Budget'
 import Scores from './Scores/Scores'
 import Metrics from './Metrics/Metrics'
@@ -76,24 +77,26 @@ class Panels extends React.Component {
               </Col>
             </Row>
             <hr />
-            <hr />
             <Tabs defaultActiveKey='1'>
               <TabPane tab='Summary' key='1'>
                 <Summary id={id} />
               </TabPane>
-              <TabPane tab='Budget' key='2'>
+              <TabPane tab='Endorsements' key='2'>
+                <Endorsements id={id} />
+              </TabPane>
+              <TabPane tab='Budget' key='3'>
                 <Budget id={id} />
               </TabPane>
-              <TabPane tab={<Tooltip placement='top' title='View committee votes & metrics'>Scores</Tooltip>} key='3'>
+              <TabPane tab={<Tooltip placement='top' title='View committee votes & metrics'>Scores</Tooltip>} key='4'>
                 <Scores id={id} />
               </TabPane>
-              <TabPane disabled={!metrics && !voting && !decisions} tab={<Tooltip placement='top' title='Score this proposal by merits.'>Metrics</Tooltip>} key='4'>
+              <TabPane disabled={!metrics && !voting && !decisions} tab={<Tooltip placement='top' title='Score this proposal by merits.'>Metrics</Tooltip>} key='5'>
                 <Metrics id={id} />
               </TabPane>
-              <TabPane disabled={!voting || !stf.member} tab={<Tooltip placement='top' title='Make an official vote to approve or deny.'>Vote (<em>Members</em>)</Tooltip>} key='5'>
+              <TabPane disabled={!voting || !stf.member} tab={<Tooltip placement='top' title='Make an official vote to approve or deny.'>Vote (<em>Members</em>)</Tooltip>} key='6'>
                 <Vote id={id} />
               </TabPane>
-              <TabPane disabled={!decisions || !stf.admin} tab={<Tooltip placement='top' title='Admins may issue a decision here.'>Decision (<em>Admins</em>)</Tooltip>} key='6'>
+              <TabPane disabled={!decisions || !stf.admin} tab={<Tooltip placement='top' title='Admins may issue a decision here.'>Decision (<em>Admins</em>)</Tooltip>} key='7'>
                 <Decision id={id} />
               </TabPane>
             </Tabs>
