@@ -6,6 +6,7 @@ import ReactDataGrid from 'react-data-grid'
 import { Alert, Button, Icon } from 'antd'
 
 import Menu from './Menu'
+import Instructions from './Instructions'
 
 class Spreadsheet extends React.Component {
   static propTypes = {
@@ -113,24 +114,13 @@ class Spreadsheet extends React.Component {
       this.insertRow(0)
     }
     const currency = number => number.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+    const includesTax = columns.findIndex(c => c.key === 'tax') >= 0
+    console.warn('COLUMNS', columns, includesTax)
     return <div>
       {/* <Alert type='warning' banner showIcon={false} closable
         message='This table can be edited! Remember to save your data when you are done'
         /> */}
-      <Alert type='info' showIcon={false} banner closable
-        message={<span>
-          <h5>Editable Spreadsheet:</h5>
-          <hr />
-          <ul>
-            <li>
-              <b>Edit Data: </b> Press enter to edit, or start typing to overwrite.
-            </li>
-            <li>
-              <b>Add /Delete Rows: </b> Right click the table and choose add/delete.
-            </li>
-          </ul>
-        </span>}
-       />
+      <Instructions includesTax={includesTax} />
       <ReactDataGrid
         enableCellSelect cellNavigationMode='changeRow'
         contextMenu={<Menu
