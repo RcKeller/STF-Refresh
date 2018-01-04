@@ -10,6 +10,7 @@
 
 .article {
   @apply --page;
+  padding-left: 0px !important;
 }
 .tab-title {
   text-align: left;

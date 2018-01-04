@@ -35,18 +35,21 @@ class Endorsements extends React.Component {
         {!manifest
           ? <Spin size='large' tip='Loading...' />
           : <section>
-            <Collapse bordered={false}
-              defaultActiveKey={Object.keys(comments)}
-              >
-              {comments.map((c, i) => (
-                <Panel key={i}
-                  header={<b>{c.user.name || 'Endorsement'}</b>}
-                  extra={c.user.netID || ''}
-                  >
-                  <p>{c.body}</p>
-                </Panel>
-              ))}
-            </Collapse>
+            {comments && comments.length > 0
+              ? <Collapse bordered={false}
+                defaultActiveKey={Object.keys(comments)}
+                >
+                {comments.map((c, i) => (
+                  <Panel key={i}
+                    header={<b>{c.user.name || 'Endorsement'}</b>}
+                    extra={c.user.netID || ''}
+                    >
+                    <p>{c.body}</p>
+                  </Panel>
+                ))}
+              </Collapse>
+              : <p><i>No endorsements available.</i></p>
+            }
           </section>
         }
       </div>

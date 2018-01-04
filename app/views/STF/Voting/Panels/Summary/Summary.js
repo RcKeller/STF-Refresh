@@ -11,9 +11,10 @@ const Panel = Collapse.Panel
     //  Might seem counterintuitive, but we're connecting to a manifest and pulling its proposal data.
     (state, props) => {
       const manifest = makeManifestByID(props.id)(state)
-      const { proposal: { body } } = manifest
+      const { proposal: { contacts, body } } = manifest
       return {
         manifest,
+        contacts,
         body,
         isLegacy: body.legacy.length > 0,
         screen: state.screen
@@ -24,10 +25,12 @@ class Summary extends React.Component {
   static propTypes = {
     id: PropTypes.string.isRequired,
     manifest: PropTypes.object,
+    contacts: PropTypes.array,
+    body: PropTypes.object,
     user: PropTypes.object
   }
   render (
-    { screen, body, isLegacy, manifest } = this.props
+    { screen, contacts, body, isLegacy, manifest } = this.props
   ) {
     //  For reasons unknown, we can't use Object.keys to iterate and create panels. Map works though. Perhaps it's a FP issue?
     const impactKeys = body.overview ? Object.keys(body.overview.impact) : []
@@ -41,6 +44,16 @@ class Summary extends React.Component {
           : <div>
             {!isLegacy
               ? <section>
+                <h1>Contacts</h1>
+                <ul>
+                  {contacts.map((c, i) => (
+                    <li key={i}>
+                      <b>{`${c.role[0].toUpperCase() + c.role.slice(1)} Contact: `}</b>
+                      <span>{`${c.name} (${c.netID}) - `}</span>
+                      <em>{c.title}</em>
+                    </li>
+                  ))}
+                </ul>
                 <Row gutter={32}>
                   <Col className='gutter-row' xs={24} md={12}>
                     <h1>Overview</h1>
@@ -62,7 +75,7 @@ class Summary extends React.Component {
                   ))}
                 </div>
                 <h1>Project Plan</h1>
-                <Collapse bordered={false} >
+                <Collapse bordered={false} defaultActiveKey={Object.keys(planKeys)}>
                   {planKeys.map((area, i) => (
                     <Panel header={planTitles[i]} key={i}>
                       <h5>Current</h5>
