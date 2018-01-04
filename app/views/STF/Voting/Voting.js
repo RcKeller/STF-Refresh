@@ -49,8 +49,8 @@ import styles from './Voting.css'
       'items',
       'decision',
       { path: 'reviews', populate: { path: 'author', populate: ['stf'] } },
-      { path: 'proposal', populate: { path: 'body' } },
-      { path: 'proposal', populate: { path: 'endorsements' } }
+      { path: 'proposal', populate: ['body'] },
+      { path: 'proposal', populate: { path: 'comments', populate: ['user'] } }
     ],
     force: true
   }))
