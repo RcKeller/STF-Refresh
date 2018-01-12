@@ -109,11 +109,11 @@ class Proposal extends React.Component {
                 <Update />
               </TabPane>
             }
-            {stf &&
+            {/* {stf &&
               <TabPane tab='Decisions' key='5' className={styles['tab-pane']}>
                 <Committee proposal={id} />
               </TabPane>
-            }
+            } */}
             {admin &&
               <TabPane tab={<span>Settings (<em>Admin-Only</em>)</span>} key='6' className={styles['tab-pane']}>
                 <Settings />

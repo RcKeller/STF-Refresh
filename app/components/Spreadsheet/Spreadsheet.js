@@ -115,11 +115,7 @@ class Spreadsheet extends React.Component {
     }
     const currency = number => number.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
     const includesTax = columns.findIndex(c => c.key === 'tax') >= 0
-    console.warn('COLUMNS', columns, includesTax)
     return <div>
-      {/* <Alert type='warning' banner showIcon={false} closable
-        message='This table can be edited! Remember to save your data when you are done'
-        /> */}
       <Instructions includesTax={includesTax} />
       <ReactDataGrid
         enableCellSelect cellNavigationMode='changeRow'
