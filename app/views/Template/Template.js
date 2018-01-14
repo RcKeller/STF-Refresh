@@ -53,9 +53,9 @@ import desktopLogo from '../../images/desktopLogo.png'
 
 import WordmarkWhite from '../../images/WordmarkWhite.png'
 
-const RFP = 'https://docs.google.com/document/d/1X-M1HqTMYEDe6BrL7JUMqWWr4k9kpx0Hp8x_SrpS1O8/edit?usp=sharing'
-const drive = 'https://drive.google.com/drive/folders/0BwVcM9nLxRsqbVNqV2lwa3lRZzA?usp=sharing'
-const keyserver = 'http://itconnect.uw.edu/wares/acquiring-software-and-hardware/keyserver-help-for-it-staff/'
+// const RFP = 'https://docs.google.com/document/d/1X-M1HqTMYEDe6BrL7JUMqWWr4k9kpx0Hp8x_SrpS1O8/edit?usp=sharing'
+// const drive = 'https://drive.google.com/drive/folders/0BwVcM9nLxRsqbVNqV2lwa3lRZzA?usp=sharing'
+// const keyserver = 'http://itconnect.uw.edu/wares/acquiring-software-and-hardware/keyserver-help-for-it-staff/'
 
 @connect(state => ({
   screen: state.screen,
@@ -63,8 +63,9 @@ const keyserver = 'http://itconnect.uw.edu/wares/acquiring-software-and-hardware
   nextLocation: state.routing.locationBeforeTransitions
     ? state.routing.locationBeforeTransitions.pathname
     : '1',
-  stf: (state.user && state.user.stf) || {},
-  year: state.config.year
+  links: state.config.links,
+  year: state.config.year,
+  stf: (state.user && state.user.stf) || {}
 }))
 class Template extends React.Component {
   static propTypes = {
@@ -88,7 +89,7 @@ class Template extends React.Component {
     }
   }
   render (
-    { children, screen, nextLocation, router, stf, year } = this.props,
+    { children, screen, nextLocation, router, stf, links, year } = this.props,
     { open } = this.state
   ) {
     // React-router is separated from redux store - too heavy to persist.
@@ -152,13 +153,13 @@ class Template extends React.Component {
                 </Item>
                 <SubMenu key='sub2' title={<span><Icon type='folder-open' /><span>Documents</span></span>}>
                   <Item key='rfp'>
-                    <a href={RFP} target='_blank'>Request For Proposals</a>
+                    <a href={links.rfp} target='_blank'>Request For Proposals</a>
                   </Item>
                   <Item key='drive'>
-                    <a href={drive} target='_blank'>Committee Docs</a>
+                    <a href={links.drive} target='_blank'>Committee Docs</a>
                   </Item>
                   <Item key='keyserver'>
-                    <a href={keyserver} target='_blank'>License Keyserver</a>
+                    <a href={links.keyserver} target='_blank'>License Keyserver</a>
                   </Item>
                 </SubMenu>
                 {Object.keys(stf).length > 0 && // if associated in any way with STF

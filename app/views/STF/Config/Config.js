@@ -28,7 +28,8 @@ import styles from './Config.css'
       year: state.config.year,
       quarter: state.config.quarter,
       news: state.config.news,
-      timeline: state.config.timeline
+      timeline: state.config.timeline,
+      links: state.config.links
     }),
     /*
     NOTE: state.config exists in an isomorphic context, loads before page render.
@@ -49,6 +50,7 @@ class Config extends React.Component {
     quarter: PropTypes.string,
     news: PropTypes.string,
     timeline: PropTypes.array,
+    links: PropTypes.object,
     enums: PropTypes.shape({
       categories: PropTypes.array,
       organizations: PropTypes.object,
@@ -58,9 +60,10 @@ class Config extends React.Component {
     })
   }
   componentDidMount () {
-    const { form, enums, submissions, year, quarter, news, timeline } = this.props
+    const { form, enums, submissions, year, quarter, news, timeline, links } = this.props
     if (form && enums) {
       const { organizations, categories, questions } = enums
+      const { rfp, drive, keyserver } = links
       const orgCodeMap = Object.keys(organizations)
         .map(key => `${key}:${organizations[key]}`)
       form.setFieldsValue({
@@ -70,6 +73,9 @@ class Config extends React.Component {
         categories,
         year,
         quarter,
+        rfp,
+        drive,
+        keyserver,
         reviewQuestions: questions.review,
         organizations: orgCodeMap
       })
@@ -90,6 +96,11 @@ class Config extends React.Component {
   handleNews = (news) => {
     const { updateConfig, id } = this.props
     updateConfig({ news }, { id })
+  }
+  handleLinks = (update) => {
+    const { updateConfig, id } = this.props
+    const links = Object.assign({}, this.props.links, update)
+    updateConfig({ links }, { id })
   }
 
   handleTimeline = (timeline) => {
@@ -178,6 +189,24 @@ class Config extends React.Component {
                 >
                   {form.getFieldDecorator('timeline')(
                     <Select mode='tags' onChange={this.handleTimeline} />
+                  )}
+                </FormItem>
+                <FormItem {...layout} label={<Label title='RFP'
+                  message={'RFP link in the navbar'} />}>
+                  {form.getFieldDecorator('rfp')(
+                    <Input onPressEnter={(e) => this.handleLinks({ rfp: e.target.value })} />
+                  )}
+                </FormItem>
+                <FormItem {...layout} label={<Label title='Drive'
+                  message={'Google drive link in the navbar'} />}>
+                  {form.getFieldDecorator('drive')(
+                    <Input rows={6} onPressEnter={(e) => this.handleLinks({ drive: e.target.value })} />
+                  )}
+                </FormItem>
+                <FormItem {...layout} label={<Label title='Keyserver'
+                  message={'Keyserver link in the navbar'} />}>
+                  {form.getFieldDecorator('keyserver')(
+                    <Input rows={6} onPressEnter={(e) => this.handleLinks({ keyserver: e.target.value })} />
                   )}
                 </FormItem>
                 <FormItem {...layout} label={<Label title='Organizations'

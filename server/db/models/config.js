@@ -9,6 +9,14 @@ const ConfigSchema = new mongoose.Schema({
   year: { type: Number, default: 2018 },
   quarter: { type: String, default: 'Autumn' },
   submissions: { type: Boolean, default: true },
+  links: {
+    type: Object,
+    default: {
+      rfp: 'https://drive.google.com/drive/folders/0BwVcM9nLxRsqbVNqV2lwa3lRZzA',
+      drive: 'https://drive.google.com/drive/folders/0BwVcM9nLxRsqbVNqV2lwa3lRZzA',
+      keyserver: 'http://itconnect.uw.edu/wares/acquiring-software-and-hardware/keyserver-help-for-it-staff/'
+    }
+  },
   //  Stage: Where we are on the frontpage timeline (voting, deliberation, etc)
   news: {
     type: String,
