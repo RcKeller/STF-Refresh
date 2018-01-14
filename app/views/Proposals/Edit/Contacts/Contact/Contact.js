@@ -87,7 +87,7 @@ class Contact extends React.Component {
           )}
         </FormItem>
         <FormItem hasFeedback={feedback(form, 'netID')} >
-          {form.getFieldDecorator('netID', rules.required)(
+          {form.getFieldDecorator('netID', rules.netID)(
             <Input prefix={<Icon type='idcard' style={jss.icon} />} placeholder='NetID' />
           )}
         </FormItem>

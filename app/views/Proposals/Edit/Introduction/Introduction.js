@@ -65,6 +65,14 @@ class Introduction extends React.Component {
       }
     })
   }
+  // validateTitle = (title) => {
+  //   return title && title.length <= 250
+  // }
+  validateTitle = (rule, value, callback) => {
+    (value && value.length <= 100)
+      ? callback()
+      : callback('Titles may only be 100 characters long!')
+  }
 
   render ({ form, categories, title, category, organization, uac } = this.props) {
     return (
@@ -76,7 +84,12 @@ class Introduction extends React.Component {
         <h1>Introduction</h1>
         <Form onSubmit={this.handleSubmit}>
           <FormItem label='Title' {...layout} hasFeedback={feedback(form, 'title')}>
-            {form.getFieldDecorator('title', rules.required)(
+            {form.getFieldDecorator('title', {
+              rules: [
+                { required: true },
+                { validator: this.validateTitle }
+              ]
+            })(
               <Input type='textarea' />
             )}
           </FormItem>

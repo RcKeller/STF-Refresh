@@ -51,11 +51,19 @@ const help = (form, field) => form.getFieldError(field)
 
 //  Set of useful default form rules, reduces boilerplate. Does NOT fill all use cases.
 //  {form.getFieldDecorator('comment', rule.required)(<input... />)}
-// const rules = {
-//   required: { rules: [{ required: true, message: 'Required.' }] }
-// }
+const validateNetID = (rule, value, callback) => {
+  (value && value.length > 0 && !/[^a-zA-Z0-9]/.test(value))
+    ? callback()
+    : callback('A valid netID is required!')
+}
 const rules = {
-  required: { rules: [{ required: true, message: 'Required' }] }
+  required: { rules: [{ required: true, message: 'Required' }] },
+  netID: {
+    rules: [
+      { required: true, message: 'A netID is required!' },
+      { validator: validateNetID }
+    ]
+  }
 }
 
 //  Disable a form's submit button

@@ -75,7 +75,7 @@ class UpdateContact extends React.Component {
           )}
         </FormItem>
         <FormItem hasFeedback={feedback(form, 'netID')} help={help(form, 'netID')} >
-          {form.getFieldDecorator('netID', rules.required)(
+          {form.getFieldDecorator('netID', rules.netID)(
             <Input disabled={unAuthorized} prefix={<Icon type='idcard' style={jss.icon} />} placeholder='NetID' />
           )}
         </FormItem>
