@@ -23,7 +23,7 @@ export default (app) => {
     console.log(`INIT: Enabled compression (GZIP)`)
     app.use(helmet())
     console.log(`INIT: HTTP Headers set via "Helmet"`)
-    app.use(cookieParser(config.get('cookieSecret')))
+    // app.use(cookieParser(config.get('cookieSecret')))
     console.log(`INIT: Cookie Parser live (${config.get('cookieSecret')})`)
   }
   // LOGGING
@@ -33,6 +33,7 @@ export default (app) => {
   // for parsing application/x-www-form-urlencoded
   app.use(bodyParser.urlencoded({ extended: true }))
   app.use(methodOverride())
+  app.use(cookieParser())
 
   app.use(express.static(path.join(process.cwd(), 'public')))
   /*
@@ -71,8 +72,10 @@ export default (app) => {
     ? sessionStore = db.session()
     : console.warn('Error: MongoDB failed to handle session storage')
 
+  const name = config.get('sessionName')
   const secret = config.get('sessionSecret')
   let sess = {
+    name,
     secret,
     store: sessionStore,
     // resave and saveUninitialized: Per legacy UW-STF site, defaults are false

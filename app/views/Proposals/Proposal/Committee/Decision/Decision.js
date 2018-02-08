@@ -1,9 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import _ from 'lodash'
+// import _ from 'lodash'
 
-import { Spin, Table, Button, Alert, Progress, Tooltip, Icon } from 'antd'
+import { Table, Alert, Tooltip, Icon } from 'antd'
+
+import Metrics from './Metrics/Metrics'
 
 const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
@@ -54,7 +56,7 @@ const columns = [
   }
 ]
 
-class Review extends React.Component {
+class Decision extends React.Component {
   // static propTypes = {
   //   _id: PropTypes.string,
   //   netID: PropTypes.string,
@@ -88,22 +90,24 @@ class Review extends React.Component {
           message={<h3>Decision</h3>}
           description={body}
         />
-        <h2>Committee Metrics</h2>
+        {/* Committee members have an expanded view that includes metrics */}
+        {reviews.length > 0 && <h2>Committee Metrics</h2>}
         {reviews.map(rev => (
-          <Alert key={rev._id}
-            banner showIcon={false}
-            type={rev.approved ? 'success' : 'error'}
-            message={<h6>{`${rev.author.name} (${rev.author.netID}) - ${rev.score} / 5`}</h6>}
-            description={<ul>
-              {rev.ratings.map((rating, i) => (
-                <li key={i}>{JSON.stringify(rating)}</li>
-              ))}
-            </ul>}
-          />
+          <Metrics key={rev._id} {...rev} />
+          // <Alert key={rev._id}
+          //   banner showIcon={false}
+          //   type={rev.approved ? 'success' : 'error'}
+          //   message={<h6>{`${rev.author.name} (${rev.author.netID}) - ${rev.score} / 5`}</h6>}
+          //   description={<ul>
+          //     {rev.ratings.map((rating, i) => (
+          //       <li key={i}>{JSON.stringify(rating)}</li>
+          //     ))}
+          //   </ul>}
+          // />
         ))}
       </div>
     )
   }
 }
 
-export default Review
+export default Decision

@@ -5,6 +5,9 @@ import pageRenderer from './pageRenderer'
 import fetchDataForRoute from './fetchDataForRoute'
 
 import { Config } from '../db/models'
+import axios from 'axios'
+import config from 'config'
+const name = config.get('sessionName')
 
 /*
 RENDER ERROR PATCHES:
@@ -62,7 +65,13 @@ export default function render (req, res) {
      * If all three parameters are `undefined`, this means that there was no route found matching the
      * given location.
      */
-    match({routes, location: req.url}, (err, redirect, props) => {
+    match({ routes, location: req.url }, (err, redirect, props) => {
+      // console.log('Cookie name', req.cookies[name], req.session)
+      // if (req.cookies[name]) {
+        // req.
+        // axios.defaults.headers.common.Cookie = name + '=' + req.cookies[name]
+      // }
+
       if (err) {
         //  Patches are used to bypass 500 responses for known, non-breaking errors
         if (patchReactDataGridSelfReferenceError(err)) {

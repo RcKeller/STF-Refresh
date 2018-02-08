@@ -12,7 +12,7 @@ import api from '../../../../services'
 import { Tabs } from 'antd'
 const TabPane = Tabs.TabPane
 
-import Review from './Review/Review'
+import Decision from './Decision/Decision'
 
 const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
@@ -55,7 +55,7 @@ class Committee extends React.Component {
               {`${currency(m.total)} (${parseInt(m.total / asked * 100)}%)`}
             </span>}
             >
-              <Review {...m} asked={asked} />
+              <Decision {...m} asked={asked} />
             </TabPane>
           ))}
         </Tabs>
