@@ -24,7 +24,7 @@ export default (app) => {
     app.use(helmet())
     console.log(`INIT: HTTP Headers set via "Helmet"`)
     // app.use(cookieParser(config.get('cookieSecret')))
-    console.log(`INIT: Cookie Parser live (${config.get('cookieSecret')})`)
+    // console.log(`INIT: Cookie Parser live (${config.get('cookieSecret')})`)
   }
   // LOGGING
   app.use(logger('dev'))
@@ -72,10 +72,10 @@ export default (app) => {
     ? sessionStore = db.session()
     : console.warn('Error: MongoDB failed to handle session storage')
 
-  const name = config.get('sessionName')
+  // const name = config.get('sessionName')
   const secret = config.get('sessionSecret')
   let sess = {
-    name,
+    // name,
     secret,
     store: sessionStore,
     // resave and saveUninitialized: Per legacy UW-STF site, defaults are false

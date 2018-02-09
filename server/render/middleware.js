@@ -7,7 +7,7 @@ import fetchDataForRoute from './fetchDataForRoute'
 import { Config } from '../db/models'
 import axios from 'axios'
 import config from 'config'
-const name = config.get('sessionName')
+// const name = config.get('sessionName')
 
 /*
 RENDER ERROR PATCHES:

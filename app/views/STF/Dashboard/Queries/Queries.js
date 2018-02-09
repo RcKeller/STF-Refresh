@@ -13,7 +13,19 @@ const Option = Select.Option
 const FormItem = Form.Item
 const connectForm = Form.create()
 
-import Inspector from 'react-json-inspector'
+// import Inspector from 'react-json-inspector'
+import Inspector from 'react-json-view'
+const config = {
+  name: 'Query Results',
+  collapsed: false,
+  iconStyle: 'square',
+  indentWidth: 4,
+  displayDataTypes: false,
+  displayObjectSize: true,
+  collapseStringsAfterLength: 100,
+  enableClipboard: true
+}
+
 //  Vendor styles
 import './Queries.less'
 
@@ -184,7 +196,18 @@ class Queries extends React.Component {
           </FormItem>
         </Form>
         <br />
-        {window ? <Inspector data={querytool} /> : <span>Loading...</span>}
+        {!window
+          ? <span>Loading...</span>
+          : <Inspector
+            src={querytool}
+            {...config}
+            // name={null}
+            // collapsed={2}
+            // iconStyle='square'
+            // {...inspectorConfig}
+          />
+        }
+        {/* {window ? <Inspector data={querytool} /> : <span>Loading...</span>} */}
       </div>
     )
   }
