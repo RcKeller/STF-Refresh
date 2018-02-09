@@ -49,7 +49,9 @@ const columns = [{
     (state, props) => ({
       proposal: state.db.proposal._id,
       //  Use the most recent report (target document) and recent manifest (initial data)
-      manifest: state.db.proposal.manifests[props.indexInStore]
+      manifest: state.db.proposal.manifests[props.indexInStore],
+      existingSupplemmental: state.db.proposal.manifests
+        .findIndex(m => m.type === 'supplemental') >= 0
     }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
   ),
@@ -95,7 +97,7 @@ class Supplemental extends React.Component {
       }
     })
   }
-  render ({ form, manifest, report } = this.props) {
+  render ({ form, manifest, report, existingSupplemmental } = this.props) {
     //  Use the most recent approved manifest for initial data
     //  Make sure to omit mongo data, preventing the original from being mutated.
     let data = manifest.items
@@ -165,21 +167,27 @@ class Supplemental extends React.Component {
         </p>
         <FormItem label='Request Title' {...layout} >
           {form.getFieldDecorator('title')(
-            <Input />
+            <Input disabled={existingSupplemmental} />
           )}
         </FormItem>
         <FormItem label='Reasoning' {...layout} >
           {form.getFieldDecorator('body')(
-            <Input type='textarea' rows={6} />
+            <Input type='textarea' rows={6} disabled={existingSupplemmental} />
           )}
         </FormItem>
         <Spreadsheet financial
+          disabled={existingSupplemmental}
           columns={columns}
           data={data}
           newData={newData}
           onSubmit={this.handleSubmit}
           total={total}
         />
+        {existingSupplemmental &&
+          <p>
+            We have received your supplemental request - please reach out to stfagent@uw.edu to schedule an appointment to discuss this, or for revisions.
+          </p>
+        }
       </section>
     )
   }

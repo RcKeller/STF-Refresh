@@ -29,6 +29,7 @@ const Metrics = ({ _id: id, approved, score, ratings, author: { name, netID } })
       message={<h6>{`${name} (${netID})`}</h6>}
     />
     <Table
+      style={{ marginBottom: 16 }}
       columns={columns}
       dataSource={ratings}
       rowKey={record => record._id}

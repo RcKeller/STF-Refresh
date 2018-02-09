@@ -45,10 +45,10 @@ class Budgeting extends React.Component {
               ))}
             </Tabs>
           </TabPane>
-          <TabPane disabled={approvedManifests.length <= 0} tab='Supplemental Funding' key='2'>
+          <TabPane disabled={approvedManifests.length <= 0} tab='Request Award Supplement' key='2'>
             <Supplemental indexInStore={approvedManifests.length - 1} />
           </TabPane>
-          <TabPane tab='Partial Budgets' key='3'>
+          <TabPane tab='Partial / Alternative Budgets' key='3'>
             <Partial />
           </TabPane>
         </Tabs>

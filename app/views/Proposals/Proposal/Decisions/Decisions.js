@@ -42,7 +42,6 @@ class Decisions extends React.Component {
         .findIndex(m => m._id === r.manifest)
       if (index >= 0) manifests[index].reviews.push(r)
     }
-    console.warn('MANIFESTS', manifests, typeof manifests)
     return (
       <section>
         <Tabs>
