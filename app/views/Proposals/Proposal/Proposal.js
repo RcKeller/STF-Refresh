@@ -20,7 +20,7 @@ import Endorsements from './Endorsements/Endorsements'
 import Budgeting from './Budgeting/Budgeting'
 import Update from './Update/Update'
 //  STF Memeber and admin views
-import Committee from './Committee/Committee'
+import Decisions from './Decisions/Decisions'
 import Settings from './Settings/Settings'
 
 import styles from './Proposal.css'
@@ -109,11 +109,10 @@ class Proposal extends React.Component {
                 <Update />
               </TabPane>
             }
-            {stf &&
-              <TabPane tab='Decisions' key='5' className={styles['tab-pane']}>
-                <Committee proposal={id} />
-              </TabPane>
-            }
+            {/* Authors have a restricted view, decisions can be seen, but not metrics */}
+            <TabPane tab='Decisions' key='5' className={styles['tab-pane']}>
+              <Decisions proposal={id} />
+            </TabPane>
             {admin &&
               <TabPane tab={<span>Settings (<em>Admin-Only</em>)</span>} key='6' className={styles['tab-pane']}>
                 <Settings />

@@ -33,6 +33,7 @@ const Metrics = ({ _id: id, approved, score, ratings, author: { name, netID } })
       dataSource={ratings}
       rowKey={record => record._id}
       size='middle'
+      pagination={false}
       showHeader={false}
       footer={() => (
         <h5>

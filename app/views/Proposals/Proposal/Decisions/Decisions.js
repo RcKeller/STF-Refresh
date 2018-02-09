@@ -30,11 +30,11 @@ const currency = value => `$${Number.parseInt(value).toLocaleString()}`
     populate: ['author']
   }))
 )
-class Committee extends React.Component {
+class Decisions extends React.Component {
   static propTypes = {
     proposal: PropTypes.string
   }
-  render ({ asked, manifests, reviews } = this.props) {
+  render ({ asked, manifests, reviews, user } = this.props) {
     //  Merge reviews into proposal.manifests
     manifests = manifests.map(m => ({ ...m, reviews: [] }))
     for (let r of reviews) {
@@ -42,11 +42,11 @@ class Committee extends React.Component {
         .findIndex(m => m._id === r.manifest)
       if (index >= 0) manifests[index].reviews.push(r)
     }
-    console.warn('MANIFESTS', manifests)
+    console.warn('MANIFESTS', manifests, typeof manifests)
     return (
       <section>
         <Tabs>
-          {manifests.map((m, i) => (
+          {manifests && manifests.map((m, i) => (
             <TabPane key={m._id} tab={<span>
               {`${_.capitalize(m.type || '')} Budget (#${++i})`}
               <br />
@@ -55,7 +55,7 @@ class Committee extends React.Component {
               {`${currency(m.total)} (${parseInt(m.total / asked * 100)}%)`}
             </span>}
             >
-              <Decision {...m} asked={asked} />
+              <Decision {...m} asked={asked} user={user} />
             </TabPane>
           ))}
         </Tabs>
@@ -64,4 +64,4 @@ class Committee extends React.Component {
   }
 }
 
-export default Committee
+export default Decisions
