@@ -5,7 +5,11 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router'
 
 import { Alert } from 'antd'
-
+/*
+PROPOSAL BODY (LEGACY FORMAT):
+Maps over an array of legacy content fields, mapping headers and bodies
+NOTE: the legacy format is exactly the same as the last website
+*/
 @connect(state => ({
   legacy: state.db.proposal.body
   ? state.db.proposal.body.legacy

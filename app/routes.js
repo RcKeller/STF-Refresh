@@ -91,6 +91,13 @@ export default (store) => {
     callback()
   }
 
+  /*
+  Router Props:
+  component: Pages included in the core JS bundle.
+  getComponent: JS bundles for dynamically loading pages (users who visit the SPA only get the components needed for their route, and the bundle expands as necessary during their session)
+  (read up on Code Splitting if this is confusing)
+  onEnter: Auth / Permissions enforcement. Redirects unauthorized users
+  */
   return (
     <Route path='/' component={Template} >
       <IndexRoute getComponent={SplitFrontPage} />

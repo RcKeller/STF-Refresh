@@ -17,7 +17,9 @@ const expandedRowRender = ({ price, tax, description } = {}) => {
 }
 
 import { indexOfApprovedManifest } from '../../../../../selectors'
-
+/*
+MANIFESTS VIEW: Renders the budgets associated with a proposal, starting with the most recent (or approved) manifest
+*/
 @connect(state => ({
   manifests: state.db.proposal ? state.db.proposal.manifests : [],
   initialIndex: indexOfApprovedManifest(state),

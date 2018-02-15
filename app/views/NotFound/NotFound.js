@@ -2,6 +2,9 @@ import React from 'react'
 
 import { Alert } from 'antd'
 
+/*
+404 PAGE: (Generic)
+*/
 import styles from './NotFound.css'
 class NotFound extends React.Component {
   render () {

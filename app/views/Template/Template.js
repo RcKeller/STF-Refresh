@@ -2,10 +2,31 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
+import Helmet from 'react-helmet'
+// NOTE: Antd is based on rc-components, fyi
+import Drawer from 'rc-drawer'
+//
+/*
+Locale Information:
+Antd is actually a chinese library by AliBaba, the chinese equiv. of Amazon
+Locale Provider cascades context down to components, providing
+english messages for things like "No Data" in tables
+*/
 import { Link } from 'react-router'
 
-import Helmet from 'react-helmet'
+import enUS from 'antd/lib/locale-provider/en_US'
+import { LocaleProvider, Spin, Layout, Icon, Menu } from 'antd'
+const { Header } = Layout
+const SubMenu = Menu.SubMenu
+const Item = Menu.Item
+const ItemGroup = Menu.ItemGroup
+
+//  Importing images for usage in styling (made possible by webpack loaders)
 import favicon from '../../images/favicon.ico'
+import mobileLogo from '../../images/mobileLogo.png'
+import desktopLogo from '../../images/desktopLogo.png'
+import WordmarkWhite from '../../images/WordmarkWhite.png'
+// Metadata for SEO - don't change this much!
 const meta = [
   { charset: 'utf-8' },
   // Meta descriptions are commonly used on search engine result pages to
@@ -34,30 +55,18 @@ const meta = [
 // Add to homescreen for Chrome on Android
 const link = [{ rel: 'icon', href: favicon }]
 
-import enUS from 'antd/lib/locale-provider/en_US'
-import { LocaleProvider, Spin, Layout, Icon, Menu } from 'antd'
-const { Header } = Layout
-const SubMenu = Menu.SubMenu
-const Item = Menu.Item
-const ItemGroup = Menu.ItemGroup
-
-import Drawer from 'rc-drawer'
-
 import Login from './Login/Login'
 
+/*
+TEMPLATE:
+The core UI for the website
+Keeps track of many things like page nav, admin status, etc
+Views adjust as necessary
+*/
 import '../../css/main'
 import styles from './Template.css'
-
-import mobileLogo from '../../images/mobileLogo.png'
-import desktopLogo from '../../images/desktopLogo.png'
-
-import WordmarkWhite from '../../images/WordmarkWhite.png'
-
-// const RFP = 'https://docs.google.com/document/d/1X-M1HqTMYEDe6BrL7JUMqWWr4k9kpx0Hp8x_SrpS1O8/edit?usp=sharing'
-// const drive = 'https://drive.google.com/drive/folders/0BwVcM9nLxRsqbVNqV2lwa3lRZzA?usp=sharing'
-// const keyserver = 'http://itconnect.uw.edu/wares/acquiring-software-and-hardware/keyserver-help-for-it-staff/'
-
 @connect(state => ({
+  // Using redux-responsive for JS based media queries
   screen: state.screen,
   //  Nextlocation is the route of new pages router is transitioning to.
   nextLocation: state.routing.locationBeforeTransitions

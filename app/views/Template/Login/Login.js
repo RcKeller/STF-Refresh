@@ -9,6 +9,10 @@ const { ENV } = environment
 
 // import { Avatar } from 'antd'
 
+/*
+LOGIN COMPONENT
+A branding-compliant component used to log in
+*/
 import styles from './Login.css'
 @connect(
   state => ({ user: state.user }),

@@ -48,7 +48,11 @@ const authorContent = [
     a: 'Most committee members have many roles throughout campus and ASUW, leading to frequent conflicts of interest were a member to vote on a proposal that would directly impact their other positions within the university. For this reason, members will recuse themselves during voting on a proposal were it to directly impact them.'
   }
 ]
-
+/*
+FAQ PAGE: .../faq
+Frequently asked questions, CYA stuff
+Addresses a lot of edge cases
+*/
 import styles from './FAQ.css'
 class FAQ extends React.Component {
   render () {

@@ -9,7 +9,9 @@ const FormItem = Form.Item
 const connectForm = Form.create()
 
 import api from '../../../../services'
-// import { proposalSigners } from '../../../../selectors'
+/*
+
+*/
 import styles from './Signatures.css'
 /*
 NOTE:

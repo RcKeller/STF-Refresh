@@ -8,6 +8,11 @@ const Panel = Collapse.Panel
 
 import Endorse from './Endorse/Endorse'
 
+/*
+ENDORSEMENTS TAB:
+Renders a list of user endorsements
+Endorsement submissions are closed once decisions are issued
+*/
 // import styles from './Body.css'
 @connect(state => ({
   proposalID: state.db.proposal._id,

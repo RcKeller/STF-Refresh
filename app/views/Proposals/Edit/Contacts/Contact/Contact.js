@@ -10,9 +10,11 @@ const connectForm = Form.create()
 
 import { feedback, rules, disableSubmit } from '../../../../../util/form'
 import api from '../../../../../services'
-// import { getRole } from '../../../../../util/selectors'
-// import { initialProposalContacts } from '../../../../../selectors'
 
+/*
+Contact Component:
+Renders contact form information on a per-role basis
+*/
 const jss = { icon: { fontSize: 13 } }
 @compose(
   connect((state, props) => ({

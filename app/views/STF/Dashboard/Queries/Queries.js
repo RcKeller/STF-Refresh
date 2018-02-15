@@ -1,19 +1,14 @@
 //  React and its typechecking
 import React from 'react'
 import PropTypes from 'prop-types'
-//  Redux utils
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-//  Our API services
-import { Label } from '../../../../util/form'
-import api from '../../../../services'
 
 import { Form, Select, Input, Button, Icon, message } from 'antd'
 const Option = Select.Option
 const FormItem = Form.Item
 const connectForm = Form.create()
 
-// import Inspector from 'react-json-inspector'
 import Inspector from 'react-json-view'
 const config = {
   name: 'Query Results',
@@ -26,8 +21,8 @@ const config = {
   enableClipboard: true
 }
 
-//  Vendor styles
-import './Queries.less'
+import { Label } from '../../../../util/form'
+import api from '../../../../services'
 
 import Examples from './Examples/Examples'
 
@@ -60,7 +55,13 @@ const modelPopulates = {
   'blocks': ['contacts']
 }
 
-//  This is a decorator, a function that wraps another class (which in JS is essentially a func)
+/*
+QUERY VIEW:
+Allows you to form querystrings run against the DB
+The above enums map readable selectors to their actual operands
+NOTE: This is very experimental and hard to support
+You may want to gut this feature. It is a liability.
+*/
 @compose(
   connect(
     state => ({

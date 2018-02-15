@@ -12,6 +12,12 @@ import { Row, Col, Spin, Progress, Alert } from 'antd'
 
 const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
+/*
+BLOCK PAGE: .../blocks/:number
+Renders a block / continuous funding article.
+They're like short proposals with a general scope.
+Per bylaws, the content and format CAN NEVER CHANGE.
+*/
 import styles from './Block.css'
 @compose(
   connect((state, props) => ({

@@ -6,7 +6,6 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
-// import { redirectUnaffiliated } from '../../../util/selectors'
 
 import { initialProposalContacts } from '../../../selectors'
 
@@ -24,7 +23,21 @@ const colors = {
   green: '#00a854',
   gold: '#85754d'
 }
+/*
+EDIT PAGE:  .../edit/:id
+A hefty page and container
+Each section is a tabbed panel
+and saving (or navigating) will trigger validators
+Validators cascade down from this component.
 
+Some of the logic here can be quite tricky.
+Things we try and account for are along the lines of:
+- Users creating duplicate contacts / budgets
+- Saving return data with IDS (e.g. manifest item ids) so we can PATCH instead of POST on the next update.
+
+Of all parts on the site,
+this could use the most refactoring.
+*/
 import styles from './Edit.css'
 @compose(
   connect(state => ({

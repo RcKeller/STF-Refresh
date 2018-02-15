@@ -7,6 +7,11 @@ const TabPane = Tabs.TabPane
 import Budgeting from './Budgeting/Budgeting'
 import Queries from './Queries/Queries'
 
+/*
+DASHBOARD PAGE: .../dashboard
+Provides a bunch of EXPERIMENTAL tools,
+such as massive budgeting views and query tools
+*/
 import styles from './Dashboard.css'
 class Dashboard extends React.Component {
   //  Shorthand assignment of variables when defining render

@@ -16,6 +16,13 @@ const connectForm = Form.create()
 
 import Agreements from './Agreements/Agreements'
 
+/*
+CREATE PAGE:  .../create
+Start a proposal, if submissions are open
+We ask for some information up front via modal
+So we can at least ID **SOMEONE** and reach out
+if we see them struggling when drafting
+*/
 import styles from './Create.css'
 @compose(
   connect(

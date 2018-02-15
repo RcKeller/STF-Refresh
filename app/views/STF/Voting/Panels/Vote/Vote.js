@@ -1,18 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-
-import { layout } from '../../../../../util/form'
-import api from '../../../../../services'
-
-import { makeManifestByID, makeManifestReview } from '../../../../../selectors'
 
 import { Spin, Form, Switch, Button, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
+import { layout } from '../../../../../util/form'
+import api from '../../../../../services'
+import { makeManifestByID, makeManifestReview } from '../../../../../selectors'
+
+/*
+VOTE PANEL:
+Allows members to cast their FINAL, OVERALL VOTES
+NOTE: The requirements for voting changed at the end of the project,
+so this is slightly unintuitive. Please refactor when bandwith is avail.
+*/
 @compose(
   connect(
     (state, props) => {

@@ -46,7 +46,11 @@ const samples = [
   }
 ]
 
-class FAQ extends React.Component {
+/*
+EXAMPLES COMPONENT:
+Sample use cases were requested by the admin team
+*/
+class Examples extends React.Component {
   render () {
     return (
       <Collapse bordered={false} >
@@ -60,4 +64,4 @@ class FAQ extends React.Component {
   }
 }
 
-export default FAQ
+export default Examples

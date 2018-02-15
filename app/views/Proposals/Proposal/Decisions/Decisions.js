@@ -15,7 +15,13 @@ const TabPane = Tabs.TabPane
 import Decision from './Decision/Decision'
 
 const currency = value => `$${Number.parseInt(value).toLocaleString()}`
-
+/*
+DECISIONS TAB:
+Allows users to see the decisions issued on a proposal's budgets
+(note: proposals have many budgets! hence the second tab layer)
+Admins are allowed to see metrics (comments and score breakdowns)
+in addition to decisions.
+*/
 @compose(
   connect(state => ({
     asked: state.db.proposal.asked,

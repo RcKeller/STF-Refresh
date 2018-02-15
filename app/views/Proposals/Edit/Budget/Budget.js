@@ -45,7 +45,6 @@ const columns = [{
   width: 85
 }]
 
-//  TODO: Testing with http://localhost:3000/edit/596e8a522465c05140e07d8f
 @connect(
   state => ({
     proposal: state.db.proposal._id,

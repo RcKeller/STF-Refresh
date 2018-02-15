@@ -43,6 +43,11 @@ const agreements = {
   ]
 }
 
+/*
+Agreement Component:
+Renders a policy alert box with links
+Map these to create giant angry walls of legal text.
+*/
 class Agreement extends React.Component {
   render () {
     return (

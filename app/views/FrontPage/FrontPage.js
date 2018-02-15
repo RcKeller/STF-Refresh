@@ -4,7 +4,12 @@ import { connect } from 'react-redux'
 
 import { Row, Col, Timeline, Alert } from 'antd'
 const Item = Timeline.Item
-
+/*
+FRONT PAGE: .../
+Splash page. This is semi-dynamic
+Admins can set a basic schedule and announcement
+Via the config panel. No coding required.
+*/
 import styles from './FrontPage.css'
 @connect(state => ({
   stage: state.config.stage,

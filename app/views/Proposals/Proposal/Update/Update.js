@@ -7,6 +7,13 @@ import { Alert } from 'antd'
 
 import UpdateContact from './UpdateContact/UpdateContact'
 
+/*
+UPDATE TAB:
+Provides tools for users to update their proposal
+So far, only contacts can be updated due to compliance
+(we want contacts to replace their contact info if they are
+no longer involved with projects)
+*/
 @connect(state => ({
   date: state.db.proposal.date,
   contacts: state.db.proposal.contacts

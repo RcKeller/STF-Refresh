@@ -26,7 +26,12 @@ const columns = [
   { title: 'Status', dataIndex: 'status', key: 'status', width: 100 },
   { title: 'Award', dataIndex: 'received', key: 'received', render: (title) => <span>{currency(title || 0)}</span>, width: 80 }
 ]
-
+/*
+/BLOCKS PAGE: .../blocks
+Provides an overview on continuous funding blocks
+Renders all blocks in a short table
+Summarizes annual projections for continuous funding expenses
+*/
 @compose(
   connect(state => ({
     blocks: state.db.blocks || [],

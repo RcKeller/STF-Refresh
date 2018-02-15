@@ -44,6 +44,14 @@ const columns = [{
   editor: SimpleNumber,
   width: 85
 }]
+/*
+SUPPLEMENTAL TAB:
+Available only to proposals w/ a previous award
+Allows authors to request additional funding (unanticipated changes in model availability, etc)
+
+This is a high churn component due to the confusing and
+ever-changing nature of the process
+*/
 @compose(
   connect(
     (state, props) => ({

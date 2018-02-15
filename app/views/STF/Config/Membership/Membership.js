@@ -15,6 +15,12 @@ const Option = AutoComplete.Option
 const filterOption = (inputValue, option) =>
   option.props.children.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
 
+/*
+MEMBERSHIP TAB:
+Allows you to add and remove committe members
+NOTE: Once added to the STF, they are a PART of STF
+Even if not a member, they CAN view internal information
+*/
 @compose(
   connect(
     //  Committee members vs. potential members to add.

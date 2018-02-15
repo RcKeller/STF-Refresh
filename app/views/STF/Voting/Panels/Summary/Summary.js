@@ -2,11 +2,17 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import { makeManifestByID } from '../../../../../selectors'
-
 import { Row, Col, Spin, Alert, Collapse } from 'antd'
 const Panel = Collapse.Panel
 
+import { makeManifestByID } from '../../../../../selectors'
+
+/*
+SUMMARY VIEW:
+A brief summary of proposal content
+Keep this VERY short as we don't want to get
+lost in details during a meeting
+*/
 @connect(
     //  Might seem counterintuitive, but we're connecting to a manifest and pulling its proposal data.
     (state, props) => {

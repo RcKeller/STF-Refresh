@@ -4,15 +4,18 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { layout } from '../../../../../util/form'
-import api from '../../../../../services'
-
-import { makeManifestByID } from '../../../../../selectors'
-
 import { Spin, Form, Switch, Input, Button, Alert, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
+import { layout } from '../../../../../util/form'
+import api from '../../../../../services'
+import { makeManifestByID } from '../../../../../selectors'
+/*
+DECISION PANEL:
+Allows admins (not members) to issue a final decision
+including (optional) public remarks
+*/
 @compose(
   connect(
     (state, props) => {

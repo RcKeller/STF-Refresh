@@ -27,6 +27,15 @@ const indicators = {
 //  At this scale, cents are triffling
 const currency = number => `$${Number.parseInt(number).toLocaleString('en-US')}`
 
+/*
+PROPOSALS PAGE: .../proposals
+Proposals are loaded dynamically (admins can see unpublished proposals)
+and rendered in a highly customized, searchable table.
+There are a lot of disparate data sources (e.g. enums in config)
+so read the code closely
+This is also where users are linked to /create
+and can revisit their drafts
+*/
 //  Import modular CSS. Needs to run through JS because styles are hashed.
 import styles from './Proposals.css'
 //  This is a decorator, a function that wraps another class (which in JS is essentially a func)

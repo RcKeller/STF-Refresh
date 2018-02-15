@@ -13,6 +13,12 @@ const Option = Select.Option
 const FormItem = Form.Item
 const connectForm = Form.create()
 
+/*
+PROPOSAL SETTINGS TAB:
+Provides functions for the admin team to manage
+and make basic corrections to a proposal
+Changing budget codes, proposal cycle, etc
+*/
 @compose(
   connect(
     state => ({

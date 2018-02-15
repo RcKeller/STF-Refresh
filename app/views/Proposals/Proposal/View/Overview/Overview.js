@@ -5,6 +5,11 @@ import { connect } from 'react-redux'
 
 import { Row, Col } from 'antd'
 
+/*
+PROPOSAL OVERVIEW:
+Part of the new proposal format,
+Provides a breakdown of student benefits
+*/
 @connect(state => ({
   overview: state.db.proposal.body.overview
 }))

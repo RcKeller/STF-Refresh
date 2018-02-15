@@ -5,6 +5,11 @@ import { connect } from 'react-redux'
 
 import { Row, Col, Icon } from 'antd'
 
+/*
+PROPOSAL BODY (NEW FORMAT):
+Renders a project plan w/ state analysis
+The design emphasizes framing the issue as "change"
+*/
 import styles from './Body.css'
 @connect(state => ({
   plan: state.db.proposal.body.plan,

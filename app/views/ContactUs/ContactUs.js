@@ -2,7 +2,7 @@ import React from 'react'
 import Helmet from 'react-helmet'
 import { Link } from 'react-router'
 
-import { Avatar, Row, Col } from 'antd'
+import { Avatar } from 'antd'
 
 const leadership = [
   {
@@ -27,7 +27,10 @@ const leadership = [
     email: 'STFCWeb@uw.edu'
   }
 ]
-
+/*
+CONTACTS PAGE:  .../contact
+Some basic contact information for the admin team
+*/
 import styles from './ContactUs.css'
 class ContactUs extends React.Component {
   render () {

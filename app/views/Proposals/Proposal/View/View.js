@@ -12,6 +12,12 @@ import Body from './Body/Body'
 import Legacy from './Legacy/Legacy'
 import Manifests from './Manifests/Manifests'
 
+/*
+PROPOSAL PAGE / VIEW:
+Container for proposal content rendering
+Conditially renders sections based on if the data is present
+(e.g. renders Overview and Body for new format proposals)
+*/
 @connect(state => ({
   proposal: state.db.proposal._id,
   isLegacy: state.db.proposal.body

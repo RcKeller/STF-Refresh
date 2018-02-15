@@ -12,6 +12,12 @@ import Supplemental from './Supplemental/Supplemental'
 import Partial from './Partial/Partial'
 // import Audit from './Audit/Audit'
 
+/*
+BUDGETING TAB:
+Provides the ability to create partails at a minimum
+For proposals that have received an award,
+it allows them to report expenses and request addtl. funding
+*/
 @connect(state => ({
   budget: state.db.proposal.budget,
   manifests: state.db.proposal.manifests,

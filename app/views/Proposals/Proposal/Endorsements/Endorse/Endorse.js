@@ -11,6 +11,10 @@ const connectForm = Form.create()
 import { layout, feedback, help, rules } from '../../../../../util/form'
 import api from '../../../../../services'
 
+/*
+ENDORSE COMPONENT:
+Allows any logged in user to endorse a proposal
+*/
 // import styles from './Body.css'
 @compose(
   connect(

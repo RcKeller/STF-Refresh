@@ -19,7 +19,11 @@ const columns = [
     width: 40
   }
 ]
-
+/*
+METRICS COMPONENT:
+Admins can view the individual scores cast by members
+in a concise table format
+*/
 const Metrics = ({ _id: id, approved, score, ratings, author: { name, netID } }) => (
   <div>
     <Alert key={id}

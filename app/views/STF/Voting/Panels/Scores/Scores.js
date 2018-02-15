@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import { makeManifestByID } from '../../../../../selectors'
-
 import { Spin, Row, Col, Switch, Progress, Table } from 'antd'
+
+import { makeManifestByID } from '../../../../../selectors'
 
 const metricsColumns = [
   { title: 'Prompt', dataIndex: 'prompt', key: 'prompt' },
@@ -14,6 +14,14 @@ const remarksColumns = [
   { title: 'Name', dataIndex: 'name', key: 'name', width: 100 },
   { title: 'Remarks', dataIndex: 'body', key: 'body' }
 ]
+/*
+SCORES PANEL:
+Shows a breakdown of scores post-QA
+Allows you to also filter by role
+(Implemented so we could keep admins engaged in the
+proposal deliberation process - why exclude them?)
+NOTE: This does not refresh automagically! No web sockets
+*/
 @connect(
     (state, props) => {
       const manifest = makeManifestByID(props.id)(state)

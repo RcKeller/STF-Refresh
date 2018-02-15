@@ -14,7 +14,6 @@ const TabPane = Tabs.TabPane
 
 //  Public view
 import View from './View/View'
-
 import Endorsements from './Endorsements/Endorsements'
 //  Contact view
 import Budgeting from './Budgeting/Budgeting'
@@ -23,6 +22,12 @@ import Update from './Update/Update'
 import Decisions from './Decisions/Decisions'
 import Settings from './Settings/Settings'
 
+/*
+PROPOSAL PAGE:  .../proposals/:year/:number
+This serves as a giant container
+for the tabbed inteface in the proposal view
+Tabs are added dynamically based on user authZ
+*/
 import styles from './Proposal.css'
 /*
 NOTE: Bugs can be encountered when users navigate from proposals to /edit

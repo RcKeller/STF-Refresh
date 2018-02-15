@@ -42,6 +42,15 @@ const columns = [{
   editor: SimpleNumber,
   width: 85
 }]
+/*
+PARTIAL TAB:
+Allows you to create a subset of a budget with more/less items
+These can be "alternate" awards for partial or additional funding
+both of which are common use cases
+
+e.g. we want to fund 60k of a 100k ask for cloud computing credits
+Create a partial here for 60k, then vote and approve it
+*/
 @connect(
     (state, props) => ({
       proposal: state.db.proposal._id,

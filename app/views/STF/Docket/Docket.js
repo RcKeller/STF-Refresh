@@ -25,8 +25,12 @@ const indicators = {
   'Withdrawn': 'error'
 }
 
+/*
+DOCKET PAGE:  .../docket/:year
+Allows you to add budgets to /voting,
+so the committee can review all relevant proposals
+*/
 import styles from './Docket.css'
-
 @compose(
   connect(
     (state, props) => {

@@ -17,6 +17,12 @@ const connectForm = Form.create()
 
 import Membership from './Membership/Membership'
 
+/*
+CONFIG PAGE:
+Provides admins with a basic CMS!
+General view allows you to edit content, enums etc
+Members view allows you to add / remove members
+*/
 import styles from './Config.css'
 @compose(
   connect(

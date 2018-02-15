@@ -2,11 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
+import { Spin, Table, Tooltip, Icon } from 'antd'
+
 import { makeManifestByID } from '../../../../../selectors'
 
 const currency = value => `$${Number.parseInt(value).toLocaleString()}`
-
-import { Spin, Table, Tooltip, Icon } from 'antd'
 
 const columns = [
   {
@@ -21,11 +21,9 @@ const columns = [
     render: (text, record) => <b>{
       record.priority
         ? `${record.priority}: ${text}`
-        // ? <span><em>#{record.priority}: </em> {text}</span>
         : text
       }</b>,
     sorter: (a, b) => (b.priority) - (a.priority)
-    // sorter: (a, b) => (a.priority) - (b.priority)
   },
   {
     title: <span>
@@ -34,7 +32,6 @@ const columns = [
         <Icon type='question-circle-o' />
       </Tooltip>
     </span>,
-    // title: <Tooltip placement='left' title='Tax Included. Mouse over for item subtotals.'>Price/ea</Tooltip>,
     dataIndex: 'price',
     key: 'price',
     render: (text, record) => <Tooltip placement='left'
@@ -45,7 +42,6 @@ const columns = [
     </Tooltip>,
     sorter: (a, b) => a.price - b.price,
     width: 120,
-    // width: screen.greaterThan.medium ? 120 : 100,
     padding: 0
   },
   { title: 'Q',
@@ -61,7 +57,10 @@ const expandedRowRender = ({ price, tax, description } = {}) => {
     <p>{description || <em>No description provided</em>}</p>
   </span>
 }
-
+/*
+BUDGET PANEL:
+A concise view of the manifest in question
+*/
 @connect(
     //  Might seem counterintuitive, but we're connecting to a manifest and pulling its proposal data.
     (state, props) => {

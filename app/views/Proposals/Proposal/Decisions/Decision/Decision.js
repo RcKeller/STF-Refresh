@@ -56,6 +56,11 @@ const columns = [
     width: 50
   }
 ]
+/*
+DECISION COMPONENT:
+Provides a table view of a budget including
+the award status / amount in an alert
+*/
 class Decision extends React.Component {
   // static propTypes = {
   //   _id: PropTypes.string,

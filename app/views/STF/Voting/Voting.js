@@ -1,34 +1,35 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Helmet from 'react-helmet'
-
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
-
 import _ from 'lodash'
 
-import api from '../../../services'
-// import { manifestsOnDocket } from '../../../selectors'
-
-import { Spin, Tabs, Button, Tooltip } from 'antd'
+import { Spin, Tabs, Tooltip } from 'antd'
 const TabPane = Tabs.TabPane
+
+import api from '../../../services'
 
 import Panels from './Panels/Panels'
 
-// ${manifest.type !== 'original' ? `(${manifest.type[0].toUpperCase()})` : ''}
-const manifestType = (type) => {
-  switch (type) {
-    case 'original':
-      return _.capitalize(type)
-    case 'partial':
-      return _.capitalize(type)
-    case 'supplemental':
-      return _.capitalize(type)
-  }
-  return null
-}
+// const manifestType = (type) => {
+//   switch (type) {
+//     case 'original':
+//       return _.capitalize(type)
+//     case 'partial':
+//       return _.capitalize(type)
+//     case 'supplemental':
+//       return _.capitalize(type)
+//   }
+//   return null
+// }
 
+/*
+VOTING VIEW:
+Renders a collection of manifests (not proposals!)
+to vote on at meetings
+*/
 import styles from './Voting.css'
 @compose(
   connect(

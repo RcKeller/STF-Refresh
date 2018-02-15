@@ -84,6 +84,10 @@ const contactColumns = [{
   width: 80
 }]
 
+/*
+SUBTABLE COMPONENT:
+Table views for budgeting data
+*/
 class SubTable extends React.Component {
   static propTypes = {
     manifest: PropTypes.object,

@@ -24,7 +24,8 @@ export const sortManifestsByProposal = (a, b) => {
 }
 
 /*
-BASIC ASYNC SELECTORS
+BASIC SELECTORS
+(grabs simple state nodes w/o errors)
 */
 const user = ({ user }) => user || {}
 const config = ({ config }) => config || {}
@@ -39,10 +40,11 @@ const proposalManifests = ({ db }) => db.proposal ? db.proposal.manifests : []
 const manifests = ({db}) => db.manifests || []
 
 const users = ({db}) => db.users || []
-// (a, b) =>
-//   a.year * a.number - b.year * b.number,
+
 /*
 MEMOIZED SELECTORS
+(Caches state, preventing unnecessary re-rendering)
+https://github.com/reactjs/reselect
 */
 //  PUBLICATION STATUS / OWNERSHIP
 export const publishedProposals = createSelector(
@@ -125,7 +127,6 @@ export const readyToPublish = createSelector(
 )
 
 //  MANIFEST-PROPOSAL SELECTORS
-
 export const proposalDecision = createSelector(
   [proposalManifests],
   (manifests) => {
@@ -159,9 +160,11 @@ export const manifestsOnDocket = ({ db }) => {
 //   (manifests) => manifests.filter(({docket}) => docket.metrics || docket.voting || docket.decisions)
 // )
 
-//  PRIVATE SELECTOR - construct one per component
+//  PRIVATE SELECTORS - construct one per component
+//  READ: https://github.com/reactjs/reselect#sharing-selectors-with-props-across-multiple-component-instances
+//  Usage:
 //  const manifestByID = makeManifestByID()
-// const manifest = makeManifestByID(props.id)(state)
+//  const manifest = makeManifestByID(props.id)(state)
 export const makeManifestByID = (id) => createSelector(
   [manifests],
   (manifests) => Array.isArray(manifests)
@@ -188,9 +191,3 @@ export const usersNotOnCommittee = createSelector(
     ? users.filter(user => !user.stf)
     : []
 )
-// export const makeManifestReviewByAuthor = (manifest) => createSelector(
-//   [user],
-//   (manifest) => Array.isArray(manifest.reviews)
-//     ? manifest.reviews.find(r => r.netID === user.netID)
-//     : {}
-// )

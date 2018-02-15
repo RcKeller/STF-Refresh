@@ -38,6 +38,13 @@ const columns = [{
   editor: SimpleNumber,
   width: 85
 }]
+/*
+REPORT TAB:
+Allows authors to report their expenditures,
+which the Office of Planning and Budgeting tracks
+This is a compliance standard we enforce as a stipulation
+for receiving an award (hence why budget contacts are required)
+*/
 @compose(
   connect(
     (state, props) => ({

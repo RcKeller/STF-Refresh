@@ -12,6 +12,10 @@ const connectForm = Form.create()
 import { feedback, help, rules, disableSubmit } from '../../../../../util/form'
 import api from '../../../../../services'
 
+/*
+UPDATE CONTACT COMPONENT:
+Individual role-based rendering of contact forms
+*/
 const jss = { icon: { fontSize: 13 } }
 @compose(
   connect(

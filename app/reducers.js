@@ -13,7 +13,8 @@ const rootReducer = combineReducers({
   // react-router-redux
   routing,
   //  redux-query
-  db, //  AKA Entities
+  //  db: Referred to as "entities" in redux-query docs, changed the namespace for readability
+  db,
   queries,
   // Isomorphic reducers (authN/Z)
   user,

@@ -9,6 +9,17 @@ import { Icon, Button, message } from 'antd'
 import api from '../../../../services'
 
 /*
+PUBLICATION PANEL:
+Please note, admins can publish at any time,
+but authors can only publish if their primary/budget/dept
+contacts have signed the proposal, AND submissions are open.
+
+Nothing stops authors from editing proposals,
+BUT they have a limited window to create OR publish proposals.
+This is often unclear for authors who are more disconnected from the process
+(not many read the RFP and our process policies)
+*/
+/*
 NOTE:
 Instead of instantiating 4 different forms for a single field, we're using AntD's
 API for submission, but using connectForm to instantiate initial values.

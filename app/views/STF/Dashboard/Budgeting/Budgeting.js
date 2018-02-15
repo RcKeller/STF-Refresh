@@ -38,7 +38,12 @@ const expandedRowRender = (record, i) => <SubTable
   report={record.manifest && record.manifest.report}
 />
 
-//  This is a decorator, a function that wraps another class (which in JS is essentially a func)
+/*
+BUDGETING FEATURE:
+Allows you to see a breakdown of all awards,
+including awards vs reported expenditures
+SUPER useful for stfagent / techfee
+*/
 @compose(
   connect((state, props) => ({
     awards: state.db.decisions,

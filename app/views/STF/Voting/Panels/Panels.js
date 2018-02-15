@@ -22,6 +22,10 @@ const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
 const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
 /*
+VOTING PANELS CONTAINER:
+Renders individual views for manifests
+based on what kind of meeting is being held
+
 There are two kinds of meetings:
 - QA meetings (metrics, no votes)
 - Voting meetings (votes, may have metrics but probably not)

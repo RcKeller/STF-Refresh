@@ -105,18 +105,24 @@ const admins = [{
   duties: 'The Web Developer is is responsible for maintaining, updating, and improving upon the STF’s web resources.'
 }]
 
+/*
+MEMBERS PAGE: .../members and .../about (legacy route)
+A brief overview of our membership, changes year to year.
+Gathering bio info has proven difficult,
+thus the page has been altered accordingly.
+*/
 import styles from './Members.css'
 @connect(state => ({ screen: state.screen }))
 class Members extends React.Component {
   render (
     { screen } = this.props
   ) {
-    const expandedRowRender = record => (
-      <span>
-        <p>{record.bio || <em>Biography not available.</em>}</p>
-        {record.duties && <span><hr /><p>{record.duties}</p></span>}
-      </span>
-    )
+    // const expandedRowRender = record => (
+    //   <span>
+    //     <p>{record.bio || <em>Biography not available.</em>}</p>
+    //     {record.duties && <span><hr /><p>{record.duties}</p></span>}
+    //   </span>
+    // )
     const representativeColumns = [
       { title: 'Name', dataIndex: 'name', key: 'name' },
       { title: 'Representing', dataIndex: 'representing', key: 'representing', width: 200 },

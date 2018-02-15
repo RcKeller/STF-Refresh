@@ -10,6 +10,11 @@ const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
 import { proposalDecision } from '../../../../../selectors'
 
+/*
+PROPOSAL HEAD:
+Renders proposal "metadata" as you will
+such as core contacts, award amounts, decisions etc
+*/
 // import styles from './Body.css'
 @connect(state => ({
   screen: state.screen,

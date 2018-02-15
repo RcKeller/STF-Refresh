@@ -1,18 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-
-import { makeManifestByID, makeManifestReview } from '../../../../../selectors'
-
-import { layout } from '../../../../../util/form'
-import api from '../../../../../services'
 
 import { Spin, Form, Row, Col, Slider, InputNumber, Input, Button, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
+import { makeManifestByID, makeManifestReview } from '../../../../../selectors'
+import { layout } from '../../../../../util/form'
+import api from '../../../../../services'
+
+/*
+SLIDER AND NUMBER COMPONENT:
+Renders a slider that you can also type into,
+for convenience
+*/
 class SliderAndNumber extends React.Component {
   render (
     { min, max, step, value } = this.props
@@ -30,9 +33,11 @@ class SliderAndNumber extends React.Component {
   }
 }
 
-//  Questions to ask for metrics
-// const questions = ['Proposal Quality', 'Academic Merit']
-
+/*
+METRICS PANEL:
+Allows members to record metrics -
+arbitrary scores on various aspects of a proposal
+*/
 @compose(
   connect(
     (state, props) => {
