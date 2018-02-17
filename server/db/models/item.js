@@ -2,6 +2,12 @@ import mongoose from 'mongoose'
 import autoref from 'mongoose-autorefs'
 import faker from 'faker'
 
+/*
+ITEM SCHEMA:
+Items in a budget manifest
+NOTE: Be careful with logic related to this.
+Items should be 1:1 with budget manifests.
+*/
 const ItemSchema = new mongoose.Schema({
   //  Items are tied to manifests, tied to proposals... or a budget report.
   manifest: { type: mongoose.Schema.Types.ObjectId, ref: 'Manifest' },

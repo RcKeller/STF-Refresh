@@ -87,7 +87,7 @@ Saveitems: Upserts items, then returns an array of their IDs
   NOTE: Saving items will overwrite whatever exists.
   This is for security, and left because we do not have a use case where sub items need to be merged.
   Implication - patching a manifest writes new items.
-  //  BUG: https://github.com/florianholzapfel/express-restify-mongoose/issues/276
+  BUG: https://github.com/florianholzapfel/express-restify-mongoose/issues/276
 */
 async function saveItems (manifest) {
   const { _id, items } = manifest

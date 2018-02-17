@@ -5,9 +5,6 @@ import pageRenderer from './pageRenderer'
 import fetchDataForRoute from './fetchDataForRoute'
 
 import { Config } from '../db/models'
-import axios from 'axios'
-import config from 'config'
-// const name = config.get('sessionName')
 
 /*
 RENDER ERROR PATCHES:
@@ -66,16 +63,17 @@ export default function render (req, res) {
      * given location.
      */
     match({ routes, location: req.url }, (err, redirect, props) => {
-      // console.log('Cookie name', req.cookies[name], req.session)
-      // if (req.cookies[name]) {
-        // req.
-        // axios.defaults.headers.common.Cookie = name + '=' + req.cookies[name]
-      // }
-
+      /*
+      TODO: Cookies are not set (due to SSR architecture)
+      this is probably why shib redirects to login/undefined
+      GitHub issue (and potential solution that assumes Axios is your data fetch method):
+      https://github.com/reactGo/reactGo/issues/922
+      https://github.com/reactGo/reactGo/pull/937
+      */
       if (err) {
         //  Patches are used to bypass 500 responses for known, non-breaking errors
         if (patchReactDataGridSelfReferenceError(err)) {
-          //  BUGFIX: Redirect to self after a split second (error does not reoccur)
+          //  BUGFIX: If "self" is not defined, reload page after a split second (error does not reoccur)
           setTimeout(() => res.redirect(req.url), 500)
         } else {
           console.error(err, redirect, props)

@@ -4,6 +4,11 @@ import autoref from 'mongoose-autorefs'
 import autopopulate from 'mongoose-autopopulate'
 import faker from 'faker'
 
+/*
+USER SCHEMA:
+Data on a certain user, also the information authN passes to client.
+NOTE: Populate "stf" to get the committee roles (if any) of a user.
+*/
 const UserSchema = new mongoose.Schema({
   name: { type: String, default: '' },
   netID: String,

@@ -15,7 +15,6 @@ module.exports = ({ production = false, browser = false } = {}) => {
   let plugins = [
     'transform-runtime',
     'transform-decorators-legacy',
-    // 'transform-async-to-generator',
     /*
     babel-plugin-import:
     Only imports the parts of libs and antd

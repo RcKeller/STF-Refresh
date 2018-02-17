@@ -4,7 +4,10 @@ import config from 'config'
 import { restDummies } from './models'
 
 export default function () {
-  const min = config.has('lorem-ipsum') ? config.get('lorem-ipsum') : 5 // default
+  const min = config.has('lorem-ipsum')
+    ? config.get('lorem-ipsum')
+    //  Default: 5 models of each type
+    : 5
   console.log(`SEED: Lorem Ipsum Mode enabled. Seeding up to ${min} documents each...`)
   //  Activate dummy data generators, with specified minimums document counts.
 
@@ -31,6 +34,7 @@ export default function () {
   })
   let _id = new mongoose.Types.ObjectId()
   let stf = new mongoose.Types.ObjectId()
+  //  For testing purposes
   const developer = {
     _id,
     stf,

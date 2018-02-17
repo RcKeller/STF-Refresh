@@ -1,9 +1,13 @@
 import mongoose from 'mongoose'
 import autoref from 'mongoose-autorefs'
-// import autopopulate from 'mongoose-autopopulate'
 //  BUG: autopopulate was causing children to be autoref'd multiple times even if set to unique:true
 import faker from 'faker'
 
+/*
+PROPOSAL SCHEMA:
+Proposal metadata, often joined (contacts, comments, budget manifests...)
+NOTE: A proposal HAS MANY budgets.
+*/
 const ProposalSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
   /*
@@ -64,7 +68,6 @@ ProposalSchema.plugin(autoref, [
   'manifests.proposal',
   'comments.proposal'
 ])
-// ProposalSchema.plugin(autopopulate)
 const Proposal = mongoose.model('Proposal', ProposalSchema)
 export default Proposal
 

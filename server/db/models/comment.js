@@ -3,6 +3,11 @@ import autoref from 'mongoose-autorefs'
 import autopopulate from 'mongoose-autopopulate'
 import faker from 'faker'
 
+/*
+COMMENT SCHEMA:
+Student remarks for proposals
+known as "endorsements" in the STF nomenclature
+*/
 const CommentSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
   proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },

@@ -1,10 +1,11 @@
 import mongoose from 'mongoose'
 import loadModels from './models'
-// import dummyData from './dummies'
 import dummyData from './dummy'
 import config from 'config'
 const db = config.get('db')
-// const db = 'mongodb://192.168.99.100:27017/test-f'
+// FOR TESTING: Change your connection string in config OR here.
+// E.g. a docker container:
+// const db = 'mongodb://192.168.99.100:27017/test'
 
 export default () => {
   // Find the appropriate database to connect to, default to localhost if not found.
@@ -23,6 +24,8 @@ export default () => {
   mongoose.connection.on('error', console.log)
   mongoose.connection.on('disconnected', connect)
 
+  //  Load models (not that mongo dependencies are loaded)
   loadModels()
-  if (config.has('lorem-ipsum')) { dummyData() }
+  //  Load lorem ipsum if this feature is enabled.
+  if (config.has('lorem-ipsum')) dummyData()
 }

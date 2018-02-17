@@ -5,7 +5,6 @@
   "repository": "https://github.com/RcKeller/STF-Refresh",
   "main": "index.js",
   "scripts": {
-    "sequelize": "node_modules/.bin/sequelize",
     "lint": "eslint --ext .js,.jsx app server",
     "lint:fix": "eslint --ext .js,.jsx app server --fix",
     "clean": "rimraf public && rimraf compiled",
@@ -44,7 +43,6 @@
   },
   "dependencies": {
     "antd": "^2.12.8",
-    "axios": "^0.17.1",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",

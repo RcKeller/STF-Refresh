@@ -2,6 +2,11 @@ import mongoose from 'mongoose'
 import autoref from 'mongoose-autorefs'
 import faker from 'faker'
 
+/*
+BLOCK SCHEMA:
+Contains the metadata AND content for continuous funding projects
+known as "blocks" in the STF nomenclature
+*/
 const BlockSchema = new mongoose.Schema({
   /*
   _id and _v(ersion) are populated by mongoose, but I think this
@@ -74,7 +79,7 @@ const dummyBlocks = (min, ids) => {
     if (err) {
       console.warn(`Unable to count Block schema: ${err}`)
     } else if (count < min) {
-        //  If it didn't, inject dummies.
+      //  If it didn't, inject dummies.
       let fakes = []
       for (let i = 0; i < min; i++) {
         fakes[i] = new Block({
@@ -115,11 +120,9 @@ const dummyBlocks = (min, ids) => {
               mitigations: faker.lorem.paragraph()
             }
           }
-          // faker.lorem.sentence()
-          // risk: faker.lorem.paragraph()
         })
       }
-        //  Create will push our fakes into the DB.
+      //  Create will push our fakes into the DB.
       Block.create(fakes, (error) => {
         if (!error) { console.log(`SEED: Created fake Block (${fakes.length})`) }
       })

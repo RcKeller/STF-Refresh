@@ -23,8 +23,6 @@ export default (app) => {
     console.log(`INIT: Enabled compression (GZIP)`)
     app.use(helmet())
     console.log(`INIT: HTTP Headers set via "Helmet"`)
-    // app.use(cookieParser(config.get('cookieSecret')))
-    // console.log(`INIT: Cookie Parser live (${config.get('cookieSecret')})`)
   }
   // LOGGING
   app.use(logger('dev'))
@@ -37,7 +35,6 @@ export default (app) => {
 
   app.use(express.static(path.join(process.cwd(), 'public')))
   /*
-  I am adding this here so that the Heroku deploy will work
   Indicates the app is behind a front-facing proxy,
   and to use the X-Forwarded-* headers to determine the connection and the IP address of the client.
   NOTE: X-Forwarded-* headers are easily spoofed and the detected IP addresses are unreliable.
@@ -52,20 +49,22 @@ export default (app) => {
   /*
   Create a session middleware with the given options
   Note session data is not saved in the cookie itself, just the session ID. Session data is stored server-side.
-  Options: resave: forces the session to be saved back to the session store, even if the session was never
-                   modified during the request. Depending on your store this may be necessary, but it can also
-                   create race conditions where a client has two parallel requests to your server and changes made
-                   to the session in one request may get overwritten when the other request ends, even if it made no
-                   changes(this behavior also depends on what store you're using).
-           saveUnitialized: Forces a session that is uninitialized to be saved to the store. A session is uninitialized when
-                   it is new but not modified. Choosing false is useful for implementing login sessions, reducing server storage
-                   usage, or complying with laws that require permission before setting a cookie. Choosing false will also help with
-                   race conditions where a client makes multiple parallel requests without a session
-           secret: This is the secret used to sign the session ID cookie.
-           name: The name of the session ID cookie to set in the response (and read from in the request).
-           cookie: Please note that secure: true is a recommended option.
-                   However, it requires an https-enabled website, i.e., HTTPS is necessary for secure cookies.
-                   If secure is set, and you access your site over HTTP, the cookie will not be set.
+
+  OPTIONS:
+  resave: forces the session to be saved back to the session store, even if the session was never
+          modified during the request. Depending on your store this may be necessary, but it can also
+          create race conditions where a client has two parallel requests to your server and changes made
+          to the session in one request may get overwritten when the other request ends, even if it made no
+          changes(this behavior also depends on what store you're using).
+ saveUnitialized: Forces a session that is uninitialized to be saved to the store. A session is uninitialized when
+          it is new but not modified. Choosing false is useful for implementing login sessions, reducing server storage
+          usage, or complying with laws that require permission before setting a cookie. Choosing false will also help with
+          race conditions where a client makes multiple parallel requests without a session
+ secret: This is the secret used to sign the session ID cookie.
+ name: The name of the session ID cookie to set in the response (and read from in the request).
+ cookie: Please note that secure: true is a recommended option.
+          However, it requires an https-enabled website, i.e., HTTPS is necessary for secure cookies.
+          If secure is set, and you access your site over HTTP, the cookie will not be set.
   */
   let sessionStore = null
   db.session

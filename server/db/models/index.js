@@ -1,6 +1,7 @@
 /*
 MODEL INITIALIZER
 Uses require() to pass the imports around as a func.
+NOTE: Do not change this to ES6, please - loading must be async
 */
 export default function loadModels () {
   //  Auth and User data

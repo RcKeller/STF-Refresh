@@ -3,6 +3,14 @@ import autoref from 'mongoose-autorefs'
 import autopopulate from 'mongoose-autopopulate'
 import faker from 'faker'
 
+/*
+MANIFEST SCHEMA:
+Contains an ask for a proposal of a certain type
+(original proposal, request for supplemental funding, partial/alternate budgets...)
+NOTE: This is cruicial - often we're concerned with budgets that HAVE ONE proposal,
+but a proposal HAS MANY budgets.
+Thus, when voting on A MANIFEST, you're not just voting on A PROPOSAL.
+*/
 const ManifestSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
   //  NOTE: The original manifest is manitfests[0] in a proposal.

@@ -2,12 +2,18 @@ import mongoose from 'mongoose'
 import faker from 'faker'
 
 /*
+CONFIG SCHEMA:
+Contains top-level data and enums
+that are pre-loaded into ALL routes
+There is only one entity for this model
 
+This approach allows us to configure the site
+via the config panel and DB SaaS in real time
 */
 const ConfigSchema = new mongoose.Schema({
-  //  Submissions: Open or closed (default to open)
   year: { type: Number, default: 2018 },
   quarter: { type: String, default: 'Autumn' },
+  //  Submissions: Open or closed (default to open)
   submissions: { type: Boolean, default: true },
   links: {
     type: Object,

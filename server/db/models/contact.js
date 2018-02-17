@@ -2,6 +2,11 @@ import mongoose from 'mongoose'
 import autoref from 'mongoose-autorefs'
 import faker from 'faker'
 
+/*
+CONTACT SCHEMA:
+Contact information (!== user models) for a proposal/block/supplemental
+Includes user role, title, signature status etc
+*/
 const ContactSchema = new mongoose.Schema({
   // Contact info for associated proposal
   //  NOTE: Can be either a proposal, supplemental or block. Be careful if reverse populating.

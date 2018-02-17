@@ -1,8 +1,9 @@
 import { OAuth2Strategy as GoogleStrategy } from 'passport-google-oauth'
 import db from '../../db'
 import config from 'config'
+
 /*
-CONFIG: /config/default.json or /config/development.json
+CONFIG FILE: /config/default.json or /config/development.json
 "google": {
   "clientID": "<...google id>.apps.googleusercontent.com",
   "clientSecret": "<...google secret>",
@@ -12,7 +13,6 @@ CONFIG: /config/default.json or /config/development.json
   "failureRedirect": "/"
 }
 */
-
 export default (app, passport) => {
   if (!db.passport || !db.passport.google || !typeof db.passport.google === 'function') {
     console.warn('Error: MongoDB unable to initialize passport-google-oauth')
@@ -21,7 +21,8 @@ export default (app, passport) => {
     console.warn('MOCK: Initializing Google Oauth2 "Mock-Shibboleth"')
   }
   /*
-  OAuth Strategy taken modified from https://github.com/sahat/hackathon-starter/blob/master/config/passport.js
+  OAuth Strategy modified from
+  https://github.com/sahat/hackathon-starter/blob/master/config/passport.js
   - User is already logged in.
    - Check if there is an existing account with a provider id.
      - If there is, return an error message. (Account merging not supported)
@@ -59,7 +60,6 @@ export default (app, passport) => {
   here https://developers.google.com/identity/protocols/OpenIDConnect#scope-param
   */
   app.get(
-    // '/auth/google',
     loginURL,
     passport.authenticate('google', {
       scope: [

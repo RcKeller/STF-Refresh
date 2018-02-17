@@ -3,6 +3,7 @@ import autoref from 'mongoose-autorefs'
 import faker from 'faker'
 
 /*
+PROJECT SCHEMA:
 This is the body or "Business Case" of a proposal - the business case.
 
 Business cases are a new process for handling proposals.

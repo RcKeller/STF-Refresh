@@ -28,7 +28,6 @@ async function preUpdate (req, res, next) {
 async function assignNumberIfPublishing (proposal) {
   let { _id, number, published } = proposal
 
-  // console.log('Checking publication status:', _id, published, proposal.year, number)
   //  If published and !numbered, check if it was previously unpublished w/o meta
   if (published && !number) {
     let { prevPublished, prevNumber } = await Proposal

@@ -2,7 +2,9 @@ import mongoose from 'mongoose'
 import autoref from 'mongoose-autorefs'
 import faker from 'faker'
 /*
-Schema for commitee members. These are deleted if members are no longer associated with the STF.
+STF SCHEMA:
+Schema for commitee members, includes various role designations and the option to join user refs.
+These are deleted if members are no longer associated with the STF.
 */
 const STFSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
@@ -11,7 +13,6 @@ const STFSchema = new mongoose.Schema({
   admin: Boolean
 })
 STFSchema.plugin(autoref, ['user.stf'])
-//  NOTE: Add autopop if nececssary, not needed for now.
 const STF = mongoose.model('STF', STFSchema)
 export default STF
 

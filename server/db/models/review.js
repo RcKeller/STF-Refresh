@@ -3,6 +3,12 @@ import autoref from 'mongoose-autorefs'
 import autopopulate from 'mongoose-autopopulate'
 import faker from 'faker'
 
+/*
+REVIEW SCHEMA:
+Contains unoffical, arbitrary voting information cast by members
+Such as scoring on the "academic merit" or "presentation quality" of a proposal.
+known as "metrics" in STF nomenclature
+*/
 const ReviewSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
   proposal: { type: mongoose.Schema.Types.ObjectId, ref: 'Proposal' },

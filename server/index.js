@@ -66,7 +66,6 @@ if (env === 'development') {
     'utf-8'
   )
 
-  //  FIXME: When not using the test port, remove the port here
   const domain = `${config.get('domain')}:${config.get('port')}`
 
   const httpsServer = https.createServer({ key, cert }, app)

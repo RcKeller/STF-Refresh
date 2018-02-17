@@ -4,7 +4,10 @@ import autopopulate from 'mongoose-autopopulate'
 import faker from 'faker'
 
 /*
+REPORT SCHEMA:
 A report is a record of what was ACTUALLY purchased by proposal authors for a specific manifest (original/partial/supplemental).
+This is used to audit departments and ensure proper spending of awards.
+In essence, it's metadata for a manifest of what was actually purchased.
 */
 const ReportSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
@@ -39,12 +42,12 @@ export default Report
 FAKE DATA GENERATOR: Report
 ******/
 const dummyReports = (min, ids) => {
-//  Check the db for existing data satisfying min required
+  //  Check the db for existing data satisfying min required
   Report.count().exec((err, count) => {
     if (err) {
       console.warn(`Unable to count Report schema: ${err}`)
     } else if (count < min) {
-    //  If it didn't, inject dummies.
+      //  If it didn't, inject dummies.
       let fakes = []
       for (let i = 0; i < min; i++) {
         fakes[i] = new Report({
@@ -61,7 +64,7 @@ const dummyReports = (min, ids) => {
           total: faker.random.number()
         })
       }
-    //  Create will push our fakes into the DB.
+      //  Create will push our fakes into the DB.
       Report.create(fakes, (error) => {
         if (!error) { console.log(`SEED: Created fake Report (${fakes.length})`) }
       })

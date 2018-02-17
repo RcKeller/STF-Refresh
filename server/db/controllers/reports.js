@@ -42,8 +42,7 @@ async function preCreateOrUpdate (req, res, next) {
 async function postCreate (req, res, next) {
   // let { result } = req.erm
   // const { proposal } = result
-  // console.log('Report for Proposal', proposal)
-  //  TODO: Announce new reports
+  // TODO: Announce new reports
   next()
 }
 
@@ -101,7 +100,3 @@ async function saveItems (report) {
   let refs = await Promise.all(promises)
   return refs
 }
-
-/*
-hfghf
-*/

@@ -3,6 +3,12 @@ import autoref from 'mongoose-autorefs'
 import autopopulate from 'mongoose-autopopulate'
 import faker from 'faker'
 
+/*
+DECISION SCHEMA:
+The final determination of the committee,
+as issued by admins.
+!== reviews (known as metrics in STF nomenclature)
+*/
 const DecisionSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
   //  A decision for a proposal. Gets revised in case of supplementals.
@@ -15,8 +21,6 @@ const DecisionSchema = new mongoose.Schema({
   body: String,
   //  Final decision
   approved: Boolean
-  //  If this decision is an award, it will have a grant amount and associated report.
-  // grant: Number
 })
 DecisionSchema.plugin(autoref, [
   // 'proposal.decisions',
@@ -46,7 +50,6 @@ const dummyDecisions = (min, ids) => {
           author: ids.user[i],
           body: faker.lorem.paragraph(),
           approved: faker.random.boolean()
-          // grant: faker.random.number()
         })
       }
       //  Create will push our fakes into the DB.

@@ -1,8 +1,6 @@
 import User from '../models/user'
 
-/* eslint-disable no-param-reassign */
 const serializeUser = (req, accessToken, refreshToken, profile, done) => {
-  // console.warn('Called db/passport/google', req.user, accessToken, refreshToken, profile)
   //  Use the JSON returned by Google
   profile = profile._json
   //  Select relevant fields
@@ -21,14 +19,10 @@ const serializeUser = (req, accessToken, refreshToken, profile, done) => {
     return User.findOne({ netID: profile.netID }, (findOneErr, existingUser) => {
       // If there is, return an error message. (Account merging not supported)
       if (existingUser) {
-        // console.log('Logged in, existingUser by netID', existingUser)
         return done(null, false, { message: 'There is already a Google account that belongs to you. Sign in with that account or delete it, then link it with your current account.' })
       }
       // Else link new OAuth account with currently logged-in user.
-      //  TODO: See if it's _id or id?
-      // console.log('Checking ID for existing user:', req.user.id)
       return User.findById(req.user.id, (findByIdErr, user) => {
-        // console.log('found by id', req.user.id, user)
         Object.assign(user, profile)
         user.save((err) => {
           done(err, user, { message: 'Google account has been linked.' })
@@ -45,17 +39,15 @@ const serializeUser = (req, accessToken, refreshToken, profile, done) => {
     .exec((findByGoogleIdErr, existingUser) => {
     // If returning user, sign in and we are done.
       if (existingUser) {
-      // console.log('existingUser by netID', existingUser)
         return done(null, existingUser)
       }
-    // Else check if there is an existing account with user's netID.
+      // Else check if there is an existing account with user's netID.
       return User.findOne({ netID: profile.netID }, (findByEmailErr, existingEmailUser) => {
-      // If there is, return an error message.
+        // If there is, return an error message.
         if (existingEmailUser) {
-        // console.log('existing user for netID that tried logging in', existingEmailUser)
           return done(null, false, { message: 'There is already an account using this email address. Sign in to that account and link it with Google manually from Account Settings.' })
         }
-      // Else create a new account.
+        // Else create a new account.
         const user = new User()
         Object.assign(user, profile)
         return user.save((err) => {
@@ -66,11 +58,9 @@ const serializeUser = (req, accessToken, refreshToken, profile, done) => {
 }
 
 const deserializeUser = (id, done) => {
-  // console.warn('db/passport/deserializeUser:', id)
   User.findById(id, (err, user) => {
     done(err, user)
   })
 }
 
 export default { serializeUser, deserializeUser }
-/* eslint-enable no-param-reassign */

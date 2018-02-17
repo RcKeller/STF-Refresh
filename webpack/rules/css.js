@@ -64,7 +64,7 @@ module.exports = ({ production = false, browser = false } = {}) => {
   return {
     test: /\.css$/,
     use: browser ? browserLoaders : serverLoaders,
-    // include: PATHS.app
+    // NOTE: Include node modules path too so you can incorporate vendor styles
     include: [PATHS.app, PATHS.modules]
   }
 }

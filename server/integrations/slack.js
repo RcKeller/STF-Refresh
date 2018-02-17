@@ -27,7 +27,7 @@ class Bot {
       .on('error', err => console.error('SLCK:', err))
       .on('close', err => console.error('SLCK: Fatal:', err))
 
-    //  Bot avatar
+    //  Bot avatar (Howl's Moving Castle)
     this.icon_emoji = ':calcifer:'
     //  Channels & Users to mention in announcements
     this.channel = config.has('prod') ? 'general' : 'test'

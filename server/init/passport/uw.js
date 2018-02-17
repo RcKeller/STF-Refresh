@@ -3,8 +3,9 @@ import fs from 'fs'
 import path from 'path'
 import config from 'config'
 import db from '../../db'
+
 /*
-CONFIG: /config/default.json or /config/production.json
+CONFIG FILE: /config/default.json or /config/production.json
 
 "domain": "uwstf.org",
 "uw": {
@@ -13,7 +14,6 @@ CONFIG: /config/default.json or /config/production.json
   "callbackUrl": "/login/callback"
 },
 */
-
 export default (app, passport) => {
   //  NOTE: Good resource:
   //  https://github.com/drstearns/passport-uwshib
