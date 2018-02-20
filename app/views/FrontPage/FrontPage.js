@@ -64,11 +64,6 @@ class FrontPage extends React.Component {
                 </Timeline>
                 : <em>We are currently developing our schedule.</em>
               }
-
-              <h2>New Web Platform</h2>
-              <p>
-                This website is the new platform for the committee, supporting proposal submissions, endorsements, committee review and award management. We have developed this new platform to improve the proposal experience. We encourage authors to review the new RFP in the navbar and reach out to the proposal officer with any questions.
-              </p>
             </Col>
           </Row>
         </section>

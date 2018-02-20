@@ -21,6 +21,7 @@ const SplitEdit = (l, c) => require.ensure([], () => c(null, require('./views/Pr
 const SplitProposals = (l, c) => require.ensure([], () => c(null, require('./views/Proposals/Proposals').default))
 const SplitProposal = (l, c) => require.ensure([], () => c(null, require('./views/Proposals/Proposal/Proposal').default))
 const SplitBlocks = (l, c) => require.ensure([], () => c(null, require('./views/Blocks/Blocks').default))
+const SplitCSF = (l, c) => require.ensure([], () => c(null, require('./views/Blocks/CSF/CSF').default))
 const SplitBlock = (l, c) => require.ensure([], () => c(null, require('./views/Blocks/Block/Block').default))
 const SplitDashboard = (l, c) => require.ensure([], () => c(null, require('./views/STF/Dashboard/Dashboard').default))
 const SplitVoting = (l, c) => require.ensure([], () => c(null, require('./views/STF/Voting/Voting').default))
@@ -111,6 +112,7 @@ export default (store) => {
       <Route path='/proposals' getComponent={SplitProposals} />
       <Route path='/proposals/:year/:number' getComponent={SplitProposal} />
       <Route path='/blocks' getComponent={SplitBlocks} />
+      <Route path='/blocks/csf' getComponent={SplitCSF} />
       <Route path='/blocks/:number' getComponent={SplitBlock} />
 
       <Route path='/create' onEnter={requireAuth} getComponent={SplitCreate} />

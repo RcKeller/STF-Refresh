@@ -1,0 +1,18 @@
+@import '../../../css/layout';
+@import '../../../css/colors';
+
+.article {
+  @apply --page;
+}
+.subheader {
+  padding: 16px 0;
+}
+.list-header {
+  padding: 8px 0;
+  color: var(--purple, purple);
+  text-decoration: underline;
+}
+.list {
+  list-style-type: circle;
+  list-style-position: inside;
+}

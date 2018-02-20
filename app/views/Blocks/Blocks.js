@@ -13,28 +13,18 @@ import { Spin, Table, Alert } from 'antd'
 
 const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
-import styles from './Blocks.css'
-// const renderTitle = (text, record) => <Link to={`/${record.number}`}>{record.title}</Link>
-
-const columns = [
-  { title: 'Title',
-    dataIndex: 'title',
-    key: 'title',
-    render: (text, record) => <Link to={`/blocks/${record.number}`}>{record.title}</Link>
-  },
-  { title: 'Organization', dataIndex: 'organization', key: 'organization' },
-  { title: 'Status', dataIndex: 'status', key: 'status', width: 100 },
-  { title: 'Award', dataIndex: 'received', key: 'received', render: (title) => <span>{currency(title || 0)}</span>, width: 80 }
-]
 /*
 /BLOCKS PAGE: .../blocks
 Provides an overview on continuous funding blocks
 Renders all blocks in a short table
 Summarizes annual projections for continuous funding expenses
 */
+import styles from './Blocks.css'
+import { specialProjects } from './content.js'
 @compose(
   connect(state => ({
     blocks: state.db.blocks || [],
+    projects: specialProjects,
     screen: state.screen
   })),
   connectRequest(() => api.get('blocks', {
@@ -45,10 +35,26 @@ Summarizes annual projections for continuous funding expenses
 class Blocks extends React.Component {
   static propTypes = {
     blocks: PropTypes.array,
+    projects: PropTypes.array,
     screen: PropTypes.object
   }
-  render ({ blocks, screen } = this.props) {
-    const total = blocks ? blocks.reduce((a, b) => a + b.received, 0) : 0
+  columns = [
+    { title: 'Title',
+      dataIndex: 'title',
+      key: 'title',
+      render: (text, record) => <Link to={`/blocks/${record.number}`}>{record.title}</Link>
+    },
+    { title: 'Organization', dataIndex: 'organization', key: 'organization' },
+    { title: 'Status', dataIndex: 'status', key: 'status', width: 100 },
+    { title: 'Award', dataIndex: 'received', key: 'received', render: (title) => <span>{currency(title || 0)}</span>, width: 80 }
+  ]
+  render ({ blocks, projects, screen } = this.props) {
+    // Combine blocks and Special Projects
+    let blocksAndProjects = blocks.slice()
+    for (let project of projects) {
+      blocksAndProjects.push(project)
+    }
+    const total = blocksAndProjects.reduce((a, b) => a + b.received, 0)
     return (
       <article className={styles['blocks']}>
         <Helmet title='Block Funding' />
@@ -80,19 +86,17 @@ class Blocks extends React.Component {
         <p>
           If you are interested in pursuing Block Funding for your organization, feel free to discuss it with any member of the committee. Please refrain from asking for Block Funding in your written proposal or proposal presentation.
         </p>
-        {!blocks
+        {!blocksAndProjects
           ? <Spin size='large' tip='Loading...' />
-          : <Table dataSource={blocks} pagination={false}
+          : <Table dataSource={blocksAndProjects} pagination={false}
             rowKey={record => record._id}
             size='middle'
-            // columns={columns}
-            columns={screen.lessThan.medium ? [columns[0], columns[3]] : columns}
+            columns={screen.lessThan.medium ? [this.columns[0], this.columns[3]] : this.columns}
             footer={() =>
               <Alert type='info' banner showIcon={false}
                 message={<h2>{`Estimated Annual Funding: ${currency(total || 0)}`}</h2>}
               />
             }
-            // columns={screen.lessThan.medium ? columns.slice(1, 3) : columns}
           />
         }
       </article>
