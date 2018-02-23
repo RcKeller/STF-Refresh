@@ -72,6 +72,7 @@ class Report extends React.Component {
     manifest: PropTypes.object,
     report: PropTypes.object
   }
+  OrgCodeKBA = 'https://itconnect.uw.edu/work/administrative-systems/organization-codes/'
   componentDidMount () {
     const { form, report } = this.props
     if (report) {
@@ -142,7 +143,7 @@ class Report extends React.Component {
             listStylePosition: 'inside'
           }}>
             <li>
-              <b>Budget Code:</b> Not to be confused with your organization's budget number, this represents the charge line/cost center you use for your expenses.
+              <b>Departmental Organization Code:</b> Not to be confused with your organization's budget number, this represents the charge line/cost center you use for your expenses. For more information, <a href={this.OrgCodeKBA} target='_blank'>visit the IT Connect page on Org Codes by clicking here.</a>
             </li>
             <li>
               <b>Summary:</b> A one to two line explaination of your purchase status, e.g. "All items purchased from Costco".
@@ -157,7 +158,7 @@ class Report extends React.Component {
         </p>
         {orgCode && <h6>
           <Icon type='exclamation-circle-o' />
-          {` Your Organization Code: ${orgCode}`}
+          {` Your Departmental Organization Code: ${orgCode}`}
         </h6>}
         <p>
           If you have any questions, please reach out to the operations manager at <a href='mailto:techfee@uw.edu'>techfee@uw.edu</a>.
@@ -178,12 +179,16 @@ class Report extends React.Component {
           )}
         </FormItem>
         <Spreadsheet financial
+          prompt='Record Expenses'
           columns={columns}
           data={data}
           onSubmit={this.handleSubmit}
           newData={newData}
           disabled={disableSubmit(form)}
           total={total}
+        />
+        <Alert type='info' showIcon banner
+          description='For your convenience, you can report expenditures at any time. We encourage you to use this tool in reference to your original proposal as you make purchases.'
         />
       </section>
     )

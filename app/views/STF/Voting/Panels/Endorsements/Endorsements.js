@@ -33,7 +33,6 @@ class Endorsements extends React.Component {
   render (
     { screen, manifest, comments } = this.props
   ) {
-    console.log('Endorsements', comments, manifest)
     return (
       <div>
         {!manifest

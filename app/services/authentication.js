@@ -30,7 +30,7 @@ export const endSession = () => {
     })
     .catch(err => {
       message.error('Unable to connect to Shibboleth')
-      console.log(err)
+      console.error(err)
     })
   }
 }

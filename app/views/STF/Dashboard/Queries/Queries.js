@@ -94,30 +94,12 @@ class Queries extends React.Component {
   handleSelect (model) {
     this.setState({ model })
   }
-  // handleSubmit (e) {
-  //   e.preventDefault()
-  //   let { form, api } = this.props
-  //   let { model } = this.state
-  //   form.validateFields((err, values) => {
-  //     if (!err) {
-  //       let params = {}
-  //       console.log(values)
-  //       if (Array.isArray(values.populate)) params.populate = values.populate
-  //       if (values.Query) params.Query = modelQuery[model][values.Query]
-  //       params.transform = res => ({ querytool: res })
-  //       params.update = { querytool: (prev, next) => next }
-  //       params.force = true
-  //       api.getAsync(model, params)
-  //     }
-  //   })
-  // }
   handleSubmit (e) {
     e.preventDefault()
     let { form, api } = this.props
     let { model } = this.state
     form.validateFields((err, values) => {
       if (!err) {
-        console.log(values)
         let { id, query, populate } = values
         //  Wrap querystrings in curly braces and parse.
         if (query) {

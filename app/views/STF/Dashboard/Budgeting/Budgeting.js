@@ -250,7 +250,6 @@ class Budgeting extends React.Component {
           //   : 0
           // let percentage = Number.parseInt(text / record.manifest.total) * 100
           let percentage = Number.parseInt(text / record.manifest.total * 100)
-          // console.warn(record.manifest.report.total, record.proposal.received, percentage)
           if (Number.isNaN(percentage)) percentage = 0
           // else if (percentage > 100) percentage = 100
           let status = 'active'

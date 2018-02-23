@@ -206,7 +206,6 @@ class Edit extends React.Component {
     //  You can log out of Shib and push an update, but if you leave the page after that, it locks you out.
     var gracePeriodEnd = new Date(date)
     gracePeriodEnd.setDate(gracePeriodEnd.getDate() + 7)
-    console.log('GRACE PERIOD ENDS:', gracePeriodEnd)
     if (user && proposal) this.redirectUnaffiliatedUsers()
     return (
       <article className={styles['page']}>

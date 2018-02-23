@@ -28,6 +28,7 @@ import styles from './Create.css'
   connect(
     state => ({
       user: state.user,
+      admin: state.user && state.user.stf && state.user.stf.admin,
       organizations: (state.config.enums.organizations) || {},
       submissions: state.config.submissions
     }),
@@ -41,8 +42,10 @@ class Create extends React.Component {
     api: PropTypes.object,
     user: PropTypes.object,
     organizations: PropTypes.object,
-    submissions: PropTypes.bool
+    submissions: PropTypes.bool,
+    admin: PropTypes.bool
   }
+  OrgCodeKBA = 'https://itconnect.uw.edu/work/administrative-systems/organization-codes/'
   constructor (props) {
     super(props)
     this.state = { modal: false }
@@ -86,18 +89,16 @@ class Create extends React.Component {
     })
   }
   handleCancel = () => {
-    console.log('Clicked cancel button')
     this.setState({ modal: false })
   }
   handleOrganizationSelect = (key) => {
     const { form, organizations } = this.props
-    const organization = JSON.stringify(key)
+    // const organization = JSON.stringify(key)
     const budget = organizations[key]
-    console.log('ORG', organizations, key, organization, budget)
     form.setFieldsValue({ budget })
   }
   render (
-    { form, organizations, submissions } = this.props,
+    { form, organizations, submissions, admin } = this.props,
     { modal, confirmLoading, ModalText } = this.state
   ) {
     return (
@@ -107,14 +108,13 @@ class Create extends React.Component {
           The Student Technology Fee Committee was created to ensure the best return on collected student dollars. By proposing to the committee, you agree to follow all requirements, current and future, set by the STFC. Included below are particularly relevant documents, along with brief summary and their full text.
         </p>
         <Agreements />
-        <Button type='primary' disabled={!submissions} onClick={this.showModal}>{submissions ? 'I Agree' : 'Submissions are closed'}</Button>
+        <Button type='primary' disabled={!admin && !submissions} onClick={this.showModal}>{submissions ? 'I Agree - Begin a Proposal' : 'Submissions are closed'}</Button>
         <Modal visible={modal}
           title='Create a Proposal - Initial Contact Information'
           okText='Create Proposal'
           onCancel={this.handleCancel}
           onOk={this.handleOk}
           confirmLoading={confirmLoading}
-          // TODO: Add disable submit button: ...htmlType='submit' disabled={disableSubmit(form)}
         >
           <p>Proposals are only available to users who are directly associated as a point of contact. There are four different kinds:</p>
           <ul style={{
@@ -126,6 +126,7 @@ class Create extends React.Component {
             <li>Organization Head/Leader</li>
             <li>Student Lead (Optional, but highly reccommended)</li>
           </ul>
+          <br />
           <p>To start your proposal, you must specify your role with the project, and the associated UW budget code.</p>
           <Form onSubmit={this.handleSubmit}>
             <FormItem label='I am the...' {...layout} hasFeedback={feedback(form, 'role')}>
@@ -148,7 +149,7 @@ class Create extends React.Component {
                 <Input />
               )}
             </FormItem>
-            <FormItem label={<Label title='Org'
+            <FormItem label={<Label title='Org. / Dept.'
               message={'Your department or RSO - fill in if yours is not listed. For your convenience, budget codes for orgs we have worked with before are autopopulated.'} />}
               {...layout} hasFeedback={feedback(form, 'organization')}>
               {form.getFieldDecorator('organization', rules.required)(
@@ -161,14 +162,15 @@ class Create extends React.Component {
                 />
               )}
             </FormItem>
-            <FormItem label={<Label title='Budget'
-              message={'Your department or RSO\'s budget code. A financial contact will know this. Awards are dispersed to the financial org with this code.'} />}
+            <FormItem label={<Label title='Org Code'
+              message={'Your department or RSO\'s Organization Code. A financial contact will know this. Awards are dispersed to the financial org with this code.'} />}
               {...layout} hasFeedback={feedback(form, 'budget')}>
               {form.getFieldDecorator('budget', rules.required)(
                 <Input />
               )}
             </FormItem>
-            {/* TODO: Select formitem for role, modal form integration. */}
+            <hr />
+            <small>For more information on Departmental Organization Codes, <a href={this.OrgCodeKBA}>Click Here</a>.</small>
           </Form>
         </Modal>
       </article>

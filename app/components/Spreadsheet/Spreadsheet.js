@@ -26,6 +26,8 @@ class Spreadsheet extends React.Component {
     onSubmit: PropTypes.func.isRequired,
     //  Financial will calculate and show subtotals as necessary
     financial: PropTypes.bool,
+    //  Prompt will override the default submit button text (which is "Save")
+    prompt: PropTypes.string,
     //  Initial total, disposed of once rows update.
     total: PropTypes.number
   }
@@ -50,7 +52,6 @@ class Spreadsheet extends React.Component {
     Otherwise, we have bugs where spreadsheets rerender for no good reason.
     */
     if (Array.isArray(data) && !_.isEqual(data, this.props.data)) {
-      console.log('Spreadsheet CWRP unequal', data, this.props.data)
       let rows = data || []
       this.setState({ rows })
     }
@@ -107,7 +108,7 @@ class Spreadsheet extends React.Component {
 
   render (
     // { rowGetter, handleGridRowsUpdated, handleAddRow, handleSubmit } = this,
-    { columns, financial, disabled } = this.props,
+    { columns, financial, prompt, disabled } = this.props,
     { rows, total } = this.state || {}
 ) {
     if (rows && Number.isInteger(rows.length) && rows.length < 1) {
@@ -137,7 +138,8 @@ class Spreadsheet extends React.Component {
       <Button size='large' type='primary' disabled={disabled}
         style={{ width: '100%', borderRadius: 'none' }}
         onClick={this.handleSubmit}>
-        <Icon type='upload' />Save
+        <Icon type='upload' />
+        {prompt || 'Save'}
       </Button>
     </div>
   }

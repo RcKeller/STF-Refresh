@@ -11,7 +11,6 @@ class SimpleNumber extends EditorBase {
       let parsedProp = parseInt(updated[prop])
       //  Non-castable values become NaN. Convert those cases to 0.
       if (isNaN(parsedProp) || parsedProp < 0) parsedProp = 0
-      console.log('PARSEDPROP', parsedProp)
       updated[prop] = parsedProp
     })
     return updated

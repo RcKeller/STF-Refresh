@@ -184,6 +184,7 @@ class Supplemental extends React.Component {
           )}
         </FormItem>
         <Spreadsheet financial
+          prompt='Finalize and Submit - Irreversible!'
           disabled={existingSupplemmental}
           columns={columns}
           data={data}
@@ -191,10 +192,12 @@ class Supplemental extends React.Component {
           onSubmit={this.handleSubmit}
           total={total}
         />
-        {existingSupplemmental &&
-          <p>
-            We have received your supplemental request - please reach out to stfagent@uw.edu to schedule an appointment to discuss this, or for revisions.
-          </p>
+        {existingSupplemmental
+          ? <p>We have received your supplemental request - please reach out to stfagent@uw.edu to schedule an appointment to discuss this, or for revisions.</p>
+          : <Alert type='error' showIcon banner
+            message='You May Only Submit Once!'
+            description='Submitting a request for supplemental funding notifies the STF admin team, formally kicking off the process. Like your original proposal, this is a one-time deal, and your request must be accurate and finalized.'
+          />
         }
       </section>
     )

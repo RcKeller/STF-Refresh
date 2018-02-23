@@ -149,19 +149,12 @@ class Settings extends React.Component {
       console.warn(err)
     })
   }
-  handlePublished = (published) => {
-    const { api, id } = this.props
-    const update = {  //  Replace publication status only.
-      proposal: (prev, next) =>
-        Object.assign(prev, { published: next.published })
-    }
-    api.patch('proposal', { published }, { id, update })
-    .then(message.warning(`Proposal is now ${published ? 'public' : 'private'}!`), 10)
-    .catch(err => {
-      message.warning(`Failed to update - client error`)
-      console.warn(err)
-    })
-  }
+  /*
+  NOTE: UPDATE 2/16/2018
+  The unpublication feature has been abused,
+  with submissions being toggled by staff in order to make edits
+  without author permission. As such, the feature is being pulled.
+  */
   render ({ form, enums, id } = this.props) {
     return (
       <section>
@@ -206,7 +199,7 @@ class Settings extends React.Component {
               </Select>
             )}
           </FormItem>
-          <FormItem label='Budget Code' {...layout} >
+          <FormItem label='Departmental Org Code' {...layout} >
             {form.getFieldDecorator('budget')(
               <Input onPressEnter={(e) => this.handleBudget(e.target.value)} />
             )}

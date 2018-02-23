@@ -155,9 +155,7 @@ class ProjectPlan extends React.Component {
     })
   }
 
-  // render ({ form, overview = {}, plan = {} } = this.props) {
   render ({ form, body } = this.props) {
-    // console.log('DATA IN:', overview, plan)
     return (
       <div>
         <Form onSubmit={this.handleSubmit}>

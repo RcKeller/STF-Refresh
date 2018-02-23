@@ -43,7 +43,7 @@ async function assignNumberIfPublishing (proposal) {
         .findOne({})
         .select('year quarter')
       let topNumber = await Proposal
-        .count({ year, published }) || 0
+        .count({ year }) || 0
       //  Hydrate this new publication and announce it
       proposal.year = year
       proposal.number = ++topNumber

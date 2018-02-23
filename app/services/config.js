@@ -18,7 +18,7 @@ export const updateConfig = (update, options) => {
     })
     .catch(err => {
       message.error('Unable to update site configuration')
-      console.log(err)
+      console.error(err)
     })
   }
 }

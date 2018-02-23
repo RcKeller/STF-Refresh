@@ -155,7 +155,6 @@ class Docket extends React.Component {
     let { _id: id, docket } = record
     let body = { docket: Object.assign(docket, change) }
     //  Update the manifest at the correct index.
-    console.log('Change introduced', record, change, docket, body)
     const params = {
       id,
       // select: ['type', 'proposal', 'docket', 'decision'],
@@ -181,7 +180,6 @@ class Docket extends React.Component {
     { columns } = this,
     { manifests, screen } = this.props
   ) {
-    console.log('DOCKET PROPS', this.props)
     return (
       <article className={styles['article']}>
         <Helmet title='Docket' />

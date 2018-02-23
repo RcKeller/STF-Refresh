@@ -77,7 +77,6 @@ class Scores extends React.Component {
         ...reviews.member,
         ...reviews.spectator
       ])]
-      // console.warn('summary', filteredReviews)
 
       //  CALCULATE AVERAGE SCORES
       metrics = filteredReviews.reduce((total, votes) => {
@@ -124,7 +123,6 @@ class Scores extends React.Component {
     const dataSource = Object.keys(metrics).map(key => {
       return { prompt: key, score: metrics[key] }
     })
-    console.log('GOT REMARKS', remarks)
     return (
       <section>
         {!manifest
