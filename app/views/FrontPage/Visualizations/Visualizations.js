@@ -44,7 +44,7 @@ class Visualizations extends React.Component {
     year: 2018
   }
   render (
-    { funding } = this.props
+    { funding, year } = this.props
   ) {
       // {/* Data Vis
       // - Funding Allocated this Year
@@ -65,7 +65,7 @@ class Visualizations extends React.Component {
         {funding &&
           <div>
             <div>
-              <FundingAllocated {...data} />
+              <FundingAllocated {...data} year={year} />
               {/* <FundingRemaining /> */}
               {/* <FundingChances /> */}
             </div>
