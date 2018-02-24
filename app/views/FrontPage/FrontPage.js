@@ -4,6 +4,9 @@ import { connect } from 'react-redux'
 
 import { Row, Col, Timeline, Alert } from 'antd'
 const Item = Timeline.Item
+
+import Visualizations from './Visualizations/Visualizations'
+
 /*
 FRONT PAGE: .../
 Splash page. This is semi-dynamic
@@ -29,7 +32,8 @@ class FrontPage extends React.Component {
           <Row type='flex' justify='space-between' gutter={32} >
             <Col className='gutter-row' span={24} md={16}>
               <h1>The UW Student Technology Committee</h1>
-              <p>
+              <Visualizations />
+              {/* <p>
                 ...Is an entirely student operated organization dedicated to meeting the technological needs of students beyond the boundaries of the classroom. Formed by the <a href='http://apps.leg.wa.gov/RCW/default.aspx?cite=28b.15.051'>Washington State Legislature</a> and <a href='https://www.washington.edu/regents/'>UW Board of Regents</a>, we advocate for students by working with campus departments and student organizations to identify innovative and impactful technology projects. Project proposals are vetted by a committee of students appointed by the <a href='http://asuw.org'>Associated Students of the University of Washington</a>, and the <a href='http://depts.washington.edu/gpss/home'>Graduate and Professional Student Senate</a> for their ability to benefit the student community.
               </p>
               <h2>Technology Fee</h2>
@@ -43,7 +47,7 @@ class FrontPage extends React.Component {
               <h2>Student Outreach</h2>
               <p>
                 All STF projects involve student outreach, where project leaders reach out and inform the student body about resources they can benefit from. The STF holds <a href='http://apps.leg.wa.gov/rcw/default.aspx?cite=42.30'>Open Meetings</a> every week during the academic year to hear, deliberate and vote on campus projects. We encourage students to attend.
-              </p>
+              </p> */}
             </Col>
             <Col className='gutter-row' span={24} md={8}>
               <Alert type='info' showIcon

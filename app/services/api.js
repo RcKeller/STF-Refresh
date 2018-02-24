@@ -50,7 +50,9 @@ GET (ALL)
 const get = (model, options = {}) => ({
   url: target(model, options),
   options: { method: 'GET' },
-  transform: res => ({ [model]: normalize(res) }),
+  transform: options.transform
+    ? options.transform
+    : res => ({ [model]: normalize(res) }),
   update: options.update
     ? options.update
     : { [model]: (prev, next) => next },
