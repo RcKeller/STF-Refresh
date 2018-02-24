@@ -5,6 +5,7 @@ import Helmet from 'react-helmet'
 import { Tabs, Alert } from 'antd'
 const TabPane = Tabs.TabPane
 import Budgeting from './Budgeting/Budgeting'
+import Supplementals from './Supplementals/Supplementals'
 import Queries from './Queries/Queries'
 
 /*
@@ -31,11 +32,14 @@ class Dashboard extends React.Component {
           <TabPane tab='Awards & Budgeting' key='2'>
             <Budgeting />
           </TabPane>
+          <TabPane tab='Supplemental Requests' key='3'>
+            <Supplementals />
+          </TabPane>
           {/* <TabPane tab={<span>Activity Report (<em>WIP</em>)</span>} disabled key='3'>
             <h2>Under Development</h2>
           </TabPane> */}
           <TabPane tab='Query Tool' key='4'>
-            <Queries />
+            {window && <Queries />}
           </TabPane>
         </Tabs>
       </article>
