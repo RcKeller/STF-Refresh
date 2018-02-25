@@ -27,40 +27,66 @@ class PercentFunded extends React.Component {
     //  Data follows D3 data conventions, look at the flare dataset for an example.
     data: {
       // That hex code tho
-      color: '#d3d3d3',
+      color: '#4b2e83',
       size: 0,
       children: []
     },
     hoveredCell: {}
+  }
+  mapStatusToColor = {
+    "Draft": '#d3d3d3',
+    "Submitted": '#8eacbb',
+    "In Review": '#6ec6ff',
+    "Awaiting Decision": '#2196f3',
+    "Funded": '#4caf50',
+    "Partially Funded": '#80e27e',
+    "Denied": '#ff7961',
+    "Withdrawn": '#34515e'
   }
   componentWillReceiveProps (nextProps) {
     const { year, statistics } = nextProps
     //  statistics data loaded? Calculate funds per quarter
     if (Array.isArray(statistics) && statistics.length >= 0) {
       let { data } = this.state
-      //  The kind of "status" indicators may change. Using given data,
-      // iterate, then dynamically add child nodes to the newData
-      let statusCounts = statistics.reduce(
+
+      // Iterate over stats, creating a list of quarters with children
+      // that count the amount of proposals with Y status indicator.
+      // e.g. { Winter: children: [{ title: 'In Review', size: 3 }]}
+      let statusByQuarter = statistics.reduce(
         (accumulator, proposal) => {
-          const { status } = proposal || {}
-          Number.isInteger(accumulator[status])
-            ? accumulator[status] += 1
-            : accumulator[status] = 1
+          const { quarter, status } = proposal || {}
+          // Find index of the "size" node per quarter and status indicator
+          console.log(quarter, status, accumulator[quarter])
+          // NOTE: If you accumulate sizes per quarter here, it alters the vis.
+          // accumulator[quarter].size += 1
+          const indexOfStatusForQuarter = accumulator[quarter]
+            .children.findIndex(child => child.title === status)
+          // Update or initialize the child node in question
+          indexOfStatusForQuarter >= 0
+            ? accumulator[quarter]
+              .children[indexOfStatusForQuarter].size += 1
+            : accumulator[quarter]
+              .children.push({ title: status, color: this.mapStatusToColor[status], size: 1 })
           return accumulator
         },
-        {}
+        {
+          Autumn: { color: '#bf360c', children: [], size: 0 },
+          Winter: { color: '#01579b', children: [], size: 0 },
+          Spring: { color: '#1b5e20', children: [], size: 0 }
+        }
       )
       let newData = {
         title: `Proposals (${year})`,
-        size: statistics.length,
+        // size: statistics.length,
         children: []
       }
       // Apply metadata / styles as you begin injecting child nodes into our dataset
       // const UW_COLORS = ['#00939C', '#85C4C8', '#EC9370', '#C22E00']
-      for (let key of Object.keys(statusCounts)) {
-        newData.children.push({ title: key, size: statusCounts[key] })
+      for (let key of Object.keys(statusByQuarter)) {
+        const { color, children } = statusByQuarter[key]
+        newData.children.push({ title: key, color, children })
       }
-      console.warn('Status Data', data)
+      console.warn('Quarter / Status Data', data)
       // Apply to our D3 dataset
       Object.assign(data, newData)
       this.setState({ data })
@@ -88,7 +114,7 @@ class PercentFunded extends React.Component {
         <h2>{`Proposals Received: ${statistics.length}`}</h2>
         <Sunburst
           data={data}
-          colorType='category'
+          colorType='literal'
           colorRange={DIVERGING_COLOR_SCALE}
           style={{ stroke: '#FFF' }}
           height={300}
