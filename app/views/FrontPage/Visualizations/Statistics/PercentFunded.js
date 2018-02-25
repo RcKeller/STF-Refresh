@@ -4,6 +4,16 @@ import PropTypes from 'prop-types'
 import { Sunburst, Hint } from 'react-vis'
 
 const DIVERGING_COLOR_SCALE = ['#00939C', '#85C4C8', '#EC9370', '#C22E00']
+const statusColors = {
+  'Draft': '#d3d3d3',
+  'Submitted': '#8eacbb',
+  'In Review': '#6ec6ff',
+  'Awaiting Decision': '#2196f3',
+  'Funded': '#4caf50',
+  'Partially Funded': '#80e27e',
+  'Denied': '#ff7961',
+  'Withdrawn': '#34515e'
+}
 
 const jss = {
   tooltip: {
@@ -33,22 +43,11 @@ class PercentFunded extends React.Component {
     },
     hoveredCell: {}
   }
-  mapStatusToColor = {
-    "Draft": '#d3d3d3',
-    "Submitted": '#8eacbb',
-    "In Review": '#6ec6ff',
-    "Awaiting Decision": '#2196f3',
-    "Funded": '#4caf50',
-    "Partially Funded": '#80e27e',
-    "Denied": '#ff7961',
-    "Withdrawn": '#34515e'
-  }
   componentWillReceiveProps (nextProps) {
     const { year, statistics } = nextProps
     //  statistics data loaded? Calculate funds per quarter
     if (Array.isArray(statistics) && statistics.length >= 0) {
       let { data } = this.state
-
       // Iterate over stats, creating a list of quarters with children
       // that count the amount of proposals with Y status indicator.
       // e.g. { Winter: children: [{ title: 'In Review', size: 3 }]}
@@ -66,7 +65,7 @@ class PercentFunded extends React.Component {
             ? accumulator[quarter]
               .children[indexOfStatusForQuarter].size += 1
             : accumulator[quarter]
-              .children.push({ title: status, color: this.mapStatusToColor[status], size: 1 })
+              .children.push({ title: status, color: statusColors[status], size: 1 })
           return accumulator
         },
         {
@@ -105,6 +104,33 @@ class PercentFunded extends React.Component {
   onValueMouseOver = (v) => this.setState({ hoveredCell: v.x && v.y ? v : false })
   onValueMouseOut= (v) => this.setState({ hoveredCell: false })
 
+  // Per D3 schema, size is only kept in child leaves
+  // getSize iterates through a parent and counts its
+  // size via closure and a recursive function
+  getSizeOfParent = (parent) => {
+    if (parent.size) {
+      return parent.size
+    } else {
+      let count = 0
+      // Recursively count child nodes, the size prop is the target val
+      const countLeaves = (node) => {
+        if (node.children) {
+          for (let child of node.children) {
+            // Has children
+            if (child.children) {
+              countLeaves(child)
+            // Has leaves
+            } else if (child.size) {
+              count += child.size
+            }
+          }
+        }
+      }
+      countLeaves(parent)
+      return count
+    }
+  }
+
   render (
     { year, statistics } = this.props,
     { data, hoveredCell } = this.state
@@ -128,7 +154,8 @@ class PercentFunded extends React.Component {
             ? <Hint value={this.buildValue(hoveredCell)}>
               <div style={jss.tooltip}>
                 <div style={{ ...jss.box, background: hoveredCell.color }} />
-                {`${hoveredCell.size} ${hoveredCell.title}`}
+                {/* {`${hoveredCell.size} ${hoveredCell.title}`} */}
+                {`${this.getSizeOfParent(hoveredCell)} ${hoveredCell.title}`}
               </div>
             </Hint>
           : null}
