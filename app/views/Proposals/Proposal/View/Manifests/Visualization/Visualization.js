@@ -16,12 +16,14 @@ const jss = {
   },
   box: { height: '16px', width: '16px', marginRight: 8 },
   labels: {
-    primary: { fontSize: '46px', textAnchor: 'middle' },
-    secondary: { fontSize: '16px', textAnchor: 'middle' }
+    primary: { fill: '#4b2e83', fontSize: '46px', textAnchor: 'middle' },
+    secondary: { fill: '#444444', fontSize: '16px', textAnchor: 'middle' }
   }
 }
 
-const DIVERGING_COLOR_SCALE = ['#00939C', '#85C4C8', '#EC9370', '#C22E00']
+// const DIVERGING_COLOR_SCALE = ['#00939C', '#85C4C8', '#EC9370', '#C22E00']
+const DIVERGING_COLOR_SCALE = ['#d9d9d9', '#FFF', '#4caf50', '#C22E00']
+// const DIVERGING_COLOR_SCALE = ['#d9d9d9', '#4caf50']
 
 const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 /*
@@ -102,7 +104,7 @@ class Visualization extends React.Component {
     let percentage = Number.parseInt((total / originalTotal) * 100)
     const labels = [
       { x: 0, y: -5, label: currency(total), style: jss.labels.primary },
-      { x: 0, y: -20, label: percentage < 100 ? `${percentage}% of Original` : 'Fully Funded', style: jss.labels.secondary }
+      { x: 0, y: -20, label: percentage < 100 ? `${percentage}% Funded` : 'Fully Funded', style: jss.labels.secondary }
     ]
     return (
       <div>
@@ -110,7 +112,7 @@ class Visualization extends React.Component {
           <Sunburst
             className='inline-visualization'
             data={data}
-            // colorType='category'
+            colorType='category'
             colorRange={DIVERGING_COLOR_SCALE}
             style={{ stroke: '#FFF' }}
             height={300}
@@ -123,7 +125,7 @@ class Visualization extends React.Component {
               // Generates tooltips onMouseOver w/ dynamic JSS styles
               ? <Hint value={this.buildValue(hoveredCell)}>
                 <div style={jss.tooltip}>
-                  <em>{hoveredCell.title}</em>
+                  {hoveredCell.title}
                   <br />
                   {currency(hoveredCell.size)}
                 </div>
