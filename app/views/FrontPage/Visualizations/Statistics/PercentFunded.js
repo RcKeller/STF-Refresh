@@ -154,7 +154,6 @@ class PercentFunded extends React.Component {
             ? <Hint value={this.buildValue(hoveredCell)}>
               <div style={jss.tooltip}>
                 <div style={{ ...jss.box, background: hoveredCell.color }} />
-                {/* {`${hoveredCell.size} ${hoveredCell.title}`} */}
                 {`${this.getSizeOfParent(hoveredCell)} ${hoveredCell.title}`}
               </div>
             </Hint>
