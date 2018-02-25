@@ -1,10 +1,11 @@
 import React from 'react'
 import Helmet from 'react-helmet'
-import { connect } from 'react-redux'
 
-import { Row, Col, Timeline, Alert } from 'antd'
-const Item = Timeline.Item
+import { Row, Col, Tabs, Button } from 'antd'
+const TabPane = Tabs.TabPane
 
+import Events from './Events/Events'
+import Overview from './Overview/Overview'
 import Visualizations from './Visualizations/Visualizations'
 
 /*
@@ -14,17 +15,8 @@ Admins can set a basic schedule and announcement
 Via the config panel. No coding required.
 */
 import styles from './FrontPage.css'
-@connect(state => ({
-  stage: state.config.stage,
-  news: state.config.news,
-  timeline: state.config.timeline
-}))
 class FrontPage extends React.Component {
-  render (
-    { news, timeline, endorsements } = this.props
-  ) {
-    let past = Array.isArray(timeline) ? timeline.slice() : []
-    let future = past.pop()
+  render ({ router } = this.props) {
     return (
       <article className={styles['page']}>
         <Helmet title='Home' />
@@ -35,39 +27,27 @@ class FrontPage extends React.Component {
               <p>
                 ...Is an entirely student operated organization dedicated to meeting the technological needs of students beyond the boundaries of the classroom. Formed by the <a href='http://apps.leg.wa.gov/RCW/default.aspx?cite=28b.15.051'>Washington State Legislature</a> and <a href='https://www.washington.edu/regents/'>UW Board of Regents</a>, we advocate for students by working with campus departments and student organizations to identify innovative and impactful technology projects. Project proposals are vetted by a committee of students appointed by the <a href='http://asuw.org'>Associated Students of the University of Washington</a>, and the <a href='http://depts.washington.edu/gpss/home'>Graduate and Professional Student Senate</a> for their ability to benefit the student community.
               </p>
-              {/* <h2>Technology Fee</h2>
-              <p>
-                The Student Technology Fee is a $38 per quarter fee paid by all matriculated students of the University of Washington. The committee appropriates roughly $5 million in student funding across almost one hundred proposals annually. All projects funded by the STF are not-for-profit and for student use.
-              </p>
-              <h2>Proposal Process</h2>
-              <p>
-                Funding is allocated via a proposal/grant cycle run by the committee. At the beginning of the year, a Request for Proposals (RFP) is issued. Proposal submissions are accepted at the beginning of each quarter, and authors are asked to present the request at a weekly board meeting. At the end of each quarter, the committee votes and issues funding decisions. Those who receive awards must spend and report expenditures by the end of the academic year.
-              </p>
-              <h2>Student Outreach</h2>
-              <p>
-                All STF projects involve student outreach, where project leaders reach out and inform the student body about resources they can benefit from. The STF holds <a href='http://apps.leg.wa.gov/rcw/default.aspx?cite=42.30'>Open Meetings</a> every week during the academic year to hear, deliberate and vote on campus projects. We encourage students to attend.
-              </p> */}
-              <Visualizations />
+              <Tabs
+                tabBarExtraContent={
+                  <Button size='large'
+                    ghost type='primary'
+                    icon='question-circle-o'
+                    onClick={() => router.push('/FAQ')}
+                  >
+                    Read FAQ
+                  </Button>
+                }
+              >
+                <TabPane tab='Operations Summary' key='1'>
+                  <Visualizations />
+                </TabPane>
+                <TabPane tab='STF Explained' key='2'>
+                  <Overview />
+                </TabPane>
+              </Tabs>
             </Col>
             <Col className='gutter-row' span={24} md={8}>
-              <Alert type='info' showIcon
-                message='Weekly Meetings'
-                description={<ul>
-                  <li>Every Monday</li>
-                  <li>3:30-5:30PM</li>
-                  <li>HUB 303</li>
-                </ul>}
-              />
-              <h2>Announcements</h2>
-              <p>{news || 'No news for now.'}</p>
-              {past && future
-                ? <Timeline pending={future}>
-                  {past.map((e, i) => (
-                    <Item key={i} color='green'>{e}</Item>
-                  ))}
-                </Timeline>
-                : <em>We are currently developing our schedule.</em>
-              }
+              <Events />
             </Col>
           </Row>
         </section>

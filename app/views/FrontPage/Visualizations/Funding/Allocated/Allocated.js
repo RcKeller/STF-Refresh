@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { Sunburst, LabelSeries, Hint, DiscreteColorLegend } from 'react-vis'
-import { quarterColors, brandColors } from '../colors'
-import { quarterlyFundingLegend } from '../legends'
+import { quarterColors, brandColors } from '../../colors'
+import { quarterlyFundingLegend } from '../../legends'
 
 const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 

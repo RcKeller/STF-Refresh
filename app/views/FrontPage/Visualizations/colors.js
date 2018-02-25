@@ -20,7 +20,7 @@ export const brandColors = {
   'Gold': '#b7a57a',
   'Metallic Gold': '#85754d',
   'Light Gray': '#d9d9d9',
-  'Dark Gray': '#444444',
+  'Dark Gray': '#444444'
 }
 
 export const DIVERGING_COLOR_SCALE = ['#00939C', '#85C4C8', '#EC9370', '#C22E00']

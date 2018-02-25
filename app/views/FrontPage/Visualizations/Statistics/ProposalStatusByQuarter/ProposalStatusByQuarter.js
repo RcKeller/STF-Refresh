@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { Sunburst, LabelSeries, Hint, DiscreteColorLegend } from 'react-vis'
-import { statusColors, brandColors } from '../colors'
-import { statusLegend } from '../legends'
+import { statusColors, brandColors } from '../../colors'
+import { statusLegend } from '../../legends'
 
 const jss = {
   tooltip: {
@@ -19,7 +19,7 @@ const jss = {
     secondary: { fill: brandColors['Light Gray'], fontSize: '16px', textAnchor: 'middle' }
   }
 }
-class PercentFunded extends React.Component {
+class ProposalStatusByQuarter extends React.Component {
   static propTypes = {
     year: PropTypes.number,
     statistics: PropTypes.array.isRequired
@@ -145,7 +145,7 @@ class PercentFunded extends React.Component {
           title='TEST'
         >
           <LabelSeries data={labels} />
-          {hoveredCell
+          {hoveredCell && hoveredCell.title
             // Generates tooltips onMouseOver w/ dynamic JSS styles
             ? <Hint value={this.buildValue(hoveredCell)}>
               <div style={jss.tooltip}>
@@ -164,4 +164,4 @@ class PercentFunded extends React.Component {
   }
 }
 
-export default PercentFunded
+export default ProposalStatusByQuarter

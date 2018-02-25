@@ -6,7 +6,7 @@ import { connectRequest } from 'redux-query'
 
 import api from '../../../../services'
 
-import PercentFunded from './PercentFunded'
+import ProposalStatusByQuarter from './ProposalStatusByQuarter/ProposalStatusByQuarter'
 
 /*
 STATISTICAL VISUALIZATIONS
@@ -32,7 +32,8 @@ non-fiscal data (% projects funded, types funded...)
       query: { year: props.year },
       select: ['title', 'year', 'number', 'quarter', 'status', 'organization', 'category', 'asked', 'received'],
       transform: statistics => ({ statistics }),
-      update: ({ statistics: (prev, next) => next })
+      update: ({ statistics: (prev, next) => next }),
+      force: true
     })
   )
 )
@@ -62,7 +63,7 @@ class Statistics extends React.Component {
       <section>
         {statistics &&
           <div>
-            <PercentFunded {...data} year={year} />
+            <ProposalStatusByQuarter {...data} year={year} />
           </div>
         }
       </section>
