@@ -1,19 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Sunburst, Hint } from 'react-vis'
-
-const DIVERGING_COLOR_SCALE = ['#00939C', '#85C4C8', '#EC9370', '#C22E00']
-const statusColors = {
-  'Draft': '#d3d3d3',
-  'Submitted': '#8eacbb',
-  'In Review': '#6ec6ff',
-  'Awaiting Decision': '#2196f3',
-  'Funded': '#4caf50',
-  'Partially Funded': '#80e27e',
-  'Denied': '#ff7961',
-  'Withdrawn': '#34515e'
-}
+import { Sunburst, LabelSeries, Hint, DiscreteColorLegend } from 'react-vis'
+import { statusColors, brandColors } from '../colors'
+import { statusLegend } from '../legends'
 
 const jss = {
   tooltip: {
@@ -23,7 +13,11 @@ const jss = {
     alignItems: 'center',
     padding: '5px'
   },
-  box: { height: '16px', width: '16px', marginRight: 8 }
+  box: { height: '16px', width: '16px', marginRight: 8 },
+  labels: {
+    primary: { fill: '#FFF', fontSize: '46px', textAnchor: 'middle' },
+    secondary: { fill: brandColors['Light Gray'], fontSize: '16px', textAnchor: 'middle' }
+  }
 }
 class PercentFunded extends React.Component {
   static propTypes = {
@@ -76,7 +70,6 @@ class PercentFunded extends React.Component {
       )
       let newData = {
         title: `Proposals (${year})`,
-        // size: statistics.length,
         children: []
       }
       // Apply metadata / styles as you begin injecting child nodes into our dataset
@@ -85,7 +78,6 @@ class PercentFunded extends React.Component {
         const { color, children } = statusByQuarter[key]
         newData.children.push({ title: key, color, children })
       }
-      console.warn('Quarter / Status Data', data)
       // Apply to our D3 dataset
       Object.assign(data, newData)
       this.setState({ data })
@@ -135,20 +127,24 @@ class PercentFunded extends React.Component {
     { year, statistics } = this.props,
     { data, hoveredCell } = this.state
   ) {
+    const labels = [
+      { x: 0, y: -5, label: statistics.length, style: jss.labels.primary },
+      { x: 0, y: -20, label: 'Proposals Received', style: jss.labels.secondary }
+    ]
     return (
       <div>
-        <h2>{`Proposals Received: ${statistics.length}`}</h2>
         <Sunburst
+          className='inline-visualization'
           data={data}
           colorType='literal'
-          colorRange={DIVERGING_COLOR_SCALE}
           style={{ stroke: '#FFF' }}
           height={300}
-          width={350}
+          width={300}
           onValueMouseOver={this.onValueMouseOver}
           onValueMouseOut={this.onValueMouseOut}
           title='TEST'
         >
+          <LabelSeries data={labels} />
           {hoveredCell
             // Generates tooltips onMouseOver w/ dynamic JSS styles
             ? <Hint value={this.buildValue(hoveredCell)}>
@@ -159,6 +155,10 @@ class PercentFunded extends React.Component {
             </Hint>
           : null}
         </Sunburst>
+        <DiscreteColorLegend
+          className='inline-legend'
+          items={statusLegend}
+        />
       </div>
     )
   }

@@ -4,9 +4,11 @@ import { compose } from 'redux'
 import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
+import { Row, Col } from 'antd'
+
 import api from '../../../services'
 
-// import Funding from './Funding/Funding'
+import Funding from './Funding/Funding'
 import Statistics from './Statistics/Statistics'
 
 /*
@@ -37,14 +39,14 @@ class Visualizations extends React.Component {
     //  TODO: Abstract higher level facts to config
     return (
       <section>
-        <div>
-          <div>
-            {/* <Funding /> */}
-          </div>
-          <div>
+        <Row type='flex' justify='space-between' align='top'>
+          <Col sm={24} lg={10}>
+            <Funding />
+          </Col>
+          <Col sm={24} lg={14}>
             <Statistics />
-          </div>
-        </div>
+          </Col>
+        </Row>
       </section>
     )
   }

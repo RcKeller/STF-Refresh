@@ -1,7 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Sunburst, Hint } from 'react-vis'
+import { Sunburst, LabelSeries, Hint, DiscreteColorLegend } from 'react-vis'
+import { quarterColors, brandColors } from '../colors'
+import { quarterlyFundingLegend } from '../legends'
 
 const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
@@ -13,7 +15,11 @@ const jss = {
     alignItems: 'center',
     padding: '5px'
   },
-  box: { height: '16px', width: '16px', marginRight: 8 }
+  box: { height: '16px', width: '16px', marginRight: 8 },
+  labels: {
+    primary: { fill: brandColors['Purple'], fontSize: '28px', textAnchor: 'middle' },
+    secondary: { fill: brandColors['Dark Gray'], fontSize: '16px', textAnchor: 'middle' }
+  }
 }
 class Allocated extends React.Component {
   static propTypes = {
@@ -30,9 +36,7 @@ class Allocated extends React.Component {
   state = {
     //  Data follows D3 data conventions, look at the flare dataset for an example.
     data: {
-      color: '#b7a57a',
-      size: 0,
-      children: []
+      color: brandColors.Gold
     },
     remainingFunding: 0,
     hoveredCell: {}
@@ -57,13 +61,12 @@ class Allocated extends React.Component {
       )
       // Apply to our D3 dataset
       Object.assign(data, {
-        title: 'Remaining Funds:',
-        size: remainingFunding,
         children: [
-          { title: 'Autumn', color: '#bf360c', size: fundingByType.Autumn },
-          { title: 'Winter', color: '#01579b', size: fundingByType.Winter },
-          { title: 'Summer', color: '#1b5e20', size: fundingByType.Summer },
-          { title: 'Blocks / Special Projects', color: '#4b2e83', size: fundingByType.Blocks }
+          { title: 'Autumn', color: quarterColors.Autumn, size: fundingByType.Autumn },
+          { title: 'Winter', color: quarterColors.Winter, size: fundingByType.Winter },
+          { title: 'Spring', color: quarterColors.Spring, size: fundingByType.Spring },
+          { title: 'Blocks / Special Projects', color: brandColors['Purple'], size: fundingByType.Blocks },
+          { title: 'Remaining Funding', color: brandColors['Light Gray'], size: remainingFunding }
         ]
       })
       this.setState({ data, remainingFunding })
@@ -86,20 +89,24 @@ class Allocated extends React.Component {
     { annualFunds, year, funding } = this.props,
     { data, hoveredCell } = this.state
   ) {
+    const labels = [
+      { x: 0, y: 0, label: currency(annualFunds), style: jss.labels.primary },
+      { x: 0, y: -20, label: `${year} Budget`, style: jss.labels.secondary }
+    ]
     return (
       <div>
-        <h2>{`${year} Funding: ${currency(annualFunds)}`}</h2>
         <Sunburst
           data={data}
           colorType='literal'
           style={{ stroke: '#FFF' }}
-          height={300}
-          width={350}
+          height={250}
+          width={300}
           onValueMouseOver={this.onValueMouseOver}
           onValueMouseOut={this.onValueMouseOut}
           title='TEST'
         >
-          {hoveredCell
+          <LabelSeries data={labels} />
+          {hoveredCell && hoveredCell.size > 0
             // Generates tooltips onMouseOver w/ dynamic JSS styles
             ? <Hint value={this.buildValue(hoveredCell)}>
               <div style={jss.tooltip}>
@@ -111,6 +118,7 @@ class Allocated extends React.Component {
             </Hint>
           : null}
         </Sunburst>
+        <DiscreteColorLegend items={quarterlyFundingLegend} orientation='horizontal' />
       </div>
     )
   }

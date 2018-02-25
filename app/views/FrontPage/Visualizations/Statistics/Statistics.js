@@ -58,7 +58,6 @@ class Statistics extends React.Component {
     const data = {
       statistics
     }
-    console.warn('stats props', this.props)
     return (
       <section>
         {statistics &&
