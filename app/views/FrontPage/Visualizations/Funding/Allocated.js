@@ -25,7 +25,7 @@ class Allocated extends React.Component {
   static defaultProps = {
     annualFunds: 0,
     blockFunding: 0,
-    year: 0
+    year: 2018
   }
   state = {
     //  Data follows D3 data conventions, look at the flare dataset for an example.

@@ -6,45 +6,27 @@ import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
 
-import FundingAllocated from './Finances/Allocated'
-import FundingChances from './Finances/Chances'
-import FundingRemaining from './Finances/Remaining'
-
-import FundedItems from './Funded/Items'
-import FundedProjects from './Funded/Projects'
+// import Funding from './Funding/Funding'
+import Statistics from './Statistics/Statistics'
 
 /*
-FRONTPAGE DATA VISUALIZATIONS
+DATA VISUALIZATIONS
+Higher order component, layout for frontpage data vis
 */
-@compose(
-  connect(state => ({
-    funding: state.db.funding,
-    year: state.config.year,
-    screen: state.screen
-  })),
-  connectRequest(
-    (props) => api.get('proposals', {
-      query: { published: true, year: props.year },
-      populate: [
-        { path: 'manifest', populate: { path: 'items' } }
-      ],
-      transform: funding => ({ funding }),
-      update: ({ funding: (prev, next) => next })
-    })
-  )
-)
+@connect(state => ({
+  funding: state.db.funding,
+  year: state.config.year,
+  screen: state.screen
+}))
 class Visualizations extends React.Component {
   static propTypes = {
-    funding: PropTypes.array.isRequired,
-    year: PropTypes.number.isRequired,
     screen: PropTypes.object
   }
   static defaultProps = {
-    funding: [],
-    year: 2018
+    screen: {}
   }
   render (
-    { funding, year } = this.props
+    { screen } = this.props
   ) {
       // {/* Data Vis
       // - Funding Allocated this Year
@@ -53,28 +35,16 @@ class Visualizations extends React.Component {
       // - Projects Visualized
       // - Items Visualized */}
     //  TODO: Abstract higher level facts to config
-    const blockFunding = 1100032
-    const annualFunds = 6000000
-    const data = {
-      annualFunds,
-      blockFunding,
-      funding
-    }
     return (
       <section>
-        {funding &&
+        <div>
           <div>
-            <div>
-              <FundingAllocated {...data} year={year} />
-              {/* <FundingRemaining /> */}
-              {/* <FundingChances /> */}
-            </div>
-            <div>
-              {/* <FundedProjects /> */}
-              {/* <FundedItems /> */}
-            </div>
+            {/* <Funding /> */}
           </div>
-        }
+          <div>
+            <Statistics />
+          </div>
+        </div>
       </section>
     )
   }
