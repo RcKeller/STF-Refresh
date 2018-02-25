@@ -141,7 +141,6 @@ class ProposalStatusByQuarter extends React.Component {
           width={300}
           onValueMouseOver={this.onValueMouseOver}
           onValueMouseOut={this.onValueMouseOut}
-          title='TEST'
         >
           <LabelSeries data={labels} />
           {hoveredCell && hoveredCell.title

@@ -69,32 +69,20 @@ class Head extends React.Component {
           <Col className='gutter-row' xs={24} md={12} lg={8}>
             {typeof decision.approved === 'boolean'
               ? (decision.approved
-                  ? (screen.greaterThan.medium
-                    ? <div style={{ textAlign: 'right' }}>
-                      <Progress
-                        type='circle'
-                        width={200}
-                        percent={parseInt(received / asked * 100)}
-                        format={percent => <span>
-                          {currency(received)}
-                          <h5>{status}</h5>
-                        </span>}
-                       />
-                    </div>
-                     : <Alert banner showIcon
-                       type={received > 0 ? 'success' : 'error'}
-                       message={<b>{received ? `${status} - ${currency(received)}` : status}</b>}
-                       description={<div>
-                         <Progress
-                           percent={parseInt(received / asked * 100)}
-                         />
-                         <span>{decision.body}</span>
-                       </div>
-                       } />
-                   )
+                  ? <div style={{ textAlign: 'right' }}>
+                    <Progress
+                      type='circle'
+                      width={200}
+                      percent={parseInt(received / asked * 100)}
+                      format={percent => <span>
+                        {currency(received)}
+                        <h5>{status}</h5>
+                      </span>}
+                     />
+                  </div>
                  : <Alert banner showIcon type='error'
                    message={<b>{status}</b>}
-                   description={decision.body || 'Unfortunately, this proposal was denied by the committee. Decisions are issued based on student need and benefits. Authors are welcome to propose partial / alternative budgets or suggest a new project in the next cycle.'}
+                   description={decision.body || decision.approved === false ? 'Unfortunately, this proposal was denied by the committee. Decisions are issued based on student need and benefits. Authors are welcome to propose partial / alternative budgets or suggest a new project in the next cycle.' : 'A decision has not been issued at this time'}
                   />
                )
                : <Alert banner showIcon type='info'
