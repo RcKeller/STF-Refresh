@@ -49,7 +49,6 @@ class ProposalStatusByQuarter extends React.Component {
         (accumulator, proposal) => {
           const { quarter, status } = proposal || {}
           // Find index of the "size" node per quarter and status indicator
-          console.log(quarter, status, accumulator[quarter])
           // NOTE: If you accumulate sizes per quarter here, it alters the vis.
           // accumulator[quarter].size += 1
           const indexOfStatusForQuarter = accumulator[quarter]

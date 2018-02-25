@@ -33,6 +33,8 @@ import styles from './Config.css'
       submissions: state.config.submissions,
       year: state.config.year,
       quarter: state.config.quarter,
+      annualFunds: state.config.annualFunds,
+      blockFunds: state.config.blockFunds,
       news: state.config.news,
       timeline: state.config.timeline,
       links: state.config.links
@@ -54,6 +56,8 @@ class Config extends React.Component {
     submissions: PropTypes.bool,
     year: PropTypes.number,
     quarter: PropTypes.string,
+    annualFunds: PropTypes.number,
+    blockFunds: PropTypes.number,
     news: PropTypes.string,
     timeline: PropTypes.array,
     links: PropTypes.object,
@@ -66,7 +70,7 @@ class Config extends React.Component {
     })
   }
   componentDidMount () {
-    const { form, enums, submissions, year, quarter, news, timeline, links } = this.props
+    const { form, enums, submissions, year, quarter, annualFunds, blockFunds, news, timeline, links } = this.props
     if (form && enums) {
       const { organizations, categories, questions } = enums
       const { rfp, drive, keyserver } = links
@@ -79,6 +83,8 @@ class Config extends React.Component {
         categories,
         year,
         quarter,
+        annualFunds,
+        blockFunds,
         rfp,
         drive,
         keyserver,
@@ -94,6 +100,14 @@ class Config extends React.Component {
   handleYear = (year) => {
     const { updateConfig, id } = this.props
     updateConfig({ year }, { id })
+  }
+  handleAnnualFunds = (annualFunds) => {
+    const { updateConfig, id } = this.props
+    updateConfig({ annualFunds }, { id })
+  }
+  handleBlockFunds = (blockFunds) => {
+    const { updateConfig, id } = this.props
+    updateConfig({ blockFunds }, { id })
   }
   handleQuarter = (quarter) => {
     const { updateConfig, id } = this.props
@@ -182,6 +196,26 @@ class Config extends React.Component {
                       <Option value='Spring'>Spring</Option>
                       <Option value='Summer'>Summer</Option>
                     </Select>
+                  )}
+                </FormItem>
+                <FormItem {...layout} label={<Label title='Total Budget'
+                  message={'Estimated funds to allocate for this fiscal year. This information is referenced in various parts of the site as a performance metric'} />}>
+                  {form.getFieldDecorator('annualFunds')(
+                    <InputNumber min={1000000} max={10000000}
+                      style={{ minWidth: 150 }}
+                      formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                      onChange={(annualFunds) => this.handleAnnualFunds(annualFunds)}
+                    />
+                  )}
+                </FormItem>
+                <FormItem {...layout} label={<Label title='Block Budget'
+                  message={'Estimated annual funds dedicated to block funding and special projects. These funds are reserved out of the total budget.'} />}>
+                  {form.getFieldDecorator('blockFunds')(
+                    <InputNumber min={0} max={10000000}
+                      style={{ minWidth: 150 }}
+                      formatter={value => `$ ${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                      onChange={(blockFunds) => this.handleBlockFunds(blockFunds)}
+                    />
                   )}
                 </FormItem>
                 <FormItem {...layout} label={<Label title='Announcements'

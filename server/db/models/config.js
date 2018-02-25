@@ -13,6 +13,8 @@ via the config panel and DB SaaS in real time
 const ConfigSchema = new mongoose.Schema({
   year: { type: Number, default: 2018 },
   quarter: { type: String, default: 'Autumn' },
+  annualFunds: { type: Number, default: 5000000 },
+  blockFunds: { type: Number, default: 1000000 },
   //  Submissions: Open or closed (default to open)
   submissions: { type: Boolean, default: true },
   links: {

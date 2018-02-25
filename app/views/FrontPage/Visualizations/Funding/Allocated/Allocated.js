@@ -24,13 +24,13 @@ const jss = {
 class Allocated extends React.Component {
   static propTypes = {
     annualFunds: PropTypes.number.isRequired,
-    blockFunding: PropTypes.number,
+    blockFunds: PropTypes.number,
     year: PropTypes.number,
     funding: PropTypes.array.isRequired
   }
   static defaultProps = {
     annualFunds: 0,
-    blockFunding: 0,
+    blockFunds: 0,
     year: 2018
   }
   state = {
@@ -42,7 +42,7 @@ class Allocated extends React.Component {
     hoveredCell: {}
   }
   componentWillReceiveProps (nextProps) {
-    const { annualFunds, blockFunding, funding } = nextProps
+    const { annualFunds, blockFunds, funding } = nextProps
     //  Funding data loaded? Calculate funds per quarter
     if (Array.isArray(funding) && funding.length >= 0) {
       let { data } = this.state
@@ -53,7 +53,7 @@ class Allocated extends React.Component {
           accumulator[quarter] += (received || 0)
           return accumulator
         },
-        { Autumn: 0, Winter: 0, Summer: 0, Blocks: blockFunding || 0 }
+        { Autumn: 0, Winter: 0, Summer: 0, Blocks: blockFunds || 0 }
       )
       const remainingFunding = annualFunds - Object.keys(fundingByType).reduce(
         (accumulator, key) => accumulator + fundingByType[key],

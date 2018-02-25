@@ -17,6 +17,8 @@ and hydrating/framing financial visualizations
 @compose(
   connect(state => ({
     funding: state.db.funding,
+    annualFunds: state.config.annualFunds,
+    blockFunds: state.config.blockFunds,
     year: state.config.year,
     screen: state.screen
   })),
@@ -34,6 +36,8 @@ and hydrating/framing financial visualizations
 )
 class Funding extends React.Component {
   static propTypes = {
+    annualFunds: PropTypes.number.isRequired,
+    blockFunds: PropTypes.number.isRequired,
     funding: PropTypes.array.isRequired,
     year: PropTypes.number.isRequired,
     screen: PropTypes.object
@@ -43,13 +47,11 @@ class Funding extends React.Component {
     year: 2018
   }
   render (
-    { funding, year } = this.props
+    { year, funding, annualFunds, blockFunds } = this.props
   ) {
-    const blockFunding = 1100032
-    const annualFunds = 6000000
     const data = {
       annualFunds,
-      blockFunding,
+      blockFunds,
       funding
     }
     return (
