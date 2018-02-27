@@ -68,6 +68,16 @@ add-dom-event-listener@1.x:
   dependencies:
     object-assign "4.x"
 
+ag-grid-react@^16.0.0:
+  version "16.0.0"
+  resolved "https://registry.yarnpkg.com/ag-grid-react/-/ag-grid-react-16.0.0.tgz#885c89eafb856f2b715576e954af8eaaf036ecc4"
+  dependencies:
+    prop-types "15.6.0"
+
+ag-grid@^16.0.1:
+  version "16.0.1"
+  resolved "https://registry.yarnpkg.com/ag-grid/-/ag-grid-16.0.1.tgz#f9b5562fff6c70b38a20ffb1708800006c902c1a"
+
 ajv-keywords@^1.0.0:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-1.5.1.tgz#314dd0a4b3368fad3dfcdc54ede6171b886daf3c"
@@ -6416,7 +6426,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@15.x, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.5.9, prop-types@^15.6.0:
+prop-types@15.6.0, prop-types@15.x, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.5.9, prop-types@^15.6.0:
   version "15.6.0"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.0.tgz#ceaf083022fc46b4a35f69e13ef75aed0d639856"
   dependencies:
@@ -6885,15 +6895,26 @@ react-base16-styling@^0.5.3:
     lodash.flow "^3.3.0"
     pure-color "^1.2.0"
 
-react-data-grid-addons@^3.0.11:
-  version "3.0.11"
-  resolved "https://registry.yarnpkg.com/react-data-grid-addons/-/react-data-grid-addons-3.0.11.tgz#9d38c31aa1f475f93735246292395e6d1fa7eb38"
+react-contextmenu@^2.9.2:
+  version "2.9.2"
+  resolved "https://registry.yarnpkg.com/react-contextmenu/-/react-contextmenu-2.9.2.tgz#7076075f09e4cad023a1252da347d9e6782d003a"
   dependencies:
-    react-data-grid "^3.0.11"
+    classnames "^2.2.5"
+    object-assign "^4.1.0"
 
-react-data-grid@^3.0.11:
-  version "3.0.11"
-  resolved "https://registry.yarnpkg.com/react-data-grid/-/react-data-grid-3.0.11.tgz#06329d1548a29de43b314dc51016f972ca34750a"
+react-data-grid-addons@next:
+  version "3.0.11-next3726"
+  resolved "https://registry.yarnpkg.com/react-data-grid-addons/-/react-data-grid-addons-3.0.11-next3726.tgz#d1f24b37aa8c8f878f74312222dc0d5f4ecf6d15"
+  dependencies:
+    react-data-grid "^3.0.11-next3726"
+
+react-data-grid@^3.0.11-next3726, react-data-grid@next:
+  version "3.0.11-next3726"
+  resolved "https://registry.yarnpkg.com/react-data-grid/-/react-data-grid-3.0.11-next3726.tgz#83152a5ed65fa0324d4bcd95b2a8e1067a38eb3c"
+
+react-datasheet@^1.3.2:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/react-datasheet/-/react-datasheet-1.3.2.tgz#80c3ec87b68299ca5180d36597e0f623b3d79977"
 
 react-deep-force-update@^1.0.0:
   version "1.1.1"
@@ -6924,6 +6945,12 @@ react-helmet@^5.0.2:
     object-assign "^4.1.1"
     prop-types "^15.5.4"
     react-side-effect "^1.1.0"
+
+react-input-autosize@^2.1.2:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/react-input-autosize/-/react-input-autosize-2.2.1.tgz#ec428fa15b1592994fb5f9aa15bb1eb6baf420f8"
+  dependencies:
+    prop-types "^15.5.8"
 
 react-json-view@^1.16.1:
   version "1.16.1"
@@ -6984,6 +7011,14 @@ react-router@3:
     loose-envify "^1.2.0"
     prop-types "^15.5.6"
     warning "^3.0.0"
+
+react-select@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/react-select/-/react-select-1.2.1.tgz#a2fe58a569eb14dcaa6543816260b97e538120d1"
+  dependencies:
+    classnames "^2.2.4"
+    prop-types "^15.5.8"
+    react-input-autosize "^2.1.2"
 
 react-side-effect@^1.1.0:
   version "1.1.5"

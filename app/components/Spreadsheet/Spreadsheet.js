@@ -2,152 +2,80 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 
-/*
-BUG: Sub-dependencies have not upgraded to the new proptypes, not included in base react
-Requires this polyfill / hack
-https://github.com/adazzle/react-data-grid/issues/1004
-*/
-import '../../proptypesPolyfill'
-import ReactDataGrid from 'react-data-grid'
-import { Alert, Button, Icon } from 'antd'
-
-import Menu from './Menu'
-import Instructions from './Instructions'
+import ReactDataSheet from 'react-datasheet'
+// Be sure to include styles at some point, probably during your bootstrapping
+import 'react-datasheet/lib/react-datasheet.css'
 
 class Spreadsheet extends React.Component {
-  static propTypes = {
-    //  Column config api is preserved, but editable is REQUIRED
-    columns: PropTypes.arrayOf(PropTypes.shape({
-      name: PropTypes.node.isRequired,
-      key: PropTypes.string.isRequired,
-      editable: PropTypes.bool.isRequired,
-      editor: PropTypes.func,
-      width: PropTypes.number
-    })).isRequired,
-    //  Your dataset is never mutated and can even be ref'd.
-    data: PropTypes.array.isRequired,
-    //  NewData is a prop representing what a brand new field / row should be like (defaults).
-    newData: PropTypes.object,
-    //  onSubmit is your callback for receiving well formed data.
-    onSubmit: PropTypes.func.isRequired,
-    //  Financial will calculate and show subtotals as necessary
-    financial: PropTypes.bool,
-    //  Prompt will override the default submit button text (which is "Save")
-    prompt: PropTypes.string,
-    //  Initial total, disposed of once rows update.
-    total: PropTypes.number
-  }
   constructor (props) {
     super(props)
-    const { columns, data, newData, financial, total } = this.props
-    this.columns = columns
-    for (let col of columns) {
-      col.resizable = true
-    }
-    let rows = data || []
-    if (rows.length < 1) rows[0] = {...newData} || {}
-    let state = { rows }
-    //  If this is a financial Spreadsheet, initialize total
-    if (financial) state.total = total || 0
-    this.state = state
-  }
-  componentWillReceiveProps (nextProps) {
-    const { data } = nextProps
-    /*
-    We use lodash to do a deep equal, this is because data !=== this.props.data will always be true
-    Otherwise, we have bugs where spreadsheets rerender for no good reason.
-    */
-    if (Array.isArray(data) && !_.isEqual(data, this.props.data)) {
-      let rows = data || []
-      this.setState({ rows })
+    this.state = {
+      grid: [
+        [
+          {value: 'Name', readOnly: true},
+          {value: 'Description / Vendor', readOnly: true},
+          {value: 'Price', readOnly: true},
+          {value: 'Tax', readOnly: true},
+          {value: 'Quantity', readOnly: true},
+          {value: 'TOTAL', readOnly: true}
+        ],
+        // Final cell = subtotal
+        [{value: 1}, {value: 3}, {value: 3}, {value: 3}, {value: 0, readOnly: true}],
+        [{value: 2}, {value: 4}, {value: 4}, {value: 4}, {value: 0, readOnly: true}],
+        [{value: 1}, {value: 3}, {value: 3}, {value: 3}, {value: 0, readOnly: true}],
+        [{value: 2}, {value: 4}, {value: 4}, {value: 4}, {value: 0, readOnly: true}],
+        // Final Row = Grand Total
+        [{value: 'Grand Total', readOnly: true, colSpan: 4}, {value: 0, readOnly: true}]
+      ]
     }
   }
+  generateGrid () {
+    let { grid } = this.state
 
-  rowGetter = (i) =>
-    this.state.rows[i]
+    // Types - enums for row cells that can be referenced using a cell index
+    const types = grid[0].map(cell => cell.value)
+    console.warn('TYPES', types)
 
-  handleGridRowsUpdated = ({ fromRow, toRow, updated }) => {
-    let { rows } = this.state
-    const { financial, columns } = this.props
-    for (let i = fromRow; i <= toRow; i++) {
-      Object.assign(rows[i], updated)
-    }
-    //  For financial sheets, update subtotal. Check cols passed in to see if we need to calc tax too.
-    //  We do this because reporting may include tax data.
-    let state = { rows }
-    const recordsWithTax = columns.filter(col => col.key === 'tax').length > 0
-    if (financial) {
-      let total = 0
-      for (const record of rows) {
-        const cost = recordsWithTax
-          //  Tax isn't stored as a float, making that adjustment here.
-          ? record.price * record.quantity * (record.tax / 100 + 1)
-          : record.price * record.quantity
-        if (!Number.isNaN(cost)) total += cost
+    // Calculate Subtotals using cell types (Price, Tax, Quantity)
+    for (let row of grid) {
+      let subtotal = 0
+      const subtotalCell = row.length - 1
+      for (let cell = 0; cell < subtotalCell; cell++) {
+        let value = Number.parseFloat(row[cell].value)
+        subtotal += (Number.isNaN(value) ? 0 : value)
       }
-      state.total = total
+      console.log('SUBTOTAL', subtotal)
+      row[subtotalCell] = { value: subtotal, readOnly: true }
     }
-    this.setState(state)
-  }
 
-  deleteRow = (e, { rowIdx }) => {
-    let { rows } = this.state
-    rows.splice(rowIdx, 1)
-    this.setState({rows})
-  }
-  insertRow = (rowIdx) => {
-    let { rows } = this.state
-    let { newData } = this.props
-    let newRow = {...newData} || {}
-    rows.splice(rowIdx, 0, newRow)
-    this.setState({ rows })
-  }
-  insertRowAbove = (e, { rowIdx }) => this.insertRow(rowIdx)
-  insertRowBelow = (e, { rowIdx }) => this.insertRow(++rowIdx)
-
-  handleSubmit = () => {
-    // let { rows, total } = this.state
-    const { onSubmit } = this.props
-    let { rows } = this.state
-    onSubmit(rows)
-  }
-
-  render (
-    // { rowGetter, handleGridRowsUpdated, handleAddRow, handleSubmit } = this,
-    { columns, financial, prompt, disabled } = this.props,
-    { rows, total } = this.state || {}
-) {
-    if (rows && Number.isInteger(rows.length) && rows.length < 1) {
-      this.insertRow(0)
+    // Calculate Grand Total by reducing subtotals
+    let grandTotal = 0
+    const totalRowIndex = grid.length - 1
+    const totalCellIndex = grid[totalRowIndex].length - 1
+    for (let row of grid) {
+      const subtotalCell = row.length - 1
+      let value = Number.parseFloat(row[subtotalCell].value)
+      grandTotal += (Number.isNaN(value) ? 0 : value)
     }
-    const currency = number => number.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
-    const includesTax = columns.findIndex(c => c.key === 'tax') >= 0
-    return <div>
-      <Instructions includesTax={includesTax} />
-      <ReactDataGrid
-        enableCellSelect cellNavigationMode='changeRow'
-        contextMenu={<Menu
-          onRowDelete={this.deleteRow}
-          onRowInsertAbove={this.insertRowAbove}
-          onRowInsertBelow={this.insertRowBelow}
-        />}
-        columns={columns}
-        rowGetter={this.rowGetter}
-        rowsCount={(rows && rows.length) || 0}
-        onGridRowsUpdated={this.handleGridRowsUpdated}
+    grid[totalRowIndex][totalCellIndex].value = grandTotal
+    return grid
+  }
+  render () {
+    return (
+      <ReactDataSheet
+        // data={this.state.grid}
+        data={this.generateGrid()}
+        valueRenderer={(cell) => cell.value}
+        onContextMenu={(e, cell, i, j) => cell.readOnly ? e.preventDefault() : null}
+        onCellsChanged={changes => {
+          const grid = this.state.grid.map(row => [...row])
+          changes.forEach(({cell, row, col, value}) => {
+            grid[row][col] = {...grid[row][col], value}
+          })
+          this.setState({grid})
+        }}
       />
-      {(financial && total > 0) &&
-        <Alert type='info' showIcon={false} banner
-          message={<h2>Final Total: {total ? currency(total) : '$0.00'}</h2>}
-         />
-      }
-      <Button size='large' type='primary' disabled={disabled}
-        style={{ width: '100%', borderRadius: 'none' }}
-        onClick={this.handleSubmit}>
-        <Icon type='upload' />
-        {prompt || 'Save'}
-      </Button>
-    </div>
+    )
   }
 }
 

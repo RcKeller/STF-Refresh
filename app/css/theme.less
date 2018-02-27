@@ -1,8 +1,16 @@
+// Import vendor styles - global scope.
 @import "~antd/dist/antd.less";
 @import "~rc-drawer/assets/index.css";
-@import "react-vis.less";
+@import "~react-datasheet/lib/react-datasheet.css";
+@import "~react-vis/dist/style.css";
 
-// @import "~/react-json-inspector/react-json-inspector.css";
+.data-grid-container .data-grid {
+  width: 100%
+}
+.data-grid-container .data-grid .cell .value-viewer, .data-grid-container .data-grid .cell .data-editor {
+  height: 100%;
+  width: 100%;
+}
 /*
 WARNING:
 This file is for ant-design themes only.

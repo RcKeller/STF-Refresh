@@ -1,8 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Menu } from 'react-data-grid-addons'
-const { ContextMenu, MenuItem, SubMenu } = Menu
+// import { Menu } from 'react-data-grid-addons'
+// const { ContextMenu, MenuItem, SubMenu } = Menu
+// import { Menu } from 'react-contextmenu'
+// const { ContextMenu, MenuItem, SubMenu } = Menu
+//
+// import { Menu } from 'react-data-grid-addons'
+
+import 'react-data-grid-addons'
+import { ContextMenu, MenuItem, SubMenu } from 'react-contextmenu'
 
 // import styles from './Menu.css' //  global, doesn't work if hashed.
 class MyMenu extends React.Component {
@@ -34,7 +41,7 @@ class MyMenu extends React.Component {
 
   render () {
     return (
-      <ContextMenu>
+      <ContextMenu id='reactDataGridContextMenu' identifier="reactDataGridContextMenu">
         <MenuItem data={{rowIdx: this.props.rowIdx, idx: this.props.idx}} onClick={this.onRowDelete}>Delete Row</MenuItem>
         <SubMenu title='Insert Row'>
           <MenuItem data={{rowIdx: this.props.rowIdx, idx: this.props.idx}} onClick={this.onRowInsertAbove}>Above</MenuItem>
