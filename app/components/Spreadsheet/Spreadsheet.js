@@ -20,26 +20,6 @@ class FinancialSpreadsheet extends React.Component {
     { value: 'TOTAL', readOnly: true }
   ]
   footer = [{value: 'Grand Total', readOnly: true, colSpan: 5}, {value: 0, readOnly: true}]
-  serializeManifest = (manifest) => {
-    let data = []
-    for (let item of manifest) {
-      const { _id, name, price, tax, description, quantity } = item || {}
-      //  Create a record in the order of headers
-      const record = [name, description, price, tax, quantity]
-        .map(value => ({ value }))
-      // Push our "summary" cell, containing subtotals and the _id
-      record.push({ _id, value: 0, readOnly: true })
-      data.push(record)
-    }
-    //  Add Header / footer
-    data.unshift(this.header)
-    data.push(this.footer)
-    return data
-  }
-  deserializeManifest = (data) => {
-    console.warn('deserializeManifest - start', data)
-    return data
-  }
   constructor (props) {
     super(props)
     console.error(props)
@@ -51,6 +31,7 @@ class FinancialSpreadsheet extends React.Component {
     The final cell is a "summary" cell containing subtotals and item _ids for future ref
     */
     let transformedData = this.serializeManifest(data)
+    console.warn('serializeManifest', transformedData)
     this.state = {
       grid: [
         [
@@ -72,40 +53,34 @@ class FinancialSpreadsheet extends React.Component {
       ]
     }
   }
-  calculateDataWithTotals () {
-    const { grid } = this.state
-
-    // Make a mutable copy of the grid with values only
-    let header = grid[0]
-    let rows = grid.slice(1, grid.length - 1)
-    let footer = grid[grid.length - 1]
-
-    // Shift pops the first element of the grid off, which contains headers
-    // We'll use these headers as enums in price calculations.
-    let types = {}
-    for (const [index, cell] of header.entries()) {
-      const type = cell.value.toLowerCase()
-      types[type] = index
+  serializeManifest = (manifest) => {
+    let data = []
+    for (let item of manifest) {
+      const { _id, name, price, tax, description, quantity } = item || {}
+      //  Create a record in the order of headers
+      const record = [name, description, price, tax, quantity]
+        .map(value => ({ value }))
+      // Push our "summary" cell, containing subtotals and the _id
+      record.push({ _id, value: 0, readOnly: true })
+      data.push(record)
     }
-
-    // Update totals, incrementing a grandTotal counter at the same time.
-    let grandTotal = 0
+    //  Add Header / footer
+    data.unshift(this.header)
+    data.push(this.footer)
+    return data
+  }
+  deserializeManifest = (data) => {
+    console.warn('deserializeManifest - start', data)
+    const rows = data.slice(1, data.length - 1)
+    let normalizedData = []
     for (let row of rows) {
-      const price = row[types.price].value
-      const quantity = row[types.quantity].value
-      const tax = row[types.tax]
-        ? row[types.tax].value
-        : 0
-      const total = parseFloat(
-          ((price * quantity) * ((tax / 100) + 1))
-          .toFixed(2)
-        )
-      row[types.total] = { value: total, readOnly: true }
-      grandTotal += (total || 0)
+      const summaryCell = row.length - 1
+      const [name, description, price, tax, quantity] = row.map(cell => cell.value)
+      const { _id } = row[summaryCell]
+      normalizedData.push({ _id, name, description, price, tax, quantity })
     }
-    // Update Grand Total
-    footer[1] = { value: grandTotal, readOnly: true }
-    return grid
+    console.log('deserializeManifest - end', normalizedData)
+    return data
   }
   onCellsChanged = (changes) => {
     const grid = this.state.grid.map(row => [...row])
@@ -113,6 +88,32 @@ class FinancialSpreadsheet extends React.Component {
       grid[row][col] = {...grid[row][col], value}
     })
     this.setState({grid})
+  }
+  calculateDataWithTotals () {
+    const { grid } = this.state
+
+    // Make a mutable copy of the grid with values only
+    let rows = grid.slice(1, grid.length - 1)
+    let footer = grid[grid.length - 1]
+
+    // Update totals, incrementing a grandTotal counter at the same time.
+    let grandTotal = 0
+    for (let row of rows) {
+      const summaryCell = row.length - 1
+      const [name, description, price, tax, quantity] = row.map(cell => cell.value)
+      const { _id } = row[summaryCell]
+      console.error(row, _id)
+      console.log({ _id, name, description, price, tax, quantity })
+      const value = parseFloat(
+          ((price * quantity) * ((tax / 100) + 1))
+          .toFixed(2)
+        )
+      row[summaryCell] = { _id, value, readOnly: true }
+      grandTotal += (value || 0)
+    }
+    // Update Grand Total
+    footer[1] = { value: grandTotal, readOnly: true }
+    return grid
   }
   render () {
     let data = this.calculateDataWithTotals()
