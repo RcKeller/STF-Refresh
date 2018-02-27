@@ -2,6 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 
+/*
+BUG: Sub-dependencies have not upgraded to the new proptypes, not included in base react
+Requires this polyfill / hack
+https://github.com/adazzle/react-data-grid/issues/1004
+*/
+import '../../proptypesPolyfill'
 import ReactDataGrid from 'react-data-grid'
 import { Alert, Button, Icon } from 'antd'
 
