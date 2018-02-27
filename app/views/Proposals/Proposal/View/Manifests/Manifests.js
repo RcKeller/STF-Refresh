@@ -8,7 +8,6 @@ import { Alert, Select } from 'antd'
 const Option = Select.Option
 
 import Items from './Items/Items'
-import Visualization from './Visualization/Visualization'
 
 import { indexOfApprovedManifest } from '../../../../../selectors'
 /*
@@ -73,7 +72,6 @@ class Manifests extends React.Component {
           } />
         }
         <Items {...manifest} originalTotal={asked} />
-        {/* <Visualization {...manifest} originalTotal={asked} /> */}
       </div>
     )
   }

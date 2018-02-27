@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 // import _ from 'lodash'
 import { connect } from 'react-redux'
 
-import { Sunburst, LabelSeries, Hint, DiscreteColorLegend } from 'react-vis'
+import { indexOfApprovedManifest, proposalDecision } from '../../../../../../selectors'
+
+import { Sunburst, LabelSeries, Hint } from 'react-vis'
 
 const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
@@ -22,12 +24,10 @@ const jss = {
   }
 }
 
-import { indexOfApprovedManifest, proposalDecision } from '../../../../../../selectors'
-
-const DIVERGING_COLOR_SCALE = ['#d9d9d9', '#FFF', '#4caf50', '#C22E00']
-
 /*
-MANIFESTS VIEW: Renders the budgets associated with a proposal, starting with the most recent (or approved) manifest
+STATUS COMPONENT:
+Visualizes the proposal's status as a sunburst, broken down by items
+Data source: The original proposal OR most recently approved budget
 */
 @connect(state => ({
   manifests: state.db.proposal ? state.db.proposal.manifests : [],
@@ -36,7 +36,7 @@ MANIFESTS VIEW: Renders the budgets associated with a proposal, starting with th
   index: indexOfApprovedManifest(state),
   decision: proposalDecision(state)
 }))
-class Visualization extends React.Component {
+class Status extends React.Component {
   static propTypes = {
     manifests: PropTypes.array,
     asked: PropTypes.number,
@@ -61,13 +61,9 @@ class Visualization extends React.Component {
     statusColor: '#4b2e83'
   }
   componentWillMount (props) {
-    const { manifests, index } = this.props
-    console.warn('CWM', this.props)
     this.transformData(this.props)
   }
   componentWillReceiveProps (nextProps) {
-    const { manifests, index } = nextProps
-    console.warn('CWRP', nextProps)
     this.transformData(nextProps)
   }
   transformData (nextProps) {
@@ -158,4 +154,4 @@ class Visualization extends React.Component {
   }
 }
 
-export default Visualization
+export default Status
