@@ -9,36 +9,45 @@ import ReactDataSheet from 'react-datasheet'
 // const calculateTotal = (price, quantity, tax = 0) =>
 //   (price * quantity) * (100 / tax)
 
-class Spreadsheet extends React.Component {
+class FinancialSpreadsheet extends React.Component {
+  // headers = ['Name', 'Description', 'Price', 'Tax', 'Quantity', 'TOTAL']
+  header = [
+    {value: 'Name', readOnly: true},
+    {value: 'Description / Vendor', readOnly: true},
+    {value: 'Price', readOnly: true},
+    {value: 'Tax', readOnly: true},
+    {value: 'Quantity', readOnly: true},
+    {value: 'TOTAL', readOnly: true}
+  ]
+  footer = [{value: 'Grand Total', readOnly: true, colSpan: 5}, {value: 0, readOnly: true}]
   constructor (props) {
     super(props)
     console.error(props)
-    let { headers, data } = {
-      headers: ['Name', 'Description', 'Price', 'Tax', 'Quantity', 'TOTAL'],
-      data: [
-        [{value: 'Some Item'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}],
-        [{value: 'Some Item'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}],
-        [{value: 'Some Item'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}],
-        [{value: 'Some Item'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}],
-        [{value: 'Some Item'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}]
-      ]
+    const { data, newData } = props
+    /*
+    serializeManifest:
+    Denormalizes items from a manifest to confirm to react-datasheet's data scheme
+    Scheme has records that are like [ {value}, {value}, {value}]...
+    The final cell is a "summary" cell containing subtotals and item _ids for future ref
+    */
+    const serializeManifest = (manifest) => {
+      let data = []
+      for (let item of manifest) {
+        const { _id, name, price, tax, description, quantity } = item || {}
+        //  Create a record in the order of headers
+        const record = [name, description, price, tax, quantity]
+          .map(value => ({ value }))
+        // Push our "summary" cell, containing subtotals and the _id
+        record.push({ _id, value: 0, readOnly: true })
+        data.push(record)
+      }
+      //  Add Header / footer
+      data.unshift(this.header)
+      data.push(this.footer)
+      return data
     }
-    // Structure the value prop for cells
-    data = data.map(row => {
-      let transformedRow = row.map(value => ({ value }))
-      transformedRow.push({ value: 0, readOnly: true })
-      return transformedRow
-    })
-    //  Add headers
-    data.unshift(
-      headers.map(value => ({ value, readOnly: true }))
-    )
-    // Append grand total row
-    data.push([
-      { value: 'Grand Total', readOnly: true, colSpan: (headers.length - 1) },
-      { value: 0, readOnly: true }
-    ])
-    console.warn('GRID:', data)
+    let transformedData = serializeManifest(data)
+    console.error(transformedData)
     this.state = {
       grid: [
         [
@@ -50,7 +59,7 @@ class Spreadsheet extends React.Component {
           {value: 'TOTAL', readOnly: true}
         ],
         // Final cell = subtotal
-        [{value: 'Some Item'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}, {value: 0, readOnly: true}],
+        [{value: 'Some Item', TEST: 'uuid'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}, {value: 0, readOnly: true}],
         [{value: 'Some Item'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}, {value: 0, readOnly: true}],
         [{value: 'Some Item'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}, {value: 0, readOnly: true}],
         [{value: 'Some Item'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}, {value: 0, readOnly: true}],
@@ -185,4 +194,76 @@ class Spreadsheet extends React.Component {
   }
 }
 
-export default Spreadsheet
+export default FinancialSpreadsheet
+
+/*
+constructor (props) {
+  super(props)
+  console.error(props)
+  const { data, newData } = props
+
+  function serializeManifest (manifest) {
+    let data = []
+    for (let item of manifest) {
+      const { _id, name, price, tax, description, quantity } = item || {}
+      //  Create a record in the order of headers
+      const record = [name, description, price, tax, quantity]
+        .map(value => ({ value }))
+      // Push our "summary" cell, containing subtotals and the _id
+      record.push({ _id, value: 0, readOnly: true })
+      console.log(record)
+      data.push(record)
+    }
+    // Add Header: [{ value: 'TITLE' }, ... ]
+    data.unshift(
+      this.headers.map(value => ({ value }))
+    )
+    // Add Footer w/ proper span
+    data.push([
+      { value: 'Grand Total', readOnly: true, colSpan: (this.headers.length - 1) },
+      { value: 0, readOnly: true }
+    ])
+  }
+  let transformedData = []
+  for (let item of data) {
+    const { _id, name, price, tax, description, quantity } = item || {}
+    //  Create a record in the order of headers
+    const record = [name, description, price, tax, quantity]
+      .map(value => ({ value }))
+    // Push our "summary" cell, containing subtotals and the _id
+    record.push({ _id, value: 0, readOnly: true })
+    console.log(record)
+    transformedData.push(record)
+  }
+  // Add Header: [{ value: 'TITLE' }, ... ]
+  transformedData.unshift(
+    this.headers.map(value => ({ value }))
+  )
+  // Add Footer w/ proper span
+  transformedData.push([
+    { value: 'Grand Total', readOnly: true, colSpan: (this.headers.length - 1) },
+    { value: 0, readOnly: true }
+  ])
+  console.error(transformedData)
+  this.state = {
+    grid: [
+      [
+        {value: 'Name', readOnly: true},
+        {value: 'Description / Vendor', readOnly: true},
+        {value: 'Price', readOnly: true},
+        {value: 'Tax', readOnly: true},
+        {value: 'Quantity', readOnly: true},
+        {value: 'TOTAL', readOnly: true}
+      ],
+      // Final cell = subtotal
+      [{value: 'Some Item', TEST: 'uuid'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}, {value: 0, readOnly: true}],
+      [{value: 'Some Item'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}, {value: 0, readOnly: true}],
+      [{value: 'Some Item'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}, {value: 0, readOnly: true}],
+      [{value: 'Some Item'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}, {value: 0, readOnly: true}],
+      [{value: 'Some Item'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}, {value: 0, readOnly: true}],
+      // Final Row = Grand Total
+      [{value: 'Grand Total', readOnly: true, colSpan: 5}, {value: 0, readOnly: true}]
+    ]
+  }
+}
+*/
