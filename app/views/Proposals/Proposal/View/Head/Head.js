@@ -10,6 +10,8 @@ const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
 import { proposalDecision } from '../../../../../selectors'
 
+import Visualization from './Visualization/Visualization'
+
 /*
 PROPOSAL HEAD:
 Renders proposal "metadata" as you will
@@ -67,7 +69,8 @@ class Head extends React.Component {
             <hr />
           </Col>
           <Col className='gutter-row' xs={24} md={12} lg={8}>
-            {typeof decision.approved === 'boolean'
+           <Visualization />
+            {/* {typeof decision.approved === 'boolean'
               ? (decision.approved
                   ? <div style={{ textAlign: 'right' }}>
                     <Progress
@@ -89,7 +92,7 @@ class Head extends React.Component {
                  message={<b>{status}</b>}
                  description='The committee has not issued a decision at this time.'
                />
-           }
+           } */}
           </Col>
         </Row>
       </section>
