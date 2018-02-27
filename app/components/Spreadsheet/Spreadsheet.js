@@ -9,6 +9,29 @@ import ReactDataSheet from 'react-datasheet'
 // const calculateTotal = (price, quantity, tax = 0) =>
 //   (price * quantity) * (100 / tax)
 
+class SheetRenderer extends React.PureComponent {
+  render () {
+    const { className, columns, onColumnDrop } = this.props
+    return (
+      <table className={className}>
+        <thead>
+          <tr>
+            <th className='cell read-only row-handle' key='$$actionCell' />
+            {
+              columns.map((col, index) => (
+                <Header key={col.label} col={col} columnIndex={index} onColumnDrop={onColumnDrop} />
+              ))
+            }
+          </tr>
+        </thead>
+        <tbody>
+          {this.props.children}
+        </tbody>
+      </table>
+    )
+  }
+}
+
 class Spreadsheet extends React.Component {
   constructor (props) {
     super(props)
@@ -129,6 +152,13 @@ class Spreadsheet extends React.Component {
     //   grandTotal += (Number.isNaN(value) ? 0 : value)
     // }
     // grid[totalRowIndex][totalCellIndex].value = grandTotal
+  }
+  onCellsChanged = (changes) => {
+    const grid = this.state.grid.map(row => [...row])
+    changes.forEach(({cell, row, col, value}) => {
+      grid[row][col] = {...grid[row][col], value}
+    })
+    this.setState({grid})
   }
   render () {
     return (
