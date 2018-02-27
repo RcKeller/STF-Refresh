@@ -4,6 +4,15 @@
 @import "~react-datasheet/lib/react-datasheet.css";
 @import "~react-vis/dist/style.css";
 
+ol, ul, dl {
+  margin: 0;
+  padding-left: 16px;
+  list-style: disc;
+
+    // listStyleType: 'disc',
+    // listStylePosition: 'inside'
+}
+
 .data-grid-container .data-grid {
   width: 100%
 }
@@ -300,60 +309,4 @@ body {
 .ant-table-expand-icon-th, .ant-table-row-expand-icon-cell {
   min-width: 24px;
   width: 24px;
-}
-
-//  Editable tables
-.react-grid-Cell:focus {
-  outline-color: @secondary-color !important;
-  .drag-handle {
-    background: @primary-color !important;
-  }
-}
-.editable-row-text {
-  padding: 5px;
-}
-
-.editable-row-operations a {
-  margin-right: 8px;
-}
-
-.react-context-menu {
-  min-width: 140px;
-  text-align: left;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
-  border-radius: 4px !important;
-  outline: none;
-  background-color: @dark-gray;
-  .react-context-menu {
-    min-width: 100px;
-  }
-}
-.react-context-menu-link {
-    display: inline-block;
-    width: 100%;
-    padding: 3px 20px;
-    clear: both;
-    text-align: inherit;
-    white-space: nowrap;
-    color: white;
-}
-
-.react-context-menu-link.active,
-.react-context-menu-link:hover {
-    border-radius: 4px;
-    text-decoration: none;
-    color: #fff;
-    background-color: @primary-color;
-}
-
-// .react-context-menu-item.submenu > a {
-//     padding-right: 27px;
-// }
-
-.react-context-menu-item.submenu > a:after {
-    content: "▶";
-    display: inline-block;
-    position: absolute;
-    right: 8px;
 }

@@ -9,32 +9,36 @@ import ReactDataSheet from 'react-datasheet'
 // const calculateTotal = (price, quantity, tax = 0) =>
 //   (price * quantity) * (100 / tax)
 
-class SheetRenderer extends React.PureComponent {
-  render () {
-    const { className, columns, onColumnDrop } = this.props
-    return (
-      <table className={className}>
-        <thead>
-          <tr>
-            <th className='cell read-only row-handle' key='$$actionCell' />
-            {
-              columns.map((col, index) => (
-                <Header key={col.label} col={col} columnIndex={index} onColumnDrop={onColumnDrop} />
-              ))
-            }
-          </tr>
-        </thead>
-        <tbody>
-          {this.props.children}
-        </tbody>
-      </table>
-    )
-  }
-}
-
 class Spreadsheet extends React.Component {
   constructor (props) {
     super(props)
+    console.error(props)
+    let { headers, data } = {
+      headers: ['Name', 'Description', 'Price', 'Tax', 'Quantity', 'TOTAL'],
+      data: [
+        [{value: 'Some Item'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}],
+        [{value: 'Some Item'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}],
+        [{value: 'Some Item'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}],
+        [{value: 'Some Item'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}],
+        [{value: 'Some Item'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}]
+      ]
+    }
+    // Structure the value prop for cells
+    data = data.map(row => {
+      let transformedRow = row.map(value => ({ value }))
+      transformedRow.push({ value: 0, readOnly: true })
+      return transformedRow
+    })
+    //  Add headers
+    data.unshift(
+      headers.map(value => ({ value, readOnly: true }))
+    )
+    // Append grand total row
+    data.push([
+      { value: 'Grand Total', readOnly: true, colSpan: (headers.length - 1) },
+      { value: 0, readOnly: true }
+    ])
+    console.warn('GRID:', data)
     this.state = {
       grid: [
         [
@@ -166,7 +170,7 @@ class Spreadsheet extends React.Component {
         <ReactDataSheet
           // data={this.state.grid}
           data={this.generateGrid()}
-          valueRenderer={(cell) => cell.value}
+          valueRenderer={(cell) => (cell.value).toString()}
           onContextMenu={(e, cell, i, j) => cell.readOnly ? e.preventDefault() : null}
           onCellsChanged={changes => {
             const grid = this.state.grid.map(row => [...row])

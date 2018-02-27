@@ -108,7 +108,6 @@
     "react-data-grid": "next",
     "react-data-grid-addons": "next",
     "react-datasheet": "^1.3.2",
-    "react-dnd": "^2.5.4",
     "react-dom": "16",
     "react-headroom": "^2.1.6",
     "react-helmet": "^5.0.2",
