@@ -9,11 +9,8 @@ const ButtonGroup = Button.Group
 import Instructions from './Instructions'
 
 import ReactDataSheet from 'react-datasheet'
-// // Be sure to include styles at some point, probably during your bootstrapping
-// import 'react-datasheet/lib/react-datasheet.css'
 
-// const calculateTotal = (price, quantity, tax = 0) =>
-//   (price * quantity) * (100 / tax)
+const currency = number => `$${Number.parseInt(number).toLocaleString('en-US')}`
 
 class FinancialSpreadsheet extends React.Component {
   static propTypes = {
@@ -38,25 +35,22 @@ class FinancialSpreadsheet extends React.Component {
     //  Initial total, disposed of once rows update.
     total: PropTypes.number
   }
-  // headers = ['Name', 'Description', 'Price', 'Tax', 'Quantity', 'TOTAL']
-  header = [
-    { value: 'Name', readOnly: true, width: '20%' },
-    { value: 'Description / Vendor', readOnly: true, width: '50%' },
-    { value: 'Price', readOnly: true, width: '10%' },
-    { value: 'Tax', readOnly: true, width: '5%' },
-    { value: 'Quantity', readOnly: true, width: '5%' },
-    { value: 'Total', readOnly: true, width: '10%' }
-  ]
   newRow = [{value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}, { _id: '', value: '', readOnly: true }]
-  footer = [{value: '', readOnly: true, colSpan: 5}, {value: 0, readOnly: true}]
   constructor (props) {
     super(props)
     console.error(props)
     const { data, newData } = props
-
+    /*
+    serializeManifest:
+    Denormalizes items from a manifest to confirm to react-datasheet's data scheme
+    Scheme has records that are like [ {value}, {value}, {value}]...
+    The final cell is a "summary" cell containing subtotals and item _ids for future ref
+    */
     let grid = this.serializeManifest(data)
     const previousChanges = undefined
-    this.state = { grid, previousChanges }
+    const grandTotal = 0
+    // console.warn('serializeManifest', grid)
+    this.state = { grid, previousChanges, grandTotal }
   }
   componentDidMount () {
     this.onCellsChanged()
@@ -67,12 +61,6 @@ class FinancialSpreadsheet extends React.Component {
     this.state = { grid, previousChanges: undefined }
     this.onCellsChanged()
   }
-  /*
-  serializeManifest:
-  Denormalizes items from a manifest to confirm to react-datasheet's data scheme
-  Scheme has records that are like [ {value}, {value}, {value}]...
-  The final cell is a "summary" cell containing subtotals and item _ids for future ref
-  */
   serializeManifest = (manifest) => {
     let data = []
     for (let item of manifest) {
@@ -84,14 +72,11 @@ class FinancialSpreadsheet extends React.Component {
       record.push({ _id, value: 0, readOnly: true })
       data.push(record)
     }
-    //  Add Header / footer
-    data.unshift(this.header)
-    data.push(this.footer)
     return data
   }
   deserializeManifest = (data) => {
-    const rows = data.slice(1, data.length - 1)
-    let items = rows
+    let items = data
+      .slice()
       .map(row => {
         const summaryCell = row.length - 1
         const [name, description, price, tax, quantity] = row.map(cell => cell.value)
@@ -102,11 +87,12 @@ class FinancialSpreadsheet extends React.Component {
     return items
   }
   handleSubmit = () => {
+    // let { rows, total } = this.state
     const { onSubmit } = this.props
     let { grid } = this.state
     const data = this.deserializeManifest(grid)
     console.log('DATA TO SUBMIT', data)
-    onSubmit(data)
+    // onSubmit(data)
   }
   /*
   onCellsChanged:
@@ -122,9 +108,7 @@ class FinancialSpreadsheet extends React.Component {
     PATCH: Cache the last change request in parent state
     We only proceed with changes that are new
     */
-    let { grid, previousChanges } = this.state
-    console.log(changes, !_.isEqual(changes, previousChanges))
-    if (!_.isEqual(changes, previousChanges)) {
+    if (!_.isEqual(changes, this.state.previousChanges)) {
       let grid = this.state.grid.slice()
       let grandTotal = 0
       /*
@@ -134,19 +118,18 @@ class FinancialSpreadsheet extends React.Component {
         const { row, col, value } = change
         grid[row][col] = {...grid[row][col], value}
       }
+      // let rows = grid.slice(1, grid.length - 1)
+      // console.warn('Initial Rows', rows)
       /*
       TASK: Delete rows with 0 quantity
         - Accumulate subtotals
         - Carry over mongo  _id / uuid
       */
       let data = grid
-        // SLICE A COPY
-        .slice(1, grid.length - 1)
         // FILTER ROWS THAT HAVE DATA
         .filter(row => row[4] && row[4].value >= 1)
         // ACCUMULATE SUBTOTALS / CURRY _ID
         .map(row => {
-          console.log(row)
           const summaryCell = row.length - 1
           const [name, description, price, tax, quantity] = row
             .map(cell => cell.value)
@@ -159,45 +142,77 @@ class FinancialSpreadsheet extends React.Component {
           grandTotal += (value || 0)
           return row
         })
-
-      console.log('DATA', data)
-      data.unshift(this.header)
-
       data.push(this.newRow)
-
-      let footer = this.footer
-      footer[1].value = grandTotal
-      data.push(footer)
       /*
       TASK: Redefine state to trigger rerender
       */
-      this.setState({ grid: data, previousChanges: changes })
+      this.setState({ grid: data, previousChanges: changes, grandTotal })
     }
   }
   render (
-    { prompt, disabled } = this.props
+    { prompt, disabled } = this.props,
+    { grid, grandTotal } = this.state
   ) {
-    let data = this.state.grid
     return (
       <div style={{ width: '100%', marginTop: 8 }}>
         <small><em>Editable Datasheet - Please complete as accurately as you can. Rows are automatically added and removed based on quantity.</em></small>
+        <span className='data-grid-container'>
+          <table className='data-grid'>
+            <thead>
+              <tr>
+                <td className='cell read-only' style={{width: '20%'}}>
+                  <span className='value-viewer'>Name</span>
+                </td>
+                <td className='cell read-only' style={{width: '50%'}}>
+                  <span className='value-viewer'>Description</span>
+                </td>
+                <td className='cell read-only' style={{width: '10%'}}>
+                  <span className='value-viewer'>Price</span>
+                </td>
+                <td className='cell read-only' style={{width: '5%'}}>
+                  <span className='value-viewer'>Tax</span>
+                </td>
+                <td className='cell read-only' style={{width: '5%'}}>
+                  <span className='value-viewer'>Quantity</span>
+                </td>
+                <td className='cell read-only' style={{width: '10%'}}>
+                  <span className='value-viewer'>Total</span>
+                </td>
+              </tr>
+            </thead>
+          </table>
+        </span>
         <ReactDataSheet
-          data={data}
+          ref='datasheet'
+          data={grid}
           valueRenderer={(cell) => (cell.value).toString()}
           onContextMenu={(e, cell, i, j) => cell.readOnly ? e.preventDefault() : null}
           onCellsChanged={this.onCellsChanged}
         />
-        <Button
-          disabled={disabled}
-          onClick={this.handleSubmit}
-          type='primary' size='small' ghost
-          style={{ width: '100%', borderRadius: 'unset' }}
-        >
-          <span>
-            {prompt || 'Submit'}
-            <Icon style={{ marginLeft: 8 }} type='cloud-upload-o' />
-          </span>
-        </Button>
+        <span className='data-grid-container'>
+          <table className='data-grid'>
+            <thead>
+              <tr>
+                <td className='cell read-only' style={{ width: '90%', border: 'none' }}>
+                  <Button
+                    disabled={disabled}
+                    onClick={this.handleSubmit}
+                    type='primary' size='small' ghost
+                    style={{ height: '100%', width: '100%', borderRadius: 'unset' }}
+                  >
+                    <span>
+                      {prompt || 'Submit'}
+                      <Icon style={{ marginLeft: 8 }} type='cloud-upload-o' />
+                    </span>
+                  </Button>
+                </td>
+                <td className='cell read-only' style={{width: '10%'}}>
+                  <span className='value-viewer'>{currency(grandTotal)}</span>
+                </td>
+              </tr>
+            </thead>
+          </table>
+        </span>
         <small><span id='foot-1'>[1]</span> <i>A few groups on campus have tax exemption issued via certification from the UW, including a few research groups, and The Daily newspaper. If you have this exemption, you should already be aware of it, and do not need to add tax on your requested items.</i></small>
       </div>
     )
