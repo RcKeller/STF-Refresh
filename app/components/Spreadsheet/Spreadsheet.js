@@ -109,66 +109,20 @@ class FinancialSpreadsheet extends React.Component {
       const { row, col, value } = change
       grid[row][col] = {...grid[row][col], value}
     }
+    let rows = grid.slice(1, grid.length - 1)
+    console.warn('Initial Rows', rows)
     /*
     TASK: Delete rows with 0 quantity
     */
-    let rows = grid
-      // SELECT ROWS WITH DATA
-      .slice(1, grid.length - 1)
-      // FILTER ROWS THAT HAVE DATA
-      .filter((row, i) =>
-        row[4] && row[4].value >= 1
-      )
-      // ACCUMULATE SUBTOTALS / CURRY _ID
-      .map(row => {
-        const summaryCell = row.length - 1
-        const [name, description, price, tax, quantity] = row.map(cell => cell.value)
-        const { _id } = row[summaryCell]
-        const value = parseFloat(
-            ((price * quantity) * ((tax / 100) + 1))
-            .toFixed(2)
-          )
-        row[summaryCell] = { _id, value, readOnly: true }
-        grandTotal += (value || 0)
-        return row
-      })
-    console.log('Core rows', rows)
-    /*
-    TASK: Initialize new row
-    Check the last row to see if an item has a user-defined quantity
-    If so, initialize a new row!
-    */
-    const lastRow = rows[rows.length - 1]
-    if (
-        (!lastRow) ||
-        (lastRow[4] && lastRow[4].value >= 1)
-      ) {
-      rows.push(this.newRow)
-    }
-    console.log('Rows with new row', rows)
-
-    const header = this.header
-    let footer = this.footer
-    footer[1].value = grandTotal
-    rows.unshift(header)
-    rows.push(footer)
-
-    console.log('Committing rows', rows)
-    /*
-    TASK: Redefine state to trigger rerender
-    */
-    this.setState({ grid: rows })
-  }
-  calculateDataWithTotals () {
-    const { grid } = this.state
-
-    // Make a mutable copy of the grid with values only
-    let rows = grid.slice(1, grid.length - 1)
-    let footer = grid[grid.length - 1]
-
-    // Update totals, incrementing a grandTotal counter at the same time.
-    let grandTotal = 0
-    for (let row of rows) {
+    // FILTER ROWS THAT HAVE DATA
+    // rows = rows
+    //   .filter((row, i) => {
+    //     console.log(i, row)
+    //     return row[4] && row[4].value >= 1
+    //   })
+    // console.error('Filtered rows', rows)
+    // ACCUMULATE SUBTOTALS / CURRY _ID
+    rows = rows.map(row => {
       const summaryCell = row.length - 1
       const [name, description, price, tax, quantity] = row.map(cell => cell.value)
       const { _id } = row[summaryCell]
@@ -178,42 +132,39 @@ class FinancialSpreadsheet extends React.Component {
         )
       row[summaryCell] = { _id, value, readOnly: true }
       grandTotal += (value || 0)
-    }
-    // Update Grand Total
-    footer[1] = { value: grandTotal, readOnly: true }
-    return grid
-  }
-  ensureNewRow (grid) {
-    const finalRow = grid[grid.length - 2]
-    const hasData = finalRow.findIndex(cell => cell.value) >= 0
-    if (hasData) {
-      const empty = { value: '' }
-      grid.splice(
-        grid.length - 1,
-        0,
-        [empty, empty, empty, empty, empty, { _id: '', value: '', readOnly: true }]
-      )
-    }
+      return row
+    })
+    console.log('Core rows', rows)
+    /*
+    TASK: Initialize new row
+    Check the last row to see if an item has a user-defined quantity
+    If so, initialize a new row!
+    */
+    // const lastRow = rows[rows.length - 1]
+    // if (
+    //     (!lastRow) ||
+    //     (lastRow[4] && lastRow[4].value >= 1)
+    //   ) {
+    //   rows.push(this.newRow)
+    // }
+    // console.log('Rows with new row', rows)
+
+    let footer = this.footer
+    footer[1].value = grandTotal
+    rows.unshift(this.header)
+    rows.push(this.newRow)
+    rows.push(footer)
+
+    console.log('Committing rows', rows)
+    /*
+    TASK: Redefine state to trigger rerender
+    */
+    this.setState({ grid: rows })
   }
   render (
     { prompt, disabled } = this.props
   ) {
-    // let data = this.calculateDataWithTotals()
     let data = this.state.grid
-    // this.deserializeManifest(data)
-    // this.deleteZeroQuantityRows(data)
-    // this.ensureNewRow(data)
-    // const finalRow = data[data.length - 2]
-    // if (finalRow[5] > 0) {
-    //   this.initializeNewRow()
-    // }
-    // console.log(newDataRow)
-    // console.warn('DOM REF', ReactDOM.findDOMNode('datasheet'))
-    // const selected = (this.refs.datasheet)
-    //   ? this.refs.datasheet.state && this.refs.datasheet.state.start
-    //   : {}
-
-    // console.log('SELECTED', selected)
     return (
       <div style={{ width: '100%', marginTop: 8 }}>
         <small><em>Editable Datasheet - Please complete as accurately as you can. </em></small>
@@ -250,139 +201,3 @@ class FinancialSpreadsheet extends React.Component {
 }
 
 export default FinancialSpreadsheet
-
-/*
-constructor (props) {
-  super(props)
-  console.error(props)
-  const { data, newData } = props
-
-  function serializeManifest (manifest) {
-    let data = []
-    for (let item of manifest) {
-      const { _id, name, price, tax, description, quantity } = item || {}
-      //  Create a record in the order of headers
-      const record = [name, description, price, tax, quantity]
-        .map(value => ({ value }))
-      // Push our "summary" cell, containing subtotals and the _id
-      record.push({ _id, value: 0, readOnly: true })
-      console.log(record)
-      data.push(record)
-    }
-    // Add Header: [{ value: 'TITLE' }, ... ]
-    data.unshift(
-      this.headers.map(value => ({ value }))
-    )
-    // Add Footer w/ proper span
-    data.push([
-      { value: 'Grand Total', readOnly: true, colSpan: (this.headers.length - 1) },
-      { value: 0, readOnly: true }
-    ])
-  }
-  let transformedData = []
-  for (let item of data) {
-    const { _id, name, price, tax, description, quantity } = item || {}
-    //  Create a record in the order of headers
-    const record = [name, description, price, tax, quantity]
-      .map(value => ({ value }))
-    // Push our "summary" cell, containing subtotals and the _id
-    record.push({ _id, value: 0, readOnly: true })
-    console.log(record)
-    transformedData.push(record)
-  }
-  // Add Header: [{ value: 'TITLE' }, ... ]
-  transformedData.unshift(
-    this.headers.map(value => ({ value }))
-  )
-  // Add Footer w/ proper span
-  transformedData.push([
-    { value: 'Grand Total', readOnly: true, colSpan: (this.headers.length - 1) },
-    { value: 0, readOnly: true }
-  ])
-  console.error(transformedData)
-  this.state = {
-    grid: [
-      [
-        {value: 'Name', readOnly: true},
-        {value: 'Description / Vendor', readOnly: true},
-        {value: 'Price', readOnly: true},
-        {value: 'Tax', readOnly: true},
-        {value: 'Quantity', readOnly: true},
-        {value: 'TOTAL', readOnly: true}
-      ],
-      // Final cell = subtotal
-      [{value: 'Some Item', TEST: 'uuid'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}, {value: 0, readOnly: true}],
-      [{value: 'Some Item'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}, {value: 0, readOnly: true}],
-      [{value: 'Some Item'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}, {value: 0, readOnly: true}],
-      [{value: 'Some Item'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}, {value: 0, readOnly: true}],
-      [{value: 'Some Item'}, {value: 'Description Here'}, {value: 1}, {value: 10.1}, {value: 5}, {value: 0, readOnly: true}],
-      // Final Row = Grand Total
-      [{value: 'Grand Total', readOnly: true, colSpan: 5}, {value: 0, readOnly: true}]
-    ]
-  }
-}
-*/
-
-/*
-// const taxes = typeof types['tax'] === 'string'
-// for (let row of rows) {
-//   const price = row[types['price']]
-//   const quantity = row[types['quantity']]
-//   const subtotal = taxes
-//     ? price * quantity * ((row[types['tax']] / 100) + 1)
-//     : price * quantity
-// }
-
-// const types = {}
-// for (const [index, cell] of grid[0].entries()) {
-//   const type = cell.value.toLowerCase()
-//   types[type] = index
-// }
-// console.log('TYPES', types)
-// for (let row = 1; row < grid.length, row++) {
-//   let subtotal = 0
-//   subtotal += (row[types["price"]] * row[types["quantity"]) * (row[types["tax"]])
-// }
-// let rows = grid.slice()
-// let header = rows.shift()
-// const types = {}
-// for (const [index, cell] of header.entries()) {
-//   types[index] = cell.value.toLowerCase()
-// }
-// console.log('TYPES', types)
-// const types = grid[0].map(cell => cell.value)
-// Typemap becomes a map of enums to cell indexes for grid rows (e.g. row[1] is price, etc)
-
-// Types - enums for row cells that can be referenced using a cell index
-// const types = grid[0].map(cell => cell.value)
-
-// for (let t)
-// console.warn('TYPES', types)
-
-// Calculate Subtotals using cell types (Price, Tax, Quantity)
-// for (let row of grid) {
-//   let subtotal = 0
-//   const subtotalCell = row.length - 1
-//   for (let cell = 0; cell < subtotalCell; cell++) {
-//
-//     if types[cell] === 'Tax' {
-//
-//     }
-//     // let value = Number.parseFloat(row[cell].value)
-//     // subtotal += (Number.isNaN(value) ? 0 : value)
-//   }
-//   console.log('SUBTOTAL', subtotal)
-//   row[subtotalCell] = { value: subtotal, readOnly: true }
-// }
-//
-// // Calculate Grand Total by reducing subtotals
-// let grandTotal = 0
-// const totalRowIndex = grid.length - 1
-// const totalCellIndex = grid[totalRowIndex].length - 1
-// for (let row of grid) {
-//   const subtotalCell = row.length - 1
-//   let value = Number.parseFloat(row[subtotalCell].value)
-//   grandTotal += (Number.isNaN(value) ? 0 : value)
-// }
-// grid[totalRowIndex][totalCellIndex].value = grandTotal
-*/
