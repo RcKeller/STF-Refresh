@@ -9,9 +9,7 @@ const FormItem = Form.Item
 const connectForm = Form.create()
 
 import api from '../../../../services'
-/*
 
-*/
 import styles from './Signatures.css'
 /*
 NOTE:
@@ -20,11 +18,7 @@ API for submission, but using connectForm to instantiate initial values.
 */
 @compose(
   connect(state => ({
-    // contacts: state.db.proposal.contacts
-    //   .filter(contact => contact._id),
-    // contacts: state.db.proposal.contacts,
     contacts: state.db.proposal.contacts.filter(c => c._id),
-    // contacts: proposalSigners(state),
     link: `https://uwstf.org${state.routing.locationBeforeTransitions.pathname}`,
     user: state.user
   }),
@@ -75,7 +69,6 @@ class Signatures extends React.Component {
         />
         <Row gutter={32}>
           <Col className='gutter-row' xs={24} sm={12}>
-
             <h2>Final Signatures</h2>
             <p>
               To submit your proposal to the Committee, all contacts must sign this proposal signature page.
@@ -92,7 +85,6 @@ class Signatures extends React.Component {
                     {form.getFieldDecorator(c.role, { valuePropName: 'checked' })(
                       //  Valueprop is a selector for antd switches, it's in the docs.
                       <Checkbox size='large'
-                        // disabled={c.netID !== user.netID}
                         onChange={(e) => this.handleToggle(e.target.checked, c)}
                       >
                         <span className={styles['checkbox-text']}>

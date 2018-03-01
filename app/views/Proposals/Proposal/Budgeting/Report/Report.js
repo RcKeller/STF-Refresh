@@ -12,32 +12,8 @@ import { Form, Input, Icon, Alert, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
-import Spreadsheet, { Editors } from '../../../../../components/Spreadsheet'
-const { SimpleNumber } = Editors
+import { Spreadsheet } from '../../../../../components'
 
-//  BUG: Selectors cannot select child props. Is this case handled in the data-grid docs?
-const columns = [{
-  name: 'Name',
-  key: 'name',
-  editable: true
-}, {
-  name: 'Vendor',
-  key: 'vendor',
-  editable: true,
-  width: 300
-}, {
-  name: 'Quantity',
-  key: 'quantity',
-  editable: true,
-  editor: SimpleNumber,
-  width: 85
-}, {
-  name: 'Price',
-  key: 'price',
-  editable: true,
-  editor: SimpleNumber,
-  width: 85
-}]
 /*
 REPORT TAB:
 Allows authors to report their expenditures,
@@ -178,14 +154,11 @@ class Report extends React.Component {
             <Input type='textarea' rows={6} />
           )}
         </FormItem>
-        <Spreadsheet financial
+        <Spreadsheet
           prompt='Record Expenses'
-          columns={columns}
           data={data}
           onSubmit={this.handleSubmit}
-          newData={newData}
           disabled={disableSubmit(form)}
-          total={total}
         />
         <Alert type='info' showIcon banner
           description='For your convenience, you can report expenditures at any time. We encourage you to use this tool in reference to your original proposal as you make purchases.'

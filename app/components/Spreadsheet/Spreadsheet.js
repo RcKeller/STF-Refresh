@@ -5,31 +5,20 @@ import _ from 'lodash'
 import { Button, Icon } from 'antd'
 import ReactDataSheet from 'react-datasheet'
 
-class FinancialSpreadsheet extends React.Component {
+class Spreadsheet extends React.Component {
   static propTypes = {
-    //  Your dataset is never mutated and can even be ref'd.
+    // Data: an array of items
     data: PropTypes.array.isRequired,
     //  onSubmit is your callback for receiving well formed data.
     onSubmit: PropTypes.func.isRequired,
     //  Prompt will override the default submit button text (which is "Save")
-    prompt: PropTypes.string,
+    prompt: PropTypes.string
     /*
-    NOTE: THE FOLLOWING PROPTYPES WILL BE DEPRECIATED
+    Several proptypes have been depreciated for this component
+    During the React 16 migration, we left react-data-grid for a
+    component that did not rely on DOM manipulation so much (buggy)
+    if troubleshooting, view git history carefully
     */
-    //  Column config api is preserved, but editable is REQUIRED
-    columns: PropTypes.arrayOf(PropTypes.shape({
-      name: PropTypes.node,
-      key: PropTypes.string,
-      editable: PropTypes.bool,
-      editor: PropTypes.func,
-      width: PropTypes.number
-    })),
-    //  NewData is a prop representing what a brand new field / row should be like (defaults).
-    newData: PropTypes.object,
-    //  Financial will calculate and show subtotals as necessary
-    financial: PropTypes.bool,
-    //  Initial total, disposed of once rows update.
-    total: PropTypes.number
   }
   header = [
     { value: 'Name', readOnly: true, width: '20%' },
@@ -192,4 +181,4 @@ class FinancialSpreadsheet extends React.Component {
   }
 }
 
-export default FinancialSpreadsheet
+export default Spreadsheet

@@ -7,43 +7,7 @@ import { connect } from 'react-redux'
 import { message } from 'antd'
 import api from '../../../../services'
 
-import Spreadsheet, { Editors } from '../../../../components/Spreadsheet'
-const { SimpleNumber, TaxRate } = Editors
-
-const columns = [{
-  name: 'Priority #',
-  key: 'priority',
-  editable: true,
-  editor: SimpleNumber,
-  width: 85
-}, {
-  name: 'Name',
-  key: 'name',
-  editable: true,
-  width: 300
-}, {
-  name: 'Description',
-  key: 'description',
-  editable: true
-}, {
-  name: 'Price',
-  key: 'price',
-  editable: true,
-  editor: SimpleNumber,
-  width: 85
-}, {
-  name: 'Tax',
-  key: 'tax',
-  editable: true,
-  editor: TaxRate,
-  width: 85
-}, {
-  name: 'Quantity',
-  key: 'quantity',
-  editable: true,
-  editor: SimpleNumber,
-  width: 85
-}]
+import { Spreadsheet } from '../../../../components'
 
 @connect(
   state => ({
@@ -95,16 +59,12 @@ class Budget extends React.Component {
   }
   render ({ manifest } = this.props) {
     const data = manifest ? manifest.items : []
-    const newData = { tax: 10.1, quantity: 1, price: 0 }
-    const total = manifest && manifest.total
     return (
       <div>
-        <Spreadsheet financial
-          columns={columns}
+        <Spreadsheet
           data={data}
-          newData={newData}
           onSubmit={this.handleSubmit}
-          total={total}
+          disabled={false}
         />
       </div>
     )

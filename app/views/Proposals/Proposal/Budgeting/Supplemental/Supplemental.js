@@ -12,38 +12,8 @@ import { Form, Input, Alert, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
-import Spreadsheet, { Editors } from '../../../../../components/Spreadsheet'
-const { SimpleNumber, TaxRate } = Editors
+import { Spreadsheet } from '../../../../../components'
 
-//  BUG: Selectors cannot select child props. Is this case handled in the data-grid docs?
-const columns = [{
-  name: 'Name',
-  key: 'name',
-  editable: true
-}, {
-  name: 'Description',
-  key: 'description',
-  editable: true,
-  width: 300
-}, {
-  name: 'Price',
-  key: 'price',
-  editable: true,
-  editor: SimpleNumber,
-  width: 85
-}, {
-  name: 'Tax',
-  key: 'tax',
-  editable: true,
-  editor: TaxRate,
-  width: 85
-}, {
-  name: 'Quantity',
-  key: 'quantity',
-  editable: true,
-  editor: SimpleNumber,
-  width: 85
-}]
 /*
 SUPPLEMENTAL TAB:
 Available only to proposals w/ a previous award
@@ -183,18 +153,18 @@ class Supplemental extends React.Component {
             <Input type='textarea' rows={6} disabled={existingSupplemmental} />
           )}
         </FormItem>
-        <Spreadsheet financial
-          prompt='Finalize and Submit - Irreversible!'
-          disabled={existingSupplemmental}
-          columns={columns}
+        <Spreadsheet
           data={data}
-          newData={newData}
           onSubmit={this.handleSubmit}
-          total={total}
+          disabled={existingSupplemmental}
+          prompt={
+            !existingSupplemmental
+              ? 'Finalize and Submit - Irreversible!'
+              : 'We have received your supplemental request - please reach out to stfagent@uw.edu to schedule an appointment to discuss this.'
+          }
         />
-        {existingSupplemmental
-          ? <p>We have received your supplemental request - please reach out to stfagent@uw.edu to schedule an appointment to discuss this, or for revisions.</p>
-          : <Alert type='error' showIcon banner
+        {!existingSupplemmental &&
+          <Alert type='error' showIcon banner
             message='You May Only Submit Once!'
             description='Submitting a request for supplemental funding notifies the STF admin team, formally kicking off the process. Like your original proposal, this is a one-time deal, and your request must be accurate and finalized.'
           />

@@ -10,38 +10,7 @@ import _ from 'lodash'
 import { Select, Alert, message } from 'antd'
 const Option = Select.Option
 
-import Spreadsheet, { Editors } from '../../../../../components/Spreadsheet'
-const { SimpleNumber, TaxRate } = Editors
-
-//  BUG: Selectors cannot select child props. Is this case handled in the data-grid docs?
-const columns = [{
-  name: 'Name',
-  key: 'name',
-  editable: true
-}, {
-  name: 'Description',
-  key: 'description',
-  editable: true,
-  width: 300
-}, {
-  name: 'Price',
-  key: 'price',
-  editable: true,
-  editor: SimpleNumber,
-  width: 85
-}, {
-  name: 'Tax',
-  key: 'tax',
-  editable: true,
-  editor: TaxRate,
-  width: 85
-}, {
-  name: 'Quantity',
-  key: 'quantity',
-  editable: true,
-  editor: SimpleNumber,
-  width: 85
-}]
+import { Spreadsheet } from '../../../../../components'
 /*
 PARTIAL TAB:
 Allows you to create a subset of a budget with more/less items
@@ -123,12 +92,10 @@ class Partial extends React.Component {
         </Select>
         <h4>{title}</h4>
         <p>{body}</p>
-        <Spreadsheet financial
-          columns={columns}
+        <Spreadsheet
           data={data}
-          newData={newData}
           onSubmit={this.handleSubmit}
-          total={total}
+          disabled={false}
         />
       </section>
     )
