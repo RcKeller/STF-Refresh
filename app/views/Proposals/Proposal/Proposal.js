@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
+import Loading from '../../../components/Loading/Loading'
 
 import { Spin, Tabs, Button } from 'antd'
 const TabPane = Tabs.TabPane
@@ -27,14 +28,13 @@ PROPOSAL PAGE:  .../proposals/:year/:number
 This serves as a giant container
 for the tabbed inteface in the proposal view
 Tabs are added dynamically based on user authZ
-*/
-import styles from './Proposal.css'
-/*
+
 NOTE: Bugs can be encountered when users navigate from proposals to /edit
 It's caused by data mismatches in the cached store nodes.
 Added a check for publication status that tests truthiness, preventing errors.
 connectRequest will force a query if there's a mismatch.
 */
+import styles from './Proposal.css'
 @compose(
   connect(state => ({
     id: state.db.proposal && state.db.proposal._id,
@@ -63,41 +63,29 @@ connectRequest will force a query if there's a mismatch.
       { path: 'comments', populate: { path: 'user' } }
     ]
   }))
-  // connectRequest(props => api.get('proposal', {
-  //   force: true,
-  //   query: {
-  //     year: props.params.year,
-  //     number: props.params.number
-  //   },
-  //   // Proposal reporting, metrics and decisions are tied to manifests, which are individual "asks"
-  //   populate: [
-  //     'contacts', 'body', 'comments',
-  //     { path: 'manifests', populate: { path: 'items' } },
-  //     { path: 'manifests', populate: { path: 'report', populate: { path: 'items' } } },
-  //     { path: 'manifests', populate: { path: 'decision' } },
-  //     { path: 'comments', populate: { path: 'user' } }
-  //   ]
-  // }))
 )
 class Proposal extends React.Component {
   static propTypes = {
     proposal: PropTypes.object
   }
-  render ({ proposal, id, title, published, user, author, forceRequest } = this.props) {
+  render ({ params, proposal, id, title, published, user, author, forceRequest } = this.props) {
     const stf = user && user.stf
     const admin = stf && stf.admin
+    const { year, number } = params
     return (
       <article className={styles['tabbed-article']} >
         <Helmet title={title || 'Proposal'} />
-        {!id
-          ? <Spin size='large' tip='Loading...' />
-          : <Tabs className='tab-container' type='card'
+        <Loading render={id}
+          title={`Proposal ${year}-${number}`}
+          tip={`Loading Proposal ${year}-${number}`}
+        >
+          <Tabs className='tab-container' type='card'
             tabBarExtraContent={
               <Button type='ghost' icon='reload' onClick={forceRequest}>
                 Refresh
               </Button>
             }
-            >
+          >
             <TabPane tab='Proposal' key='1' className={styles['tab-pane']}>
               <View />
             </TabPane>
@@ -124,7 +112,7 @@ class Proposal extends React.Component {
               </TabPane>
             }
           </Tabs>
-        }
+        </Loading>
       </article>
     )
   }
