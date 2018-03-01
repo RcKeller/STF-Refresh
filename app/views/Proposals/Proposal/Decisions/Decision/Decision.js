@@ -106,7 +106,7 @@ class Decision extends React.Component {
         {/* Committee members have an expanded view that includes metrics */}
         {user && user.stf &&
           <div>
-            {reviews.length > 0
+            {Array.isArray(reviews) && reviews.length > 0
               ? <h2>Committee Metrics</h2>
               : <h6>Metrics have not been taken for this budget</h6>
             }

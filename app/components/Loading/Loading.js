@@ -6,15 +6,18 @@ import { Spin, Alert } from 'antd'
 
 class Loading extends React.Component {
   static propTypes = {
-    // loading: ,
-    // Render
+    // Render goes through a truthiness check
+    render: PropTypes.any.isRequired,
+    // Component title and loading promp
     title: PropTypes.string,
     tip: PropTypes.string,
+    // Alert type (change to error or info to change UI severity)
     type: PropTypes.string,
+    // Timeout Interval
     timeout: PropTypes.number
   }
   static defaultProps = {
-    // render: false,
+    render: false,
     tip: 'Loading...',
     title: 'this component',
     type: 'warning',
@@ -38,7 +41,6 @@ class Loading extends React.Component {
     { children, render, title, tip, type } = this.props,
     { error, info } = this.state
   ) {
-    console.warn(render, error, info)
     if (error) {
       return (
         <Alert showIcon

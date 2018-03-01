@@ -70,7 +70,11 @@ class Endorse extends React.Component {
         <Form onSubmit={this.handleSubmit}>
           <FormItem label='Comment' {...layout} hasFeedback={feedback(form, 'body')} help={help(form, 'body')} >
             {form.getFieldDecorator('body', rules.required)(
-              <Input type='textarea' rows={6} disabled={!user} />
+              <Input
+                type='textarea'
+                rows={6}
+                disabled={!user}
+              />
             )}
           </FormItem>
           <FormItem>

@@ -40,12 +40,6 @@ const Metrics = ({ _id: id, approved, score, ratings, author: { name, netID } })
       size='middle'
       pagination={false}
       showHeader={false}
-      footer={() => (
-        <h5>
-          <span>Overall Rating: </span>
-          <span style={{ float: 'right' }}>{`${score} / 5`}</span>
-        </h5>
-      )}
     />
   </div>
 )

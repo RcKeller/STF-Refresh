@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
 import api from '../../services'
+import { Loading } from '../../components'
 
 import { Link } from 'react-router'
 import { Spin, Table, Alert } from 'antd'
@@ -20,11 +21,9 @@ Renders all blocks in a short table
 Summarizes annual projections for continuous funding expenses
 */
 import styles from './Blocks.css'
-import { specialProjects } from './content.js'
 @compose(
   connect(state => ({
     blocks: state.db.blocks || [],
-    projects: specialProjects,
     screen: state.screen
   })),
   connectRequest(() => api.get('blocks', {
@@ -35,9 +34,19 @@ import { specialProjects } from './content.js'
 class Blocks extends React.Component {
   static propTypes = {
     blocks: PropTypes.array,
-    projects: PropTypes.array,
     screen: PropTypes.object
   }
+  projects = [
+    {
+      _id: 'CSF',
+      number: 'CSF',
+      year: 2018,
+      title: 'Campus Sustainability Fund',
+      organization: 'Campus Sustainability',
+      status: 'Special Grant',
+      received: 200000
+    }
+  ]
   columns = [
     { title: 'Title',
       dataIndex: 'title',
@@ -48,7 +57,10 @@ class Blocks extends React.Component {
     { title: 'Status', dataIndex: 'status', key: 'status', width: 100 },
     { title: 'Award', dataIndex: 'received', key: 'received', render: (title) => <span>{currency(title || 0)}</span>, width: 80 }
   ]
-  render ({ blocks, projects, screen } = this.props) {
+  render (
+    { blocks, screen } = this.props,
+    { projects } = this
+  ) {
     // Combine blocks and Special Projects
     let blocksAndProjects = blocks.slice()
     for (let project of projects) {
@@ -86,9 +98,11 @@ class Blocks extends React.Component {
         <p>
           If you are interested in pursuing Block Funding for your organization, feel free to discuss it with any member of the committee. Please refrain from asking for Block Funding in your written proposal or proposal presentation.
         </p>
-        {!blocksAndProjects
-          ? <Spin size='large' tip='Loading...' />
-          : <Table dataSource={blocksAndProjects} pagination={false}
+        <Loading render={blocksAndProjects && blocksAndProjects.length > projects.length}
+          title='block projects'
+          tip='Loading Projects...'
+        >
+          <Table dataSource={blocksAndProjects} pagination={false}
             rowKey={record => record._id}
             size='middle'
             columns={screen.lessThan.medium ? [this.columns[0], this.columns[3]] : this.columns}
@@ -98,7 +112,7 @@ class Blocks extends React.Component {
               />
             }
           />
-        }
+        </Loading>
       </article>
     )
   }

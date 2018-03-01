@@ -21,7 +21,6 @@ class Endorsement extends React.Component {
   }
   render ({ _id, user, body } = this.props) {
     const { name, netID } = user || {}
-    console.log(this.props)
     const initials = name
       .split(' ')
       .map(part => part[0])

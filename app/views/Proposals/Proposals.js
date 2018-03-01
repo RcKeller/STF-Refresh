@@ -9,9 +9,10 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 //  Our API services
 import api from '../../services'
+import { Loading } from '../../components'
 
 import { Link } from 'react-router'
-import { Spin, Table, Progress, Badge, Input, Icon, Alert } from 'antd'
+import { Table, Progress, Badge, Input, Icon, Alert } from 'antd'
 
 //  Status indicator mapping for badge components
 const indicators = {
@@ -282,9 +283,11 @@ class Proposals extends React.Component {
             </ul>}
           />
         }
-        {!proposals
-          ? <Spin size='large' tip='Loading...' />
-          : <Table
+        <Loading render={proposals}
+          title='STF Proposals'
+          tip='Loading STF Proposals...'
+        >
+          <Table
             rowKey={record => record._id}
             dataSource={proposals}
             sort
@@ -295,7 +298,7 @@ class Proposals extends React.Component {
               : () => <Alert type='warning' banner message={<em>Proposal submissions for the quarter are closed, but we encourage you to visit and endorse proposals in review!</em>} />
             }
           />
-        }
+        </Loading>
       </article>
     )
   }

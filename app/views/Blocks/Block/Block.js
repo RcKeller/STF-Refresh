@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
+import { Loading } from '../../../components'
 
 import { Row, Col, Spin, Progress, Alert } from 'antd'
 
@@ -32,15 +33,17 @@ class Block extends React.Component {
   static propTypes = {
     block: PropTypes.object
   }
-  render ({ block } = this.props) {
+  render ({ params, block } = this.props) {
     const { _id: id, date, year, number, title, category, organization, status, asked, received, contacts, body } = block
     const { invitation, overview, plan, funding, reliability } = body || {}
     return (
       <article className={styles['article']}>
         <Helmet title={title || 'Block'} />
-        {!id
-          ? <Spin size='large' tip='Loading...' />
-          : <div>
+        <Loading render={id}
+          title='STF Proposals'
+          tip='Loading STF Proposals...'
+        >
+          <div>
             <Row gutter={32} type='flex' justify='space-between' align='top' >
               <Col className='gutter-row' xs={24} md={12} lg={16} >
                 <h1>{title}</h1>
@@ -156,7 +159,7 @@ class Block extends React.Component {
               </Row>
             </section>
           </div>
-        }
+        </Loading>
       </article>
     )
   }

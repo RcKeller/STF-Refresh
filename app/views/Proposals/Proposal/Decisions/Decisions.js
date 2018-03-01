@@ -41,17 +41,20 @@ class Decisions extends React.Component {
     proposal: PropTypes.string
   }
   render ({ asked, manifests, reviews, user } = this.props) {
+    console.warn(this.props)
     //  Merge reviews into proposal.manifests
     manifests = manifests.map(m => ({ ...m, reviews: [] }))
-    for (let r of reviews) {
-      const index = manifests
+    if (Array.isArray(reviews)) {
+      for (let r of reviews) {
+        const index = manifests
         .findIndex(m => m._id === r.manifest)
-      if (index >= 0) manifests[index].reviews.push(r)
+        if (index >= 0) manifests[index].reviews.push(r)
+      }
     }
     return (
       <section>
         <Tabs>
-          {manifests && manifests.map((m, i) => (
+          {manifests.map((m, i) => (
             <TabPane key={m._id} tab={<span>
               {`${_.capitalize(m.type || '')} Budget (#${++i})`}
               <br />
