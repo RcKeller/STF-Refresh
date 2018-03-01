@@ -136,7 +136,7 @@ class Proposals extends React.Component {
         }),
         onFilter: (value, record) =>
           record.year.toString().includes(value),
-        width: 90
+        width: 80
       },
       {
         title: 'Q',
@@ -153,7 +153,7 @@ class Proposals extends React.Component {
         ],
         onFilter: (value, record) =>
           record.quarter.includes(value),
-        width: 50
+        width: 55
       },
       {
         title: 'Title',
@@ -203,7 +203,7 @@ class Proposals extends React.Component {
           : [],
         onFilter: (value, record) =>
           record.category === value,
-        width: 150
+        width: 125
       },
       {
         title: 'Status',
@@ -216,7 +216,7 @@ class Proposals extends React.Component {
           })
           : [],
         onFilter: (value, record) => record.status === value,
-        width: 100
+        width: 125
       },
       {
         title: 'Asked',
@@ -246,7 +246,7 @@ class Proposals extends React.Component {
             ? (a.received || 0) / (a.asked || 1) -
             (b.received || 0) / (b.asked || 1)
             : -a.asked,
-        width: 110
+        width: 100
       }
     ]
     if (screen.lessThan.large && !screen.lessThan.medium) {
