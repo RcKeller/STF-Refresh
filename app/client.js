@@ -40,4 +40,4 @@ match({routes, history}, (error, redirectLocation, renderProps) => {
 })
 
 //  Apply antd styles
-import './css/theme.less'
+import './less/main.less'

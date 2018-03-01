@@ -1,0 +1,26 @@
+// Cut the padding of th cells by half, honestly it's ridiculous
+.ant-table-thead > tr > th, .ant-table-tbody > tr > td {
+  padding: 8px;
+}
+
+//  Break words in table cells.
+.ant-table-thead > tr > th, .ant-table-tbody > tr > td {
+  word-break: break-word;
+}
+.ant-table-tbody > tr > td {
+  padding: 4px !important;
+}
+.ant-table-footer {
+  padding: 0 !important;
+}
+.ant-table-footer > h2 {
+  margin: 0;
+}
+//  Presentation tables (antd)
+.ant-table-thead > tr > th {
+  font-weight: 600;
+}
+.ant-table-expand-icon-th, .ant-table-row-expand-icon-cell {
+  min-width: 24px;
+  width: 24px;
+}

@@ -7,6 +7,7 @@ import { Collapse, Alert } from 'antd'
 const Panel = Collapse.Panel
 
 import Endorse from './Endorse/Endorse'
+import Endorsement from './Endorsement/Endorsement'
 
 /*
 ENDORSEMENTS TAB:
@@ -56,14 +57,19 @@ class Endorsements extends React.Component {
         }
         {endorsements && <hr />}
         <Collapse bordered={false} defaultActiveKey={endorsements ? Object.keys(endorsements) : '0'}>
-          {endorsements.map((c, i) => (
+          {endorsements.map((comment, i) => (
+            <div key={i}>
+              <Endorsement {...comment} />
+            </div>
+          ))}
+          {/* {endorsements.map((c, i) => (
             <Panel key={i}
               header={<b>{c.user.name || 'Endorsement'}</b>}
               extra={c.user.netID || ''}
               >
               <p>{c.body}</p>
             </Panel>
-          ))}
+          ))} */}
         </Collapse>
       </div>
     )
