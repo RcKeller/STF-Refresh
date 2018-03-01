@@ -123,9 +123,8 @@ class FinancialSpreadsheet extends React.Component {
     We only proceed with changes that are new
     */
     let { grid, previousChanges } = this.state
-    console.log(changes, !_.isEqual(changes, previousChanges))
     if (!_.isEqual(changes, previousChanges)) {
-      let grid = this.state.grid.slice()
+      const grid = this.state.grid.slice()
       let grandTotal = 0
       /*
       TASK: Apply changes to the grid (immutably using slice())
@@ -150,7 +149,7 @@ class FinancialSpreadsheet extends React.Component {
           const summaryCell = row.length - 1
           const [name, description, price, tax, quantity] = row
             .map(cell => cell.value)
-          const { _id } = row[summaryCell]
+          const { _id } = row[summaryCell] || ''
           const value = parseFloat(
               ((price * quantity) * ((tax / 100) + 1))
               .toFixed(2)
@@ -163,7 +162,7 @@ class FinancialSpreadsheet extends React.Component {
       console.log('DATA', data)
       data.unshift(this.header)
 
-      data.push(this.newRow)
+      data.push(this.newRow.slice())
 
       let footer = this.footer
       footer[1].value = grandTotal
