@@ -58,8 +58,8 @@ class Funding extends React.Component {
     return (
       <section>
         <Loading render={funding}
-          title='funding summaries'
-          tip='Loading Visualization...'
+          title='Funding Visualization'
+          tip='Visualizing Funding...'
         >
           <Allocated {...data} year={year} />
         </Loading>

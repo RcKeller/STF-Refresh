@@ -7,20 +7,6 @@ import { quarterlyFundingLegend } from '../../legends'
 
 const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
-const jss = {
-  tooltip: {
-    display: 'flex',
-    color: '#fff',
-    background: '#000',
-    alignItems: 'center',
-    padding: '5px'
-  },
-  box: { height: '16px', width: '16px', marginRight: 8 },
-  labels: {
-    primary: { fill: brandColors['Purple'], fontSize: '28px', textAnchor: 'middle' },
-    secondary: { fill: brandColors['Dark Gray'], fontSize: '16px', textAnchor: 'middle' }
-  }
-}
 class Allocated extends React.Component {
   static propTypes = {
     annualFunds: PropTypes.number.isRequired,
@@ -32,6 +18,12 @@ class Allocated extends React.Component {
     annualFunds: 0,
     blockFunds: 0,
     year: 2018
+  }
+  jss = {
+    labels: {
+      primary: { fill: brandColors['Purple'], fontSize: '28px', textAnchor: 'middle' },
+      secondary: { fill: brandColors['Dark Gray'], fontSize: '16px', textAnchor: 'middle' }
+    }
   }
   state = {
     //  Data follows D3 data conventions, look at the flare dataset for an example.
@@ -86,6 +78,7 @@ class Allocated extends React.Component {
   onValueMouseOut= (v) => this.setState({ hoveredCell: false })
 
   render (
+    { jss } = this,
     { annualFunds, year, funding } = this.props,
     { data, hoveredCell } = this.state
   ) {
@@ -108,8 +101,8 @@ class Allocated extends React.Component {
           {hoveredCell && hoveredCell.size > 0
             // Generates tooltips onMouseOver w/ dynamic JSS styles
             ? <Hint value={this.buildValue(hoveredCell)}>
-              <div style={jss.tooltip}>
-                <div style={{ ...jss.box, background: hoveredCell.color }} />
+              <div className='rv-tooltip'>
+                <div className='rv-box' style={{ background: hoveredCell.color }} />
                 {hoveredCell.title}
                 <br />
                 {currency(hoveredCell.size)}

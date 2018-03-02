@@ -1,4 +1,6 @@
 import React from 'react'
+// import PropTypes from 'prop-types'
+// import { connect } from 'react-redux'
 
 import { Row, Col } from 'antd'
 
@@ -9,6 +11,9 @@ import Statistics from './Statistics/Statistics'
 DATA VISUALIZATIONS
 Higher order component, layout for frontpage data vis
 */
+// @connect(state => ({
+//   screen: state.screen
+// }))
 class Visualizations extends React.Component {
   static propTypes = {}
   static defaultProps = {}

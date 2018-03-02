@@ -5,20 +5,6 @@ import { Sunburst, LabelSeries, Hint, DiscreteColorLegend } from 'react-vis'
 import { statusColors, brandColors } from '../../colors'
 import { statusLegend } from '../../legends'
 
-const jss = {
-  tooltip: {
-    display: 'flex',
-    color: '#fff',
-    background: '#000',
-    alignItems: 'center',
-    padding: '5px'
-  },
-  box: { height: '16px', width: '16px', marginRight: 8 },
-  labels: {
-    primary: { fill: '#FFF', fontSize: '46px', textAnchor: 'middle' },
-    secondary: { fill: brandColors['Light Gray'], fontSize: '16px', textAnchor: 'middle' }
-  }
-}
 class ProposalStatusByQuarter extends React.Component {
   static propTypes = {
     year: PropTypes.number,
@@ -26,6 +12,12 @@ class ProposalStatusByQuarter extends React.Component {
   }
   static defaultProps = {
     year: 2018
+  }
+  jss = {
+    labels: {
+      primary: { fill: '#FFF', fontSize: '46px', textAnchor: 'middle' },
+      secondary: { fill: brandColors['Light Gray'], fontSize: '16px', textAnchor: 'middle' }
+    }
   }
   state = {
     //  Data follows D3 data conventions, look at the flare dataset for an example.
@@ -123,6 +115,7 @@ class ProposalStatusByQuarter extends React.Component {
   }
 
   render (
+    { jss } = this,
     { year, statistics } = this.props,
     { data, hoveredCell } = this.state
   ) {
@@ -133,7 +126,7 @@ class ProposalStatusByQuarter extends React.Component {
     return (
       <div>
         <Sunburst
-          className='inline-visualization'
+          className='rv-inline'
           data={data}
           colorType='literal'
           style={{ stroke: '#FFF' }}
@@ -146,15 +139,15 @@ class ProposalStatusByQuarter extends React.Component {
           {hoveredCell && hoveredCell.title
             // Generates tooltips onMouseOver w/ dynamic JSS styles
             ? <Hint value={this.buildValue(hoveredCell)}>
-              <div style={jss.tooltip}>
-                <div style={{ ...jss.box, background: hoveredCell.color }} />
+              <div className='rv-tooltip'>
+                <div className='rv-box' style={{ background: hoveredCell.color }} />
                 {`${this.getSizeOfParent(hoveredCell)} ${hoveredCell.title}`}
               </div>
             </Hint>
           : null}
         </Sunburst>
         <DiscreteColorLegend
-          className='inline-legend'
+          className='rv-inline'
           items={statusLegend}
         />
       </div>

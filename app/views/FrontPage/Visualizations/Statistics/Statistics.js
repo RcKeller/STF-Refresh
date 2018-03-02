@@ -62,9 +62,9 @@ class Statistics extends React.Component {
     }
     return (
       <section>
-        <Loading render={statistics}
-          title='funding summaries'
-          tip='Loading Visualization...'
+        <Loading render={Statistics}
+          title='Statistical Visualization'
+          tip='Visualizing Statistics...'
         >
           <ProposalStatusByQuarter {...data} year={year} />
         </Loading>
