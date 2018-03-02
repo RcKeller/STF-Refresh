@@ -51,7 +51,7 @@ class Loading extends React.Component {
               <hr />
               <pre>
                 <small>
-                  {`{ 'ERROR AT ${window && window.location && window.location.href}': ${JSON.stringify(info)} }`}
+                  {`{ 'ERROR AT ${window && window.location && window.location.href}': [${JSON.stringify(error)}, ${JSON.stringify(info)}] }`}
                 </small>
               </pre>
             </div>
