@@ -5,57 +5,12 @@ import { connect } from 'react-redux'
 // import _ from 'lodash'
 
 import { Table, Alert, Tooltip, Icon } from 'antd'
+import { Boundary } from '../../../../../components'
 
 import Metrics from './Metrics/Metrics'
 
 const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
-const columns = [
-  {
-    title: <span>
-      <Tooltip placement='right' title='Some proposals have author supplied priority numbers that stack-rank items by importance.'>
-        Name&nbsp;
-        <Icon type='question-circle-o' />
-      </Tooltip>
-    </span>,
-    dataIndex: 'name',
-    key: 'name',
-    render: (text, record) => <b>{
-      record.priority
-        ? `${record.priority}: ${text}`
-        // ? <span><em>#{record.priority}: </em> {text}</span>
-        : text
-      }</b>,
-    sorter: (a, b) => (b.priority) - (a.priority)
-    // sorter: (a, b) => (a.priority) - (b.priority)
-  },
-  {
-    title: <span>
-      <Tooltip placement='left' title='Tax Included. Hover for item subtotals.'>
-        Price/ea&nbsp;
-        <Icon type='question-circle-o' />
-      </Tooltip>
-    </span>,
-    // title: <Tooltip placement='left' title='Tax Included. Mouse over for item subtotals.'>Price/ea</Tooltip>,
-    dataIndex: 'price',
-    key: 'price',
-    render: (text, record) => <Tooltip placement='left'
-      title={`Subtotal: ${currency(record.tax
-        ? record.price * record.quantity * (1 + record.tax / 100)
-        : record.price * record.quantity)}`}>
-      {currency(record.price * (1 + record.tax / 100))}
-    </Tooltip>,
-    sorter: (a, b) => a.price - b.price,
-    width: 120,
-    // width: screen.greaterThan.medium ? 120 : 100,
-    padding: 0
-  },
-  { title: 'Q',
-    dataIndex: 'quantity',
-    key: 'quantity',
-    width: 50
-  }
-]
 /*
 DECISION COMPONENT:
 Provides a table view of a budget including
@@ -75,14 +30,63 @@ class Decision extends React.Component {
     decision: { body: 'A decision has not been issued.' },
     reviews: []
   }
-  render ({ asked, _id: id, type, title, items, total, decision, reviews, user } = this.props) {
+  columns = [
+    {
+      title: <span>
+        <Tooltip placement='right' title='Some proposals have author supplied priority numbers that stack-rank items by importance.'>
+          Name&nbsp;
+          <Icon type='question-circle-o' />
+        </Tooltip>
+      </span>,
+      dataIndex: 'name',
+      key: 'name',
+      render: (text, record) => <b>{
+        record.priority
+          ? `${record.priority}: ${text}`
+          // ? <span><em>#{record.priority}: </em> {text}</span>
+          : text
+        }</b>,
+      sorter: (a, b) => (b.priority) - (a.priority)
+      // sorter: (a, b) => (a.priority) - (b.priority)
+    },
+    {
+      title: <span>
+        <Tooltip placement='left' title='Tax Included. Hover for item subtotals.'>
+          Price/ea&nbsp;
+          <Icon type='question-circle-o' />
+        </Tooltip>
+      </span>,
+      // title: <Tooltip placement='left' title='Tax Included. Mouse over for item subtotals.'>Price/ea</Tooltip>,
+      dataIndex: 'price',
+      key: 'price',
+      render: (text, record) => <Tooltip placement='left'
+        title={`Subtotal: ${currency(record.tax
+          ? record.price * record.quantity * (1 + record.tax / 100)
+          : record.price * record.quantity)}`}>
+        {currency(record.price * (1 + record.tax / 100))}
+      </Tooltip>,
+      sorter: (a, b) => a.price - b.price,
+      width: 120,
+      // width: screen.greaterThan.medium ? 120 : 100,
+      padding: 0
+    },
+    { title: 'Q',
+      dataIndex: 'quantity',
+      key: 'quantity',
+      width: 50
+    }
+  ]
+  render (
+    { columns } = this,
+    { asked, _id: id, type, title, items, total, decision, reviews, user } = this.props
+  ) {
     //  { _id: id, netID, email, name, stf } = this.props
     const { body } = decision
     const status = typeof decision.approved === 'undefined'
       ? 'active'
       : (decision.approved ? 'success' : 'error')
     return (
-      <div>
+      <Boundary title={`Decisions for Budget ${id}`}>
         <Table dataSource={items || []} sort
           size='middle'
           columns={columns}
@@ -113,7 +117,7 @@ class Decision extends React.Component {
             {reviews && reviews.map(rev => <Metrics key={rev._id} {...rev} />)}
           </div>
         }
-      </div>
+      </Boundary>
     )
   }
 }

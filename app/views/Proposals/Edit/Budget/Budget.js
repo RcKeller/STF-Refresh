@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import { message } from 'antd'
 import api from '../../../../services'
 
-import { Spreadsheet } from '../../../../components'
+import { Boundary, Spreadsheet } from '../../../../components'
 
 @connect(
   state => ({
@@ -60,13 +60,13 @@ class Budget extends React.Component {
   render ({ manifest } = this.props) {
     const data = manifest ? manifest.items : []
     return (
-      <div>
+      <Boundary title='Budget Wizard'>
         <Spreadsheet
           data={data}
           onSubmit={this.handleSubmit}
           disabled={false}
         />
-      </div>
+      </Boundary>
     )
   }
 }

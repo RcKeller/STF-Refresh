@@ -10,7 +10,7 @@ import { connectRequest } from 'redux-query'
 import api from '../../../services'
 import { Loading } from '../../../components'
 
-import { Spin, Tabs, Button } from 'antd'
+import { Tabs, Button } from 'antd'
 const TabPane = Tabs.TabPane
 
 //  Public view

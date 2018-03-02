@@ -11,6 +11,7 @@ const FormItem = Form.Item
 const connectForm = Form.create()
 
 import api from '../../../../../services'
+import { Boundary } from '../../../../../components'
 import { layout, feedback, help, rules } from '../../../../../util/form'
 
 /*
@@ -86,7 +87,7 @@ class Endorse extends React.Component {
       .join('')
       .toUpperCase()
     return (
-      <div>
+      <Boundary title='Endorsement Composer'>
         <h1>Endorse this proposal!</h1>
         <Card style={{ marginBottom: 26 }}>
           {name &&
@@ -116,7 +117,7 @@ class Endorse extends React.Component {
             </FormItem>
           </Form>
         </Card>
-      </div>
+      </Boundary>
     )
   }
 }

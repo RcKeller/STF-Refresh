@@ -7,6 +7,8 @@ import _ from 'lodash'
 import { Tabs } from 'antd'
 const TabPane = Tabs.TabPane
 
+import { Boundary } from '../../../../components'
+
 import Report from './Report/Report'
 import Supplemental from './Supplemental/Supplemental'
 import Partial from './Partial/Partial'
@@ -37,26 +39,28 @@ class Budgeting extends React.Component {
     }, [])
     return (
       <section>
-        {approvedManifests.length <= 0 &&
-          <em>This proposal has not received funding, so advanced budgeting tools are unavailable for now.</em>
-        }
-        <Tabs>
-          <TabPane disabled={approvedManifests.length <= 0} tab='Expense Reporting' key='1'>
-            <Tabs size='small' defaultActiveKey={`${approvedManifests.length - 1}`}>
-              {approvedManifests.map((indexInStore, i) => (
-                <TabPane key={i} tab={<span>{_.capitalize(manifests[indexInStore].type)}<br />{`Award (#${++i})`}</span>} >
-                  <Report awardNumber={++i} indexInStore={indexInStore} />
-                </TabPane>
-              ))}
-            </Tabs>
-          </TabPane>
-          <TabPane disabled={approvedManifests.length <= 0} tab='Request Award Supplement' key='2'>
-            <Supplemental indexInStore={approvedManifests.length - 1} />
-          </TabPane>
-          <TabPane tab='Partial / Alternative Budgets' key='3'>
-            <Partial />
-          </TabPane>
-        </Tabs>
+        <Boundary title='Budgeting Tools'>
+          {approvedManifests.length <= 0 &&
+            <em>This proposal has not received funding, so advanced budgeting tools are unavailable for now.</em>
+          }
+          <Tabs>
+            <TabPane disabled={approvedManifests.length <= 0} tab='Expense Reporting' key='1'>
+              <Tabs size='small' defaultActiveKey={`${approvedManifests.length - 1}`}>
+                {approvedManifests.map((indexInStore, i) => (
+                  <TabPane key={i} tab={<span>{_.capitalize(manifests[indexInStore].type)}<br />{`Award (#${++i})`}</span>} >
+                    <Report awardNumber={++i} indexInStore={indexInStore} />
+                  </TabPane>
+                ))}
+              </Tabs>
+            </TabPane>
+            <TabPane disabled={approvedManifests.length <= 0} tab='Request Award Supplement' key='2'>
+              <Supplemental indexInStore={approvedManifests.length - 1} />
+            </TabPane>
+            <TabPane tab='Partial / Alternative Budgets' key='3'>
+              <Partial />
+            </TabPane>
+          </Tabs>
+        </Boundary>
       </section>
     )
   }

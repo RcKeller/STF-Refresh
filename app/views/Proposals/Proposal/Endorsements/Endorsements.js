@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
+import { Boundary } from '../../../../components'
+
 import { Alert } from 'antd'
 
 import Endorse from './Endorse/Endorse'
@@ -32,7 +34,7 @@ class Endorsements extends React.Component {
   }
   render ({ endorsements, endorsed, decisionIssued, user } = this.props) {
     return (
-      <div>
+      <Boundary title='Endorsements Tab'>
         <Alert showIcon
           type={!endorsed ? 'info' : 'success'}
           message={!endorsed
@@ -49,7 +51,7 @@ class Endorsements extends React.Component {
             <Endorsement {...comment} />
           </div>
         ))}
-      </div>
+      </Boundary>
     )
   }
 }

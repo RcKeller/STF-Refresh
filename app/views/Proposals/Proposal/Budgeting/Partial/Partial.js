@@ -10,7 +10,7 @@ import _ from 'lodash'
 import { Select, Alert, message } from 'antd'
 const Option = Select.Option
 
-import { Spreadsheet } from '../../../../../components'
+import { Boundary, Spreadsheet } from '../../../../../components'
 /*
 PARTIAL TAB:
 Allows you to create a subset of a budget with more/less items
@@ -76,27 +76,29 @@ class Partial extends React.Component {
     const newData = { tax: 10.1, quantity: 1, price: 0 }
     return (
       <section>
-        <Alert type='info' showIcon banner
-          message='Partial Budgets'
-          description='For alternative budget choices, partial awards, etc.'
-        />
-        <br />
-        <p>Partial budgets are how we fund specific elements of a budget. The process involves us pulling data from a prior budget you can select below (the original proposal, a different partial, or supplemental award), making your modifications, and submitting it.</p>
-        <p>When voting on a proposal, partials are a separate vote. This is for a variety of reasons, mostly so we can judge a proposal's merits objectively without factoring in any addenums that the committee has proposed.</p>
-        <h4>Import items from:</h4>
-        <Select value={index.toString()} style={{ width: '100%' }} onChange={this.handleChange}>
-          {manifests.map((budget, i) => (
-            <Option key={i} value={i.toString()} >{
-              `Budget #${i + 1} (${_.capitalize(budget.type)}) ${budget.title ? ' - ' + budget.title : ''}`}</Option>
-          ))}
-        </Select>
-        <h4>{title}</h4>
-        <p>{body}</p>
-        <Spreadsheet
-          data={data}
-          onSubmit={this.handleSubmit}
-          disabled={false}
-        />
+        <Boundary title='Partial Budget Wizard'>
+          <Alert type='info' showIcon banner
+            message='Partial Budgets'
+            description='For alternative budget choices, partial awards, etc.'
+          />
+          <br />
+          <p>Partial budgets are how we fund specific elements of a budget. The process involves us pulling data from a prior budget you can select below (the original proposal, a different partial, or supplemental award), making your modifications, and submitting it.</p>
+          <p>When voting on a proposal, partials are a separate vote. This is for a variety of reasons, mostly so we can judge a proposal's merits objectively without factoring in any addenums that the committee has proposed.</p>
+          <h4>Import items from:</h4>
+          <Select value={index.toString()} style={{ width: '100%' }} onChange={this.handleChange}>
+            {manifests.map((budget, i) => (
+              <Option key={i} value={i.toString()} >{
+                `Budget #${i + 1} (${_.capitalize(budget.type)}) ${budget.title ? ' - ' + budget.title : ''}`}</Option>
+            ))}
+          </Select>
+          <h4>{title}</h4>
+          <p>{body}</p>
+          <Spreadsheet
+            data={data}
+            onSubmit={this.handleSubmit}
+            disabled={false}
+          />
+        </Boundary>
       </section>
     )
   }

@@ -1,11 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-
-import _ from 'lodash'
+// import PropTypes from 'prop-types'
 
 import { Table, Alert } from 'antd'
-
-const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
 const columns = [
   {

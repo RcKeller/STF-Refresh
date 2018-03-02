@@ -1,42 +1,40 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-// import { connect } from 'react-redux'
-// import { initialProposalContacts } from '../../../../selectors'
+import { Boundary } from '../../../../components'
 
 import { Row, Col, Alert } from 'antd'
 
 import Contact from './Contact/Contact'
 
-const contactFields = {
-  primary: {
-    title: 'Primary Contact',
-    subtitle: 'The primary lead and point-of-contact for this project.'
-  },
-  budget: {
-    title: 'Budget Director',
-    subtitle: 'Contact for budgetary concerns and handling transfers of funds.'
-  },
-  organization: {
-    title: 'Organizational Head',
-    subtitle: 'A departmental head or organization president to officiate this proposal.'
-  },
-  student: {
-    title: 'Student Lead',
-    subtitle: '(Optional) We recommend that there be at least one student representing a project, as STF funds are intended for student use.'
-  }
-}
-
-// @connect(state => ({
-//   contacts: initialProposalContacts(state)
-// }))
 class Contacts extends React.Component {
   static propTypes = {
     validate: PropTypes.func
   }
-  render ({ validate, contacts } = this.props) {
+  contactFields = {
+    primary: {
+      title: 'Primary Contact',
+      subtitle: 'The primary lead and point-of-contact for this project.'
+    },
+    budget: {
+      title: 'Budget Director',
+      subtitle: 'Contact for budgetary concerns and handling transfers of funds.'
+    },
+    organization: {
+      title: 'Organizational Head',
+      subtitle: 'A departmental head or organization president to officiate this proposal.'
+    },
+    student: {
+      title: 'Student Lead',
+      subtitle: '(Optional) We recommend that there be at least one student representing a project, as STF funds are intended for student use.'
+    }
+  }
+  render (
+    { contactFields } = this,
+    { validate, contacts } = this.props
+  ) {
     return (
-      <div>
+      <Boundary title='Contact Editor'>
         <Alert type='info' banner
           message='Contact Responsibilities'
           description='
@@ -53,13 +51,8 @@ class Contacts extends React.Component {
               />
             </Col>
           ))}
-          {/* {contactFields.map((c, i) => (
-            <Col key={i} className='gutter-row' xs={24} md={12} lg={6} >
-              <Contact key={i} {...c} validate={validate} />
-            </Col>
-          ))} */}
         </Row>
-      </div>
+      </Boundary>
     )
   }
 }

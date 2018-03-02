@@ -11,6 +11,7 @@ const connectForm = Form.create()
 
 import { layout, feedback, rules } from '../../../../util/form'
 import api from '../../../../services'
+import { Boundary } from '../../../../components'
 
 @compose(
   connect(
@@ -66,9 +67,6 @@ class Introduction extends React.Component {
       }
     })
   }
-  // validateTitle = (title) => {
-  //   return title && title.length <= 250
-  // }
   validateTitle = (rule, value, callback) => {
     (value && value.length <= 100)
       ? callback()
@@ -77,7 +75,7 @@ class Introduction extends React.Component {
 
   render ({ form, categories, title, category, organization, uac } = this.props) {
     return (
-      <div>
+      <Boundary title='Proposal Introduction'>
         <Alert type='info' banner
           message='Welcome to the 2017-2018 STF Proposal Application!'
           description={<span>Questions or feedback? We're here to help. E-mail the proposal officer, Katie, at <a href='mailto:STFAgent@uw.edu'>STFAgent@uw.edu</a> with any questions.</span>}
@@ -117,7 +115,7 @@ class Introduction extends React.Component {
               ><Icon type='cloud-upload-o' />Update</Button>
           </FormItem>
         </Form>
-      </div>
+      </Boundary>
     )
   }
 }

@@ -8,6 +8,7 @@ import { connectRequest } from 'redux-query'
 import _ from 'lodash'
 
 import api from '../../../../services'
+import { Loading } from '../../../../components'
 
 import { Tabs } from 'antd'
 const TabPane = Tabs.TabPane
@@ -53,20 +54,25 @@ class Decisions extends React.Component {
     }
     return (
       <section>
-        <Tabs>
-          {manifests.map((m, i) => (
-            <TabPane key={m._id} tab={<span>
-              {`${_.capitalize(m.type || '')} Budget (#${++i})`}
-              <br />
-              {_.capitalize(m.title || 'Untitled')}
-              <br />
-              {`${currency(m.total)} (${parseInt(m.total / asked * 100)}%)`}
-            </span>}
-            >
-              <Decision {...m} asked={asked} user={user} />
-            </TabPane>
-          ))}
-        </Tabs>
+        <Loading render={manifests && reviews}
+          title={`Proposal Reviews`}
+          tip={`Loading Reviews and Decisions...`}
+        >
+          <Tabs>
+            {manifests.map((m, i) => (
+              <TabPane key={m._id} tab={<span>
+                {`${_.capitalize(m.type || '')} Budget (#${++i})`}
+                <br />
+                {_.capitalize(m.title || 'Untitled')}
+                <br />
+                {`${currency(m.total)} (${parseInt(m.total / asked * 100)}%)`}
+              </span>}
+              >
+                <Decision {...m} asked={asked} user={user} />
+              </TabPane>
+            ))}
+          </Tabs>
+        </Loading>
       </section>
     )
   }
