@@ -42,7 +42,6 @@ class Decisions extends React.Component {
     proposal: PropTypes.string
   }
   render ({ asked, manifests, reviews, user } = this.props) {
-    console.warn(this.props)
     //  Merge reviews into proposal.manifests
     manifests = manifests.map(m => ({ ...m, reviews: [] }))
     if (Array.isArray(reviews)) {
@@ -54,7 +53,7 @@ class Decisions extends React.Component {
     }
     return (
       <section>
-        <Loading render={manifests && reviews}
+        <Loading render={manifests}
           title={`Proposal Reviews`}
           tip={`Loading Reviews and Decisions...`}
         >

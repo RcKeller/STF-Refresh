@@ -4,36 +4,38 @@ import { Link } from 'react-router'
 
 import { Avatar } from 'antd'
 
-const leadership = [
-  {
-    position: 'Committee Chair',
-    duties: 'The chair is responsible for creating STF policy, setting meeting agendas, approving official documents, managing personnel, communicating with student governments, and leading special projects.',
-    name: 'Alec Meade',
-    email: 'STFChair@uw.edu'
-  }, {
-    position: 'Proposal Officer',
-    duties: 'The PO is responsible for advising proposal authors, reviewing proposals for completeness, and auditing previously funded proposals.',
-    name: 'Katie McConville',
-    email: 'STFAgent@uw.edu'
-  }, {
-    position: 'Operations & Finance Manager',
-    duties: ' The OFM is responsible for scheduling, overseeing budgets, reviewing proposal reports, and general committee operations.',
-    name: 'Britt Carlson',
-    email: 'TechFee@uw.edu'
-  }, {
-    position: 'Web Developer',
-    duties: 'The Web Developer is is responsible for maintaining, updating, and improving upon the STF’s web resources.',
-    name: 'Ryan Keller',
-    email: 'STFCWeb@uw.edu'
-  }
-]
 /*
 CONTACTS PAGE:  .../contact
 Some basic contact information for the admin team
 */
 import styles from './ContactUs.css'
 class ContactUs extends React.Component {
-  render () {
+  leadership = [
+    {
+      position: 'Committee Chair',
+      duties: 'The chair is responsible for creating STF policy, setting meeting agendas, approving official documents, managing personnel, communicating with student governments, and leading special projects.',
+      name: 'Alec Meade',
+      email: 'STFChair@uw.edu'
+    }, {
+      position: 'Proposal Officer',
+      duties: 'The PO is responsible for advising proposal authors, reviewing proposals for completeness, and auditing previously funded proposals.',
+      name: 'Katie McConville',
+      email: 'STFAgent@uw.edu'
+    }, {
+      position: 'Operations & Finance Manager',
+      duties: ' The OFM is responsible for scheduling, overseeing budgets, reviewing proposal reports, and general committee operations.',
+      name: 'Britt Carlson',
+      email: 'TechFee@uw.edu'
+    }, {
+      position: 'Web Developer',
+      duties: 'The Web Developer is is responsible for maintaining, updating, and improving upon the STF’s web resources.',
+      name: 'Ryan Keller',
+      email: 'STFCWeb@uw.edu'
+    }
+  ]
+  render (
+    { leadership } = this
+  ) {
     return (
       <article className={styles['contact']}>
         <Helmet title='Contact Us' />
@@ -48,21 +50,17 @@ class ContactUs extends React.Component {
         <p>
           We're here if you need us. Before reaching out, please consider learning more <Link to='/about'>about the STF</Link> first, and then viewing our <Link to='/faq'>Frequently Asked Questions</Link>. Otherwise, feel free to contact us at any of us below. If in doubt, contact the chair.
         </p>
-        {/* <Row type='flex' justify='space-between' gutter={32}> */}
-          {leadership.map((p, i) => (
-            // <Col xs={24} lg={12}>
-            <div>
-              <Avatar shape='square' size='large' icon='user' />
-              <div className={styles['avatar-text']}>
-                <b>{p.position} | <em>{p.name}</em></b>
-                <br />
-                <a href={`mailto:${p.email}`}>{p.email}</a>
-              </div>
-              <p className={styles['duties']}>{p.duties}</p>
+        {leadership.map((p, i) => (
+          <div key={i}>
+            <Avatar shape='square' size='large' icon='user' />
+            <div className={styles['avatar-text']}>
+              <b>{p.position} | <em>{p.name}</em></b>
+              <br />
+              <a href={`mailto:${p.email}`}>{p.email}</a>
             </div>
-            //  </Col>
-          ))}
-        {/* </Row> */}
+            <p className={styles['duties']}>{p.duties}</p>
+          </div>
+        ))}
       </article>
     )
   }
