@@ -13,7 +13,6 @@ ENDORSEMENTS TAB:
 Renders a list of user endorsements
 Endorsement submissions are closed once decisions are issued
 */
-// import styles from './Body.css'
 @connect(state => ({
   proposalID: state.db.proposal._id,
   endorsements: state.db.proposal.comments,
@@ -44,15 +43,7 @@ class Endorsements extends React.Component {
             'Anyone with a UW NetID can endorse a proposal! We highly encourage our proposal authors to exemplify their community engagement by having their proposals endorsed by students and staff alike. You may endorse as many proposals as you like.'
           }
         />
-        {!endorsed && !decisionIssued &&
-          <div>
-            <Alert type='info' showIcon={false} banner
-              message="There's still time!"
-              description="Endorsements are taken up until the committee makes a decision, so it's not too late to endorse a proposal, so long as a decision hasn't been issued!"
-            />
-            <Endorse />
-          </div>
-        }
+        {!endorsed && !decisionIssued && <Endorse />}
         {endorsements.map((comment, i) => (
           <div key={i}>
             <Endorsement {...comment} />

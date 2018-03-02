@@ -30,14 +30,22 @@ Allows any logged in user to endorse a proposal
 )
 class Endorse extends React.Component {
   static propTypes = {
-    api: PropTypes.object,
-    form: PropTypes.object,
+    api: PropTypes.object.isRequired,
+    form: PropTypes.object.isRequired,
     proposal: PropTypes.string,
     user: PropTypes.shape({
       _id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
       netID: PropTypes.string.isRequired
     }).isRequired
+  }
+  static defaultProps = {
+    proposal: '',
+    user: {
+      _id: '',
+      name: '',
+      netID: ''
+    }
   }
   // Disable submit button at the beginning by running validation.
   // componentDidMount () { this.props.form.validateFields() }
@@ -72,7 +80,7 @@ class Endorse extends React.Component {
   render ({ form, user } = this.props) {
     const { _id, name, netID } = user || {}
     console.log('USER', user)
-    const initials = name
+    const initials = name && name
       .split(' ')
       .map(part => part[0])
       .join('')
@@ -81,26 +89,28 @@ class Endorse extends React.Component {
       <div>
         <h1>Endorse this proposal!</h1>
         <Card style={{ marginBottom: 26 }}>
-          <Meta
-            avatar={
-              <Avatar size='large' style={{ backgroundColor: '#4b2e83' }}>
-                {initials}
-              </Avatar>
-            }
-            title={`${name} (${netID})`}
-          />
+          {name &&
+            <Meta
+              avatar={
+                <Avatar size='large' style={{ backgroundColor: '#4b2e83' }}>
+                  {initials}
+                </Avatar>
+              }
+              title={`${name} (${netID})`}
+            />
+          }
           <Form onSubmit={this.handleSubmit}>
             <FormItem label='Comment' {...layout} hasFeedback={feedback(form, 'body')} help={help(form, 'body')} >
               {form.getFieldDecorator('body', rules.required)(
                 <TextArea
                   rows={6}
-                  disabled={!user}
+                  disabled={!user.netID}
                 />
               )}
             </FormItem>
             <FormItem>
               <Button size='large' type='primary'
-                htmlType='submit' disabled={!user}
+                htmlType='submit' disabled={!user.netID}
                 style={{ width: '100%' }}
               >{user ? 'Update' : 'Log In to endorse!'}</Button>
             </FormItem>
