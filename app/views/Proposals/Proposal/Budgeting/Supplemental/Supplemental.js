@@ -9,6 +9,7 @@ import { layout } from '../../../../../util/form'
 import _ from 'lodash'
 
 import { Form, Input, Alert, message } from 'antd'
+const { TextArea } = Input
 const FormItem = Form.Item
 const connectForm = Form.create()
 
@@ -150,7 +151,7 @@ class Supplemental extends React.Component {
         </FormItem>
         <FormItem label='Reasoning' {...layout} >
           {form.getFieldDecorator('body')(
-            <Input type='textarea' rows={6} disabled={existingSupplemmental} />
+            <TextArea rows={6} disabled={existingSupplemmental} />
           )}
         </FormItem>
         <Spreadsheet

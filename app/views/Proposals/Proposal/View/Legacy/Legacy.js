@@ -13,22 +13,24 @@ NOTE: the legacy format is exactly the same as the last website
 @connect(state => ({
   legacy: state.db.proposal.body
   ? state.db.proposal.body.legacy
-  : []
+  : [],
+  rfp: state.config.links.rfp
 }))
 class Legacy extends React.Component {
   static propTypes = {
     legacy: PropTypes.array
   }
-  render ({ legacy } = this.props) {
+  render ({ legacy, rfp } = this.props) {
+    console.log(rfp)
     return (
       <div>
-        <h1>Proposal</h1>
         <Alert type='info' banner showIcon
-          message={<span>
+          style={{ marginTop: -8 }}
+          message={<div>
             Our proposal process has changed significantly since Summer 2017.
-          </span>
-        }
-          closeText={<Link to='/create'>Learn More</Link>}
+            <a style={{ float: 'right' }} href={rfp}>Learn More</a>
+          </div>
+          }
         />
         {Array.isArray(legacy) && legacy.map((e, i) =>
           <div key={i}>

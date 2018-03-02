@@ -9,6 +9,7 @@ import { layout, feedback, help, rules, disableSubmit } from '../../../../../uti
 import _ from 'lodash'
 
 import { Form, Input, Icon, Alert, message } from 'antd'
+const { TextArea } = Input
 const FormItem = Form.Item
 const connectForm = Form.create()
 
@@ -151,7 +152,7 @@ class Report extends React.Component {
         </FormItem>
         <FormItem label='Details' {...layout}>
           {form.getFieldDecorator('body')(
-            <Input type='textarea' rows={6} />
+            <TextArea rows={6} />
           )}
         </FormItem>
         <Spreadsheet

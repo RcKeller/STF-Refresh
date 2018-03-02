@@ -10,7 +10,7 @@ Ant uses a very cumbersome controlled form wrapper. To use it, you have to do th
 3. Wrap each formitem with a decorator containing configs.
     (example using these utils)
     {form.getFieldDecorator('comment', rules.required)(
-      <Input type='textarea' rows={6} />
+      <TextArea rows={6} />
     )}
 4. Provide an onSubmit in the class:
     handleSubmit = (e) => {

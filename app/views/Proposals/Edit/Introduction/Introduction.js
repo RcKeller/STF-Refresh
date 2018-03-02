@@ -5,6 +5,7 @@ import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import { Form, Icon, Input, AutoComplete, Checkbox, Button, Alert, message } from 'antd'
+const { TextArea } = Input
 const FormItem = Form.Item
 const connectForm = Form.create()
 
@@ -90,7 +91,7 @@ class Introduction extends React.Component {
                 { validator: this.validateTitle }
               ]
             })(
-              <Input type='textarea' />
+              <TextArea />
             )}
           </FormItem>
           <FormItem label='Category' {...layout} hasFeedback={feedback(form, 'category')}>

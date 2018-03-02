@@ -5,6 +5,7 @@ import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import { Row, Col, Icon, Alert, Form, Input, Button, message } from 'antd'
+const { TextArea } = Input
 const FormItem = Form.Item
 const connectForm = Form.create()
 
@@ -166,17 +167,17 @@ class ProjectPlan extends React.Component {
           <h1>Overview</h1>
           <FormItem label='Abstract' {...layout} hasFeedback={feedback(form, 'overview.abstract')}>
             {form.getFieldDecorator('overview.abstract', rules.required)(
-              <Input type='textarea' rows={6} />
+              <TextArea rows={6} />
             )}
           </FormItem>
           <FormItem label='Objectives' {...layout} hasFeedback={feedback(form, 'overview.objectives')}>
             {form.getFieldDecorator('overview.objectives', rules.required)(
-              <Input type='textarea' rows={4} />
+              <TextArea rows={4} />
             )}
           </FormItem>
           <FormItem label='Core Justification' {...layout} hasFeedback={feedback(form, 'overview.justification')}>
             {form.getFieldDecorator('overview.justification', rules.required)(
-              <Input type='textarea' rows={4} />
+              <TextArea rows={4} />
             )}
           </FormItem>
           <h2>Impact</h2>
@@ -187,7 +188,7 @@ class ProjectPlan extends React.Component {
                 <p><em>{impact.subtitle}</em></p>
                 <FormItem hasFeedback={feedback(form, impact.field)}>
                   {form.getFieldDecorator(impact.field, rules.required)(
-                    <Input type='textarea' rows={3} />
+                    <TextArea rows={3} />
                   )}
                 </FormItem>
               </Col>
@@ -205,7 +206,7 @@ class ProjectPlan extends React.Component {
                   <em>{area.current.subtitle}</em>
                   <FormItem hasFeedback={feedback(form, area.current.field)}>
                     {form.getFieldDecorator(area.current.field, rules.required)(
-                      <Input type='textarea' rows={4} />
+                      <TextArea rows={4} />
                     )}
                   </FormItem>
                 </Col>
@@ -214,7 +215,7 @@ class ProjectPlan extends React.Component {
                   <em>{area.future.subtitle}</em>
                   <FormItem hasFeedback={feedback(form, area.future.field)}>
                     {form.getFieldDecorator(area.future.field, rules.required)(
-                      <Input type='textarea' rows={4} />
+                      <TextArea rows={4} />
                     )}
                   </FormItem>
                 </Col>

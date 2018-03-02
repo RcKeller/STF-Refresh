@@ -10,20 +10,8 @@ import { Spin, Tabs, Tooltip } from 'antd'
 const TabPane = Tabs.TabPane
 
 import api from '../../../services'
-
+import { Loading } from '../../../components'
 import Panels from './Panels/Panels'
-
-// const manifestType = (type) => {
-//   switch (type) {
-//     case 'original':
-//       return _.capitalize(type)
-//     case 'partial':
-//       return _.capitalize(type)
-//     case 'supplemental':
-//       return _.capitalize(type)
-//   }
-//   return null
-// }
 
 /*
 VOTING VIEW:
@@ -66,14 +54,14 @@ class Voting extends React.Component {
     return (
       <article className={styles['article']}>
         <Helmet title='Voting' />
-        {!docket
-          ? <Spin size='large' tip='Loading...' />
-          : <Tabs size='small' tabPosition='left'>
+        <Loading render={Array.isArray(docket) && docket.length > 0}
+          title='proposals on the docket'
+          tip='Loading Proposals on the Docket...'
+        >
+          <Tabs size='small' tabPosition='left'>
             {docket.map((manifest, i) => (
-              // <TabPane key={manifest._id} tab={
-              //   <span>{manifest.proposal.title}</span>
-              // }>
               <TabPane key={manifest._id} tab={
+                manifest.proposal &&
                 <Tooltip placement='rightTop' title={manifest.proposal.title}>
                   <div className={styles['tab-title']}>
                     <span>{`${manifest.proposal.year}-${manifest.proposal.number}`}</span>
@@ -86,7 +74,7 @@ class Voting extends React.Component {
               </TabPane>
             ))}
           </Tabs>
-        }
+        </Loading>
       </article>
     )
   }

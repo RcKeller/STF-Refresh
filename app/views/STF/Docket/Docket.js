@@ -8,10 +8,11 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
+import { Loading } from '../../../components'
 import { manifestsByProposal, sortManifestsByProposal } from '../../../selectors'
 
 import { Link } from 'react-router'
-import { Spin, Table, Checkbox, Badge, message } from 'antd'
+import { Table, Checkbox, Badge, message } from 'antd'
 
 //  Status indicator mapping for badge components
 const indicators = {
@@ -178,8 +179,9 @@ class Docket extends React.Component {
   }
   render (
     { columns } = this,
-    { manifests, screen } = this.props
+    { params, manifests, screen } = this.props
   ) {
+    const { year } = params
     return (
       <article className={styles['article']}>
         <Helmet title='Docket' />
@@ -188,15 +190,17 @@ class Docket extends React.Component {
         <p>
           This page allows admins to control the availability of committee actions on proposals through the website. To make proposals available for metric submission or a committee vote, or to issue a final decision, use the switches below to update proposal status.
         </p>
-        {!manifests
-          ? <Spin size='large' tip='Loading...' />
-          : <Table dataSource={manifests} sort
+        <Loading render={Array.isArray(manifests) && manifests.length > 0}
+          title='Docket'
+          tip={`Loading ${year} Docket...`}
+        >
+          <Table dataSource={manifests} sort
             size='title'
             columns={screen.lessThan.medium ? columns.filter(col => col.title !== 'Title') : columns}
             rowKey={record => record._id}
             pagination={false}
           />
-        }
+        </Loading>
       </article>
     )
   }

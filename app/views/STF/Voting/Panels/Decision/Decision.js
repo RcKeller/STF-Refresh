@@ -5,6 +5,7 @@ import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import { Spin, Form, Switch, Input, Button, Alert, message } from 'antd'
+const { TextArea } = Input
 const FormItem = Form.Item
 const connectForm = Form.create()
 
@@ -110,7 +111,7 @@ class Decision extends React.Component {
             }
             <FormItem label='Remarks (Public)' {...layout} >
               {form.getFieldDecorator('body')(
-                <Input type='textarea' rows={4} />
+                <TextArea rows={4} />
               )}
             </FormItem>
             <FormItem label={<b>Decision</b>} {...layout}>

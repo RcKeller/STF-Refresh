@@ -48,6 +48,9 @@ class Spreadsheet extends React.Component {
     this.setState({ grid, previousChanges: undefined })
     this.onCellsChanged()
   }
+  // shouldComponentUpdate (nextProps) {
+  //   return (!_.isEqual(this.props, nextProps))
+  // }
 
   /*
   serializeManifest:

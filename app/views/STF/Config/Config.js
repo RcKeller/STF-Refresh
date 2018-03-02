@@ -10,6 +10,7 @@ import { updateConfig } from '../../../services/config'
 import { layout, Label } from '../../../util/form'
 
 import { Spin, Form, Input, InputNumber, Select, Switch, Alert, Tabs } from 'antd'
+const { TextArea } = Input
 const TabPane = Tabs.TabPane
 const Option = Select.Option
 const FormItem = Form.Item
@@ -221,7 +222,7 @@ class Config extends React.Component {
                 <FormItem {...layout} label={<Label title='Announcements'
                   message={'Frontpage content directly underneath "Announcements"'} />}>
                   {form.getFieldDecorator('news')(
-                    <Input type='textarea' rows={6} onPressEnter={(e) => this.handleNews(e.target.value)} />
+                    <TextArea rows={6} onPressEnter={(e) => this.handleNews(e.target.value)} />
                   )}
                 </FormItem>
                 <FormItem {...layout} label={<Label title='Timeline'

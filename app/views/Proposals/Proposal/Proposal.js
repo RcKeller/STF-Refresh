@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
-import Loading from '../../../components/Loading/Loading'
+import { Loading } from '../../../components'
 
 import { Spin, Tabs, Button } from 'antd'
 const TabPane = Tabs.TabPane

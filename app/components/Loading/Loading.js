@@ -45,7 +45,18 @@ class Loading extends React.Component {
       return (
         <Alert showIcon
           message={`Loading ${title} has failed`}
-          description={'Further details about the context of this alert.'}
+          description={info
+            ? <div>
+              <p>Try refreshing the page by pressing F5. If this error continues to occur, please notify our developer at STFCweb@uw.edu.</p>
+              <hr />
+              <pre>
+                <small>
+                  {`{ 'ERROR AT ${window && window.location && window.location.href}': ${JSON.stringify(info)} }`}
+                </small>
+              </pre>
+            </div>
+            : 'An unknown error has occured.'
+          }
           type={type}
         />
       )

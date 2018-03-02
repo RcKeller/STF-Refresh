@@ -3,8 +3,7 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
-import { Collapse, Alert } from 'antd'
-const Panel = Collapse.Panel
+import { Alert } from 'antd'
 
 import Endorse from './Endorse/Endorse'
 import Endorsement from './Endorsement/Endorsement'
@@ -35,42 +34,30 @@ class Endorsements extends React.Component {
   render ({ endorsements, endorsed, decisionIssued, user } = this.props) {
     return (
       <div>
-        <Alert type='info' showIcon={false} banner
-          message='Community Endorsements'
-          description='Anyone with a UW NetID can endorse a proposal! We highly encourage our proposal authors to exemplify their community engagement by having their proposals endorsed by students and staff alike. You may endorse as many proposals as you like.'
+        <Alert showIcon
+          type={!endorsed ? 'info' : 'success'}
+          message={!endorsed
+            ? 'Community Endorsements'
+            : 'You have endorsed this proposal!'
+          }
+          description={!endorsed &&
+            'Anyone with a UW NetID can endorse a proposal! We highly encourage our proposal authors to exemplify their community engagement by having their proposals endorsed by students and staff alike. You may endorse as many proposals as you like.'
+          }
         />
-        {endorsed
-          ? <em>
-            <h4>You have already endorsed this proposal.</h4>
-            <span>Thank you for your feedback.</span>
-          </em>
-          : (!decisionIssued
-            ? <div>
-              <Alert type='info' showIcon={false} banner
-                message="There's still time!"
-                description="Endorsements are taken up until the committee makes a decision, so it's not too late to endorse a proposal, so long as a decision hasn't been issued!"
-              />
-              <Endorse />
-            </div>
-            : <h3>This proposal cannot be endorsed after a committee decision.</h3>
-          )
+        {!endorsed && !decisionIssued &&
+          <div>
+            <Alert type='info' showIcon={false} banner
+              message="There's still time!"
+              description="Endorsements are taken up until the committee makes a decision, so it's not too late to endorse a proposal, so long as a decision hasn't been issued!"
+            />
+            <Endorse />
+          </div>
         }
-        {endorsements && <hr />}
-        <Collapse bordered={false} defaultActiveKey={endorsements ? Object.keys(endorsements) : '0'}>
-          {endorsements.map((comment, i) => (
-            <div key={i}>
-              <Endorsement {...comment} />
-            </div>
-          ))}
-          {/* {endorsements.map((c, i) => (
-            <Panel key={i}
-              header={<b>{c.user.name || 'Endorsement'}</b>}
-              extra={c.user.netID || ''}
-              >
-              <p>{c.body}</p>
-            </Panel>
-          ))} */}
-        </Collapse>
+        {endorsements.map((comment, i) => (
+          <div key={i}>
+            <Endorsement {...comment} />
+          </div>
+        ))}
       </div>
     )
   }

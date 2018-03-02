@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Card, Icon, Avatar } from 'antd'
+import { Card, Avatar } from 'antd'
 const { Meta } = Card
 
 class Endorsement extends React.Component {
@@ -14,10 +14,10 @@ class Endorsement extends React.Component {
   }
   static defaultProps = {
     body: 'General Endorsement',
-    user: PropTypes.shape({
+    user: {
       name: 'Name',
       netID: ''
-    }).isRequired
+    }
   }
   render ({ _id, user, body } = this.props) {
     const { name, netID } = user || {}
@@ -28,7 +28,7 @@ class Endorsement extends React.Component {
       .toUpperCase()
     return (
       <Card id={_id}
-        style={{ marginBottom: 26 }}
+        style={{ marginTop: 26 }}
       >
         <Meta
           avatar={

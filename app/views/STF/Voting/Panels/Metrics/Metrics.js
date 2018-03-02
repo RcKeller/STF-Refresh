@@ -4,6 +4,7 @@ import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import { Spin, Form, Row, Col, Slider, InputNumber, Input, Button, message } from 'antd'
+const { TextArea } = Input
 const FormItem = Form.Item
 const connectForm = Form.create()
 
@@ -156,7 +157,7 @@ class Metrics extends React.Component {
             ))}
             <FormItem label='Remarks' {...layout} >
               {form.getFieldDecorator('body')(
-                <Input type='textarea' rows={4} />
+                <TextArea rows={4} />
               )}
             </FormItem>
             {/* <br />

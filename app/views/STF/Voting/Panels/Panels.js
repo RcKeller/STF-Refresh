@@ -5,6 +5,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import api from '../../../../services'
+import { Loading } from '../../../../components'
 import { makeManifestByID } from '../../../../selectors'
 
 import { Col, Row, Spin, Tabs, Tooltip } from 'antd'
@@ -60,9 +61,11 @@ class Panels extends React.Component {
     const { _id: proposalID, title, organization, uac, year, number, date, status, comments } = proposal
     return (
       <section>
-        {!proposal
-          ? <Spin size='large' tip='Loading...' />
-          : <div id={id} >
+        <Loading render={proposal}
+          title={`Proposal ${year}-${number}`}
+          tip={`Loading ${type === 'original' ? 'Proposal' : `${type} for`} ${year}-${number}`}
+        >
+          <div id={id} >
             <Row type='flex' justify='space-between' align='top'>
               <Col sm={24} lg={12}>
                 <h1 id={id}><em>{capitalize(type)}</em> - {title}</h1>
@@ -105,7 +108,7 @@ class Panels extends React.Component {
               </TabPane>
             </Tabs>
           </div>
-        }
+        </Loading>
       </section>
     )
   }
