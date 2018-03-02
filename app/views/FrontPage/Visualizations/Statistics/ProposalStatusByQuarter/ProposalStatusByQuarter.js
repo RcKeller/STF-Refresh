@@ -120,7 +120,7 @@ class ProposalStatusByQuarter extends React.Component {
     { data, hoveredCell } = this.state
   ) {
     const labels = [
-      { x: 0, y: -5, label: statistics.length, style: jss.labels.primary },
+      { x: 0, y: -5, label: (statistics.length || 0), style: jss.labels.primary },
       { x: 0, y: -20, label: 'Proposals Received', style: jss.labels.secondary }
     ]
     return (

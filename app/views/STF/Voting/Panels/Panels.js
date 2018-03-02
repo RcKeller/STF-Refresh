@@ -75,7 +75,7 @@ class Panels extends React.Component {
               </Col>
               <Col sm={24} lg={12} style={{ textAlign: 'right' }}>
                 <h2>{currency(total)}</h2>
-                <ul>
+                <ul style={{ listStyle: 'none' }}>
                   {date && <li>Submitted {new Date(date).toLocaleDateString('en-US')}</li>}
                   <li>{comments.length} Endorsements</li>
                   <li>Status: {status}</li>
