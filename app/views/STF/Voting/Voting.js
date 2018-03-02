@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 import _ from 'lodash'
 
-import { Spin, Tabs, Tooltip } from 'antd'
+import { Tabs, Tooltip } from 'antd'
 const TabPane = Tabs.TabPane
 
 import api from '../../../services'

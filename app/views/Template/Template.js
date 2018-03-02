@@ -5,7 +5,9 @@ import { connect } from 'react-redux'
 import Helmet from 'react-helmet'
 // NOTE: Antd is based on rc-components, fyi
 import Drawer from 'rc-drawer'
-//
+
+import { Loading } from '../../components'
+
 /*
 Locale Information:
 Antd is actually a chinese library by AliBaba, the chinese equiv. of Amazon
@@ -15,7 +17,7 @@ english messages for things like "No Data" in tables
 import { Link } from 'react-router'
 
 import enUS from 'antd/lib/locale-provider/en_US'
-import { LocaleProvider, Spin, Layout, Icon, Menu } from 'antd'
+import { LocaleProvider, Layout, Icon, Menu } from 'antd'
 const { Header } = Layout
 const SubMenu = Menu.SubMenu
 const Item = Menu.Item
@@ -195,7 +197,11 @@ class Template extends React.Component {
             }
            >
             <div className={styles['body']}>
-              {children || <Spin size='large' tip='Loading Page...' />}
+              <Loading render={children}
+                title='This Page'
+              >
+                {children}
+              </Loading>
             </div>
           </Drawer>
         </div>

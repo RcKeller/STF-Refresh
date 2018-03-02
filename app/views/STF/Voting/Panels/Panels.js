@@ -8,7 +8,7 @@ import api from '../../../../services'
 import { Loading } from '../../../../components'
 import { makeManifestByID } from '../../../../selectors'
 
-import { Col, Row, Spin, Tabs, Tooltip } from 'antd'
+import { Col, Row, Tabs, Tooltip } from 'antd'
 const TabPane = Tabs.TabPane
 
 import Summary from './Summary/Summary'

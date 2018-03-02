@@ -283,7 +283,7 @@ class Proposals extends React.Component {
             </ul>}
           />
         }
-        <Loading render={proposals}
+        <Loading render={Array.isArray(proposals) && proposals.length > 0}
           title='STF Proposals'
           tip='Loading STF Proposals...'
         >

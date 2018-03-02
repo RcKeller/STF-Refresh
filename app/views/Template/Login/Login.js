@@ -7,8 +7,6 @@ import { endSession } from '../../../services/authentication'
 import { environment } from '../../../services/'
 const { ENV } = environment
 
-// import { Avatar } from 'antd'
-
 /*
 LOGIN COMPONENT
 A branding-compliant component used to log in
