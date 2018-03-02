@@ -17,7 +17,7 @@ Ant uses a very cumbersome controlled form wrapper. To use it, you have to do th
       e.preventDefault()
       let { form, proposalID, user } = this.props
       form.validateFields((err, values) => {
-        console.log('SUBMITTING', err, values, proposalID, user)
+        // console.log('SUBMITTING', err, values, proposalID, user)
       })
     }
 5. Validate your fields on component mount, preventing premature submissions.

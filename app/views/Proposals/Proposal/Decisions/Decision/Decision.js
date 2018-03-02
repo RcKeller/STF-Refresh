@@ -80,8 +80,6 @@ class Decision extends React.Component {
     { columns } = this,
     { asked, _id: id, type, title, items, total, decision, reviews, user } = this.props
   ) {
-    //  { _id: id, netID, email, name, stf } = this.props
-    console.log('DECISION USER', user)
     const { body } = decision
     const status = typeof decision.approved === 'undefined'
       ? 'active'

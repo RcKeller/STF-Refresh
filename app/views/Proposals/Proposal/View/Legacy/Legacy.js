@@ -21,7 +21,6 @@ class Legacy extends React.Component {
     legacy: PropTypes.array
   }
   render ({ legacy, rfp } = this.props) {
-    console.log(rfp)
     return (
       <div>
         <Alert type='info' banner showIcon

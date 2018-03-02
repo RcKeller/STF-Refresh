@@ -80,7 +80,6 @@ class Endorse extends React.Component {
 
   render ({ form, user } = this.props) {
     const { _id, name, netID } = user || {}
-    console.log('USER', user)
     const initials = name && name
       .split(' ')
       .map(part => part[0])

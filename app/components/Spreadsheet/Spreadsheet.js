@@ -90,7 +90,7 @@ class Spreadsheet extends React.Component {
     const { onSubmit } = this.props
     let { grid } = this.state
     const data = this.deserializeManifest(grid)
-    console.log('DATA TO SUBMIT', data)
+    // console.log('DATA TO SUBMIT', data)
     onSubmit(data)
   }
 
