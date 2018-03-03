@@ -12,13 +12,14 @@ import { Loading } from '../../components'
 Locale Information:
 Antd is actually a chinese library by AliBaba, the chinese equiv. of Amazon
 Locale Provider cascades context down to components, providing
-english messages for things like "No Data" in tables
+english messages for things like 'No Data' in tables
 */
 import { Link } from 'react-router'
 
 import enUS from 'antd/lib/locale-provider/en_US'
-import { LocaleProvider, Layout, Icon, Menu } from 'antd'
-const { Header } = Layout
+import { LocaleProvider, Layout, Icon, Menu, BackTop } from 'antd'
+const { Header, Content, Footer, Sider } = Layout
+// const { Header } = Layout
 const SubMenu = Menu.SubMenu
 const Item = Menu.Item
 const ItemGroup = Menu.ItemGroup
@@ -127,22 +128,19 @@ class Template extends React.Component {
             </Link>
             <Login />
           </Header>
-          <Drawer
-            position={screen.greaterThan.medium ? 'top' : 'left'}
-            docked={screen.greaterThan.medium}
-            open={!screen.greaterThan.medium && open}
-            transitions
-            touch
-            onOpenChange={this.handleToggle}
-            enableDragHandle={false}
-            dragToggleDistance={30}
-            sidebarStyle={screen.lessThan.large
-              ? { overflowY: 'auto', overflowX: 'hidden' } : {}
-            }
-            sidebar={
+          <Layout>
+            <Sider
+              style={{ maxWidth: 256, minWidth: 256, width: 256 }}
+              breakpoint='lg'
+              collapsedWidth='0'
+              onCollapse={(collapsed, type) => { console.log(collapsed, type) }}
+            >
+              {/* <Link to='/' id='logo'>
+                <img src={mobileLogo} className={styles['stf-logo']} />
+              </Link> */}
               <Menu
                 theme='dark'
-                mode={screen.lessThan.large ? 'inline' : 'horizontal'}
+                mode='inline'
                 selectedKeys={[nextLocation]}
                 // onClick={this.handleNavigate}
                 onClick={({ key }) => key.startsWith('/') && router.push(key)}
@@ -194,16 +192,23 @@ class Template extends React.Component {
                   </SubMenu>
                 }
               </Menu>
-            }
-           >
-            <div className={styles['body']}>
-              <Loading render={children}
-                title='This Page'
-              >
-                {children}
-              </Loading>
-            </div>
-          </Drawer>
+            </Sider>
+            <Layout id='body'>
+              <Content>
+                <Loading render={children}
+                  title='This Page'
+                >
+                  <div>
+                    {children}
+                    <BackTop />
+                  </div>
+                </Loading>
+              </Content>
+              <Footer>
+                <small>Built by the STF Committee. Open source on GitHub</small>
+              </Footer>
+            </Layout>
+          </Layout>
         </div>
       </LocaleProvider>
     )

@@ -1,7 +1,11 @@
 @import '../../../css/layout';
 @import '../../../css/colors';
 .login {
-  margin-left: auto;
+  /* float: right; */
+  /* margin-left: auto; */
+  /* position: fixed;
+  top: 0;
+  right: 0; */
   /*max-width: 100px;*/
 }
 .button {
