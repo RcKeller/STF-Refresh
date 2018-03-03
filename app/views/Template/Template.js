@@ -112,32 +112,18 @@ class Template extends React.Component {
             titleTemplate='%s - UW Student Tech'
             meta={meta} link={link}
           />
-          <Header>
-            {screen.lessThan.large
-              ? <Icon
-                style={{fontSize: 32, lineHeight: 'inherit', color: 'white', marginRight: 16}}
-                type={this.state.open ? 'menu-unfold' : 'menu-fold'}
-                onClick={this.handleToggle}
-              />
-              : <a href='http://www.washington.edu/'>
-                <img src={WordmarkWhite} className={styles['uw-logo']} />
-              </a>
-            }
-            <Link to='/'>
-              <img src={screen.lessThan.medium ? mobileLogo : desktopLogo} className={styles['stf-logo']} />
-            </Link>
-            <Login />
-          </Header>
           <Layout>
             <Sider
-              style={{ maxWidth: 256, minWidth: 256, width: 256 }}
               breakpoint='lg'
               collapsedWidth='0'
-              onCollapse={(collapsed, type) => { console.log(collapsed, type) }}
+              collapsed={this.state.open}
+              trigger={null}
             >
-              {/* <Link to='/' id='logo'>
-                <img src={mobileLogo} className={styles['stf-logo']} />
-              </Link> */}
+              <div style={{ textAlign: 'center', height: 80 }}>
+                <a href='http://www.washington.edu/'>
+                  <img src={WordmarkWhite} className={styles['uw-logo']} />
+                </a>
+              </div>
               <Menu
                 theme='dark'
                 mode='inline'
@@ -194,19 +180,32 @@ class Template extends React.Component {
               </Menu>
             </Sider>
             <Layout id='body'>
+              <Header>
+                <Icon
+                  style={{fontSize: 32, lineHeight: 'inherit', color: 'white', marginRight: 16}}
+                  type={this.state.open ? 'menu-unfold' : 'menu-fold'}
+                  onClick={this.handleToggle}
+                />
+                <Link to='/'>
+                  <img src={screen.lessThan.medium ? mobileLogo : desktopLogo} className={styles['stf-logo']} />
+                </Link>
+              </Header>
               <Content>
                 <Loading render={children}
                   title='This Page'
                 >
-                  <div>
-                    {children}
-                    <BackTop />
-                  </div>
+                  {children}
                 </Loading>
               </Content>
               <Footer>
-                <small>Built by the STF Committee. Open source on GitHub</small>
+                <small>
+                  Built by the STF Committee. Open source on{' '}
+                  <a target='_blank' src='https://github.com/RcKeller/STF-Refresh'>
+                    GitHub
+                  </a>
+                </small>
               </Footer>
+              <BackTop />
             </Layout>
           </Layout>
         </div>

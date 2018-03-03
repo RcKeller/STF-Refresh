@@ -83,36 +83,42 @@ ANT Design theme overrides
 @menu-dark-arrow-color: #fff;
 @menu-dark-highlight-color: #fff;
 
-// // Full width menu bars
-// .ant-menu-item {
-//   width: 100%;
-// }
-//
-// // Remove box shadow from inline menus
-// .ant-menu-dark .ant-menu-inline.ant-menu-sub {
-//   box-shadow: none;
-// }
-//
-// .ant-layout-sider {
-//   min-height: 100vh;
-//   -webkit-box-shadow: 2px 0 6px rgba(0,21,41,.35);
-//   box-shadow: 2px 0 6px rgba(0,21,41,.35);
-//   position: relative;
-//   z-index: 10;
-// }
-//
-// #logo {
-//   height: 64px;
-//   position: relative;
-//   line-height: 64px;
-//   padding-left: 24px;
-//   -webkit-transition: all .3s;
-//   transition: all .3s;
-//   background: #002140;
-//   overflow: hidden;
-// }
+.ant-layout-header {
+  -webkit-box-shadow: 0 1px 4px rgba(0,21,41,.08);
+  box-shadow: 0 1px 4px rgba(0,21,41,.08);
+}
+
+.ant-layout-sider {
+  -webkit-box-shadow: 2px 0 6px rgba(0,21,41,.35);
+  box-shadow: 2px 0 6px rgba(0,21,41,.35);
+}
+
+// Full width menu bars
+.ant-menu-item {
+  width: 100%;
+}
+// Remove box shadow from inline menus
+.ant-menu-dark .ant-menu-inline.ant-menu-sub {
+  box-shadow: none;
+}
+
+.ant-layout-footer {
+  text-align: center;
+}
+
+#logo {
+  height: 64px;
+  position: relative;
+  line-height: 64px;
+  padding-left: 24px;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+  background: #002140;
+  overflow: hidden;
+}
 
 #body {
+  min-height: 100vh;
   overflow-x: hidden;
   @media only screen and (min-width : 992px) {
     background-color: #d9d9d9;
