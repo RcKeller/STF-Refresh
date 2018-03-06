@@ -14,6 +14,9 @@ import { manifestsByProposal, sortManifestsByProposal } from '../../../selectors
 import { Link } from 'react-router'
 import { Table, Checkbox, Badge, message } from 'antd'
 
+//  At this scale, cents are triffling
+const currency = number => `$${Number.parseInt(number).toLocaleString('en-US')}`
+
 //  Status indicator mapping for badge components
 const indicators = {
   'Submitted': 'default',
@@ -45,9 +48,9 @@ import styles from './Docket.css'
     dispatch => ({ api: bindActionCreators(api, dispatch) })
 ),
   connectRequest(props => api.get('manifests', {
-    select: ['type', 'proposal', 'docket', 'decision'],
+    select: ['type', 'title', 'proposal', 'docket', 'decision', 'total'],
     populate: [
-      { path: 'proposal', select: ['title', 'year', 'number', 'status'] },
+      { path: 'proposal', select: ['title', 'year', 'number', 'status', 'asked'] },
       { path: 'decision', select: ['approved'] }
     ]
   }))
@@ -65,31 +68,6 @@ class Docket extends React.Component {
       dataIndex: 'proposal.number',
       key: 'proposal.number',
       sorter: sortManifestsByProposal,
-      render: (text, record) => {
-        return text
-          ? <span>{`${record.proposal.year}-${record.proposal.number}`}</span>
-          : <span>N/A</span>
-      },
-      width: 90
-    },
-    {
-      title: 'Title',
-      dataIndex: 'proposal.title',
-      key: 'proposal.title',
-      // render: (text, record) => <Link to={`/proposals/${record.proposal.year}/${record.proposal.number}`}>{text}</Link>,
-      render: (text = 'Untitled Proposal', record) => {
-        return record.proposal
-          ? <span>
-            <Link to={`/proposals/${record.proposal.year}/${record.proposal.number}`}>{text}</Link>
-            <br />
-            <Badge status={indicators[record.proposal.status] || 'default'} text={record.proposal.status.toString()} />
-          </span>
-          : <span>
-            <span>{text}</span>
-            <br />
-            <Badge status='error' text='Unknown' />
-          </span>
-      },
       filters: [
         { text: 'In Review', value: 'In Review' },
         { text: 'Funded', value: 'Funded' },
@@ -99,14 +77,18 @@ class Docket extends React.Component {
       onFilter: (value, record) => {
         const { proposal } = record
         return proposal && proposal.status.includes(value)
-      }
-    },
-    {
+      },
+      render: (text, record) => (
+        <div>
+          <span>{text ? `${record.proposal.year}-${record.proposal.number}` : 'N/A'}</span>
+          <Badge status={indicators[record.proposal.status] || 'default'} text={record.proposal.status.toString()} />
+        </div>
+      ),
+      width: 120
+    }, {
       title: 'Type',
       dataIndex: 'type',
       key: 'type',
-      // render: (text, record) => <Link to={`/proposals/${record.proposal.year}/${record.proposal.number}`}>{text}</Link>,
-      render: (text, record) => <span>{_.capitalize(text)}</span>,
       filters: [
         { text: 'Original Budget', value: 'original' },
         { text: 'Supplemental Request', value: 'supplemental' },
@@ -116,9 +98,42 @@ class Docket extends React.Component {
         const { type } = record
         return type.includes(value)
       },
+      render: text => <span>{_.capitalize(text)}</span>,
+      width: 80
+    }, {
+      title: 'Title',
+      dataIndex: 'proposal.title',
+      key: 'proposal.title',
+      render: (text = 'Untitled Proposal', record) => {
+        return (
+          <div>
+            <Link to={`/proposals/${record.proposal.year}/${record.proposal.number}`}>{text}</Link>
+            {record.title && <span>
+              <br />
+              <em>{record.title}</em>
+            </span>}
+          </div>
+        )
+      }
+    }, {
+      title: 'Asked',
+      dataIndex: 'total',
+      key: 'total',
+      sorter: (a, b) => a.total - b.total,
+      render: (text, record) => {
+        let percentage = Number.parseInt((text / record.proposal.asked) * 100)
+        if (Number.isNaN(percentage)) percentage = 0
+        // console.log(text, record.proposal.asked, percentage)
+        return (
+          <div>
+            <span>{currency(text || 0)}</span>
+            <br />
+            <span>{percentage !== 100 && `${percentage}% of Original`}</span>
+          </div>
+        )
+      },
       width: 120
-    },
-    {
+    }, {
       title: 'Docket',
       dataIndex: 'docket',
       key: 'docket',
