@@ -41,7 +41,7 @@ Useful for operations / Proposal Officer
 */
 @compose(
   connect((state, props) => ({
-    metrics: state.db.metrics.filter(budget => budget.proposal),
+    metrics: (state.db.metrics || []).filter(budget => budget.proposal),
     enums: state.config.enums,
     screen: state.screen,
     user: state.user
@@ -242,13 +242,44 @@ class Metrics extends React.Component {
           : [],
         onFilter: (value, record) => record.proposal.status === value
       }, {
+        title: 'Status',
+        dataIndex: 'reviews',
+        key: 'for',
+        filters: enums
+          ? enums.statuses.map(status => {
+            return { text: status, value: status }
+          })
+          : [],
+        onFilter: (value, record) => record.proposal.status === value,
+        render: (text, record) => {
+          const hasReviews = (Array.isArray(text) && text.length > 0) || false
+          const votesFor = hasReviews
+            ? text.filter(review => review.approved === true)
+            : 0
+          const votesAgainst = hasReviews
+            ? text.filter(review => review.approved === false)
+            : 0
+          return (
+            <div>
+              <Badge
+                status={indicators[record.proposal.status] || 'default'}
+                text={record.proposal.status.split(' ')[0]}
+              />
+              <br />
+              <b>
+                {(votesFor + votesAgainst > 0) && `${votesFor} / ${votesAgainst} (${text.length})`}
+              </b>
+            </div>
+          )
+        },
+        width: 120
+      }, {
         title: 'Avg. Score',
         dataIndex: 'reviews',
         key: 'avg.score',
         render: (text) => {
           const averageScore = Array.isArray(text) && text.reduce(
             (accumulator, review) => {
-              console.warn('REVIEW', review)
               const average = review.ratings && review.ratings.reduce(
                 (accumulator, metric) => accumulator + (metric.score || 0),
                 0
@@ -261,39 +292,8 @@ class Metrics extends React.Component {
             <span>{!Number.isNaN(averageScore) && averageScore}</span>
           )
         },
-        width: 120,
-        sorter: (a, b) => a.manifest.total - b.manifest.total,
-        filters: enums
-          ? enums.statuses.map(status => {
-            return { text: status, value: status }
-          })
-          : [],
-        onFilter: (value, record) => record.proposal.status === value
-      }, {
-        title: 'For / Against',
-        dataIndex: 'reviews',
-        key: 'for',
-        render: (text) => {
-          const votesFor = Array.isArray(text)
-            ? text.filter(review => review.approved === true)
-            : 0
-          const votesAgainst = Array.isArray(text)
-            ? text.filter(review => review.approved === false)
-            : 0
-          return (
-            <span>{
-              (Array.isArray(text) && text.length > 0) &&
-              `${votesFor || '-'} / ${votesAgainst || '-'} (${text.length})`
-            }</span>
-          )
-        },
         width: 120
-      }, {
-        title: '#',
-        dataIndex: 'reviews',
-        key: 'count',
-        render: (text) => Array.isArray(text) ? text.length : 0,
-        width: 50
+        // sorter: (a, b) => a.manifest.total - b.manifest.total,
       }
     ]
     return (
