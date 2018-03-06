@@ -9,7 +9,7 @@ import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
 import { Loading } from '../../../components'
-import { manifestsByProposal, sortManifestsByProposal } from '../../../selectors'
+import { manifestsOnDocket, sortManifestsByProposal } from '../../../selectors'
 
 import { Link } from 'react-router'
 import { Table, Checkbox, Badge, message } from 'antd'
@@ -40,8 +40,7 @@ import styles from './Docket.css'
     (state, props) => {
       const year = parseInt(props.params.year)
       return {
-        manifests: manifestsByProposal(state)
-          .filter(m => m.proposal && m.proposal.year === year),
+        manifests: manifestsOnDocket(state, year),
         screen: state.screen
       }
     },
@@ -52,7 +51,9 @@ import styles from './Docket.css'
     populate: [
       { path: 'proposal', select: ['title', 'year', 'number', 'status', 'asked'] },
       { path: 'decision', select: ['approved'] }
-    ]
+    ],
+    transform: docket => ({ docket }),
+    update: ({ docket: (prev, next) => next })
   }))
 )
 class Docket extends React.Component {
@@ -79,7 +80,7 @@ class Docket extends React.Component {
         return proposal && proposal.status.includes(value)
       },
       render: (text, record) => (
-        <div>
+        <div id={record._id}>
           <span>{text ? `${record.proposal.year}-${record.proposal.number}` : 'N/A'}</span>
           <Badge status={indicators[record.proposal.status] || 'default'} text={record.proposal.status.toString()} />
         </div>
@@ -173,12 +174,13 @@ class Docket extends React.Component {
     //  Update the manifest at the correct index.
     const params = {
       id,
-      // select: ['type', 'proposal', 'docket', 'decision'],
+      // select: ['type', 'title', 'proposal', 'docket', 'decision', 'total'],
       // populate: [
-      //   { path: 'proposal', select: ['title', 'year', 'number', 'status'] },
+      //   { path: 'proposal', select: ['title', 'year', 'number', 'status', 'asked'] },
       //   { path: 'decision', select: ['approved'] }
       // ],
-      update: { manifests: (prev, next) => {
+      transform: docket => ({ docket }),
+      update: { docket: (prev, next) => {
         let newData = prev.slice()
         let index = newData.findIndex(m => m._id === record._id)
         if (index >= 0) Object.assign(newData[index].docket, change)

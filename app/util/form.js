@@ -70,7 +70,7 @@ const rules = {
 //  <Button htmlType='submit' disabled={disableSubmit(form)} />
 const disableSubmit = (form) => hasErrors(form.getFieldsError())
 
-const Label = ({title, message}) => (
+const Label = ({ title, message }) => (
   <span>
     {title}&nbsp;
     <Tooltip title={message}>

@@ -148,10 +148,12 @@ export const manifestsByProposal = ({ db }) => {
   : []
 }
 
-export const manifestsOnDocket = ({ db }) => {
+export const manifestsOnDocket = ({ db }, year) => {
   return Array.isArray(db.docket)
-  ? db.docket.filter(m => m.proposal).sort(sortManifestsByProposal)
-  : []
+    ? db.docket
+      .filter(m => m.proposal && m.proposal.year === year)
+      .sort(sortManifestsByProposal)
+    : []
 }
 
 //  NOTE: This selector isn't in use, because a mongo query was vastly more efficient.
