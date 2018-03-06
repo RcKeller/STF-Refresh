@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Spin, Form, Switch, Button, message } from 'antd'
+import { Spin, Form, Alert, Switch, Button, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
@@ -102,26 +102,35 @@ class Vote extends React.Component {
     })
   }
   render (
-    { form, active, questions, manifest } = this.props
+    { form, active, questions, manifest, review } = this.props
   ) {
+    console.warn('REVIEW', review)
     return (
       <section>
-        <br />
         {!manifest
           ? <Spin size='large' tip='Loading...' />
-          : <Form onSubmit={this.handleSubmit}>
-            <FormItem label={<b>Final Vote</b>} {...layout} >
-              {form.getFieldDecorator('approved', { valuePropName: 'checked' })(
-                //  Valueprop is a selector for antd switches, it's in the docs.
-                <Switch checkedChildren='APPROVE' unCheckedChildren='DENY' />
-              )}
-            </FormItem>
-            <FormItem label='Submit' {...layout}>
-              <Button size='large' type='primary'
-                htmlType='submit' ghost disabled={!active}
-                >Save Vote</Button>
-            </FormItem>
-          </Form>
+          : <div>
+            {review && typeof review.approved === 'boolean' &&
+              <Alert showIcon banner
+                type={review.approved ? 'success' : 'error'}
+                message={`You have voted ${review.approved ? 'in favor' : 'against'} this budget`}
+                description='You may change this value later if this was a mistake.'
+              />
+            }
+            <Form onSubmit={this.handleSubmit} style={{ paddingTop: 16 }}>
+              <FormItem label={<b>Final Vote</b>} {...layout} >
+                {form.getFieldDecorator('approved', { valuePropName: 'checked' })(
+                  //  Valueprop is a selector for antd switches, it's in the docs.
+                  <Switch checkedChildren='APPROVE' unCheckedChildren='DENY' />
+                )}
+              </FormItem>
+              <FormItem label='Submit' {...layout}>
+                <Button size='large' type='primary'
+                  htmlType='submit' ghost disabled={!active}
+                  >Save Vote</Button>
+              </FormItem>
+            </Form>
+          </div>
           }
       </section>
     )

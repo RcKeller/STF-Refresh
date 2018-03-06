@@ -6,10 +6,11 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 import _ from 'lodash'
 
-import { Tabs, Tooltip } from 'antd'
+import { Tabs, Tooltip, Button } from 'antd'
 const TabPane = Tabs.TabPane
 
 import api from '../../../services'
+import { currency } from '../../../util'
 import { Loading } from '../../../components'
 import Panels from './Panels/Panels'
 
@@ -58,7 +59,14 @@ class Voting extends React.Component {
           title='proposals on the docket'
           tip='Loading Proposals on the Docket...'
         >
-          <Tabs size='small' tabPosition='left'>
+          <Tabs size='small'
+            tabPosition='left'
+            tabBarExtraContent={
+              <Button type='ghost' icon='reload' onClick={forceRequest}>
+                Refresh
+              </Button>
+            }
+          >
             {docket.map((manifest, i) => (
               <TabPane key={manifest._id} tab={
                 manifest.proposal &&
@@ -66,7 +74,13 @@ class Voting extends React.Component {
                   <div className={styles['tab-title']}>
                     <span>{`${manifest.proposal.year}-${manifest.proposal.number}`}</span>
                     <br />
-                    {manifest.type !== 'original' && <small>{_.capitalize(manifest.type)}</small>}
+                    {manifest.type !== 'original' &&
+                      <small>
+                        <span>{_.capitalize(manifest.type)}</span>
+                        <br />
+                        <span>{`for ${currency(manifest.total)}`}</span>
+                      </small>
+                    }
                   </div>
                 </Tooltip>
               }>
