@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Spin, Form, Row, Col, Slider, InputNumber, Input, Button, message } from 'antd'
+import { Spin, Form, Row, Col, Rate, Slider, InputNumber, Input, Button, message } from 'antd'
 const { TextArea } = Input
 const FormItem = Form.Item
 const connectForm = Form.create()
@@ -65,6 +65,7 @@ class Metrics extends React.Component {
     id: PropTypes.string.isRequired,
     proposal: PropTypes.string,
     manifest: PropTypes.string,
+    questions: PropTypes.array,
     review: PropTypes.object,
     author: PropTypes.string
   }
@@ -75,36 +76,44 @@ class Metrics extends React.Component {
       const { score, ratings, body } = review
       //  Dynamic fields - metric prompts change all the time. Normalize
       //  rc-form format: { metrics: { prompt: score }}
-      let metrics = { }
+      let metricFields = {}
       if (ratings && ratings.length > 0) {
-        for (const q of review.ratings) {
-          metrics[q.prompt] = q.score
+        for (const i in review.ratings) {
+          metricFields[`metrics-${i}`] = review.ratings[i].score
         }
       }
-      let fields = { metrics, score, body }
+      let fields = Object.assign({ body }, metricFields)
       form.setFieldsValue(fields)
     }
   }
   handleSubmit = (e) => {
     e.preventDefault()
-    let { form, api, proposal, manifest, review, author } = this.props
+    let { form, api, proposal, manifest, review, author, questions } = this.props
     form.validateFields((err, values) => {
       if (!err) {
         const { _id: id } = review
         const { metrics, score, body } = values
-        let denormalizedMetrics = []
-        //  Denormalize prompts into scores: [{ prompt, score }]
-        Object.keys(metrics).forEach((key, i) => {
-          denormalizedMetrics.push({ prompt: key, score: metrics[key] })
-        })
+        const ratings = []
+        for (let key of Object.keys(values)) {
+          if (key.startsWith('metrics-')) {
+            let index = key.replace('metrics-', '')
+            const field = {
+              prompt: questions[index],
+              score: values[`metrics-${index}`]
+            }
+            ratings.push(field)
+          }
+        }
+
         const submission = {
           manifest,
           proposal,
           author,
-          ratings: denormalizedMetrics,
+          ratings,
           score,
           body
         }
+        console.warn('SUBMISSION', submission)
         const params = {
           id,
           populate: ['author'],
@@ -148,10 +157,10 @@ class Metrics extends React.Component {
           ? <Spin size='large' tip='Loading...' />
           : <Form onSubmit={this.handleSubmit}>
             {!active && <h4>Metric submissions are closed, but you may view previous scores</h4>}
-            {questions.map(q => (
-              <FormItem key={q} label={q}>
-                {form.getFieldDecorator(`metrics[${q}]`)(
-                  <SliderAndNumber disabled={!active} min={0} max={5} step={1} />
+            {questions.map((q, i) => (
+              <FormItem key={i} label={q}>
+                {form.getFieldDecorator(`metrics-${i}`)(
+                  <Rate disabled={!active} />
                 )}
               </FormItem>
             ))}
