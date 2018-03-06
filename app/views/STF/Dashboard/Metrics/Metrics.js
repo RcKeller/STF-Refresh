@@ -52,12 +52,9 @@ Useful for operations / Proposal Officer
   })),
   connectRequest(
     () => api.get('manifests', {
-      // query: { type: 'supplemental' },
-      // query for >0 reviews in array
       populate: [
-        'reviews',
+        { path: 'reviews', populate: { path: 'author' } },
         { path: 'proposal' }
-        // select: ['year', 'number', 'title', 'asked']
       ],
       transform: metrics => ({ metrics }),
       update: ({ metrics: (prev, next) => next }),

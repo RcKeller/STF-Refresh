@@ -6,6 +6,7 @@ import { connect } from 'react-redux'
 import { indexOfApprovedManifest, proposalDecision } from '../../../../../../selectors'
 import { Boundary } from '../../../../../../components'
 
+import { Alert } from 'antd'
 import { Sunburst, LabelSeries, Hint } from 'react-vis'
 
 const currency = value => `$${Number.parseInt(value).toLocaleString()}`
@@ -118,28 +119,36 @@ class Status extends React.Component {
     ]
     return (
       <Boundary title='Status Visualization'>
-        <Sunburst
-          data={data}
-          hideRootNode
-          colorRange={[statusColor]}
-          style={{ stroke: '#FFF' }}
-          height={300}
-          width={300}
-          onValueMouseOver={this.onValueMouseOver}
-          onValueMouseOut={this.onValueMouseOut}
-        >
-          <LabelSeries data={labels} />
-          {hoveredCell && hoveredCell.title
-            // Generates tooltips onMouseOver w/ dynamic JSS styles
-            ? <Hint value={this.buildValue(hoveredCell)}>
-              <div className='rv-tooltip'>
-                {hoveredCell.title}
-                <br />
-                {currency(hoveredCell.size)}
-              </div>
-            </Hint>
-          : null}
-        </Sunburst>
+        <div>
+          <Sunburst
+            data={data}
+            hideRootNode
+            colorRange={[statusColor]}
+            style={{ stroke: '#FFF' }}
+            height={300}
+            width={300}
+            onValueMouseOver={this.onValueMouseOver}
+            onValueMouseOut={this.onValueMouseOut}
+          >
+            <LabelSeries data={labels} />
+            {hoveredCell && hoveredCell.title
+              // Generates tooltips onMouseOver w/ dynamic JSS styles
+              ? <Hint value={this.buildValue(hoveredCell)}>
+                <div className='rv-tooltip'>
+                  {hoveredCell.title}
+                  <br />
+                  {currency(hoveredCell.size)}
+                </div>
+              </Hint>
+            : null}
+          </Sunburst>
+          {decision && decision.body &&
+            <Alert type='info' showIcon
+              style={{ marginBottom: 8 }}
+              message={decision.body}
+            />
+          }
+        </div>
       </Boundary>
     )
   }

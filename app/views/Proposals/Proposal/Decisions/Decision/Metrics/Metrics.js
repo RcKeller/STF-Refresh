@@ -25,7 +25,10 @@ const Metrics = ({ _id: id, approved, score, ratings, author: { name, netID } })
     <Alert key={id}
       style={{ paddingLeft: 8 }}
       banner showIcon={false}
-      type={approved ? 'success' : 'error'}
+      type={typeof approved === 'boolean'
+        ? approved ? 'success' : 'error'
+        : 'info'
+      }
       message={<h6>{`${name} (${netID})`}</h6>}
     />
     <Table

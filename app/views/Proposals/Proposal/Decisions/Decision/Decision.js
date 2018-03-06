@@ -109,9 +109,10 @@ class Decision extends React.Component {
         {/* Committee members have an expanded view that includes metrics */}
         {user && user.stf &&
           <div>
+            <hr />
             {Array.isArray(reviews) && reviews.length > 0
               ? <h2>Committee Metrics</h2>
-              : <h6>Metrics have not been taken for this budget</h6>
+              : <Alert type='info' showIcon message='Metrics have not been taken for this budget' />
             }
             {reviews && reviews.map(rev => <Metrics key={rev._id} {...rev} />)}
           </div>

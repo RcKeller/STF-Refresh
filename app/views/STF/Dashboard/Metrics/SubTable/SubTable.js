@@ -16,6 +16,10 @@ Table views for budgeting data
 class SubTable extends React.Component {
   static propTypes = {
     reviews: PropTypes.arrayOf(PropTypes.shape({
+      author: PropTypes.shape({
+        name: PropTypes.string,
+        netID: PropTypes.string
+      }),
       approved: PropTypes.boolean,
       ratings: PropTypes.arrayOf(PropTypes.shape({
         prompt: PropTypes.string,
@@ -33,9 +37,14 @@ class SubTable extends React.Component {
           <div key={review._id}>
             <Alert banner showIcon={false}
               style={{ paddingLeft: 8 }}
-              type={review.approved ? 'success' : 'error'}
-              message={review._id}
-              // message={<h6>{`${name} (${netID})`}</h6>}
+              type={typeof review.approved === 'boolean'
+                ? review.approved ? 'success' : 'error'
+                : 'info'
+              }
+              message={review.author
+                ? <h6>{`${review.author.name} - ${review.author.netID}`}</h6>
+                : <h6>Anonymous</h6>
+              }
             />
             <Table size='small'
               dataSource={review.ratings}
