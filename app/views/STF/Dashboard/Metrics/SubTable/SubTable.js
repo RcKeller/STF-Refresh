@@ -6,7 +6,7 @@ import { Table, Alert } from 'antd'
 
 const columns = [
   { title: 'Prompt', dataIndex: 'prompt', key: 'prompt' },
-  { title: 'Score', dataIndex: 'score', key: 'score', width: 60 }
+  { title: 'Score', dataIndex: 'score', key: 'score', width: 40 }
 ]
 
 /*
@@ -34,7 +34,7 @@ class SubTable extends React.Component {
     return (
       <div style={{ backgroundColor: '#fff' }}>
         {Array.isArray(reviews) && reviews.map(review => (
-          <div key={review._id}>
+          <div key={review._id} style={{ marginBottom: 16 }}>
             <Alert banner showIcon={false}
               style={{ paddingLeft: 8 }}
               type={typeof review.approved === 'boolean'
@@ -52,6 +52,7 @@ class SubTable extends React.Component {
               sort
               columns={columns}
               pagination={false}
+              showHeader={false}
             />
           </div>
         ))}

@@ -133,7 +133,7 @@ class Metrics extends React.Component {
         filters: years.map((year, i) => {
           return { text: year, value: year }
         }),
-        onFilter: (value, record) =>
+        onFilter: (value, record) => record.proposal.year &&
           record.proposal.year.toString().includes(value),
         width: 80
       }, {
