@@ -223,14 +223,14 @@ class Metrics extends React.Component {
         onFilter: (value, record) => record.proposal.category === value,
         width: 150
       }, {
-        title: 'Total',
+        title: 'Status',
         dataIndex: 'total',
         key: 'total',
         render: (text, record) => (
           <span>
-            {text ? currency(text) : '$0'}
-            <br />
             <Badge status={indicators[record.proposal.status] || 'default'} text={record.proposal.status.split(' ')[0]} />
+            <br />
+            {text ? currency(text) : '$0'}
           </span>
         ),
         width: 120,

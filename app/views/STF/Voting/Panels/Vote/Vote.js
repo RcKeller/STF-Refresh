@@ -104,7 +104,6 @@ class Vote extends React.Component {
   render (
     { form, active, questions, manifest, review } = this.props
   ) {
-    console.warn('REVIEW', review)
     return (
       <section>
         {!manifest
