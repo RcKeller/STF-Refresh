@@ -75,7 +75,6 @@ import styles from './Template.css'
     ? state.routing.locationBeforeTransitions.pathname
     : '1',
   links: state.config.links,
-  year: state.config.year,
   stf: (state.user && state.user.stf) || {}
 }))
 class Template extends React.Component {
@@ -100,7 +99,7 @@ class Template extends React.Component {
     }
   }
   render (
-    { children, screen, nextLocation, router, stf, links, year } = this.props,
+    { children, screen, nextLocation, router, stf, links } = this.props,
     { open } = this.state
   ) {
     // React-router is separated from redux store - too heavy to persist.
@@ -183,7 +182,7 @@ class Template extends React.Component {
                     </Item>
                     {stf.admin &&
                       <ItemGroup key='g1' title='Admin Tools'>
-                        <Item key={`/docket/${year}`}>
+                        <Item key='/docket'>
                           <Icon type='schedule' /><span className='nav-text'>Docket</span>
                         </Item>
                         <Item key='/config'>

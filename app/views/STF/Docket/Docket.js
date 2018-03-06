@@ -12,10 +12,16 @@ import { Loading } from '../../../components'
 import { manifestsOnDocket, sortManifestsByProposal } from '../../../selectors'
 
 import { Link } from 'react-router'
-import { Table, Checkbox, Badge, message } from 'antd'
+import { Table, Checkbox, Badge, Select, message } from 'antd'
+const Option = Select.Option
 
 //  At this scale, cents are triffling
 const currency = number => `$${Number.parseInt(number).toLocaleString('en-US')}`
+
+const years = _.range(
+  2000,
+  new Date().getFullYear() + 1
+).reverse()
 
 //  Status indicator mapping for badge components
 const indicators = {
@@ -37,13 +43,11 @@ so the committee can review all relevant proposals
 import styles from './Docket.css'
 @compose(
   connect(
-    (state, props) => {
-      const year = parseInt(props.params.year)
-      return {
-        manifests: manifestsOnDocket(state, year),
-        screen: state.screen
-      }
-    },
+    (state, props) => ({
+      manifests: manifestsOnDocket(state),
+      year: state.config.year,
+      screen: state.screen
+    }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
 ),
   connectRequest(props => api.get('manifests', {
@@ -60,10 +64,13 @@ class Docket extends React.Component {
   static propTypes = {
     api: PropTypes.object,
     manifests: PropTypes.array,
+    year: PropTypes.number,
     screen: PropTypes.object
   }
   constructor (props) {
     super(props)
+    const { year } = props
+    this.state = { year }
     this.columns = [{
       title: 'ID',
       dataIndex: 'proposal.number',
@@ -194,11 +201,23 @@ class Docket extends React.Component {
       console.warn(err)
     })
   }
+  onSelectYear = (year) => { this.setState({ year }) }
   render (
-    { columns } = this,
-    { params, manifests, screen } = this.props
+    { columns, onSelectYear } = this,
+    { params, manifests, screen } = this.props,
+    { year } = this.state
   ) {
-    const { year } = params
+    const manifestsByFiscalYear = manifests.filter(m => m.proposal && m.proposal.year === year) || []
+    const Test = (
+      <Select defaultValue={this.props.year}
+        style={{ width: '100%' }}
+        onChange={onSelectYear}
+      >
+        {years.map(y => (
+          <Option key={y} value={y}>{y}</Option>
+        ))}
+      </Select>
+    )
     return (
       <article className={styles['article']}>
         <Helmet title='Docket' />
@@ -207,15 +226,16 @@ class Docket extends React.Component {
         <p>
           This page allows admins to control the availability of committee actions on proposals through the website. To make proposals available for metric submission or a committee vote, or to issue a final decision, use the switches below to update proposal status.
         </p>
+        <h2>Fiscal Year:</h2>
+        {Test}
         <Loading render={Array.isArray(manifests) && manifests.length > 0}
           title='Docket'
           tip={`Loading ${year} Docket...`}
         >
-          <Table dataSource={manifests} sort
+          <Table dataSource={manifestsByFiscalYear} sort
             size='title'
             columns={screen.lessThan.medium ? columns.filter(col => col.title !== 'Title') : columns}
             rowKey={record => record._id}
-            pagination={false}
           />
         </Loading>
       </article>

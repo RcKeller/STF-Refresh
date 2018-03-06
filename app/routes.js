@@ -119,7 +119,7 @@ export default (store) => {
       <Route path='/edit/:id' onEnter={requireAuth} getComponent={SplitEdit} />
       <Route path='/dashboard' onEnter={requireSTF} getComponent={SplitDashboard} />
       <Route path='/voting' onEnter={requireSTF} getComponent={SplitVoting} />
-      <Route path='/docket/:year' onEnter={requireAdmin} getComponent={SplitDocket} />
+      <Route path='/docket' onEnter={requireAdmin} getComponent={SplitDocket} />
       <Route path='/config' onEnter={requireAdmin} getComponent={SplitConfig} />
 
       <Route path='/login/:redirect' onEnter={loginCallbackPatch} component={LoginCallbackRoute} />

@@ -151,7 +151,8 @@ export const manifestsByProposal = ({ db }) => {
 export const manifestsOnDocket = ({ db }, year) => {
   return Array.isArray(db.docket)
     ? db.docket
-      .filter(m => m.proposal && m.proposal.year === year)
+      // .filter(m => m.proposal && m.proposal.year === year)
+      .filter(m => m.proposal)
       .sort(sortManifestsByProposal)
     : []
 }
