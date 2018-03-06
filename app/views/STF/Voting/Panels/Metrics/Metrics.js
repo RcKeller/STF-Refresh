@@ -3,36 +3,15 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Spin, Form, Row, Col, Rate, Slider, InputNumber, Input, Button, message } from 'antd'
+import { Form, Rate, Input, Button, message } from 'antd'
 const { TextArea } = Input
 const FormItem = Form.Item
 const connectForm = Form.create()
 
 import { makeManifestByID, makeManifestReview } from '../../../../../selectors'
 import { layout } from '../../../../../util/form'
+import { Loading } from '../../../../../components'
 import api from '../../../../../services'
-
-/*
-SLIDER AND NUMBER COMPONENT:
-Renders a slider that you can also type into,
-for convenience
-*/
-class SliderAndNumber extends React.Component {
-  render (
-    { min, max, step, value } = this.props
-  ) {
-    return (
-      <Row>
-        <Col xs={16} sm={18} md={20} lg={22}>
-          <Slider {...this.props} />
-        </Col>
-        <Col span={4} lg={2}>
-          <InputNumber {...this.props} style={{ marginLeft: 16 }} />
-        </Col>
-      </Row>
-    )
-  }
-}
 
 /*
 METRICS PANEL:
@@ -92,7 +71,7 @@ class Metrics extends React.Component {
     form.validateFields((err, values) => {
       if (!err) {
         const { _id: id } = review
-        const { metrics, score, body } = values
+        const { score, body } = values
         const ratings = []
         for (let key of Object.keys(values)) {
           if (key.startsWith('metrics-')) {
@@ -104,7 +83,6 @@ class Metrics extends React.Component {
             ratings.push(field)
           }
         }
-
         const submission = {
           manifest,
           proposal,
@@ -113,7 +91,6 @@ class Metrics extends React.Component {
           score,
           body
         }
-        console.warn('SUBMISSION', submission)
         const params = {
           id,
           populate: ['author'],
@@ -153,9 +130,8 @@ class Metrics extends React.Component {
     return (
       <section>
         <br />
-        {!manifest
-          ? <Spin size='large' tip='Loading...' />
-          : <Form onSubmit={this.handleSubmit}>
+        <Loading render={manifest} title='Metrics Panel'>
+          <Form onSubmit={this.handleSubmit}>
             {!active && <h4>Metric submissions are closed, but you may view previous scores</h4>}
             {questions.map((q, i) => (
               <FormItem key={i} label={q}>
@@ -184,7 +160,7 @@ class Metrics extends React.Component {
               </FormItem>
             }
           </Form>
-          }
+        </Loading>
       </section>
     )
   }

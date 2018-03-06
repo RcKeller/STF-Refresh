@@ -2,10 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import { Row, Col, Spin, Alert, Collapse } from 'antd'
+import { Row, Col, Alert, Collapse } from 'antd'
 const Panel = Collapse.Panel
 
 import { makeManifestByID } from '../../../../../selectors'
+import { Loading } from '../../../../../components'
 
 /*
 SUMMARY VIEW:
@@ -45,9 +46,8 @@ class Summary extends React.Component {
     const planTitles = ['State Analysis', 'Availability', 'Implementation Strategy', 'Outreach Efforts', 'Risk Assessment']
     return (
       <section>
-        {!body
-          ? <Spin size='large' tip='Loading...' />
-          : <div>
+        <Loading render={body} title='Summary Panel'>
+          <div>
             {!isLegacy
               ? <section>
                 <h1>Contacts</h1>
@@ -108,9 +108,9 @@ class Summary extends React.Component {
                 )}
               </div>
             </div>
-          }
+            }
           </div>
-        }
+        </Loading>
       </section>
     )
   }

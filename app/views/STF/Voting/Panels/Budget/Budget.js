@@ -2,9 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import { Spin, Table, Tooltip, Icon } from 'antd'
+import { Table, Tooltip, Icon } from 'antd'
 
 import { makeManifestByID } from '../../../../../selectors'
+import { Loading } from '../../../../../components'
 
 const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
@@ -83,16 +84,16 @@ class Budget extends React.Component {
     const { type, title, body, items, total } = manifest
     const footer = () => <span><h2>{`Grand Total: ${currency(total || 0)}`}</h2><h6>Tax Included in Calculation</h6></span>
     return (
-      <div>
-        {manifest
-          ? <section>
+      <section>
+        <Loading render={manifest} title='Budget Panel'>
+          <div>
             {type === 'supplemental' &&
-            <div>
-              <h1>Supplemental Information</h1>
-              <h3>{title || 'Untitled Supplemental'}</h3>
-              <p>{body || 'No information provided by the author'}</p>
-            </div>
-          }
+              <div>
+                <h1>Supplemental Information</h1>
+                <h3>{title || 'Untitled Supplemental'}</h3>
+                <p>{body || 'No information provided by the author'}</p>
+              </div>
+            }
             <Table dataSource={items || []} sort
               size='middle'
               columns={columns}
@@ -103,11 +104,9 @@ class Budget extends React.Component {
               pagination={false}
               footer={footer}
             />
-          </section>
-        : <Spin size='large' tip='Loading...' />
-
-        }
-      </div>
+          </div>
+        </Loading>
+      </section>
     )
   }
 }

@@ -11,7 +11,9 @@ import api from '../../../../services'
 import { Loading } from '../../../../components'
 
 import { Link } from 'react-router'
-import { Table, Progress, Badge, Input, Icon } from 'antd'
+import { Table, Badge, Input, Icon } from 'antd'
+
+import SubTable from './SubTable/SubTable'
 
 //  At this scale, cents are triffling
 const currency = number => `$${Number.parseInt(number).toLocaleString('en-US')}`
@@ -21,6 +23,8 @@ const years = _.range(
   2000,
   new Date().getFullYear() + 1
 )
+
+const expandedRowRender = (record, i) => <SubTable {...record} />
 
 //  Status indicator mapping for badge components
 const indicators = {
@@ -302,13 +306,13 @@ class Metrics extends React.Component {
           title='Suppplementals'
           tip='Loading Supplemental Requests...'
         >
-          <div>Loaded</div>
           <Table
             dataSource={metrics}
             sort
             size={screen.lessThan.medium ? 'small' : 'middle'}
             columns={columns}
             rowKey={record => record._id}
+            expandedRowRender={expandedRowRender}
           />
         </Loading>
       </section>

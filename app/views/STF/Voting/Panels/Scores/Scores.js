@@ -2,9 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import { Spin, Row, Col, Switch, Progress, Table } from 'antd'
+import { Row, Col, Switch, Progress, Table } from 'antd'
 
 import { makeManifestByID } from '../../../../../selectors'
+import { Loading } from '../../../../../components'
 
 const metricsColumns = [
   { title: 'Prompt', dataIndex: 'prompt', key: 'prompt' },
@@ -131,9 +132,8 @@ class Scores extends React.Component {
     ) / (metricsData.length || 1)
     return (
       <section>
-        {!manifest
-          ? <Spin size='large' tip='Loading...' />
-          : <div>
+        <Loading render={manifest} title='Scores Panel'>
+          <div>
             <h4>Filter by Commitee Roles</h4>
             <Switch checked={filter.admin}
               unCheckedChildren='Admins' checkedChildren='Admins'
@@ -184,7 +184,7 @@ class Scores extends React.Component {
               />
             }
           </div>
-          }
+        </Loading>
       </section>
     )
   }

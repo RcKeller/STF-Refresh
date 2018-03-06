@@ -3,13 +3,14 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Spin, Form, Alert, Switch, Button, message } from 'antd'
+import { Form, Alert, Switch, Button, message } from 'antd'
 const FormItem = Form.Item
 const connectForm = Form.create()
 
 import { layout } from '../../../../../util/form'
 import api from '../../../../../services'
 import { makeManifestByID, makeManifestReview } from '../../../../../selectors'
+import { Loading } from '../../../../../components'
 
 /*
 VOTE PANEL:
@@ -106,31 +107,28 @@ class Vote extends React.Component {
   ) {
     return (
       <section>
-        {!manifest
-          ? <Spin size='large' tip='Loading...' />
-          : <div>
-            {review && typeof review.approved === 'boolean' &&
-              <Alert showIcon banner
-                type={review.approved ? 'success' : 'error'}
-                message={`You have voted ${review.approved ? 'in favor' : 'against'} this budget`}
-                description='You may change this value later if this was a mistake.'
-              />
-            }
-            <Form onSubmit={this.handleSubmit} style={{ paddingTop: 16 }}>
-              <FormItem label={<b>Final Vote</b>} {...layout} >
-                {form.getFieldDecorator('approved', { valuePropName: 'checked' })(
-                  //  Valueprop is a selector for antd switches, it's in the docs.
-                  <Switch checkedChildren='APPROVE' unCheckedChildren='DENY' />
-                )}
-              </FormItem>
-              <FormItem label='Submit' {...layout}>
-                <Button size='large' type='primary'
-                  htmlType='submit' ghost disabled={!active}
-                  >Save Vote</Button>
-              </FormItem>
-            </Form>
-          </div>
+        <Loading render={manifest} title='Voting Panel'>
+          {review && typeof review.approved === 'boolean' &&
+            <Alert showIcon banner
+              type={review.approved ? 'success' : 'error'}
+              message={`You have voted ${review.approved ? 'in favor' : 'against'} this budget`}
+              description='You may change this value later if this was a mistake.'
+            />
           }
+          <Form onSubmit={this.handleSubmit} style={{ paddingTop: 16 }}>
+            <FormItem label={<b>Final Vote</b>} {...layout} >
+              {form.getFieldDecorator('approved', { valuePropName: 'checked' })(
+                //  Valueprop is a selector for antd switches, it's in the docs.
+                <Switch checkedChildren='APPROVE' unCheckedChildren='DENY' />
+              )}
+            </FormItem>
+            <FormItem label='Submit' {...layout}>
+              <Button size='large' type='primary'
+                htmlType='submit' ghost disabled={!active}
+                >Save Vote</Button>
+            </FormItem>
+          </Form>
+        </Loading>
       </section>
     )
   }
