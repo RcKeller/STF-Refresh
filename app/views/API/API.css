@@ -1,0 +1,9 @@
+@import '../../css/layout';
+
+.api {
+  @apply --slim-page;
+  /* padding: 0 !important; */
+}
+.heading {
+  padding: 16px;
+}

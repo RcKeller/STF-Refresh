@@ -211,7 +211,7 @@ class Budgeting extends React.Component {
       <section>
         <Loading render={Array.isArray(supplementals) && supplementals.length > 0}
           title='Suppplementals'
-          tip='Loading Supplemental Requests...'
+          tip='Loading Supplemental Requests... This will take some time.'
         >
           <Table
             dataSource={supplementals}

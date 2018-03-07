@@ -301,7 +301,7 @@ class Metrics extends React.Component {
       <section>
         <Loading render={Array.isArray(metrics) && metrics.length > 0}
           title='Suppplementals'
-          tip='Loading Supplemental Requests...'
+          tip='Loading Voting Data... This will take some time.'
         >
           <Table
             dataSource={metrics}
