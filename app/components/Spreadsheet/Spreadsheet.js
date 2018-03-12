@@ -20,6 +20,10 @@ class Spreadsheet extends React.Component {
     if troubleshooting, view git history carefully
     */
   }
+  static defaultProps = {
+    data: [],
+    prompt: 'Submit'
+  }
   header = [
     { value: 'Name', readOnly: true, width: '20%' },
     { value: 'Description / Vendor', readOnly: true, width: '50%' },
@@ -33,7 +37,9 @@ class Spreadsheet extends React.Component {
   footer = [{value: '', readOnly: true, colSpan: 5}, {value: 0, readOnly: true}]
   constructor (props) {
     super(props)
-    const { data } = props
+    let { data } = props
+    if (data.length < 1) data = [{ name: 'Some item', description: 'About the item', price: 350, tax: 10.1, quantity: 1 }]
+    console.log('DATA', data)
 
     let grid = this.serializeManifest(data)
     const previousChanges = undefined

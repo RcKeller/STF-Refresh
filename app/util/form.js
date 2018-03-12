@@ -68,7 +68,22 @@ const rules = {
 
 //  Disable a form's submit button
 //  <Button htmlType='submit' disabled={disableSubmit(form)} />
-const disableSubmit = (form) => hasErrors(form.getFieldsError())
+const disableSubmit = (form) => {
+  // return hasErrors(form.getFieldsError())
+  const keys = []
+  function getKeys (data) {
+    for (const key of Object.keys(data)) {
+      if (data[key]) {
+        typeof data[key] === 'object'
+          ? getKeys(data[key])
+          : keys.push(data[key])
+      }
+    }
+  }
+  const fields = form.getFieldsError()
+  getKeys(fields)
+  return keys.length > 0
+}
 
 const Label = ({ title, message }) => (
   <span>

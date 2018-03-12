@@ -124,6 +124,9 @@ class ProjectPlan extends React.Component {
     if (body) {
       const { overview, plan } = body
       form.setFieldsValue({ overview, plan })
+    } else {
+      console.log('placeholder')
+      // form.validateFields()
     }
   }
   handleSubmit = (e) => {
@@ -226,6 +229,7 @@ class ProjectPlan extends React.Component {
           ))}
           <FormItem>
             <Button size='large' type='primary'
+              onMouseEnter={() => form.validateFields()}
               htmlType='submit' disabled={disableSubmit(form)}
               style={{ width: '100%' }}
               ><Icon type='cloud-upload-o' />Update</Button>
