@@ -50,6 +50,7 @@ async function assignNumberIfPublishing (proposal) {
       proposal.quarter = quarter
       proposal.status = 'In Review'
       //  Return a mutated doc for saving
+      console.log('toAnnounce', proposal)
       Slack.announceProposal(proposal)
       return proposal
     }

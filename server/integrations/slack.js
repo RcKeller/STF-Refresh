@@ -1,17 +1,14 @@
 import SlackBot from 'slackbots'
+import { Proposal } from '../db/models'
 import config from 'config'
-const token = config.get('slack.token')
-const name = config.get('slack.name')
 
-const currency = number =>
-  number.toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD'
-  })
+export const currency = (number = 0) => `$${Number.parseInt(number).toLocaleString('en-US')}`
 
 const percentage = (str) => `%${Number.parseFloat(str).toFixed(2)}`
 
 class Bot {
+  //  Bot avatar (Howl's Moving Castle)
+  icon_emoji = ':calcifer:'
   /**
     @param token Slackbot Token
     @param name Name of the user
@@ -26,18 +23,19 @@ class Bot {
       .on('message', data => console.log(`SLCK: Posting ${data.type} / ${Object.keys(data).slice(1)}`))
       .on('error', err => console.error('SLCK:', err))
       .on('close', err => console.error('SLCK: Fatal:', err))
-
-    //  Bot avatar (Howl's Moving Castle)
-    this.icon_emoji = ':calcifer:'
     //  Channels & Users to mention in announcements
     this.channel = config.has('prod') ? 'general' : 'test'
   }
-
-  announceProposal (proposal) {
+  async announceProposal ({ year, number }) {
+    // console.log('announceProposal', proposal)
     try {
       const { icon_emoji } = this
-      const { year, number, title, category, uac, organization, body, contacts, asked } = proposal
-      const contact = contacts.find(contact => contact.role === 'primary')
+      let proposal = await Proposal
+        .findOne({ year, number })
+        .populate({ path: 'body', select: 'overview' })
+      console.log('announceProposal THIS context', this.icon_emoji, proposal)
+      const { title, category, uac, organization, body, asked } = proposal
+
       const message = 'A new proposal has been published!'
       const params = {
         icon_emoji,
@@ -47,10 +45,11 @@ class Bot {
           fields: [
             { title: 'Asked', value: currency(asked), short: true },
             { title: 'Organization', value: organization, short: true },
-            { title: 'Category', value: category, short: true },
-            { title: 'Primary Contact', value: `${contact.name} (${contact.netID})`, short: true }
+            { title: 'Category', value: category, short: true }
           ],
-          text: body.overview.abstract,
+          text: body && body.overview
+            ? body.overview.abstract
+            : 'Preview text not available',
           color: 'warning'
         }
         ]
@@ -60,8 +59,7 @@ class Bot {
       console.error(err)
     }
   }
-
-  announceSupplemental (manifest, proposal) {
+  async announceSupplemental (manifest, proposal) {
     try {
       const { total, body } = manifest
       const { year, number, title, uac, asked, received } = proposal
@@ -71,7 +69,7 @@ class Bot {
         icon_emoji,
         attachments: [{
           title: `${year}-${number}: ${title} ${uac ? '(UAC)' : ''}`,
-          title_link: `https://uwstf.org/proposal/${year}/${number}/`,
+          title_link: `https://uwstf.org/proposals/${year}/${number}/`,
           fields: [
             { title: 'Original Ask', value: currency(asked), short: true },
             { title: 'Awarded', value: currency(received), short: true },
@@ -90,8 +88,7 @@ class Bot {
       console.error(err)
     }
   }
-
-  announceOverexpenditure (report, manifest) {
+  async announceOverexpenditure (report, manifest) {
     //  NOTE: We do this with manifest data, NOT proposal data (e,g, received) because the logic is tied to individual awards. (e.g. a report can be made for an intiial award, then a supplement).
     try {
       const { year, number, title, uac } = manifest.proposal
@@ -122,6 +119,8 @@ class Bot {
 }
 
 //  https://k94n.com/es6-modules-single-instance-pattern
-// let Slack = new Bot('<bot-api-key>', 'Calcifer')
-let Slack = new Bot(token, name)
+const token = config.get('slack.token')
+const name = config.get('slack.name')
+const Slack = new Bot(token, name)
+Slack.announceProposal({ year: 2018, number: 40 })
 export default Slack

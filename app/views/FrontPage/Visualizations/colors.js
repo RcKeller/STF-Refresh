@@ -1,6 +1,4 @@
 export const statusColors = {
-  // 'Withdrawn': '#34515e',
-  // 'Draft': '#d3d3d3',
   'Withdrawn': '#d3d3d3',
   'Draft': '#BBDEFB',
   'Submitted': '#8eacbb',

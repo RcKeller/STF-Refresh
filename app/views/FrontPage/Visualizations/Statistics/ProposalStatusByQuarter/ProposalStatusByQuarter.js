@@ -29,6 +29,7 @@ class ProposalStatusByQuarter extends React.Component {
     },
     hoveredCell: {}
   }
+  priority = { Withdrawn: 0, Draft: 1, Submitted: 2, 'In Review': 3, 'Awaiting Decision': 4, 'Partially Funded': 5, Funded: 6, Denied: 7 }
   componentWillReceiveProps (nextProps) {
     const { year, statistics } = nextProps
     //  statistics data loaded? Calculate funds per quarter
@@ -64,16 +65,11 @@ class ProposalStatusByQuarter extends React.Component {
         title: `Proposals (${year})`,
         children: []
       }
-
-      const priority = { Withdrawn: 0, Draft: 1, Submitted: 2, 'In Review': 3, 'Awaiting Decision': 4, 'Partially Funded': 5, Funded: 6, Denied: 7 }
       // Apply metadata / styles as you begin injecting child nodes into our dataset
       // const UW_COLORS = ['#00939C', '#85C4C8', '#EC9370', '#C22E00']
       for (let key of Object.keys(statusByQuarter)) {
         let { color, children } = statusByQuarter[key]
-        let sortedChildren = children.sort((a, b) => {
-          console.log(a.title, priority[a.title], b.title, priority[b.title])
-          return priority[a.title] - priority[b.title]
-        })
+        let sortedChildren = children.sort((a, b) => this.priority[a.title] - this.priority[b.title])
         console.warn('After', key, children, sortedChildren)
         newData.children.push({ title: key, color, children: sortedChildren })
       }
