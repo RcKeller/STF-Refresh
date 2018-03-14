@@ -241,46 +241,25 @@ class Metrics extends React.Component {
         render: (text, record) => {
           const hasReviews = (Array.isArray(text) && text.length > 0) || false
           const votesFor = hasReviews
-            ? text.filter(review => review.approved === true)
+            ? text.filter(review => review.approved === true).length
             : 0
           const votesAgainst = hasReviews
-            ? text.filter(review => review.approved === false)
+            ? text.filter(review => review.approved === false).length
             : 0
-          return (
-            <div>
-              <Badge
-                status={indicators[record.proposal.status] || 'default'}
-                text={record.proposal.status.split(' ')[0]}
-              />
-              <br />
-              <b>
-                {(votesFor + votesAgainst > 0) && `${votesFor} / ${votesAgainst} (${text.length})`}
-              </b>
+          console.warn(text, hasReviews, votesFor, votesAgainst)
+          let status = 'default'
+          if (text.length > 4) {
+            status = votesFor > votesAgainst ? 'success' : 'error'
+          }
+          return (hasReviews
+            ? <div>
+              <Badge status={status} text={`${votesFor} / ${votesAgainst}`} />
+              <div>{`${text.length} Metrics`}</div>
             </div>
+            : <small>N/A</small>
           )
         },
         width: 120
-      }, {
-        title: 'Avg. Score',
-        dataIndex: 'reviews',
-        key: 'avg.score',
-        render: (text) => {
-          const averageScore = Array.isArray(text) && text.reduce(
-            (accumulator, review) => {
-              const average = review.ratings && review.ratings.reduce(
-                (accumulator, metric) => accumulator + (metric.score || 0),
-                0
-              ) / review.ratings.length
-              return accumulator + average
-            },
-            0
-          ) / text.length
-          return (
-            <span>{!Number.isNaN(averageScore) && averageScore}</span>
-          )
-        },
-        width: 120
-        // sorter: (a, b) => a.manifest.total - b.manifest.total,
       }
     ]
     return (

@@ -22,7 +22,11 @@ to vote on at meetings
 import styles from './Voting.css'
 @compose(
   connect(
-    state => ({ docket: state.db.manifests || [] }),
+    state => ({
+      docket: Array.isArray(state.db.manifests)
+        ? state.db.manifests
+        : []
+    }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
 ),
   connectRequest(() => api.get('manifests', {

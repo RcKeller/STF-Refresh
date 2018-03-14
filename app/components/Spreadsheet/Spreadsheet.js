@@ -207,7 +207,7 @@ class Spreadsheet extends React.Component {
           </span>
         </Button>
         <small><span id='foot-1'>[1]</span> <i>A few groups on campus have tax exemption issued via certification from the UW, including a few research groups, and The Daily newspaper. If you have this exemption, you should already be aware of it, and do not need to add tax on your requested items.</i></small>
-        {warnings.length > 0 &&
+        {!disabled && warnings.length > 0 &&
           <Alert showIcon banner
             type='warning'
             message={<span>
