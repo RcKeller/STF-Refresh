@@ -39,7 +39,6 @@ class Spreadsheet extends React.Component {
     super(props)
     let { data } = props
     if (data.length < 1) data = [{ name: 'Some item', description: 'About the item', price: 350, tax: 10.1, quantity: 1 }]
-    console.log('DATA', data)
 
     let grid = this.serializeManifest(data)
     const previousChanges = undefined
@@ -179,7 +178,6 @@ class Spreadsheet extends React.Component {
       let footer = this.footer
       footer[1].value = grandTotal
       data.push(footer)
-      console.warn('WARNINGS FROM SPREAD', warnings)
       this.setState({ grid: data, previousChanges: changes, warnings })
     }
   }

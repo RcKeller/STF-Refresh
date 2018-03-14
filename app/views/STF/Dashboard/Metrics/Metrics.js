@@ -9,20 +9,12 @@ import { connectRequest } from 'redux-query'
 //  Our API services
 import api from '../../../../services'
 import { Loading } from '../../../../components'
+import { currency, years } from '../../../../util'
 
 import { Link } from 'react-router'
 import { Table, Badge, Input, Icon } from 'antd'
 
 import SubTable from './SubTable/SubTable'
-
-//  At this scale, cents are triffling
-const currency = number => `$${Number.parseInt(number).toLocaleString('en-US')}`
-
-  //  Create an array of years for select boxes
-const years = _.range(
-  2000,
-  new Date().getFullYear() + 1
-)
 
 const expandedRowRender = (record, i) => <SubTable {...record} />
 
@@ -143,7 +135,7 @@ class Metrics extends React.Component {
         render: text => <span>{text.substr(0, 2) || ''}</span>,
         filters: [
           { text: 'Autumn', value: 'Autumn' },
-          { text: 'Fall', value: 'Fall' },
+          { text: 'Winter', value: 'Winter' },
           { text: 'Spring', value: 'Spring' },
           { text: 'Summer', value: 'Summer' }
         ],
@@ -243,15 +235,9 @@ class Metrics extends React.Component {
           : [],
         onFilter: (value, record) => record.proposal.status === value
       }, {
-        title: 'Status',
+        title: 'Reviews',
         dataIndex: 'reviews',
-        key: 'for',
-        filters: enums
-          ? enums.statuses.map(status => {
-            return { text: status, value: status }
-          })
-          : [],
-        onFilter: (value, record) => record.proposal.status === value,
+        key: 'reviews',
         render: (text, record) => {
           const hasReviews = (Array.isArray(text) && text.length > 0) || false
           const votesFor = hasReviews

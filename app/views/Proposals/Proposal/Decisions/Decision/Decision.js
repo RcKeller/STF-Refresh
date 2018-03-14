@@ -1,6 +1,6 @@
 import React from 'react'
-// import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
+// import { connect } from 'react-redux'
 
 // import _ from 'lodash'
 
@@ -17,16 +17,30 @@ Provides a table view of a budget including
 the award status / amount in an alert
 */
 class Decision extends React.Component {
-  // static propTypes = {
-  //   _id: PropTypes.string,
-  //   netID: PropTypes.string,
-  //   email: PropTypes.string,
-  //   name: PropTypes.string,
-  //   stf: PropTypes.object
-  // }
+  static propTypes = {
+    asked: PropTypes.number.isRequired,
+    title: PropTypes.string,
+    body: PropTypes.string,
+    decision: PropTypes.shape({
+      body: PropTypes.string
+    }),
+    items: PropTypes.array.isRequired,
+    reviews: PropTypes.arrayOf(PropTypes.shape({
+      approved: PropTypes.bool,
+      ratings: PropTypes.arrayOf(PropTypes.shape({
+        prompt: PropTypes.string,
+        score: PropTypes.number
+      })),
+      author: PropTypes.shape({
+        name: PropTypes.string,
+        netID: PropTypes.string
+      })
+    }))
+  }
   static defaultProps = {
     asked: 0,
     title: 'Untitled Budget',
+    body: '',
     decision: { body: 'A decision has not been issued.' },
     reviews: []
   }
@@ -78,9 +92,8 @@ class Decision extends React.Component {
   ]
   render (
     { columns } = this,
-    { asked, _id: id, type, title, items, total, decision, reviews, user } = this.props
+    { asked, _id: id, type, title, body, items, total, decision, reviews, user } = this.props
   ) {
-    const { body } = decision
     const status = typeof decision.approved === 'undefined'
       ? 'active'
       : (decision.approved ? 'success' : 'error')
@@ -92,6 +105,7 @@ class Decision extends React.Component {
           rowKey={record => record._id}
           pagination={false}
         />
+        <div>{body}</div>
         <Alert banner showIcon={false}
           style={{ padding: 8 }}
           type={status}
@@ -104,7 +118,7 @@ class Decision extends React.Component {
             </span>
             <span style={{ float: 'right' }}>{currency(total)}</span>
           </h2>}
-          description={body}
+          description={decision.body}
         />
         {/* Committee members have an expanded view that includes metrics */}
         {user && user.stf &&

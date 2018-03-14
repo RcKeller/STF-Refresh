@@ -18,3 +18,8 @@ export const currency = (number = 0) => `$${Number.parseInt(number).toLocaleStri
 
 // Returns currency formatted to 2 decimal places
 export const exactCurrency = (number = 0) => `$${float(number).toLocaleString('en-US')}`
+
+export const years = _.range(
+  2000,
+  new Date().getFullYear() + 1
+).reverse()

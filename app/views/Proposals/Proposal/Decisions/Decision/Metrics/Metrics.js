@@ -20,7 +20,7 @@ METRICS COMPONENT:
 Admins can view the individual scores cast by members
 in a concise table format
 */
-const Metrics = ({ _id: id, approved, score, ratings, author: { name, netID } }) => (
+const Metrics = ({ _id: id, approved, body, score, ratings, author: { name, netID } }) => (
   <div>
     <Alert key={id}
       style={{ paddingLeft: 8 }}
@@ -31,6 +31,7 @@ const Metrics = ({ _id: id, approved, score, ratings, author: { name, netID } })
       }
       message={<h6>{`${name} (${netID})`}</h6>}
     />
+    <p>{body}</p>
     <Table
       style={{ marginBottom: 16 }}
       columns={columns}

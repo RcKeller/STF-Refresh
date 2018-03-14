@@ -9,6 +9,7 @@ import { connectRequest } from 'redux-query'
 //  Our API services
 import api from '../../../../services'
 import { Loading } from '../../../../components'
+import { currency } from '../../../../util'
 
 import { Link } from 'react-router'
 import { Table, Progress, Badge, Input, Icon } from 'antd'
@@ -26,8 +27,6 @@ const indicators = {
   'Draft': 'error',
   'Withdrawn': 'error'
 }
-//  At this scale, cents are triffling
-const currency = number => `$${Number.parseInt(number).toLocaleString('en-US')}`
 
 const expandedRowRender = (record, i) => <SubTable
   contacts={record.proposal && record.proposal.contacts}
@@ -142,7 +141,7 @@ class Budgeting extends React.Component {
         render: text => <span>{text.substr(0, 2) || ''}</span>,
         filters: [
           { text: 'Autumn', value: 'Autumn' },
-          { text: 'Fall', value: 'Fall' },
+          { text: 'Winter', value: 'Winter' },
           { text: 'Spring', value: 'Spring' },
           { text: 'Summer', value: 'Summer' }
         ],

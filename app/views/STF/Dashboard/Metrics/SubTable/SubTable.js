@@ -21,6 +21,7 @@ class SubTable extends React.Component {
         netID: PropTypes.string
       }),
       approved: PropTypes.boolean,
+      body: PropTypes.string,
       ratings: PropTypes.arrayOf(PropTypes.shape({
         prompt: PropTypes.string,
         score: PropTypes.number
@@ -46,6 +47,7 @@ class SubTable extends React.Component {
                 : <h6>Anonymous</h6>
               }
             />
+            <p>{review.body}</p>
             <Table size='small'
               dataSource={review.ratings}
               rowKey={record => record._id}
