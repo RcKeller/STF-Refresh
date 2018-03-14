@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import _ from 'lodash'
 
-import { Button, Icon } from 'antd'
+import { Button, Icon, Alert } from 'antd'
 import ReactDataSheet from 'react-datasheet'
 
 class Spreadsheet extends React.Component {
@@ -33,7 +33,7 @@ class Spreadsheet extends React.Component {
     { value: 'Total', readOnly: true, width: '10%' }
   ]
   // Note: Be sure to slice() this value when used to prevent mutability
-  newRow = [{value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}, { _id: '', value: '', readOnly: true }]
+  newRow = [{value: ''}, {value: ''}, {value: ''}, {value: ''}, {value: ''}, { _id: '', value: 0, readOnly: true }]
   footer = [{value: '', readOnly: true, colSpan: 5}, {value: 0, readOnly: true}]
   constructor (props) {
     super(props)
@@ -43,7 +43,8 @@ class Spreadsheet extends React.Component {
 
     let grid = this.serializeManifest(data)
     const previousChanges = undefined
-    this.state = { grid, previousChanges }
+    const warnings = []
+    this.state = { grid, previousChanges, warnings }
   }
   componentDidMount () {
     this.onCellsChanged()
@@ -96,7 +97,6 @@ class Spreadsheet extends React.Component {
     const { onSubmit } = this.props
     let { grid } = this.state
     const data = this.deserializeManifest(grid)
-    // console.log('DATA TO SUBMIT', data)
     onSubmit(data)
   }
 
@@ -118,7 +118,9 @@ class Spreadsheet extends React.Component {
     let { grid, previousChanges } = this.state
     if (!_.isEqual(changes, previousChanges)) {
       const grid = this.state.grid.slice()
+      //  Record grand total and warnings to throw as we iterate...
       let grandTotal = 0
+      let warnings = []
       /*
       TASK: Apply changes to the grid (immutably using slice())
       */
@@ -130,7 +132,12 @@ class Spreadsheet extends React.Component {
       let data = grid
         .slice(1, grid.length - 1)
         // Filter rows that have data (discards 0 quantity items)
-        .filter(row => row[4] && row[4].value >= 1)
+        // .filter(row => row[4] && row[4].value >= 1)
+        // Filter out rows without ANY data (user deleted it all)
+        .filter((row, i) => {
+          const values = row.filter(cell => cell.value)
+          return values.length > 0
+        })
         // Denormalize per datasheet interface
         .map(row => {
           const summaryCell = row.length - 1
@@ -149,21 +156,38 @@ class Spreadsheet extends React.Component {
           return row
         })
 
+      //  Check for errors with data, record verbose tips on how to fix them
+      for (let [i, row] of Array.entries(data)) {
+        const values = row.filter(cell => cell.value)
+        // Warn about incomplete rows
+        if (values.length >= 1 && values.length < 5) {
+          warnings.push(`Row ${i + 1}: Missing ${5 - values.length} fields`)
+        // Warn about poor pricing
+        } else if (row[5] && Number.isNaN(row[5].value)) {
+          warnings.push(`Row ${i + 1}: Pricing Data Insufficient`)
+        }
+      }
+
       //  Prepend header
       data.unshift(this.header)
-      //  Add new row (copy of a newRow)
-      data.push(this.newRow.slice())
+      //  Add new row if the prior row has been filled (copy of a newRow)
+      const newRow = this.newRow.slice()
+      if (!_.isEqual(data[data.length - 1], newRow)) {
+        data.push(newRow)
+      }
       // Append Footer with grand total
       let footer = this.footer
       footer[1].value = grandTotal
       data.push(footer)
-      this.setState({ grid: data, previousChanges: changes })
+      console.warn('WARNINGS FROM SPREAD', warnings)
+      this.setState({ grid: data, previousChanges: changes, warnings })
     }
   }
   render (
-    { prompt, disabled } = this.props
+    { prompt, disabled } = this.props,
+    { grid: data, warnings } = this.state
   ) {
-    let data = this.state.grid
+    // let data = this.state.grid
     return (
       <div style={{ width: '100%', marginTop: 8 }}>
         <small><em>Editable Datasheet - Please complete as accurately as you can. Rows are automatically added and removed based on item quantity.</em></small>
@@ -174,7 +198,7 @@ class Spreadsheet extends React.Component {
           onCellsChanged={this.onCellsChanged}
         />
         <Button
-          disabled={disabled}
+          disabled={disabled || warnings.length > 0}
           onClick={this.handleSubmit}
           type='primary' size='small' ghost
           style={{ width: '100%', borderRadius: 'unset', borderTop: 'none' }}
@@ -185,6 +209,16 @@ class Spreadsheet extends React.Component {
           </span>
         </Button>
         <small><span id='foot-1'>[1]</span> <i>A few groups on campus have tax exemption issued via certification from the UW, including a few research groups, and The Daily newspaper. If you have this exemption, you should already be aware of it, and do not need to add tax on your requested items.</i></small>
+        {warnings.length > 0 &&
+          <Alert showIcon banner
+            type='warning'
+            message={<span>
+              {warnings.map((prompt, i) => (
+                <li key={i}>{prompt}</li>
+              ))}
+            </span>}
+          />
+        }
       </div>
     )
   }
