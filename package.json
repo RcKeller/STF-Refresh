@@ -42,7 +42,7 @@
     "node": ">=6.x"
   },
   "dependencies": {
-    "antd": "^3.2.2",
+    "antd": "^3.4.1",
     "babel-cli": "^6.24.1",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
