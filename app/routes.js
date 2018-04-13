@@ -3,7 +3,8 @@ import { Route, IndexRoute } from 'react-router'
 import { environment } from './services'
 const { ENV } = environment
 
-import Template from './views/Template/Template'
+// import Template from './views/Template/Template'
+import AppLayout from './views/Template/Layout'
 /*
 CODE SPLITTING:
 This weird hackery is the most clean way to split components into different JS
@@ -101,7 +102,8 @@ export default (store) => {
   onEnter: Auth / Permissions enforcement. Redirects unauthorized users
   */
   return (
-    <Route path='/' component={Template} >
+    // <Route path='/' component={Template} >
+    <Route path='/' component={AppLayout} >
       <IndexRoute getComponent={SplitFrontPage} />
 
       <Route path='/faq' getComponent={SplitFAQ} />

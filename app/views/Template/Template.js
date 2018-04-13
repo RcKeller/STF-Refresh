@@ -3,21 +3,27 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import Helmet from 'react-helmet'
+// NOTE: Antd is based on rc-components, fyi
+import Drawer from 'rc-drawer'
+
+import { Loading } from '../../components'
 
 /*
 Locale Information:
 Antd is actually a chinese library by AliBaba, the chinese equiv. of Amazon
 Locale Provider cascades context down to components, providing
-english messages for things like 'No Data' in tables
+english messages for things like "No Data" in tables
 */
 import { Link } from 'react-router'
 
 import enUS from 'antd/lib/locale-provider/en_US'
-import { LocaleProvider, Menu, Row, Col, Icon, Button, Popover } from 'antd'
-const { Item } = Menu
+import { LocaleProvider, Layout, Icon, Menu } from 'antd'
+const { Header } = Layout
+const SubMenu = Menu.SubMenu
+const Item = Menu.Item
+const ItemGroup = Menu.ItemGroup
 
-const LOGO_URL = 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg'
-
+//  Importing images for usage in styling (made possible by webpack loaders)
 import favicon from '../../images/favicon.ico'
 import mobileLogo from '../../images/mobileLogo.png'
 import desktopLogo from '../../images/desktopLogo.png'
@@ -51,7 +57,7 @@ const meta = [
 // Add to homescreen for Chrome on Android
 const link = [{ rel: 'icon', href: favicon }]
 
-// import Login from './Login/Login'
+import Login from './Login/Login'
 
 /*
 TEMPLATE:
@@ -73,66 +79,29 @@ import styles from './Template.css'
 }))
 class Template extends React.Component {
   static propTypes = {
-    // children: PropTypes.object.isRequired,
+    children: PropTypes.object.isRequired,
     screen: PropTypes.object,
     router: PropTypes.object,
     nextLocation: PropTypes.string
   }
-  static defaultProps = {
-    children: null,
-    screen: {},
-    router: {},
-    nextLocation: '/'
+  constructor (props) {
+    super(props)
+    this.state = { open: false }
   }
-  state = {
-    menuVisible: false,
-    menuMode: 'horizontal'
+  //  Toggle menu view
+  handleToggle = () => this.setState({ open: !this.state.open })
+  //  Changed pages? Close the nav
+  componentWillReceiveProps (nextProps) {
+    if (this.state.open) {
+      if (this.props.nextLocation !== nextProps.nextLocation) {
+        this.setState({ open: false })
+      }
+    }
   }
-  componentDidMount () {
-    const { screen } = this.props
-    // this.context.router.listen(this.handleHideMenu)
-    this.setState({ menuMode: screen.lessThan.medium ? 'inline' : 'horizontal' })
-  }
-
-  handleHideMenu = () => {
-    this.setState({ menuVisible: false })
-  }
-
-  handleShowMenu = () => {
-    this.setState({ menuVisible: true })
-  }
-
-  onMenuVisibleChange = (visible) => {
-    this.setState({ menuVisible: visible })
-  }
-
   render (
-    { children, screen, nextLocation, router, stf, links, location } = this.props,
-    { menuMode, menuVisible } = this.state
+    { children, screen, nextLocation, router, stf, links } = this.props,
+    { open } = this.state
   ) {
-
-    const logo = screen.lessThan.medium ? mobileLogo : desktopLogo
-
-    const menu = (
-      <Menu mode={menuMode} id='nav' key='nav'>
-        <Item key='home'>
-          <Link to={'/'}>
-            app.header.menu.home
-          </Link>
-        </Item>
-        <Item key='docs'>
-          <Link to={'/docs/getting-started'}>
-            app.header.menu.docs
-          </Link>
-        </Item>
-        <Item key='components'>
-          <Link to={'/components/AvatarList'}>
-            app.header.menu.components
-          </Link>
-        </Item>
-      </Menu>
-    )
-
     // React-router is separated from redux store - too heavy to persist.
     return (
       <LocaleProvider locale={enUS}>
@@ -141,56 +110,99 @@ class Template extends React.Component {
             titleTemplate='%s - UW Student Tech'
             meta={meta} link={link}
           />
-          <div id='header' className='header' style={{ backgroundColor: 'black' }}>
-            {menuMode === 'inline' ? (
-              <Popover
-                overlayClassName='popover-menu'
-                placement='bottomRight'
-                content={menu}
-                trigger='click'
-                visible={menuVisible}
-                arrowPointAtCenter
-                onVisibleChange={this.onMenuVisibleChange}
+          <Header>
+            {screen.lessThan.large
+              ? <Icon
+                style={{fontSize: 32, lineHeight: 'inherit', color: 'white', marginRight: 16}}
+                type={this.state.open ? 'menu-unfold' : 'menu-fold'}
+                onClick={this.handleToggle}
+              />
+              : <a href='http://www.washington.edu/'>
+                <img src={WordmarkWhite} className={styles['uw-logo']} />
+              </a>
+            }
+            <Link to='/'>
+              <img src={screen.lessThan.medium ? mobileLogo : desktopLogo} className={styles['stf-logo']} />
+            </Link>
+            <Login />
+          </Header>
+          <Drawer
+            position={screen.greaterThan.medium ? 'top' : 'left'}
+            docked={screen.greaterThan.medium}
+            open={!screen.greaterThan.medium && open}
+            transitions
+            touch
+            onOpenChange={this.handleToggle}
+            enableDragHandle={false}
+            dragToggleDistance={30}
+            sidebarStyle={screen.lessThan.large
+              ? { overflowY: 'auto', overflowX: 'hidden' } : {}
+            }
+            sidebar={
+              <Menu
+                theme='dark'
+                mode={screen.lessThan.large ? 'inline' : 'horizontal'}
+                selectedKeys={[nextLocation]}
+                // onClick={this.handleNavigate}
+                onClick={({ key }) => key.startsWith('/') && router.push(key)}
               >
-                <Icon
-                  className='nav-phone-icon'
-                  type='menu'
-                  onClick={this.handleShowMenu}
-                />
-              </Popover>
-            ) : null}
-            <Row>
-              <Col xxl={4} xl={5} lg={8} md={8} sm={24} xs={24}>
-                <Link id='logo' to='/'>
-                  <img src={logo} alt='logo' className={styles['stf-logo']} />
-                </Link>
-              </Col>
-              <Col xxl={20} xl={19} lg={16} md={16} sm={0} xs={0}>
-                <div id='search-box'>
-                  <Icon type='search' />
-                  <div>SelectBox</div>
-                </div>
-                <div className='header-meta'>
-                  <div id='preview'>
-                    <a
-                      id='preview-button'
-                      target='_blank'
-                      href='http://preview.pro.ant.design'
-                      rel='noopener noreferrer'
-                    >
-                      <Button icon='eye-o'>
-                        app.home.preview
-                      </Button>
-                    </a>
-                  </div>
-                  {menuMode === 'horizontal' ? <div id='menu'>{menu}</div> : null}
-                </div>
-              </Col>
-            </Row>
-          </div>
-          <div className={styles['body']}>
-            {children}
-          </div>
+                <Item key='/proposals'>
+                  <Icon type='solution' /><span className='nav-text'>Proposals</span>
+                </Item>
+                <Item key='/blocks'>
+                  <Icon type='desktop' /><span className='nav-text'>Block Funding</span>
+                </Item>
+                <Item key='/members'>
+                  <Icon type='team' /><span className='nav-text'>Members</span>
+                </Item>
+                <Item key='/faq'>
+                  <Icon type='question' /><span className='nav-text'>F.A.Q.</span>
+                </Item>
+                <Item key='/contact'>
+                  <Icon type='info' /><span className='nav-text'>Contact Us</span>
+                </Item>
+                <SubMenu key='sub2' title={<span><Icon type='folder-open' /><span>Documents</span></span>}>
+                  <Item key='rfp'>
+                    <a href={links.rfp} target='_blank'>Request For Proposals</a>
+                  </Item>
+                  <Item key='drive'>
+                    <a href={links.drive} target='_blank'>Committee Docs</a>
+                  </Item>
+                  <Item key='keyserver'>
+                    <a href={links.keyserver} target='_blank'>License Keyserver</a>
+                  </Item>
+                </SubMenu>
+                {Object.keys(stf).length > 0 && // if associated in any way with STF
+                  <SubMenu key='sub1' title={<span><Icon type='safety' /><span>Committee</span></span>}>
+                    <Item key='/dashboard'>
+                      <Icon type='area-chart' /><span className='nav-text'>Dashboard</span>
+                    </Item>
+                    <Item key='/voting'>
+                      <Icon type='check-circle-o' /><span className='nav-text'>Voting</span>
+                    </Item>
+                    {stf.admin &&
+                      <ItemGroup key='g1' title='Admin Tools'>
+                        <Item key='/docket'>
+                          <Icon type='schedule' /><span className='nav-text'>Docket</span>
+                        </Item>
+                        <Item key='/config'>
+                          <Icon type='tool' /><span className='nav-text'>Site Config</span>
+                        </Item>
+                      </ItemGroup>
+                    }
+                  </SubMenu>
+                }
+              </Menu>
+            }
+           >
+            <div className={styles['body']}>
+              <Loading render={children}
+                title='This Page'
+              >
+                {children}
+              </Loading>
+            </div>
+          </Drawer>
         </div>
       </LocaleProvider>
     )
