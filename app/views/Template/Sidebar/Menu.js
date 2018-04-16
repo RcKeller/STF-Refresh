@@ -23,7 +23,7 @@ class AppMenu extends React.Component {
   ) {
     return (
       <Menu
-        theme='dark'
+        theme='light'
         // mode={screen.lessThan.large ? 'inline' : 'horizontal'}
         mode={'inline'}
         selectedKeys={[nextLocation]}

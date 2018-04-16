@@ -11,14 +11,14 @@ class AppSider extends React.Component {
     return (
       <Sider
         collapsible
-        collapsed={collapsed}
         collapsedWidth={0}
         trigger={null}
-        width={180}
+        width={240}
+        prefixCls='ant-layout-sider'
         className='app-sidebar'
+        collapsed={collapsed}
       >
         <section className='sidebar-header'>
-          <span>LOGO</span>
           <a href='/' className='brand'>UWSTF</a>
         </section>
         <div className='sidebar-content' ref='sidebarContent'>

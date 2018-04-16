@@ -5,14 +5,9 @@ import HeaderRight from './HeaderRight'
 class Header extends React.Component {
   render () {
     return (
-      <div
-        className='app-header-inner'>
-        <div className='header-left'>
-          <HeaderLeft />
-        </div>
-        <div className='header-right'>
-          <HeaderRight />
-        </div>
+      <div className='app-header-inner'>
+        <HeaderLeft />
+        <HeaderRight />
       </div>
     )
   }
