@@ -127,15 +127,20 @@ class Template extends React.Component {
             </Link>
             <Login />
           </Header>
-          <Drawer
-            width='240px'
-            open={mobile && open}
-            onMaskClick={this.handleToggle}
-            iconChild={false}
-            level={null}
-          >
-            <Menu mobile={mobile} router={router} />
-          </Drawer>
+          {mobile
+            ? <Drawer
+              width='240px'
+              open={mobile && open}
+              onMaskClick={this.handleToggle}
+              iconChild={false}
+              level={null}
+            >
+              <Menu mobile={mobile} router={router} />
+            </Drawer>
+            : <div style={{ marginBottom: 16 }}>
+              <Menu mobile={false} router={router} />
+            </div>
+          }
           <div className={styles['body']}>
             <Loading render={children}
               title='This Page'

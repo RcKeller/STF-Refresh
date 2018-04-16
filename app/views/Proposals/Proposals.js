@@ -294,8 +294,8 @@ class Proposals extends React.Component {
             size={screen.lessThan.medium ? 'small' : 'large'}
             columns={columns}
             footer={submissions
-              ? () => <Alert type='warning' banner message={<em>Any campus department or org can submit a proposal with a budget code. <b><Link to='/create'>Click Here!</Link></b></em>} />
-              : () => <Alert type='warning' banner message={<em>Proposal submissions for the quarter are closed, but we encourage you to visit and endorse proposals in review!</em>} />
+              ? () => <Alert type='warning' banner message={<h5><em>Any campus department or org can submit a proposal with a budget code. <b><Link to='/create'>Click Here!</Link></b></em></h5>} />
+              : () => <Alert type='warning' banner message={<h5><em>Proposal submissions for the quarter are closed, but we encourage you to visit and endorse proposals in review!</em></h5>} />
             }
           />
         </Loading>

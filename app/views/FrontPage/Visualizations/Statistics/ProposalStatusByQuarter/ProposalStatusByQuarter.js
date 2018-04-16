@@ -60,7 +60,6 @@ class ProposalStatusByQuarter extends React.Component {
           Spring: { color: '#1b5e20', children: [], size: 0 }
         }
       )
-      console.warn('statusByQuarter', statusByQuarter)
       let newData = {
         title: `Proposals (${year})`,
         children: []
@@ -70,7 +69,6 @@ class ProposalStatusByQuarter extends React.Component {
       for (let key of Object.keys(statusByQuarter)) {
         let { color, children } = statusByQuarter[key]
         let sortedChildren = children.sort((a, b) => this.priority[a.title] - this.priority[b.title])
-        console.warn('After', key, children, sortedChildren)
         newData.children.push({ title: key, color, children: sortedChildren })
       }
       // Apply to our D3 dataset
