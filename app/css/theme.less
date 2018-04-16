@@ -94,6 +94,15 @@ ANT Design theme overrides
 // @layout-header-padding    : 0;
 @layout-header-padding    : 0 0 0 16px;
 @layout-header-background : @primary-color;
+
+// NEW RC DRAWER
+.drawer-content {
+  top: 60px;
+  background-color: @dark-gray
+}
+
+
+
 //  Header shadows.
 .ant-layout-header {
   display: flex;
@@ -137,24 +146,15 @@ ANT Design theme overrides
 .rc-drawer {
   top: 60px;
 }
-.rc-drawer-sidebar {
+.ant-menu-dark .ant-menu-inline.ant-menu-sub {
   background-color: @dark-gray;
-  overflow-y: visible;
-  z-index: 9999;
-}
-.rc-drawer {
-  top: 60px;
 }
 // Side nav
-.rc-drawer-open.rc-drawer.rc-drawer-left .rc-drawer-sidebar .ant-menu {
+.drawer-content .ant-menu {
   border: none;
 }
-.rc-drawer-open.rc-drawer.rc-drawer-left .rc-drawer-sidebar ul {
+.drawer-content ul {
   overflow-x: hidden;
-}
-// Top nav
-.rc-drawer.rc-drawer-top .rc-drawer-sidebar {
-  z-index: 1020;
 }
 .rc-drawer-content {
   overflow-x: hidden;
