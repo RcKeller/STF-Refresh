@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 
 import Helmet from 'react-helmet'
 // NOTE: Antd is based on rc-components, fyi
-import Drawer from 'rc-drawer'
+import Drawer from 'rc-drawer-menu'
 
 import { Loading } from '../../components'
 
@@ -75,7 +75,8 @@ import styles from './Template.css'
     ? state.routing.locationBeforeTransitions.pathname
     : '1',
   links: state.config.links,
-  stf: (state.user && state.user.stf) || {}
+  stf: (state.user && state.user.stf) || {},
+  mobile: state.screen ? !state.screen.greaterThan.medium : false
 }))
 class Template extends React.Component {
   static propTypes = {
@@ -98,11 +99,15 @@ class Template extends React.Component {
       }
     }
   }
+  shouldComponentUpdate () {
+    return true
+  }
   render (
-    { children, screen, nextLocation, router, stf, links } = this.props,
+    { children, screen, nextLocation, router, stf, links, mobile } = this.props,
     { open } = this.state
   ) {
     // React-router is separated from redux store - too heavy to persist.
+    console.log('MOBILE:', mobile)
     return (
       <LocaleProvider locale={enUS}>
         <div>
@@ -127,82 +132,75 @@ class Template extends React.Component {
             <Login />
           </Header>
           <Drawer
-            position={screen.greaterThan.medium ? 'top' : 'left'}
-            docked={screen.greaterThan.medium}
-            open={!screen.greaterThan.medium && open}
-            transitions
-            touch
-            onOpenChange={this.handleToggle}
-            enableDragHandle={false}
-            dragToggleDistance={30}
-            sidebarStyle={screen.lessThan.large
-              ? { overflowY: 'auto', overflowX: 'hidden' } : {}
-            }
-            sidebar={
-              <Menu
-                theme='dark'
-                mode={screen.lessThan.large ? 'inline' : 'horizontal'}
-                selectedKeys={[nextLocation]}
-                // onClick={this.handleNavigate}
-                onClick={({ key }) => key.startsWith('/') && router.push(key)}
+            width='240px'
+            open={mobile && open}
+            onMaskClick={this.handleToggle}
+            iconChild={false}
+            level={null}
+          >
+            <Menu
+              theme='dark'
+              // mode={screen.lessThan.large ? 'inline' : 'horizontal'}
+              mode={mobile ? 'inline' : 'horizontal'}
+              selectedKeys={[nextLocation]}
+              // onClick={this.handleNavigate}
+              onClick={({ key }) => key.startsWith('/') && router.push(key)}
               >
-                <Item key='/proposals'>
-                  <Icon type='solution' /><span className='nav-text'>Proposals</span>
+              <Item key='/proposals'>
+                <Icon type='solution' /><span className='nav-text'>Proposals</span>
+              </Item>
+              <Item key='/blocks'>
+                <Icon type='desktop' /><span className='nav-text'>Block Funding</span>
+              </Item>
+              <Item key='/members'>
+                <Icon type='team' /><span className='nav-text'>Members</span>
+              </Item>
+              <Item key='/faq'>
+                <Icon type='question' /><span className='nav-text'>F.A.Q.</span>
+              </Item>
+              <Item key='/contact'>
+                <Icon type='info' /><span className='nav-text'>Contact Us</span>
+              </Item>
+              <SubMenu key='sub2' title={<span><Icon type='folder-open' /><span>Documents</span></span>}>
+                <Item key='rfp'>
+                  <a href={links.rfp} target='_blank'>Request For Proposals</a>
                 </Item>
-                <Item key='/blocks'>
-                  <Icon type='desktop' /><span className='nav-text'>Block Funding</span>
+                <Item key='drive'>
+                  <a href={links.drive} target='_blank'>Committee Docs</a>
                 </Item>
-                <Item key='/members'>
-                  <Icon type='team' /><span className='nav-text'>Members</span>
+                <Item key='keyserver'>
+                  <a href={links.keyserver} target='_blank'>License Keyserver</a>
                 </Item>
-                <Item key='/faq'>
-                  <Icon type='question' /><span className='nav-text'>F.A.Q.</span>
-                </Item>
-                <Item key='/contact'>
-                  <Icon type='info' /><span className='nav-text'>Contact Us</span>
-                </Item>
-                <SubMenu key='sub2' title={<span><Icon type='folder-open' /><span>Documents</span></span>}>
-                  <Item key='rfp'>
-                    <a href={links.rfp} target='_blank'>Request For Proposals</a>
+              </SubMenu>
+              {Object.keys(stf).length > 0 && // if associated in any way with STF
+                <SubMenu key='sub1' title={<span><Icon type='safety' /><span>Committee</span></span>}>
+                  <Item key='/dashboard'>
+                    <Icon type='area-chart' /><span className='nav-text'>Dashboard</span>
                   </Item>
-                  <Item key='drive'>
-                    <a href={links.drive} target='_blank'>Committee Docs</a>
+                  <Item key='/voting'>
+                    <Icon type='check-circle-o' /><span className='nav-text'>Voting</span>
                   </Item>
-                  <Item key='keyserver'>
-                    <a href={links.keyserver} target='_blank'>License Keyserver</a>
-                  </Item>
+                  {stf.admin &&
+                    <ItemGroup key='g1' title='Admin Tools'>
+                      <Item key='/docket'>
+                        <Icon type='schedule' /><span className='nav-text'>Docket</span>
+                      </Item>
+                      <Item key='/config'>
+                        <Icon type='tool' /><span className='nav-text'>Site Config</span>
+                      </Item>
+                    </ItemGroup>
+                  }
                 </SubMenu>
-                {Object.keys(stf).length > 0 && // if associated in any way with STF
-                  <SubMenu key='sub1' title={<span><Icon type='safety' /><span>Committee</span></span>}>
-                    <Item key='/dashboard'>
-                      <Icon type='area-chart' /><span className='nav-text'>Dashboard</span>
-                    </Item>
-                    <Item key='/voting'>
-                      <Icon type='check-circle-o' /><span className='nav-text'>Voting</span>
-                    </Item>
-                    {stf.admin &&
-                      <ItemGroup key='g1' title='Admin Tools'>
-                        <Item key='/docket'>
-                          <Icon type='schedule' /><span className='nav-text'>Docket</span>
-                        </Item>
-                        <Item key='/config'>
-                          <Icon type='tool' /><span className='nav-text'>Site Config</span>
-                        </Item>
-                      </ItemGroup>
-                    }
-                  </SubMenu>
-                }
-              </Menu>
-            }
-           >
-            <div className={styles['body']}>
-              <Loading render={children}
-                title='This Page'
-              >
-                {children}
-              </Loading>
-            </div>
+              }
+            </Menu>
           </Drawer>
+          <div className={styles['body']}>
+            <Loading render={children}
+              title='This Page'
+            >
+              {children}
+            </Loading>
+          </div>
         </div>
       </LocaleProvider>
     )
