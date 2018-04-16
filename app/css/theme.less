@@ -107,9 +107,12 @@ body {
 @layout-header-padding       : 0 16px;
 @layout-header-background    : @purple;
 
-.app-header {
+.app-header-inner {
   display: flex;
   justify-content: space-between;
+}
+.header-right>a {
+  color: white;
 }
 .app-header-inner .header-icon {
   display: inline-block;
@@ -129,6 +132,15 @@ body {
   flex: 0 0 auto;
   height: 60px;
 }
+
+// .app-sidebar .sidebar-content {
+//     // position: relative;
+//     // z-index: 1;
+//     // overflow: auto;
+//     // flex: 1 1 auto;
+//     height: calc(100vh - 104px);
+// }
+
 .sidebar-bg-light .sidebar-footer, .sidebar-bg-light .sidebar-footer a, .sidebar-bg-light .sidebar-footer a:hover {
   color: rgba(0,0,0,.87);
 }

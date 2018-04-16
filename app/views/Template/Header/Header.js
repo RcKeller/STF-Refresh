@@ -1,13 +1,15 @@
 import React from 'react'
-import HeaderLeft from './HeaderLeft'
-import HeaderRight from './HeaderRight'
+import Toggler from './Toggler'
+import Logo from './Logo'
+import Login from './Login'
 
 class Header extends React.Component {
   render () {
     return (
       <div className='app-header-inner'>
-        <HeaderLeft />
-        <HeaderRight />
+        <Toggler />
+        <Logo />
+        <Login />
       </div>
     )
   }

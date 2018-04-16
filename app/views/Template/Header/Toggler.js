@@ -1,7 +1,7 @@
 import React from 'react'
 import { Icon } from 'antd'
 
-class NavLeft extends React.Component {
+class Toggler extends React.Component {
   // onToggleOffCanvasNav = () => {
     // const { handleToggleOffCanvasNav, offCanvasNav } = this.props;
     // handleToggleOffCanvasNav(!offCanvasNav);
@@ -21,4 +21,4 @@ class NavLeft extends React.Component {
   }
 }
 
-export default NavLeft
+export default Toggler
