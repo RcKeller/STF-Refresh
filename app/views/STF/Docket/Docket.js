@@ -8,10 +8,20 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
 import api from '../../../services'
-import { manifestsByProposal, sortManifestsByProposal } from '../../../selectors'
+import { Loading } from '../../../components'
+import { manifestsOnDocket, sortManifestsByProposal } from '../../../selectors'
 
 import { Link } from 'react-router'
-import { Spin, Table, Checkbox, Badge, message } from 'antd'
+import { Table, Checkbox, Badge, Select, message } from 'antd'
+const Option = Select.Option
+
+//  At this scale, cents are triffling
+const currency = number => `$${Number.parseInt(number).toLocaleString('en-US')}`
+
+const years = _.range(
+  2000,
+  new Date().getFullYear() + 1
+).reverse()
 
 //  Status indicator mapping for badge components
 const indicators = {
@@ -33,62 +43,39 @@ so the committee can review all relevant proposals
 import styles from './Docket.css'
 @compose(
   connect(
-    (state, props) => {
-      const year = parseInt(props.params.year)
-      return {
-        manifests: manifestsByProposal(state)
-          .filter(m => m.proposal && m.proposal.year === year),
-        screen: state.screen
-      }
-    },
+    (state, props) => ({
+      manifests: manifestsOnDocket(state),
+      year: state.config.year,
+      screen: state.screen
+    }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
 ),
   connectRequest(props => api.get('manifests', {
-    select: ['type', 'proposal', 'docket', 'decision'],
+    select: ['type', 'title', 'proposal', 'docket', 'decision', 'total'],
     populate: [
-      { path: 'proposal', select: ['title', 'year', 'number', 'status'] },
+      { path: 'proposal', select: ['title', 'year', 'number', 'status', 'asked'] },
       { path: 'decision', select: ['approved'] }
-    ]
+    ],
+    transform: docket => ({ docket }),
+    update: ({ docket: (prev, next) => next })
   }))
 )
 class Docket extends React.Component {
   static propTypes = {
     api: PropTypes.object,
     manifests: PropTypes.array,
+    year: PropTypes.number,
     screen: PropTypes.object
   }
   constructor (props) {
     super(props)
+    const { year } = props
+    this.state = { year }
     this.columns = [{
       title: 'ID',
       dataIndex: 'proposal.number',
       key: 'proposal.number',
       sorter: sortManifestsByProposal,
-      render: (text, record) => {
-        return text
-          ? <span>{`${record.proposal.year}-${record.proposal.number}`}</span>
-          : <span>N/A</span>
-      },
-      width: 90
-    },
-    {
-      title: 'Title',
-      dataIndex: 'proposal.title',
-      key: 'proposal.title',
-      // render: (text, record) => <Link to={`/proposals/${record.proposal.year}/${record.proposal.number}`}>{text}</Link>,
-      render: (text = 'Untitled Proposal', record) => {
-        return record.proposal
-          ? <span>
-            <Link to={`/proposals/${record.proposal.year}/${record.proposal.number}`}>{text}</Link>
-            <br />
-            <Badge status={indicators[record.proposal.status] || 'default'} text={record.proposal.status.toString()} />
-          </span>
-          : <span>
-            <span>{text}</span>
-            <br />
-            <Badge status='error' text='Unknown' />
-          </span>
-      },
       filters: [
         { text: 'In Review', value: 'In Review' },
         { text: 'Funded', value: 'Funded' },
@@ -98,14 +85,18 @@ class Docket extends React.Component {
       onFilter: (value, record) => {
         const { proposal } = record
         return proposal && proposal.status.includes(value)
-      }
-    },
-    {
+      },
+      render: (text, record) => (
+        <div id={record._id}>
+          <span>{text ? `${record.proposal.year}-${record.proposal.number}` : 'N/A'}</span>
+          <Badge status={indicators[record.proposal.status] || 'default'} text={record.proposal.status.toString()} />
+        </div>
+      ),
+      width: 120
+    }, {
       title: 'Type',
       dataIndex: 'type',
       key: 'type',
-      // render: (text, record) => <Link to={`/proposals/${record.proposal.year}/${record.proposal.number}`}>{text}</Link>,
-      render: (text, record) => <span>{_.capitalize(text)}</span>,
       filters: [
         { text: 'Original Budget', value: 'original' },
         { text: 'Supplemental Request', value: 'supplemental' },
@@ -115,9 +106,42 @@ class Docket extends React.Component {
         const { type } = record
         return type.includes(value)
       },
+      render: text => <span>{_.capitalize(text)}</span>,
+      width: 80
+    }, {
+      title: 'Title',
+      dataIndex: 'proposal.title',
+      key: 'proposal.title',
+      render: (text = 'Untitled Proposal', record) => {
+        return (
+          <div>
+            <Link to={`/proposals/${record.proposal.year}/${record.proposal.number}`}>{text}</Link>
+            {record.title && <span>
+              <br />
+              <em>{record.title}</em>
+            </span>}
+          </div>
+        )
+      }
+    }, {
+      title: 'Asked',
+      dataIndex: 'total',
+      key: 'total',
+      sorter: (a, b) => a.total - b.total,
+      render: (text, record) => {
+        let percentage = Number.parseInt((text / record.proposal.asked) * 100)
+        if (Number.isNaN(percentage)) percentage = 0
+        // console.log(text, record.proposal.asked, percentage)
+        return (
+          <div>
+            <span>{currency(text || 0)}</span>
+            <br />
+            <span>{percentage !== 100 && `${percentage}% of Original`}</span>
+          </div>
+        )
+      },
       width: 120
-    },
-    {
+    }, {
       title: 'Docket',
       dataIndex: 'docket',
       key: 'docket',
@@ -157,12 +181,13 @@ class Docket extends React.Component {
     //  Update the manifest at the correct index.
     const params = {
       id,
-      // select: ['type', 'proposal', 'docket', 'decision'],
+      // select: ['type', 'title', 'proposal', 'docket', 'decision', 'total'],
       // populate: [
-      //   { path: 'proposal', select: ['title', 'year', 'number', 'status'] },
+      //   { path: 'proposal', select: ['title', 'year', 'number', 'status', 'asked'] },
       //   { path: 'decision', select: ['approved'] }
       // ],
-      update: { manifests: (prev, next) => {
+      transform: docket => ({ docket }),
+      update: { docket: (prev, next) => {
         let newData = prev.slice()
         let index = newData.findIndex(m => m._id === record._id)
         if (index >= 0) Object.assign(newData[index].docket, change)
@@ -176,10 +201,23 @@ class Docket extends React.Component {
       console.warn(err)
     })
   }
+  onSelectYear = (year) => { this.setState({ year }) }
   render (
-    { columns } = this,
-    { manifests, screen } = this.props
+    { columns, onSelectYear } = this,
+    { params, manifests, screen } = this.props,
+    { year } = this.state
   ) {
+    const manifestsByFiscalYear = manifests.filter(m => m.proposal && m.proposal.year === year) || []
+    const Test = (
+      <Select defaultValue={this.props.year}
+        style={{ width: '100%' }}
+        onChange={onSelectYear}
+      >
+        {years.map(y => (
+          <Option key={y} value={y}>{y}</Option>
+        ))}
+      </Select>
+    )
     return (
       <article className={styles['article']}>
         <Helmet title='Docket' />
@@ -188,15 +226,18 @@ class Docket extends React.Component {
         <p>
           This page allows admins to control the availability of committee actions on proposals through the website. To make proposals available for metric submission or a committee vote, or to issue a final decision, use the switches below to update proposal status.
         </p>
-        {!manifests
-          ? <Spin size='large' tip='Loading...' />
-          : <Table dataSource={manifests} sort
+        <h2>Fiscal Year:</h2>
+        {Test}
+        <Loading render={Array.isArray(manifests) && manifests.length > 0}
+          title='Docket'
+          tip={`Loading ${year} Docket...`}
+        >
+          <Table dataSource={manifestsByFiscalYear} sort
             size='title'
             columns={screen.lessThan.medium ? columns.filter(col => col.title !== 'Title') : columns}
             rowKey={record => record._id}
-            pagination={false}
           />
-        }
+        </Loading>
       </article>
     )
   }

@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
 import api from '../../../../services'
+import { Loading } from '../../../../components'
 
 // FINANCIALS (Sunburts)
 import Allocated from './Allocated/Allocated'
@@ -56,9 +57,12 @@ class Funding extends React.Component {
     }
     return (
       <section>
-        {funding &&
+        <Loading render={funding}
+          title='Funding Visualization'
+          tip='Visualizing Funding...'
+        >
           <Allocated {...data} year={year} />
-        }
+        </Loading>
       </section>
     )
   }

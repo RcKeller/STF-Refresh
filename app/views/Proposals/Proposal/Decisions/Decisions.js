@@ -8,6 +8,7 @@ import { connectRequest } from 'redux-query'
 import _ from 'lodash'
 
 import api from '../../../../services'
+import { Loading } from '../../../../components'
 
 import { Tabs } from 'antd'
 const TabPane = Tabs.TabPane
@@ -43,27 +44,34 @@ class Decisions extends React.Component {
   render ({ asked, manifests, reviews, user } = this.props) {
     //  Merge reviews into proposal.manifests
     manifests = manifests.map(m => ({ ...m, reviews: [] }))
-    for (let r of reviews) {
-      const index = manifests
+    if (Array.isArray(reviews)) {
+      for (let r of reviews) {
+        const index = manifests
         .findIndex(m => m._id === r.manifest)
-      if (index >= 0) manifests[index].reviews.push(r)
+        if (index >= 0) manifests[index].reviews.push(r)
+      }
     }
     return (
       <section>
-        <Tabs>
-          {manifests && manifests.map((m, i) => (
-            <TabPane key={m._id} tab={<span>
-              {`${_.capitalize(m.type || '')} Budget (#${++i})`}
-              <br />
-              {_.capitalize(m.title || 'Untitled')}
-              <br />
-              {`${currency(m.total)} (${parseInt(m.total / asked * 100)}%)`}
-            </span>}
-            >
-              <Decision {...m} asked={asked} user={user} />
-            </TabPane>
-          ))}
-        </Tabs>
+        <Loading render={manifests}
+          title={`Proposal Reviews`}
+          tip={`Loading Reviews and Decisions...`}
+        >
+          <Tabs>
+            {manifests.map((m, i) => (
+              <TabPane key={m._id} tab={<span>
+                {`${_.capitalize(m.type || '')} Budget (#${++i})`}
+                <br />
+                {_.capitalize(m.title || 'Untitled')}
+                <br />
+                {`${currency(m.total)} (${parseInt(m.total / asked * 100)}%)`}
+              </span>}
+              >
+                <Decision {...m} asked={asked} user={user} />
+              </TabPane>
+            ))}
+          </Tabs>
+        </Loading>
       </section>
     )
   }

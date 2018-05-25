@@ -5,20 +5,6 @@ import { Sunburst, LabelSeries, Hint, DiscreteColorLegend } from 'react-vis'
 import { statusColors, brandColors } from '../../colors'
 import { statusLegend } from '../../legends'
 
-const jss = {
-  tooltip: {
-    display: 'flex',
-    color: '#fff',
-    background: '#000',
-    alignItems: 'center',
-    padding: '5px'
-  },
-  box: { height: '16px', width: '16px', marginRight: 8 },
-  labels: {
-    primary: { fill: '#FFF', fontSize: '46px', textAnchor: 'middle' },
-    secondary: { fill: brandColors['Light Gray'], fontSize: '16px', textAnchor: 'middle' }
-  }
-}
 class ProposalStatusByQuarter extends React.Component {
   static propTypes = {
     year: PropTypes.number,
@@ -26,6 +12,12 @@ class ProposalStatusByQuarter extends React.Component {
   }
   static defaultProps = {
     year: 2018
+  }
+  jss = {
+    labels: {
+      primary: { fill: '#FFF', fontSize: '46px', textAnchor: 'middle' },
+      secondary: { fill: brandColors['Light Gray'], fontSize: '16px', textAnchor: 'middle' }
+    }
   }
   state = {
     //  Data follows D3 data conventions, look at the flare dataset for an example.
@@ -37,6 +29,7 @@ class ProposalStatusByQuarter extends React.Component {
     },
     hoveredCell: {}
   }
+  priority = { Withdrawn: 0, Draft: 1, Submitted: 2, 'In Review': 3, 'Awaiting Decision': 4, 'Partially Funded': 5, Funded: 6, Denied: 7 }
   componentWillReceiveProps (nextProps) {
     const { year, statistics } = nextProps
     //  statistics data loaded? Calculate funds per quarter
@@ -74,8 +67,9 @@ class ProposalStatusByQuarter extends React.Component {
       // Apply metadata / styles as you begin injecting child nodes into our dataset
       // const UW_COLORS = ['#00939C', '#85C4C8', '#EC9370', '#C22E00']
       for (let key of Object.keys(statusByQuarter)) {
-        const { color, children } = statusByQuarter[key]
-        newData.children.push({ title: key, color, children })
+        let { color, children } = statusByQuarter[key]
+        let sortedChildren = children.sort((a, b) => this.priority[a.title] - this.priority[b.title])
+        newData.children.push({ title: key, color, children: sortedChildren })
       }
       // Apply to our D3 dataset
       Object.assign(data, newData)
@@ -123,17 +117,18 @@ class ProposalStatusByQuarter extends React.Component {
   }
 
   render (
+    { jss } = this,
     { year, statistics } = this.props,
     { data, hoveredCell } = this.state
   ) {
     const labels = [
-      { x: 0, y: -5, label: statistics.length, style: jss.labels.primary },
+      { x: 0, y: -5, label: (statistics.length || 0), style: jss.labels.primary },
       { x: 0, y: -20, label: 'Proposals Received', style: jss.labels.secondary }
     ]
     return (
       <div>
         <Sunburst
-          className='inline-visualization'
+          className='rv-inline'
           data={data}
           colorType='literal'
           style={{ stroke: '#FFF' }}
@@ -141,21 +136,20 @@ class ProposalStatusByQuarter extends React.Component {
           width={300}
           onValueMouseOver={this.onValueMouseOver}
           onValueMouseOut={this.onValueMouseOut}
-          title='TEST'
         >
           <LabelSeries data={labels} />
           {hoveredCell && hoveredCell.title
             // Generates tooltips onMouseOver w/ dynamic JSS styles
             ? <Hint value={this.buildValue(hoveredCell)}>
-              <div style={jss.tooltip}>
-                <div style={{ ...jss.box, background: hoveredCell.color }} />
+              <div className='rv-tooltip'>
+                <div className='rv-box' style={{ background: hoveredCell.color }} />
                 {`${this.getSizeOfParent(hoveredCell)} ${hoveredCell.title}`}
               </div>
             </Hint>
           : null}
         </Sunburst>
         <DiscreteColorLegend
-          className='inline-legend'
+          className='rv-inline'
           items={statusLegend}
         />
       </div>

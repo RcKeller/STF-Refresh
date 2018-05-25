@@ -1,14 +1,14 @@
 import { statusColors, quarterColors, brandColors } from './colors'
 
 export const statusLegend = [
+  { title: 'Withdrawn', color: statusColors['Withdrawn'] },
   { title: 'Draft', color: statusColors['Draft'] },
   { title: 'Submitted', color: statusColors['Submitted'] },
   { title: 'In Review', color: statusColors['In Review'] },
   { title: 'Awaiting Decision', color: statusColors['Awaiting Decision'] },
-  { title: 'Funded', color: statusColors['Funded'] },
   { title: 'Partially Funded', color: statusColors['Partially Funded'] },
-  { title: 'Denied', color: statusColors['Denied'] },
-  { title: 'Withdrawn', color: statusColors['Withdrawn'] }
+  { title: 'Funded', color: statusColors['Funded'] },
+  { title: 'Denied', color: statusColors['Denied'] }
 ]
 
 export const quarterlyFundingLegend = [

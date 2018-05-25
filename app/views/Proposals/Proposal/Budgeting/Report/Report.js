@@ -9,35 +9,12 @@ import { layout, feedback, help, rules, disableSubmit } from '../../../../../uti
 import _ from 'lodash'
 
 import { Form, Input, Icon, Alert, message } from 'antd'
+const { TextArea } = Input
 const FormItem = Form.Item
 const connectForm = Form.create()
 
-import Spreadsheet, { Editors } from '../../../../../components/Spreadsheet'
-const { SimpleNumber } = Editors
+import { Boundary, Spreadsheet } from '../../../../../components'
 
-//  BUG: Selectors cannot select child props. Is this case handled in the data-grid docs?
-const columns = [{
-  name: 'Name',
-  key: 'name',
-  editable: true
-}, {
-  name: 'Vendor',
-  key: 'vendor',
-  editable: true,
-  width: 300
-}, {
-  name: 'Quantity',
-  key: 'quantity',
-  editable: true,
-  editor: SimpleNumber,
-  width: 85
-}, {
-  name: 'Price',
-  key: 'price',
-  editable: true,
-  editor: SimpleNumber,
-  width: 85
-}]
 /*
 REPORT TAB:
 Allows authors to report their expenditures,
@@ -127,69 +104,66 @@ class Report extends React.Component {
     let data = (report && report.items)
       ? report.items
       : manifest.items.map((item) => _.omit(item, ['_id', '__v', 'manifest', 'description', 'priority', 'tax']))
-    const newData = { quantity: 1, price: 0 }
-    const total = report && report.total
     return (
       <section>
-        <Alert type='info' showIcon banner
-          message='Expense Reporting'
-          description='Recording expenditures is mandatory for all awards.'
-        />
-        <br />
-        <p>To help the Office of Planning & Budgeting, we ask that you report the expenditures associated with any awards you may have received. OP&B uses this for accounting purposes. Some key elements to point out include:</p>
-        <p>
-          <ul style={{
-            listStyleType: 'circle',
-            listStylePosition: 'inside'
-          }}>
-            <li>
-              <b>Departmental Organization Code:</b> Not to be confused with your organization's budget number, this represents the charge line/cost center you use for your expenses. For more information, <a href={this.OrgCodeKBA} target='_blank'>visit the IT Connect page on Org Codes by clicking here.</a>
-            </li>
-            <li>
-              <b>Summary:</b> A one to two line explaination of your purchase status, e.g. "All items purchased from Costco".
-            </li>
-            <li>
-              <b>Details:</b> Here's your chance to explain any discrepancies, such as buying different items (which is unsanctioned if not related to the proposal), changes in pricing, underexpenditures, etc.
-            </li>
-            <li>
-              <b>Vendors:</b> We collect information about your point-of-purchase (OfficeMax, U-Line, etc) to inform UW's supply partnerships.
-            </li>
-          </ul>
-        </p>
-        {orgCode && <h6>
-          <Icon type='exclamation-circle-o' />
-          {` Your Departmental Organization Code: ${orgCode}`}
-        </h6>}
-        <p>
-          If you have any questions, please reach out to the operations manager at <a href='mailto:techfee@uw.edu'>techfee@uw.edu</a>.
-        </p>
-        <FormItem label='Budget Number' {...layout} hasFeedback={feedback(form, 'budget')} help={help(form, 'budget')} >
-          {form.getFieldDecorator('budget', rules.required)(
-            <Input />
-          )}
-        </FormItem>
-        <FormItem label='Brief Summary' {...layout}>
-          {form.getFieldDecorator('title')(
-            <Input />
-          )}
-        </FormItem>
-        <FormItem label='Details' {...layout}>
-          {form.getFieldDecorator('body')(
-            <Input type='textarea' rows={6} />
-          )}
-        </FormItem>
-        <Spreadsheet financial
-          prompt='Record Expenses'
-          columns={columns}
-          data={data}
-          onSubmit={this.handleSubmit}
-          newData={newData}
-          disabled={disableSubmit(form)}
-          total={total}
-        />
-        <Alert type='info' showIcon banner
-          description='For your convenience, you can report expenditures at any time. We encourage you to use this tool in reference to your original proposal as you make purchases.'
-        />
+        <Boundary title='Expense Reporting Wizard'>
+          <Alert type='info' showIcon banner
+            message='Expense Reporting'
+            description='Recording expenditures is mandatory for all awards.'
+          />
+          <br />
+          <p>To help the Office of Planning & Budgeting, we ask that you report the expenditures associated with any awards you may have received. OP&B uses this for accounting purposes. Some key elements to point out include:</p>
+          <p>
+            <ul style={{
+              listStyleType: 'circle',
+              listStylePosition: 'inside'
+            }}>
+              <li>
+                <b>Departmental Organization Code:</b> Not to be confused with your organization's budget number, this represents the charge line/cost center you use for your expenses. For more information, <a href={this.OrgCodeKBA} target='_blank'>visit the IT Connect page on Org Codes by clicking here.</a>
+              </li>
+              <li>
+                <b>Summary:</b> A one to two line explaination of your purchase status, e.g. "All items purchased from Costco".
+              </li>
+              <li>
+                <b>Details:</b> Here's your chance to explain any discrepancies, such as buying different items (which is unsanctioned if not related to the proposal), changes in pricing, underexpenditures, etc.
+              </li>
+              <li>
+                <b>Vendors:</b> We collect information about your point-of-purchase (OfficeMax, U-Line, etc) to inform UW's supply partnerships.
+              </li>
+            </ul>
+          </p>
+          {orgCode && <h6>
+            <Icon type='exclamation-circle-o' />
+            {` Your Departmental Organization Code: ${orgCode}`}
+          </h6>}
+          <p>
+            If you have any questions, please reach out to the operations manager at <a href='mailto:techfee@uw.edu'>techfee@uw.edu</a>.
+          </p>
+          <FormItem label='Budget Number' {...layout} hasFeedback={feedback(form, 'budget')} help={help(form, 'budget')} >
+            {form.getFieldDecorator('budget', rules.required)(
+              <Input />
+            )}
+          </FormItem>
+          <FormItem label='Brief Summary' {...layout}>
+            {form.getFieldDecorator('title')(
+              <Input />
+            )}
+          </FormItem>
+          <FormItem label='Details' {...layout}>
+            {form.getFieldDecorator('body')(
+              <TextArea rows={6} />
+            )}
+          </FormItem>
+          <Spreadsheet
+            prompt='Record Expenses'
+            data={data}
+            onSubmit={this.handleSubmit}
+            disabled={disableSubmit(form)}
+          />
+          <Alert type='info' showIcon banner
+            description='For your convenience, you can report expenditures at any time. We encourage you to use this tool in reference to your original proposal as you make purchases.'
+          />
+        </Boundary>
       </section>
     )
   }

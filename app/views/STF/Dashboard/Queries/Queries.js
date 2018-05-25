@@ -21,8 +21,9 @@ const config = {
   enableClipboard: true
 }
 
-import { Label } from '../../../../util/form'
 import api from '../../../../services'
+import { Loading } from '../../../../components'
+import { Label } from '../../../../util/form'
 
 import Examples from './Examples/Examples'
 
@@ -125,74 +126,75 @@ class Queries extends React.Component {
     { form, enums, screen, querytool } = this.props,
     { model } = this.state
   ) {
-    return (
-      <div>
-        <Examples />
-        <br />
-        <Form layout='inline' onSubmit={this.handleSubmit}>
-          <FormItem label={<Label title='Model'
-            message={'Models are document stores in the database - standalone records pulled together to generate site content.'} />} >
-            {form.getFieldDecorator('model')(
-              <Select
-                style={{ width: 230 }}
-                onChange={(m) => this.handleSelect(m)}
-              >
-                {Object.keys(modelNames).map(k => (
-                  <Option key={modelNames[k]} value={modelNames[k]}>
-                    <span>{k} - <em>{modelNames[k]}</em></span>
-                  </Option>
-                ))}
-              </Select>
-            )}
-          </FormItem>
-          <FormItem label={<Label title='ID'
-            message={'The unique ID of a specific item you want to look up, like a draft ID. The DB assigns this as "_id" for every new document.'} />}
-          >
-            {form.getFieldDecorator('id')(
-              <Input style={{ width: 200 }} />
-            )}
-          </FormItem>
-          <FormItem label={<Label title='Where'
-            message={'Find documents that match a set of conditions. Format: <"published": true, "quarter": "Autumn">'} />}
-          >
-            {form.getFieldDecorator('query')(
-              <Input style={{ width: 200 }} />
-            )}
-          </FormItem>
-          <FormItem label={<Label title='Join'
-            message={'A Join ("Populate" in MongoDB) allows you to connect related documents on a shared field, usually a Universal Unique ID (UUID) that appears to be gibberish.'} />}
-          >
-            {form.getFieldDecorator('populate')(
-              <Select mode='multiple' style={{ minWidth: 120 }}>
-                {modelPopulates[model].map(j => (
-                  <Option key={j}>{j}</Option>
-                ))}
-              </Select>
-            )}
-          </FormItem>
-          <FormItem>
-            <Button size='large' type='primary' ghost
-              htmlType='submit' disabled={!model}
+    if (window) {
+      return (
+        <div>
+          <Examples />
+          <br />
+          <Form layout='inline' onSubmit={this.handleSubmit}>
+            <FormItem label={<Label title='Model'
+              message={'Models are document stores in the database - standalone records pulled together to generate site content.'} />} >
+              {form.getFieldDecorator('model')(
+                <Select
+                  style={{ width: 230 }}
+                  onChange={(m) => this.handleSelect(m)}
+                >
+                  {Object.keys(modelNames).map(k => (
+                    <Option key={modelNames[k]} value={modelNames[k]}>
+                      <span>{k} - <em>{modelNames[k]}</em></span>
+                    </Option>
+                  ))}
+                </Select>
+              )}
+            </FormItem>
+            <FormItem label={<Label title='ID'
+              message={'The unique ID of a specific item you want to look up, like a draft ID. The DB assigns this as "_id" for every new document.'} />}
             >
-              <Icon type='api' />Run Query
-            </Button>
-          </FormItem>
-        </Form>
-        <br />
-        {!window
-          ? <span>Loading...</span>
-          : <Inspector
-            src={querytool}
-            {...config}
-            // name={null}
-            // collapsed={2}
-            // iconStyle='square'
-            // {...inspectorConfig}
-          />
-        }
-        {/* {window ? <Inspector data={querytool} /> : <span>Loading...</span>} */}
-      </div>
-    )
+              {form.getFieldDecorator('id')(
+                <Input style={{ width: 200 }} />
+              )}
+            </FormItem>
+            <FormItem label={<Label title='Where'
+              message={'Find documents that match a set of conditions. Format: <"published": true, "quarter": "Autumn">'} />}
+            >
+              {form.getFieldDecorator('query')(
+                <Input style={{ width: 200 }} />
+              )}
+            </FormItem>
+            <FormItem label={<Label title='Join'
+              message={'A Join ("Populate" in MongoDB) allows you to connect related documents on a shared field, usually a Universal Unique ID (UUID) that appears to be gibberish.'} />}
+            >
+              {form.getFieldDecorator('populate')(
+                <Select mode='multiple' style={{ minWidth: 120 }}>
+                  {modelPopulates[model].map(j => (
+                    <Option key={j}>{j}</Option>
+                  ))}
+                </Select>
+              )}
+            </FormItem>
+            <FormItem>
+              <Button size='large' type='primary' ghost
+                htmlType='submit' disabled={!model}
+              >
+                <Icon type='api' />Run Query
+              </Button>
+            </FormItem>
+          </Form>
+          <br />
+          <Loading render={window}
+            title='Query Results'
+            tip='Loading Querytool...\nThis will take some time'
+          >
+            <Inspector
+              src={querytool}
+              {...config}
+            />
+          </Loading>
+        </div>
+      )
+    } else {
+      return <div>Window not loaded</div>
+    }
   }
 }
 export default Queries

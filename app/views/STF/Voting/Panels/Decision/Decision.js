@@ -4,13 +4,16 @@ import PropTypes from 'prop-types'
 import { compose, bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
-import { Spin, Form, Switch, Input, Button, Alert, message } from 'antd'
+import { Form, Switch, Input, Button, Alert, message } from 'antd'
+const { TextArea } = Input
 const FormItem = Form.Item
 const connectForm = Form.create()
 
 import { layout } from '../../../../../util/form'
 import api from '../../../../../services'
 import { makeManifestByID } from '../../../../../selectors'
+import { Loading } from '../../../../../components'
+
 /*
 DECISION PANEL:
 Allows admins (not members) to issue a final decision
@@ -94,9 +97,8 @@ class Decision extends React.Component {
     // const { decisions } = manifest.docket
     return (
       <section>
-        {!manifest
-          ? <Spin size='large' tip='Loading...' />
-          : <Form onSubmit={this.handleSubmit}>
+        <Loading render={manifest} title='Decision Panel'>
+          <Form onSubmit={this.handleSubmit}>
             {!decision || !decision._id
               ? <Alert type='warning' showIcon banner
                 message='Warning - Use AFTER Official Voting'
@@ -110,7 +112,7 @@ class Decision extends React.Component {
             }
             <FormItem label='Remarks (Public)' {...layout} >
               {form.getFieldDecorator('body')(
-                <Input type='textarea' rows={4} />
+                <TextArea rows={4} />
               )}
             </FormItem>
             <FormItem label={<b>Decision</b>} {...layout}>
@@ -125,7 +127,7 @@ class Decision extends React.Component {
                 >Issue Decision</Button>
             </FormItem>
           </Form>
-          }
+        </Loading>
       </section>
     )
   }

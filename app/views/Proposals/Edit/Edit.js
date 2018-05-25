@@ -8,6 +8,7 @@ import { connectRequest } from 'redux-query'
 import api from '../../../services'
 
 import { initialProposalContacts } from '../../../selectors'
+import { Loading } from '../../../components'
 
 import Introduction from './Introduction/Introduction'
 import Contacts from './Contacts/Contacts'
@@ -196,9 +197,11 @@ class Edit extends React.Component {
     }
   }
   render (
-    { router, forceRequest, proposal, user, submissions, date } = this.props,
+    { params, router, forceRequest, proposal, user, submissions, date } = this.props,
     { valid } = this.state
   ) {
+    const { id } = params
+    const { _id, year, number, title } = proposal || {}
     const { introduction, contacts, project, budget, signatures } = valid
     const complete = Object.keys(valid)
       .every(key => valid[key] === true)
@@ -210,14 +213,16 @@ class Edit extends React.Component {
     return (
       <article className={styles['page']}>
         <Helmet title='New Proposal' />
-        {!proposal
-          ? <Spin size='large' tip='Loading...' />
-          : <div id={proposal._id}>
-            <h1>{`Editing: ${proposal.title || 'New Proposal'}`}</h1>
+        <Loading render={proposal}
+          title={`Draft ${id}`}
+          tip={`Loading Draft ${id}`}
+        >
+          <div id={_id} style={{ textAlign: 'left' }}>
+            <h1>{`Editing: ${title || 'New Proposal'}`}</h1>
             <Tooltip placement='topLeft'
               title={'Technical issues? E-mail STFCweb@uw.edu with your concern and draft ID'}
             >
-              <h6>{`Draft ID: ${proposal._id}`}</h6>
+              <h6>{`Draft ID: ${_id}`}</h6>
             </Tooltip>
             {!submissions && <Alert type='warning' showIcon
               message='Submissions are closed'
@@ -262,7 +267,7 @@ class Edit extends React.Component {
               </TabPane>
             </Tabs>
           </div>
-        }
+        </Loading>
       </article>
     )
   }

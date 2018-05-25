@@ -3,12 +3,9 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
-import { Row, Col, Alert, Progress } from 'antd'
+import { Row, Col, Alert } from 'antd'
 
-// const capitalize = (word) => word[0].toUpperCase() + word.substr(1)
-const currency = value => `$${Number.parseInt(value).toLocaleString()}`
-
-import { proposalDecision } from '../../../../../selectors'
+import Status from './Status/Status'
 
 /*
 PROPOSAL HEAD:
@@ -17,7 +14,6 @@ such as core contacts, award amounts, decisions etc
 */
 // import styles from './Body.css'
 @connect(state => ({
-  screen: state.screen,
   id: state.db.proposal._id,
   title: state.db.proposal.title,
   organization: state.db.proposal.organization,
@@ -25,19 +21,13 @@ such as core contacts, award amounts, decisions etc
   number: state.db.proposal.number,
   uac: state.db.proposal.uac,
   fast: state.db.proposal.fast,
-  contacts: state.db.proposal.contacts,
-  status: state.db.proposal.status,
-  decision: proposalDecision(state),
-  asked: state.db.proposal.asked,
-  received: state.db.proposal.received
+  contacts: state.db.proposal.contacts
 }))
 class Head extends React.Component {
   static propTypes = {
-    contacts: PropTypes.array,
-    status: PropTypes.string,
-    decision: PropTypes.object
+    contacts: PropTypes.array
   }
-  render ({ screen, id, title, organization, uac, fast, year, number, contacts, status, decision, asked, received } = this.props) {
+  render ({ id, title, organization, uac, fast, year, number, contacts, status } = this.props) {
     return (
       <section>
         <Row gutter={32} type='flex' justify='space-between' align='top' >
@@ -67,41 +57,7 @@ class Head extends React.Component {
             <hr />
           </Col>
           <Col className='gutter-row' xs={24} md={12} lg={8}>
-            {typeof decision.approved === 'boolean'
-              ? (decision.approved
-                  ? (screen.greaterThan.medium
-                    ? <div style={{ textAlign: 'right' }}>
-                      <Progress
-                        type='circle'
-                        width={200}
-                        percent={parseInt(received / asked * 100)}
-                        format={percent => <span>
-                          {currency(received)}
-                          <h5>{status}</h5>
-                        </span>}
-                       />
-                    </div>
-                     : <Alert banner showIcon
-                       type={received > 0 ? 'success' : 'error'}
-                       message={<b>{received ? `${status} - ${currency(received)}` : status}</b>}
-                       description={<div>
-                         <Progress
-                           percent={parseInt(received / asked * 100)}
-                         />
-                         <span>{decision.body}</span>
-                       </div>
-                       } />
-                   )
-                 : <Alert banner showIcon type='error'
-                   message={<b>{status}</b>}
-                   description={decision.body || 'Unfortunately, this proposal was denied by the committee. Decisions are issued based on student need and benefits. Authors are welcome to propose partial / alternative budgets or suggest a new project in the next cycle.'}
-                  />
-               )
-               : <Alert banner showIcon type='info'
-                 message={<b>{status}</b>}
-                 description='The committee has not issued a decision at this time.'
-               />
-           }
+            <Status />
           </Col>
         </Row>
       </section>

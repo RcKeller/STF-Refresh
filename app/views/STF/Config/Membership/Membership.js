@@ -6,10 +6,11 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
 import api from '../../../../services'
+import { Loading } from '../../../../components'
 
 import { usersOnCommittee, usersNotOnCommittee } from '../../../../selectors'
 
-import { Spin, Table, Checkbox, AutoComplete, Tooltip, Alert, message } from 'antd'
+import { Table, Checkbox, AutoComplete, Tooltip, Alert, message } from 'antd'
 const Option = AutoComplete.Option
 
 const filterOption = (inputValue, option) =>
@@ -124,9 +125,11 @@ class Membership extends React.Component {
           message='Add and Configure Members'
           description='WARNING: Reviews are tied to author accounts! Adjusting membership will alter the visibility of their voting record. Members can be added via the textbox in the footer.'
         />
-        {!committee
-          ? <Spin size='large' tip='Loading...' />
-          : <Table dataSource={committee} sort pagination={false}
+        <Loading render={Array.isArray(committee) && committee.length > 0}
+          title='Membership Manager'
+          tip='Loading Membership Manager...'
+        >
+          <Table dataSource={committee} sort pagination={false}
             size='middle'
             columns={columns}
             rowKey={record => record._id}
@@ -144,7 +147,7 @@ class Membership extends React.Component {
               </Tooltip>
             }
           />
-        }
+        </Loading>
       </section>
     )
   }

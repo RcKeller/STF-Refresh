@@ -1,12 +1,12 @@
 export const statusColors = {
-  'Draft': '#d3d3d3',
+  'Withdrawn': '#d3d3d3',
+  'Draft': '#BBDEFB',
   'Submitted': '#8eacbb',
   'In Review': '#6ec6ff',
   'Awaiting Decision': '#2196f3',
-  'Funded': '#4caf50',
   'Partially Funded': '#80e27e',
-  'Denied': '#ff7961',
-  'Withdrawn': '#34515e'
+  'Funded': '#4caf50',
+  'Denied': '#ff7961'
 }
 export const quarterColors = {
   'Autumn': '#bf360c',

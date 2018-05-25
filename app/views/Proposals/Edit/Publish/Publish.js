@@ -7,6 +7,7 @@ import { connect } from 'react-redux'
 import { Icon, Button, message } from 'antd'
 
 import api from '../../../../services'
+import { Boundary } from '../../../../components'
 
 /*
 PUBLICATION PANEL:
@@ -60,7 +61,7 @@ class Publish extends React.Component {
   render ({ form, proposal, published, submissions, user } = this.props) {
     const admin = user.stf && user.stf.admin
     return (
-      <div id={proposal}>
+      <Boundary title='Publication Panel' id={proposal}>
         {!published
           ? <div>
             <h1>Publish Proposal</h1>
@@ -92,7 +93,7 @@ class Publish extends React.Component {
             </p>
           </div>
           }
-      </div>
+      </Boundary>
     )
   }
 }

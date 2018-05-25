@@ -6,24 +6,13 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 import _ from 'lodash'
 
-import { Spin, Tabs, Tooltip } from 'antd'
+import { Tabs, Tooltip, Button } from 'antd'
 const TabPane = Tabs.TabPane
 
 import api from '../../../services'
-
+import { currency } from '../../../util'
+import { Loading } from '../../../components'
 import Panels from './Panels/Panels'
-
-// const manifestType = (type) => {
-//   switch (type) {
-//     case 'original':
-//       return _.capitalize(type)
-//     case 'partial':
-//       return _.capitalize(type)
-//     case 'supplemental':
-//       return _.capitalize(type)
-//   }
-//   return null
-// }
 
 /*
 VOTING VIEW:
@@ -33,7 +22,11 @@ to vote on at meetings
 import styles from './Voting.css'
 @compose(
   connect(
-    state => ({ docket: state.db.manifests || [] }),
+    state => ({
+      docket: Array.isArray(state.db.manifests)
+        ? state.db.manifests
+        : []
+    }),
     dispatch => ({ api: bindActionCreators(api, dispatch) })
 ),
   connectRequest(() => api.get('manifests', {
@@ -66,19 +59,32 @@ class Voting extends React.Component {
     return (
       <article className={styles['article']}>
         <Helmet title='Voting' />
-        {!docket
-          ? <Spin size='large' tip='Loading...' />
-          : <Tabs size='small' tabPosition='left'>
+        <Loading render={Array.isArray(docket) && docket.length > 0}
+          title='proposals on the docket'
+          tip='Loading Proposals on the Docket...'
+        >
+          <Tabs size='small'
+            tabPosition='left'
+            tabBarExtraContent={
+              <Button type='ghost' icon='reload' onClick={forceRequest}>
+                Refresh
+              </Button>
+            }
+          >
             {docket.map((manifest, i) => (
-              // <TabPane key={manifest._id} tab={
-              //   <span>{manifest.proposal.title}</span>
-              // }>
               <TabPane key={manifest._id} tab={
+                manifest.proposal &&
                 <Tooltip placement='rightTop' title={manifest.proposal.title}>
                   <div className={styles['tab-title']}>
                     <span>{`${manifest.proposal.year}-${manifest.proposal.number}`}</span>
                     <br />
-                    {manifest.type !== 'original' && <small>{_.capitalize(manifest.type)}</small>}
+                    {manifest.type !== 'original' &&
+                      <small>
+                        <span>{_.capitalize(manifest.type)}</span>
+                        <br />
+                        <span>{`for ${currency(manifest.total)}`}</span>
+                      </small>
+                    }
                   </div>
                 </Tooltip>
               }>
@@ -86,7 +92,7 @@ class Voting extends React.Component {
               </TabPane>
             ))}
           </Tabs>
-        }
+        </Loading>
       </article>
     )
   }

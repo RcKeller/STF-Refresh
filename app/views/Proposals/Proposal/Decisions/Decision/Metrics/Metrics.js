@@ -1,11 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-
-import _ from 'lodash'
+// import PropTypes from 'prop-types'
 
 import { Table, Alert } from 'antd'
-
-const currency = value => `$${Number.parseInt(value).toLocaleString()}`
 
 const columns = [
   {
@@ -24,14 +20,18 @@ METRICS COMPONENT:
 Admins can view the individual scores cast by members
 in a concise table format
 */
-const Metrics = ({ _id: id, approved, score, ratings, author: { name, netID } }) => (
+const Metrics = ({ _id: id, approved, body, score, ratings, author: { name, netID } }) => (
   <div>
     <Alert key={id}
       style={{ paddingLeft: 8 }}
       banner showIcon={false}
-      type={approved ? 'success' : 'error'}
+      type={typeof approved === 'boolean'
+        ? approved ? 'success' : 'error'
+        : 'info'
+      }
       message={<h6>{`${name} (${netID})`}</h6>}
     />
+    <p>{body}</p>
     <Table
       style={{ marginBottom: 16 }}
       columns={columns}
@@ -40,12 +40,6 @@ const Metrics = ({ _id: id, approved, score, ratings, author: { name, netID } })
       size='middle'
       pagination={false}
       showHeader={false}
-      footer={() => (
-        <h5>
-          <span>Overall Rating: </span>
-          <span style={{ float: 'right' }}>{`${score} / 5`}</span>
-        </h5>
-      )}
     />
   </div>
 )

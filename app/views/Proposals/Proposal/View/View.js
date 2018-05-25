@@ -4,13 +4,15 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
-import { Spin, Alert } from 'antd'
+import { Alert } from 'antd'
 
 import Head from './Head/Head'
 import Overview from './Overview/Overview'
 import Body from './Body/Body'
 import Legacy from './Legacy/Legacy'
 import Manifests from './Manifests/Manifests'
+
+import { Loading } from '../../../../components'
 
 /*
 PROPOSAL PAGE / VIEW:
@@ -35,32 +37,29 @@ class View extends React.Component {
   render ({ proposal, published, isLegacy, inReview } = this.props) {
     //  Once the proposal has loaded, render it. Only render body if published.
     return (
-      <div>
-        {!proposal
-          ? <Spin size='large' tip='Loading...' />
-          : <section>
-            <Head />
-            {!published
-              ? <Alert type='warning' showIcon
-                message='Unpublished Proposal'
-                description='This proposal has been withdrawn from publication by either an author or administrator. It exists for STF recordkeeping. For further inquiries, e-mail STFCweb@uw.edu'
-              />
-              : <div>
-                {isLegacy ? <Legacy /> : <div><Overview /><hr /><Body /></div>}
-                <hr />
-                <Manifests />
-                {inReview &&
-                  <Alert type='warning' style={{ marginTop: 28 }}
-                    banner showIcon={false}
-                    message={<h3>Like this proposal?</h3>}
-                    description={<span>Endorse it - <b>it could make the difference that gets this approved!</b> Use the endorsement tab at the top to leave your remarks.</span>}
-                  />
-                }
-              </div>
-            }
-          </section>
+      <Loading render={proposal} title='proposal content'>
+        <section>
+          <Head />
+          {!published
+            ? <Alert type='warning' showIcon
+              message='Unpublished Proposal'
+              description='This proposal has been withdrawn from publication by either an author or administrator. It exists for STF recordkeeping. For further inquiries, e-mail STFCweb@uw.edu'
+            />
+            : <div>
+              {isLegacy ? <Legacy /> : <div><Overview /><hr /><Body /></div>}
+              <hr />
+              <Manifests />
+              {inReview &&
+                <Alert type='warning' style={{ marginTop: 28 }}
+                  banner showIcon={false}
+                  message={<h3>Like this proposal?</h3>}
+                  description={<span>Endorse it - <b>it could make the difference that gets this approved!</b> Use the endorsement tab at the top to leave your remarks.</span>}
+                />
+              }
+            </div>
           }
-      </div>
+        </section>
+      </Loading>
     )
   }
 }

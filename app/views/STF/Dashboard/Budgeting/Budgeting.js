@@ -8,9 +8,11 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 //  Our API services
 import api from '../../../../services'
+import { Loading } from '../../../../components'
+import { currency } from '../../../../util'
 
 import { Link } from 'react-router'
-import { Spin, Table, Progress, Badge, Input, Icon } from 'antd'
+import { Table, Progress, Badge, Input, Icon } from 'antd'
 
 import SubTable from './SubTable/SubTable'
 
@@ -25,11 +27,6 @@ const indicators = {
   'Draft': 'error',
   'Withdrawn': 'error'
 }
-const currency = number =>
-  number.toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD'
-  })
 
 const expandedRowRender = (record, i) => <SubTable
   contacts={record.proposal && record.proposal.contacts}
@@ -136,7 +133,7 @@ class Budgeting extends React.Component {
         }),
         onFilter: (value, record) =>
           record.proposal.year.toString().includes(value),
-        width: 90
+        width: 80
       }, {
         title: 'Q',
         dataIndex: 'proposal.quarter',
@@ -144,12 +141,12 @@ class Budgeting extends React.Component {
         render: text => <span>{text.substr(0, 2) || ''}</span>,
         filters: [
           { text: 'Autumn', value: 'Autumn' },
-          { text: 'Fall', value: 'Fall' },
+          { text: 'Winter', value: 'Winter' },
           { text: 'Spring', value: 'Spring' },
           { text: 'Summer', value: 'Summer' }
         ],
         onFilter: (value, record) => record.proposal.quarter.includes(value),
-        width: 50
+        width: 60
       }, {
         title: 'Type',
         dataIndex: 'manifest.type',
@@ -221,7 +218,7 @@ class Budgeting extends React.Component {
         onFilter: (value, record) => record.proposal.category === value,
         width: 150
       }, {
-        title: 'Awarded',
+        title: 'Award',
         dataIndex: 'manifest.total',
         key: 'manifest.total',
         render: (text, record) => (
@@ -316,18 +313,21 @@ class Budgeting extends React.Component {
     )
     return (
       <section>
-        {!awards
-            ? <Spin size='large' tip='Loading...' />
-            : <Table
-              dataSource={awards}
-              sort
-              size={screen.lessThan.medium ? 'small' : 'middle'}
-              columns={columns}
-              rowKey={record => record._id}
-              expandedRowRender={expandedRowRender}
-              footer={footer}
-            />
-            }
+        <Loading render={Array.isArray(awards) && awards.length > 0}
+          title='Awards'
+          tip='Loading Award Data... This will take some time.'
+          timeout={10000}
+        >
+          <Table
+            dataSource={awards}
+            sort
+            size={screen.lessThan.medium ? 'small' : 'middle'}
+            columns={columns}
+            rowKey={record => record._id}
+            expandedRowRender={expandedRowRender}
+            footer={footer}
+          />
+        </Loading>
       </section>
     )
   }

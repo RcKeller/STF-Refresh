@@ -1,7 +1,6 @@
 //  React and its typechecking
 import React from 'react'
 import PropTypes from 'prop-types'
-import Helmet from 'react-helmet'
 import _ from 'lodash'
 //  Redux utils
 import { compose } from 'redux'
@@ -9,31 +8,11 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 //  Our API services
 import api from '../../../../services'
+import { Loading } from '../../../../components'
+import { currency, years } from '../../../../util'
 
 import { Link } from 'react-router'
-import { Spin, Table, Progress, Badge, Input, Icon, Alert } from 'antd'
-
-const indicators = {
-  'Submitted': 'default',
-  'Funded': 'success',
-  'Partially Funded': 'warning',
-  'In Review': 'warning',
-  'Awaiting Decision': 'warning',
-  'Denied': 'error',
-  'Draft': 'error',
-  'Withdrawn': 'error'
-}
-
-const currency = number =>
-  number.toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'USD'
-  })
-  //  Create an array of years for select boxes
-const years = _.range(
-  2000,
-  new Date().getFullYear() + 1
-)
+import { Table, Progress, Input, Icon } from 'antd'
 
 /*
 SUPPLEMENTALS FEATURE:
@@ -42,7 +21,7 @@ Useful for operations / Proposal Officer
 */
 @compose(
   connect((state, props) => ({
-    supplementals: state.db.manifests,
+    supplementals: state.db.supplementals,
     enums: state.config.enums,
     screen: state.screen,
     user: state.user
@@ -55,7 +34,7 @@ Useful for operations / Proposal Officer
         { path: 'proposal', populate: { path: 'contacts' } }
       ],
       transform: supplementals => ({ supplementals }),
-      // update: ({ supplementals: (prev, next) => next }),
+      update: ({ supplementals: (prev, next) => next }),
       force: true
     })
   )
@@ -118,7 +97,6 @@ class Budgeting extends React.Component {
     { enums, screen } = this.props,
     { supplementals } = this.state
   ) {
-    console.log(supplementals)
     const columns = [
       {
         title: 'Submitted',
@@ -141,7 +119,7 @@ class Budgeting extends React.Component {
         }),
         onFilter: (value, record) =>
           record.proposal.year.toString().includes(value),
-        width: 90
+        width: 80
       }, {
         title: 'Q',
         dataIndex: 'proposal.quarter',
@@ -149,12 +127,12 @@ class Budgeting extends React.Component {
         render: text => <span>{text.substr(0, 2) || ''}</span>,
         filters: [
           { text: 'Autumn', value: 'Autumn' },
-          { text: 'Fall', value: 'Fall' },
+          { text: 'Winter', value: 'Winter' },
           { text: 'Spring', value: 'Spring' },
           { text: 'Summer', value: 'Summer' }
         ],
         onFilter: (value, record) => record.proposal.quarter.includes(value),
-        width: 50
+        width: 60
       }, {
         title: 'Title',
         dataIndex: 'title',
@@ -215,26 +193,26 @@ class Budgeting extends React.Component {
               percent={percentage <= 100 ? percentage : 100}
               format={() => `${percentage}${percentage < 100 ? '%' : ''}`}
               status={status}
-              // status='active'
-              strokeWidth={10} />
+              strokeWidth={10}
+            />
           )
         }
       }
     ]
     return (
       <section>
-        {!supplementals
-          ? <Spin size='large' tip='Loading...' />
-          : <Table
+        <Loading render={Array.isArray(supplementals) && supplementals.length > 0}
+          title='Suppplementals'
+          tip='Loading Supplemental Requests... This will take some time.'
+        >
+          <Table
             dataSource={supplementals}
             sort
             size={screen.lessThan.medium ? 'small' : 'middle'}
             columns={columns}
             rowKey={record => record._id}
-            // expandedRowRender={expandedRowRender}
-            // footer={footer}
           />
-        }
+        </Loading>
       </section>
     )
   }

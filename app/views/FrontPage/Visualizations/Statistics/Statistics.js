@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 
 import api from '../../../../services'
+import { Loading } from '../../../../components'
 
 import ProposalStatusByQuarter from './ProposalStatusByQuarter/ProposalStatusByQuarter'
 
@@ -61,11 +62,12 @@ class Statistics extends React.Component {
     }
     return (
       <section>
-        {statistics &&
-          <div>
-            <ProposalStatusByQuarter {...data} year={year} />
-          </div>
-        }
+        <Loading render={Statistics}
+          title='Statistical Visualization'
+          tip='Visualizing Statistics...'
+        >
+          <ProposalStatusByQuarter {...data} year={year} />
+        </Loading>
       </section>
     )
   }

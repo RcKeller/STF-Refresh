@@ -14,6 +14,7 @@ https://github.com/reactGo/reactGo/pull/841/files
 const SplitFrontPage = (l, c) => require.ensure([], () => c(null, require('./views/FrontPage/FrontPage').default))
 const SplitNotFound = (l, c) => require.ensure([], () => c(null, require('./views/NotFound/NotFound').default))
 const SplitFAQ = (l, c) => require.ensure([], () => c(null, require('./views/FAQ/FAQ').default))
+const SplitAPI = (l, c) => require.ensure([], () => c(null, require('./views/API/API').default))
 const SplitMembers = (l, c) => require.ensure([], () => c(null, require('./views/Members/Members').default))
 const SplitContactUs = (l, c) => require.ensure([], () => c(null, require('./views/ContactUs/ContactUs').default))
 const SplitCreate = (l, c) => require.ensure([], () => c(null, require('./views/Proposals/Create/Create').default))
@@ -104,6 +105,7 @@ export default (store) => {
       <IndexRoute getComponent={SplitFrontPage} />
 
       <Route path='/faq' getComponent={SplitFAQ} />
+      <Route path='/api' getComponent={SplitAPI} />
       <Route path='/members' getComponent={SplitMembers} />
       {/* Legacy route */}
       <Route path='/about' getComponent={SplitMembers} />
@@ -119,7 +121,7 @@ export default (store) => {
       <Route path='/edit/:id' onEnter={requireAuth} getComponent={SplitEdit} />
       <Route path='/dashboard' onEnter={requireSTF} getComponent={SplitDashboard} />
       <Route path='/voting' onEnter={requireSTF} getComponent={SplitVoting} />
-      <Route path='/docket/:year' onEnter={requireAdmin} getComponent={SplitDocket} />
+      <Route path='/docket' onEnter={requireAdmin} getComponent={SplitDocket} />
       <Route path='/config' onEnter={requireAdmin} getComponent={SplitConfig} />
 
       <Route path='/login/:redirect' onEnter={loginCallbackPatch} component={LoginCallbackRoute} />

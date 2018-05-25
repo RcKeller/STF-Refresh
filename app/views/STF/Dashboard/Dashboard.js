@@ -6,6 +6,7 @@ import { Tabs, Alert } from 'antd'
 const TabPane = Tabs.TabPane
 import Budgeting from './Budgeting/Budgeting'
 import Supplementals from './Supplementals/Supplementals'
+import Metrics from './Metrics/Metrics'
 import Queries from './Queries/Queries'
 
 /*
@@ -29,18 +30,21 @@ class Dashboard extends React.Component {
               description='Welcome to Dashboard, our internal business intelligence tools. Each of these tools has been built to assist the committee with essential functions beyond the core webapp. Feel free to consult with me if you are in need of anything. Note, these features are beyond my core scope, and as such, are experimental.'
             />
           </TabPane>
-          <TabPane tab='Awards & Budgeting' key='2'>
+          <TabPane tab='Awards & Reports' key='2'>
             <Budgeting />
           </TabPane>
-          <TabPane tab='Supplemental Requests' key='3'>
+          <TabPane tab='Supplementals' key='3'>
             <Supplementals />
+          </TabPane>
+          <TabPane tab='Metrics' key='4'>
+            <Metrics />
+          </TabPane>
+          <TabPane tab='Query Tool' key='5'>
+            {window && <Queries />}
           </TabPane>
           {/* <TabPane tab={<span>Activity Report (<em>WIP</em>)</span>} disabled key='3'>
             <h2>Under Development</h2>
           </TabPane> */}
-          <TabPane tab='Query Tool' key='4'>
-            {window && <Queries />}
-          </TabPane>
         </Tabs>
       </article>
     )

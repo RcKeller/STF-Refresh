@@ -49,7 +49,7 @@ async function assignNumberIfPublishing (proposal) {
       proposal.number = ++topNumber
       proposal.quarter = quarter
       proposal.status = 'In Review'
-      //  Return a mutated doc for saving
+
       Slack.announceProposal(proposal)
       return proposal
     }

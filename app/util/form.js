@@ -10,14 +10,14 @@ Ant uses a very cumbersome controlled form wrapper. To use it, you have to do th
 3. Wrap each formitem with a decorator containing configs.
     (example using these utils)
     {form.getFieldDecorator('comment', rules.required)(
-      <Input type='textarea' rows={6} />
+      <TextArea rows={6} />
     )}
 4. Provide an onSubmit in the class:
     handleSubmit = (e) => {
       e.preventDefault()
       let { form, proposalID, user } = this.props
       form.validateFields((err, values) => {
-        console.log('SUBMITTING', err, values, proposalID, user)
+        // console.log('SUBMITTING', err, values, proposalID, user)
       })
     }
 5. Validate your fields on component mount, preventing premature submissions.
@@ -68,9 +68,24 @@ const rules = {
 
 //  Disable a form's submit button
 //  <Button htmlType='submit' disabled={disableSubmit(form)} />
-const disableSubmit = (form) => hasErrors(form.getFieldsError())
+const disableSubmit = (form) => {
+  // return hasErrors(form.getFieldsError())
+  const keys = []
+  function getKeys (data) {
+    for (const key of Object.keys(data)) {
+      if (data[key]) {
+        typeof data[key] === 'object'
+          ? getKeys(data[key])
+          : keys.push(data[key])
+      }
+    }
+  }
+  const fields = form.getFieldsError()
+  getKeys(fields)
+  return keys.length > 0
+}
 
-const Label = ({title, message}) => (
+const Label = ({ title, message }) => (
   <span>
     {title}&nbsp;
     <Tooltip title={message}>

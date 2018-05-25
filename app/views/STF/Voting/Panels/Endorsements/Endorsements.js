@@ -2,10 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import { Spin, Collapse } from 'antd'
+import { Collapse } from 'antd'
 const Panel = Collapse.Panel
 
 import { makeManifestByID } from '../../../../../selectors'
+import { Loading } from '../../../../../components'
 
 /*
 ENDORSEMENTS PANEL:
@@ -34,10 +35,9 @@ class Endorsements extends React.Component {
     { screen, manifest, comments } = this.props
   ) {
     return (
-      <div>
-        {!manifest
-          ? <Spin size='large' tip='Loading...' />
-          : <section>
+      <section>
+        <Loading render={manifest} title='Voting Panel'>
+          <div>
             {comments && comments.length > 0
               ? <Collapse bordered={false}
                 defaultActiveKey={Object.keys(comments)}
@@ -53,9 +53,9 @@ class Endorsements extends React.Component {
               </Collapse>
               : <p><i>No endorsements available.</i></p>
             }
-          </section>
-        }
-      </div>
+          </div>
+        </Loading>
+      </section>
     )
   }
 }

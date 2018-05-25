@@ -9,9 +9,10 @@ import { connect } from 'react-redux'
 import { connectRequest } from 'redux-query'
 //  Our API services
 import api from '../../services'
+import { Loading } from '../../components'
 
 import { Link } from 'react-router'
-import { Spin, Table, Progress, Badge, Input, Icon, Alert } from 'antd'
+import { Table, Progress, Badge, Input, Icon, Alert } from 'antd'
 
 //  Status indicator mapping for badge components
 const indicators = {
@@ -136,7 +137,7 @@ class Proposals extends React.Component {
         }),
         onFilter: (value, record) =>
           record.year.toString().includes(value),
-        width: 90
+        width: 80
       },
       {
         title: 'Q',
@@ -146,14 +147,14 @@ class Proposals extends React.Component {
           <span>{text.substr(0, 2) || ''}</span>
         ),
         filters: [
-          { text: 'Winter', value: 'Winter' },
           { text: 'Autumn', value: 'Autumn' },
+          { text: 'Winter', value: 'Winter' },
           { text: 'Spring', value: 'Spring' },
           { text: 'Summer', value: 'Summer' }
         ],
         onFilter: (value, record) =>
           record.quarter.includes(value),
-        width: 50
+        width: 55
       },
       {
         title: 'Title',
@@ -203,7 +204,7 @@ class Proposals extends React.Component {
           : [],
         onFilter: (value, record) =>
           record.category === value,
-        width: 150
+        width: 125
       },
       {
         title: 'Status',
@@ -216,7 +217,7 @@ class Proposals extends React.Component {
           })
           : [],
         onFilter: (value, record) => record.status === value,
-        width: 100
+        width: 125
       },
       {
         title: 'Asked',
@@ -246,7 +247,7 @@ class Proposals extends React.Component {
             ? (a.received || 0) / (a.asked || 1) -
             (b.received || 0) / (b.asked || 1)
             : -a.asked,
-        width: 110
+        width: 100
       }
     ]
     if (screen.lessThan.large && !screen.lessThan.medium) {
@@ -282,20 +283,22 @@ class Proposals extends React.Component {
             </ul>}
           />
         }
-        {!proposals
-          ? <Spin size='large' tip='Loading...' />
-          : <Table
+        <Loading render={Array.isArray(proposals) && proposals.length > 0}
+          title='STF Proposals'
+          tip='Loading STF Proposals...'
+        >
+          <Table
             rowKey={record => record._id}
             dataSource={proposals}
             sort
             size={screen.lessThan.medium ? 'small' : 'large'}
             columns={columns}
             footer={submissions
-              ? () => <Alert type='warning' banner message={<em>Any campus department or org can submit a proposal with a budget code. <b><Link to='/create'>Click Here!</Link></b></em>} />
-              : () => <Alert type='warning' banner message={<em>Proposal submissions for the quarter are closed, but we encourage you to visit and endorse proposals in review!</em>} />
+              ? () => <Alert type='warning' banner message={<h5><em>Any campus department or org can submit a proposal with a budget code. <b><Link to='/create'>Click Here!</Link></b></em></h5>} />
+              : () => <Alert type='warning' banner message={<h5><em>Proposal submissions for the quarter are closed, but we encourage you to visit and endorse proposals in review!</em></h5>} />
             }
           />
-        }
+        </Loading>
       </article>
     )
   }

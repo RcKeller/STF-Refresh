@@ -2,18 +2,21 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-import { Spin, Row, Col, Switch, Progress, Table } from 'antd'
+import { Row, Col, Switch, Progress, Table } from 'antd'
 
 import { makeManifestByID } from '../../../../../selectors'
+import { Loading } from '../../../../../components'
 
 const metricsColumns = [
   { title: 'Prompt', dataIndex: 'prompt', key: 'prompt' },
-  { title: 'Score', dataIndex: 'score', key: 'score', width: 100 }
+  { title: 'Score', dataIndex: 'score', key: 'score', width: 60 }
 ]
 const remarksColumns = [
   { title: 'Name', dataIndex: 'name', key: 'name', width: 100 },
   { title: 'Remarks', dataIndex: 'body', key: 'body' }
 ]
+
+const float = (num) => Number.parseFloat((num || 0).toFixed(2))
 /*
 SCORES PANEL:
 Shows a breakdown of scores post-QA
@@ -120,14 +123,17 @@ class Scores extends React.Component {
     { filter } = this.state
   ) {
     const { pass, fail, metrics, remarks } = this.filterReviews()
-    const dataSource = Object.keys(metrics).map(key => {
-      return { prompt: key, score: metrics[key] }
+    const metricsData = Object.keys(metrics).map(key => {
+      return { prompt: key, score: float(metrics[key]) }
     })
+    const averageMetric = metricsData.reduce(
+      (accumulator, metric) => accumulator + (metric.score || 0),
+      0
+    ) / (metricsData.length || 1)
     return (
       <section>
-        {!manifest
-          ? <Spin size='large' tip='Loading...' />
-          : <div>
+        <Loading render={manifest} title='Scores Panel'>
+          <div>
             <h4>Filter by Commitee Roles</h4>
             <Switch checked={filter.admin}
               unCheckedChildren='Admins' checkedChildren='Admins'
@@ -157,10 +163,15 @@ class Scores extends React.Component {
               </Col>
               <Col span={24} lg={16}>
                 <h2>Scores</h2>
-                <Table dataSource={dataSource} pagination={false}
+                <Table dataSource={metricsData} pagination={false}
                   size='middle'
                   rowKey={record => record.prompt}
                   columns={metricsColumns}
+                  footer={() => <h2>
+                    Average Score:
+                    <span style={{ float: 'right', padding: '0 16px' }}>{float(averageMetric)}</span>
+                  </h2>
+                  }
                 />
               </Col>
             </Row>
@@ -173,7 +184,7 @@ class Scores extends React.Component {
               />
             }
           </div>
-          }
+        </Loading>
       </section>
     )
   }
