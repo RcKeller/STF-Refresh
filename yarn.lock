@@ -6567,14 +6567,6 @@ rc-drawer-menu@^0.5.7:
     classnames "^2.2.5"
     prop-types "^15.5.0"
 
-rc-drawer@^0.4.11:
-  version "0.4.11"
-  resolved "https://registry.yarnpkg.com/rc-drawer/-/rc-drawer-0.4.11.tgz#94faaec28183ab90f135f0dfe244dca14cfee799"
-  dependencies:
-    babel-runtime "6.x"
-    classnames "^2.2.4"
-    prop-types "^15.5.10"
-
 rc-dropdown@~2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/rc-dropdown/-/rc-dropdown-2.1.0.tgz#ae39db67e593ef4ed889dee99ef13ae3994a5c7f"
